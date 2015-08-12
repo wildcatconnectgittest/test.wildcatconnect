@@ -15,6 +15,7 @@
 		0A1FE3E91B7B7DA80062A30E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A1FE3E81B7B7DA80062A30E /* Images.xcassets */; };
 		0A1FE3EC1B7B7DA80062A30E /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A1FE3EA1B7B7DA80062A30E /* LaunchScreen.xib */; };
 		0A1FE3F81B7B7DA80062A30E /* WildcatConnectGITTestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1FE3F71B7B7DA80062A30E /* WildcatConnectGITTestTests.m */; };
+		0A4A37E91B7B90D100AF3E36 /* SectionsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37E81B7B90D100AF3E36 /* SectionsTableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +44,8 @@
 		0A1FE3F11B7B7DA80062A30E /* WildcatConnectGITTestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WildcatConnectGITTestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A1FE3F61B7B7DA80062A30E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A1FE3F71B7B7DA80062A30E /* WildcatConnectGITTestTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WildcatConnectGITTestTests.m; sourceTree = "<group>"; };
+		0A4A37E71B7B90D100AF3E36 /* SectionsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SectionsTableViewController.h; sourceTree = "<group>"; };
+		0A4A37E81B7B90D100AF3E36 /* SectionsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SectionsTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +94,8 @@
 				0A1FE3E21B7B7DA80062A30E /* SecondViewController.h */,
 				0A1FE3E31B7B7DA80062A30E /* SecondViewController.m */,
 				0A1FE3E51B7B7DA80062A30E /* Main.storyboard */,
+				0A4A37E71B7B90D100AF3E36 /* SectionsTableViewController.h */,
+				0A4A37E81B7B90D100AF3E36 /* SectionsTableViewController.m */,
 				0A1FE3E81B7B7DA80062A30E /* Images.xcassets */,
 				0A1FE3EA1B7B7DA80062A30E /* LaunchScreen.xib */,
 				0A1FE3D81B7B7DA80062A30E /* Supporting Files */,
@@ -226,6 +231,7 @@
 			files = (
 				0A1FE3E41B7B7DA80062A30E /* SecondViewController.m in Sources */,
 				0A1FE3DE1B7B7DA80062A30E /* AppDelegate.m in Sources */,
+				0A4A37E91B7B90D100AF3E36 /* SectionsTableViewController.m in Sources */,
 				0A1FE3E11B7B7DA80062A30E /* FirstViewController.m in Sources */,
 				0A1FE3DB1B7B7DA80062A30E /* main.m in Sources */,
 			);
