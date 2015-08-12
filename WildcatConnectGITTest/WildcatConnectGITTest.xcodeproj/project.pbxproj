@@ -23,6 +23,7 @@
 		0A4A37F81B7BA41A00AF3E36 /* LunchMenusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37F71B7BA41A00AF3E36 /* LunchMenusViewController.m */; };
 		0A4A37FB1B7BA42200AF3E36 /* UsefulLinksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37FA1B7BA42200AF3E36 /* UsefulLinksViewController.m */; };
 		0A4A37FE1B7BA43900AF3E36 /* Staff DirectoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37FD1B7BA43900AF3E36 /* Staff DirectoryTableViewController.m */; };
+		0A4A38031B7BC43400AF3E36 /* TestStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A38021B7BC43400AF3E36 /* TestStructure.m */; };
 		F75C21971B7B99D00052BC87 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F75C21961B7B99D00052BC87 /* AboutViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -68,6 +69,8 @@
 		0A4A37FA1B7BA42200AF3E36 /* UsefulLinksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsefulLinksViewController.m; sourceTree = "<group>"; };
 		0A4A37FC1B7BA43900AF3E36 /* Staff DirectoryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Staff DirectoryTableViewController.h"; sourceTree = "<group>"; };
 		0A4A37FD1B7BA43900AF3E36 /* Staff DirectoryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Staff DirectoryTableViewController.m"; sourceTree = "<group>"; };
+		0A4A38011B7BC43400AF3E36 /* TestStructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestStructure.h; path = ../TestStructure.h; sourceTree = "<group>"; };
+		0A4A38021B7BC43400AF3E36 /* TestStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestStructure.m; path = ../TestStructure.m; sourceTree = "<group>"; };
 		F75C21951B7B99D00052BC87 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
 		F75C21961B7B99D00052BC87 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -111,6 +114,8 @@
 		0A1FE3D71B7B7DA80062A30E /* WildcatConnectGITTest */ = {
 			isa = PBXGroup;
 			children = (
+				0A4A38011B7BC43400AF3E36 /* TestStructure.h */,
+				0A4A38021B7BC43400AF3E36 /* TestStructure.m */,
 				0A1FE3DC1B7B7DA80062A30E /* AppDelegate.h */,
 				0A1FE3DD1B7B7DA80062A30E /* AppDelegate.m */,
 				0A1FE3DF1B7B7DA80062A30E /* FirstViewController.h */,
@@ -270,6 +275,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A4A37F81B7BA41A00AF3E36 /* LunchMenusViewController.m in Sources */,
+				0A4A38031B7BC43400AF3E36 /* TestStructure.m in Sources */,
 				0A4A37EF1B7BA33C00AF3E36 /* CommunityServiceViewController.m in Sources */,
 				0A4A37EC1B7BA32B00AF3E36 /* ExtracurricularsViewController.m in Sources */,
 				F75C21971B7B99D00052BC87 /* AboutViewController.m in Sources */,
