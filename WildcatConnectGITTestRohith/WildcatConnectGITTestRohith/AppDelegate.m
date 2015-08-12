@@ -17,8 +17,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	// Override point for customization after application launch.
-NSLog(@"Working here!!");
-    //("ALso working here)")
 	return YES;
 }
 
