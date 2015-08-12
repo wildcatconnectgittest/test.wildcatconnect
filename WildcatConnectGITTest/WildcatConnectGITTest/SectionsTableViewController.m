@@ -47,15 +47,15 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier" forIndexPath:indexPath];
-     int x = indexPath.row;
-     cell.textLabel.text = self.sectionsArray[x];
+     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier" forIndexPath:indexPath];
+     cell.textLabel.text = self.sectionsArray[indexPath.row];
     
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-     [self performSegueWithIdentifier:@"showNewsCenter" sender:self];
+     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+     [self performSegueWithIdentifier:self.segueIDsArray[indexPath.row] sender:self];
 }
 
 /*
