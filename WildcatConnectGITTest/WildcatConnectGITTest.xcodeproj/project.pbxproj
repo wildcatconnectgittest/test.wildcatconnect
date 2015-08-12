@@ -16,6 +16,13 @@
 		0A1FE3EC1B7B7DA80062A30E /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A1FE3EA1B7B7DA80062A30E /* LaunchScreen.xib */; };
 		0A1FE3F81B7B7DA80062A30E /* WildcatConnectGITTestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1FE3F71B7B7DA80062A30E /* WildcatConnectGITTestTests.m */; };
 		0A4A37E91B7B90D100AF3E36 /* SectionsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37E81B7B90D100AF3E36 /* SectionsTableViewController.m */; };
+		0A4A37EC1B7BA32B00AF3E36 /* ExtracurricularsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37EB1B7BA32B00AF3E36 /* ExtracurricularsViewController.m */; };
+		0A4A37EF1B7BA33C00AF3E36 /* CommunityServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37EE1B7BA33C00AF3E36 /* CommunityServiceViewController.m */; };
+		0A4A37F21B7BA34600AF3E36 /* StudentCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37F11B7BA34600AF3E36 /* StudentCenterViewController.m */; };
+		0A4A37F51B7BA41100AF3E36 /* CalendarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37F41B7BA41100AF3E36 /* CalendarViewController.m */; };
+		0A4A37F81B7BA41A00AF3E36 /* LunchMenusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37F71B7BA41A00AF3E36 /* LunchMenusViewController.m */; };
+		0A4A37FB1B7BA42200AF3E36 /* UsefulLinksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37FA1B7BA42200AF3E36 /* UsefulLinksViewController.m */; };
+		0A4A37FE1B7BA43900AF3E36 /* Staff DirectoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37FD1B7BA43900AF3E36 /* Staff DirectoryTableViewController.m */; };
 		F75C21971B7B99D00052BC87 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F75C21961B7B99D00052BC87 /* AboutViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -47,6 +54,20 @@
 		0A1FE3F71B7B7DA80062A30E /* WildcatConnectGITTestTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WildcatConnectGITTestTests.m; sourceTree = "<group>"; };
 		0A4A37E71B7B90D100AF3E36 /* SectionsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SectionsTableViewController.h; sourceTree = "<group>"; };
 		0A4A37E81B7B90D100AF3E36 /* SectionsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SectionsTableViewController.m; sourceTree = "<group>"; };
+		0A4A37EA1B7BA32B00AF3E36 /* ExtracurricularsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExtracurricularsViewController.h; sourceTree = "<group>"; };
+		0A4A37EB1B7BA32B00AF3E36 /* ExtracurricularsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExtracurricularsViewController.m; sourceTree = "<group>"; };
+		0A4A37ED1B7BA33C00AF3E36 /* CommunityServiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommunityServiceViewController.h; sourceTree = "<group>"; };
+		0A4A37EE1B7BA33C00AF3E36 /* CommunityServiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommunityServiceViewController.m; sourceTree = "<group>"; };
+		0A4A37F01B7BA34600AF3E36 /* StudentCenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentCenterViewController.h; sourceTree = "<group>"; };
+		0A4A37F11B7BA34600AF3E36 /* StudentCenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StudentCenterViewController.m; sourceTree = "<group>"; };
+		0A4A37F31B7BA41100AF3E36 /* CalendarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarViewController.h; sourceTree = "<group>"; };
+		0A4A37F41B7BA41100AF3E36 /* CalendarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarViewController.m; sourceTree = "<group>"; };
+		0A4A37F61B7BA41A00AF3E36 /* LunchMenusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LunchMenusViewController.h; sourceTree = "<group>"; };
+		0A4A37F71B7BA41A00AF3E36 /* LunchMenusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LunchMenusViewController.m; sourceTree = "<group>"; };
+		0A4A37F91B7BA42200AF3E36 /* UsefulLinksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsefulLinksViewController.h; sourceTree = "<group>"; };
+		0A4A37FA1B7BA42200AF3E36 /* UsefulLinksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsefulLinksViewController.m; sourceTree = "<group>"; };
+		0A4A37FC1B7BA43900AF3E36 /* Staff DirectoryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Staff DirectoryTableViewController.h"; sourceTree = "<group>"; };
+		0A4A37FD1B7BA43900AF3E36 /* Staff DirectoryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Staff DirectoryTableViewController.m"; sourceTree = "<group>"; };
 		F75C21951B7B99D00052BC87 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
 		F75C21961B7B99D00052BC87 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -97,6 +118,20 @@
 				0A1FE3E21B7B7DA80062A30E /* SecondViewController.h */,
 				0A1FE3E31B7B7DA80062A30E /* SecondViewController.m */,
 				0A1FE3E51B7B7DA80062A30E /* Main.storyboard */,
+				0A4A37EA1B7BA32B00AF3E36 /* ExtracurricularsViewController.h */,
+				0A4A37EB1B7BA32B00AF3E36 /* ExtracurricularsViewController.m */,
+				0A4A37ED1B7BA33C00AF3E36 /* CommunityServiceViewController.h */,
+				0A4A37EE1B7BA33C00AF3E36 /* CommunityServiceViewController.m */,
+				0A4A37F01B7BA34600AF3E36 /* StudentCenterViewController.h */,
+				0A4A37F11B7BA34600AF3E36 /* StudentCenterViewController.m */,
+				0A4A37F31B7BA41100AF3E36 /* CalendarViewController.h */,
+				0A4A37F41B7BA41100AF3E36 /* CalendarViewController.m */,
+				0A4A37F61B7BA41A00AF3E36 /* LunchMenusViewController.h */,
+				0A4A37F71B7BA41A00AF3E36 /* LunchMenusViewController.m */,
+				0A4A37F91B7BA42200AF3E36 /* UsefulLinksViewController.h */,
+				0A4A37FA1B7BA42200AF3E36 /* UsefulLinksViewController.m */,
+				0A4A37FC1B7BA43900AF3E36 /* Staff DirectoryTableViewController.h */,
+				0A4A37FD1B7BA43900AF3E36 /* Staff DirectoryTableViewController.m */,
 				F75C21951B7B99D00052BC87 /* AboutViewController.h */,
 				F75C21961B7B99D00052BC87 /* AboutViewController.m */,
 				0A4A37E71B7B90D100AF3E36 /* SectionsTableViewController.h */,
@@ -234,12 +269,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A4A37F81B7BA41A00AF3E36 /* LunchMenusViewController.m in Sources */,
+				0A4A37EF1B7BA33C00AF3E36 /* CommunityServiceViewController.m in Sources */,
+				0A4A37EC1B7BA32B00AF3E36 /* ExtracurricularsViewController.m in Sources */,
 				F75C21971B7B99D00052BC87 /* AboutViewController.m in Sources */,
 				0A1FE3E41B7B7DA80062A30E /* SecondViewController.m in Sources */,
 				0A1FE3DE1B7B7DA80062A30E /* AppDelegate.m in Sources */,
+				0A4A37FB1B7BA42200AF3E36 /* UsefulLinksViewController.m in Sources */,
 				0A4A37E91B7B90D100AF3E36 /* SectionsTableViewController.m in Sources */,
 				0A1FE3E11B7B7DA80062A30E /* FirstViewController.m in Sources */,
+				0A4A37F21B7BA34600AF3E36 /* StudentCenterViewController.m in Sources */,
+				0A4A37F51B7BA41100AF3E36 /* CalendarViewController.m in Sources */,
 				0A1FE3DB1B7B7DA80062A30E /* main.m in Sources */,
+				0A4A37FE1B7BA43900AF3E36 /* Staff DirectoryTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
