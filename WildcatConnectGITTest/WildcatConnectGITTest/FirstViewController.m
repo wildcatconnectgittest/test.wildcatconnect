@@ -17,7 +17,9 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
     [scrollerhome setScrollEnabled:YES];
-    [scrollerhome setContentSize:CGSizeMake(320, 1000)];
+    [scrollerhome setContentSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 1000)];
+    CGSize ScreenSize = [[UIScreen mainScreen] bounds].size;
+    self.view.frame = CGRectMake(0, 0, ScreenSize.width, ScreenSize.height);
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
