@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "TestStructure.h"
 
 @interface AppDelegate ()
 
