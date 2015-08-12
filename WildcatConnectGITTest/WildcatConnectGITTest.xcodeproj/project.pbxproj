@@ -422,6 +422,7 @@
 				0A1FE3FD1B7B7DA80062A30E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0A1FE3FE1B7B7DA80062A30E /* Build configuration list for PBXNativeTarget "WildcatConnectGITTestTests" */ = {
 			isa = XCConfigurationList;
@@ -430,6 +431,7 @@
 				0A1FE4001B7B7DA80062A30E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
