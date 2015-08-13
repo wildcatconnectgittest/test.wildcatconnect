@@ -13,7 +13,7 @@
 + (NSString *)parseClassName;
 
 @property (nonatomic, strong) NSString *testStructureName;
-@property BOOL isSelected;
+@property int isSelected; // 0 = false, 1 = true
 @property int testStructureIndex;
 
 @end

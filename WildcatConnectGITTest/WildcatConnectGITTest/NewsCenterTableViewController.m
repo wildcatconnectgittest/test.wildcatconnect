@@ -7,8 +7,11 @@
 //
 
 #import "NewsCenterTableViewController.h"
+#import "AppManager.h"
 
-@implementation NewsCenterTableViewController
+@implementation NewsCenterTableViewController {
+     AppManager *manager;
+}
 
 - (void)viewDidLoad {
      [super viewDidLoad];
@@ -18,6 +21,8 @@
      
           // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
           // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+     manager = [AppManager getInstance];
+     NSLog(@"%@", manager.testString);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -47,7 +52,7 @@
       UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
       cell.textLabel.text = @"Testing...";
       cell.detailTextLabel.text = @"Testing more!";
-      cell.imageView.image = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://www.kevinalyons.com/assets/BTC%20Picture%20B.jpg"]]];
+      cell.imageView.image = [manager imageFromImage:[[UIImage alloc] initWithData:[[NSData alloc] initWithContentsOfURL:[[NSURL alloc] initWithString:@"http://www.kevinalyons.com/assets/BTC%20Picture%20B.jpg"]]] scaledToWidth:70];
       return cell;
  }
 

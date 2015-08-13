@@ -9,6 +9,7 @@
 #import "FirstViewController.h"
 #import <Parse/Parse.h>
 #import "TestStructure.h"
+#import "AppManager.h"
 
 @interface FirstViewController ()
 
@@ -23,14 +24,34 @@
     CGSize ScreenSize = [[UIScreen mainScreen] bounds].size;
     self.view.frame = CGRectMake(0, 0, ScreenSize.width, ScreenSize.height);
 	// Do any additional setup after loading the view, typically from a nib.
-     PFObject *testObject = [PFObject objectWithClassName:@"TestObject"];
+     //Saving object
+     /*PFObject *testObject = [PFObject objectWithClassName:@"TestObject"];
      testObject[@"foo"] = @"bar";
-     [testObject saveInBackground];
-     TestStructure *testStructure = [[TestStructure alloc] init];
-     testStructure.isSelected = true;
+      [testObject saveInBackground];*/
+          //Saving custom subclass of PF Object.
+     /*TestStructure *testStructure = [[TestStructure alloc] init];
+     testStructure.isSelected = 1;
      testStructure.testStructureIndex = 5;
      testStructure.testStructureName = @"Testing...";
-     [testStructure saveInBackground];
+     [testStructure saveInBackground];*/
+          //Querying objects...
+     /*PFQuery *query = [TestStructure query];
+     [query whereKey:@"isSelected" equalTo:[NSNumber numberWithInt:1]];
+     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+          if (! error) {
+               TestStructure *testStructure = [objects firstObject];
+               NSString *name = testStructure.testStructureName;
+               NSLog(@"%@", name);
+          }
+     }];*/
+          //App wide manager init...
+     AppManager *appManager = [AppManager getInstance];
+     appManager.testString = @"foo";
+          //Reading text files from internet...
+     NSURL *URL = [NSURL URLWithString:@"http://kevinalyons.com/assets/testFile.txt"];
+     NSError *error;
+     NSString *content = [NSString stringWithContentsOfURL:URL encoding:NSASCIIStringEncoding error:&error];
+     NSLog(@"%@", content);
 }
 
 - (void)didReceiveMemoryWarning {
