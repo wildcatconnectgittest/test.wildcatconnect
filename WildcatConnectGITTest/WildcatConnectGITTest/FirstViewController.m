@@ -7,6 +7,8 @@
 //
 
 #import "FirstViewController.h"
+#import <Parse/Parse.h>
+#import "TestStructure.h"
 
 @interface FirstViewController ()
 
@@ -21,6 +23,14 @@
     CGSize ScreenSize = [[UIScreen mainScreen] bounds].size;
     self.view.frame = CGRectMake(0, 0, ScreenSize.width, ScreenSize.height);
 	// Do any additional setup after loading the view, typically from a nib.
+     PFObject *testObject = [PFObject objectWithClassName:@"TestObject"];
+     testObject[@"foo"] = @"bar";
+     [testObject saveInBackground];
+     TestStructure *testStructure = [[TestStructure alloc] init];
+     testStructure.isSelected = true;
+     testStructure.testStructureIndex = 5;
+     testStructure.testStructureName = @"Testing...";
+     [testStructure saveInBackground];
 }
 
 - (void)didReceiveMemoryWarning {
