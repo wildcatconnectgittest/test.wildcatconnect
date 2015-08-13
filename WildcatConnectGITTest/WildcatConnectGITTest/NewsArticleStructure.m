@@ -13,6 +13,14 @@
 
      //@dynamic all properties...
 
+@dynamic hasImage; // 0 = false, 1 = true
+@dynamic imageURLString;
+@dynamic titleString;
+@dynamic authorString;
+@dynamic dateString;
+@dynamic contentURLString;
+@dynamic likes;
+
 + (void)load {
      [self registerSubclass];
 }

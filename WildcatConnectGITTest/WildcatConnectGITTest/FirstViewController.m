@@ -8,7 +8,7 @@
 
 #import "FirstViewController.h"
 #import <Parse/Parse.h>
-#import "TestStructure.h"
+#import "NewsArticleStructure.h"
 #import "AppManager.h"
 
 @interface FirstViewController ()
@@ -34,6 +34,15 @@
      testStructure.testStructureIndex = 5;
      testStructure.testStructureName = @"Testing...";
      [testStructure saveInBackground];*/
+     /*NewsArticleStructure *newsArticleStructure = [[NewsArticleStructure alloc] init];
+     newsArticleStructure.hasImage = [NSNumber numberWithInt:1];
+     newsArticleStructure.imageURLString = @"http://www.kevinalyons.com/assets/BTC%20Picture%20B.jpg";
+     newsArticleStructure.titleString = @"Test Title";
+     newsArticleStructure.authorString = @"Kevin Lyons";
+     newsArticleStructure.dateString = @"Thursday, August 13th, 2015";
+     newsArticleStructure.contentURLString = @"http://www.kevinalyons.com/assets/testFile.txt";
+     newsArticleStructure.likes = [NSNumber numberWithInt:100];
+     [newsArticleStructure saveInBackground];*/
           //Querying objects...
      /*PFQuery *query = [TestStructure query];
      [query whereKey:@"isSelected" equalTo:[NSNumber numberWithInt:1]];
@@ -44,6 +53,14 @@
                NSLog(@"%@", name);
           }
      }];*/
+     PFQuery *query = [NewsArticleStructure query];
+     [query whereKey:@"likes" greaterThan:[NSNumber numberWithInt:50]];
+     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+          if (! error) {
+               NewsArticleStructure *structure = [objects firstObject];
+               NSLog(@"%@", structure.contentURLString);
+          }
+     }];
           //App wide manager init...
      AppManager *appManager = [AppManager getInstance];
      appManager.testString = @"foo";
