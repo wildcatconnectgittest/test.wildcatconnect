@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 #import <Parse/Parse.h>
 #import "AppManager.h"
-#import "NewsArticleStructure.h"
+#import "StaffMemberStructure.h"
 
 @interface AppDelegate ()
 
@@ -26,6 +26,13 @@
      [Parse setApplicationId:@"cLBOvwh6ZTQYex37DSwxL1Cvg34MMiRWYAB4vqs0"
                    clientKey:@"jGjp3WuCzf4ZetH8kpTLGNnj1h3DgtHlCuK1QbTi"];
      manager = [AppManager getInstance];
+     StaffMemberStructure *staffMemberStructure = [[StaffMemberStructure alloc] init];
+     staffMemberStructure.staffMemberLastName = @"Lyons";
+     staffMemberStructure.staffMemberFirstName = @"Kevin";
+     staffMemberStructure.staffMemberTitle = @"Student Tester";
+     staffMemberStructure.staffMemberEMail = @"16kalyons@weymouthstudents.org";
+     staffMemberStructure.staffMemberPhone = @"(781) 812-5423";
+     [staffMemberStructure saveInBackground];
      return YES;
 }
 
@@ -37,7 +44,7 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application {
 	// Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
 	// If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-     [manager.likedNewsArticles addObject:@"Test News Article"];
+     [manager.likedNewsArticles addObject:@"001"];
      [manager saveUserDefaults];
 }
 

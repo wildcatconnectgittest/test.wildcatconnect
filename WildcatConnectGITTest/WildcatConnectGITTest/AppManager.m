@@ -9,12 +9,14 @@
 #import "AppManager.h"
 #import <Parse/Parse.h>
 #import "NewsArticleStructure.h"
+#import "StaffMemberStructure.h"
 
 @implementation AppManager
 
 @synthesize newsArticles;
 @synthesize newsArticleImages;
 @synthesize likedNewsArticles;
+@synthesize staffMembers;
 
 static AppManager *instance = nil;
 
@@ -51,6 +53,7 @@ static AppManager *instance = nil;
 
 - (void)loadAllData:(NSObject *)object forViewController:(UIViewController *)viewController {
      [self loadUserDefaults];
+     [self loadStaffDirectory];
      [self loadNewsArticles:object forViewController:viewController];
 }
 
@@ -59,6 +62,7 @@ static AppManager *instance = nil;
      newsArticles = [[NSMutableArray alloc] init];
      PFQuery *query = [NewsArticleStructure query];
      [query orderByAscending:@"createdAt"];
+     query.limit = 10;
      [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
           if (! error) {
                self.newsArticles = (NSMutableArray *)objects;
@@ -73,13 +77,22 @@ static AppManager *instance = nil;
                               [self.newsArticleImages addObject:image];
                          }
                     }];
-                    if (i == newsArticles.count - 1) {
-                         dispatch_async(dispatch_get_main_queue(), ^(void) {
-                              [(UIActivityIndicatorView *)object stopAnimating];
-                              [viewController performSegueWithIdentifier:@"showApplicationSegue" sender:viewController];
-                         });
-                    }
                }
+               dispatch_async(dispatch_get_main_queue(), ^(void) {
+                    [(UIActivityIndicatorView *)object stopAnimating];
+                    [viewController performSegueWithIdentifier:@"showApplicationSegue" sender:viewController];
+               });
+          }
+     }];
+}
+
+- (void)loadStaffDirectory {
+     staffMembers = [[NSMutableArray alloc] init];
+     PFQuery *query = [StaffMemberStructure query];
+     [query orderByDescending:@"staffMemberLastName"];
+     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+          if (! error) {
+               self.staffMembers = (NSMutableArray *)objects;
           }
      }];
 }

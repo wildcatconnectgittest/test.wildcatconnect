@@ -116,7 +116,7 @@ cmlvZCA3A
                     <connections>
                         <segue destination="Mwn-Bw-te1" kind="relationship" relationship="viewControllers" id="DPL-cH-onL"/>
                         <segue destination="2sj-BL-nFj" kind="relationship" relationship="viewControllers" id="e8d-js-v64"/>
-                        <segue destination="mto-vV-qFr" kind="relationship" relationship="viewControllers" id="Xv7-QK-fFE"/>
+                        <segue destination="jw3-Ka-nF3" kind="relationship" relationship="viewControllers" id="Xv7-QK-fFE"/>
                         <segue destination="fH7-7m-imt" kind="relationship" relationship="viewControllers" id="sj1-Xs-BhT"/>
                     </connections>
                 </tabBarController>
@@ -300,7 +300,7 @@ cmlvZCA3A
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="J7C-Tu-PIr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2518" y="107"/>
+            <point key="canvasLocation" x="3050" y="107"/>
         </scene>
         <!--Useful Links-->
         <scene sceneID="H8f-Rh-VIg">
@@ -315,19 +315,19 @@ cmlvZCA3A
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dgh-fc-rPq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2886" y="107"/>
+            <point key="canvasLocation" x="3418" y="107"/>
         </scene>
         <!--Staff Directory-->
         <scene sceneID="CY5-wi-cch">
             <objects>
-                <tableViewController id="B7L-WI-RcR" sceneMemberID="viewController">
+                <tableViewController id="B7L-WI-RcR" customClass="Staff_DirectoryTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="anw-7h-ItT">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CellIdentifier" id="CUk-Lo-PHA">
-                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CUk-Lo-PHA" id="nEL-AE-9Fx">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
@@ -341,10 +341,21 @@ cmlvZCA3A
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Staff Directory" id="qBH-6i-Lta"/>
+                    <connections>
+                        <outlet property="searchDisplayController" destination="qEJ-Ae-WsL" id="LAm-I9-fDA"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zsY-8J-07T" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="qEJ-Ae-WsL">
+                    <connections>
+                        <outlet property="delegate" destination="B7L-WI-RcR" id="bKs-bm-hxz"/>
+                        <outlet property="searchContentsController" destination="B7L-WI-RcR" id="alr-a1-uk5"/>
+                        <outlet property="searchResultsDataSource" destination="B7L-WI-RcR" id="3ao-Li-I5z"/>
+                        <outlet property="searchResultsDelegate" destination="B7L-WI-RcR" id="2dF-gx-jTI"/>
+                    </connections>
+                </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="3252" y="107"/>
+            <point key="canvasLocation" x="3784" y="107"/>
         </scene>
         <!--Alerts-->
         <scene sceneID="nRP-zM-GYF">
@@ -355,17 +366,17 @@ cmlvZCA3A
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Alerts" image="first" id="6QC-z8-s7n"/>
+                    <navigationItem key="navigationItem" title="Alerts" id="SUO-r4-r75"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H4H-go-5UP" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1207" y="151"/>
+            <point key="canvasLocation" x="1739" y="151"/>
         </scene>
         <!--Sections-->
         <scene sceneID="4Ke-Dd-tzB">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="2sj-BL-nFj" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Sections" id="kX6-EJ-Gad"/>
+                    <tabBarItem key="tabBarItem" title="Sections" image="sections.png" id="kX6-EJ-Gad"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Ssh-tZ-Cb6">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -384,7 +395,7 @@ cmlvZCA3A
         <scene sceneID="mim-4M-Ud0">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="fH7-7m-imt" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="About" image="first" id="Izz-EE-Pf6"/>
+                    <tabBarItem key="tabBarItem" title="About" image="about.png" id="Izz-EE-Pf6"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="z8u-T6-wVJ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -403,7 +414,7 @@ cmlvZCA3A
         <scene sceneID="d5J-ix-OH9">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Mwn-Bw-te1" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Home" id="Itu-xo-G6V"/>
+                    <tabBarItem key="tabBarItem" title="Home" image="home.png" id="Itu-xo-G6V"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Jeq-ZN-Xgi">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -436,9 +447,31 @@ cmlvZCA3A
             </objects>
             <point key="canvasLocation" x="-456" y="0.0"/>
         </scene>
+        <!--Alerts-->
+        <scene sceneID="xpR-yG-Fzs">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="jw3-Ka-nF3" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Alerts" image="alerts.png" id="6QC-z8-s7n"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="oZH-VV-XJe">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="mto-vV-qFr" kind="relationship" relationship="rootViewController" id="vpM-iu-6El"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Frt-bA-ont" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1207" y="151"/>
+        </scene>
     </scenes>
     <resources>
-        <image name="first" width="30" height="30"/>
+        <image name="about.png" width="25" height="25"/>
+        <image name="alerts.png" width="25" height="25"/>
+        <image name="home.png" width="30" height="30"/>
+        <image name="sections.png" width="25" height="25"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

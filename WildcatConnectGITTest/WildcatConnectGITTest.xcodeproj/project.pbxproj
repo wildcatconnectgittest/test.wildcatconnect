@@ -12,7 +12,6 @@
 		0A1FE3E11B7B7DA80062A30E /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1FE3E01B7B7DA80062A30E /* FirstViewController.m */; };
 		0A1FE3E41B7B7DA80062A30E /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1FE3E31B7B7DA80062A30E /* SecondViewController.m */; };
 		0A1FE3E71B7B7DA80062A30E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A1FE3E51B7B7DA80062A30E /* Main.storyboard */; };
-		0A1FE3E91B7B7DA80062A30E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A1FE3E81B7B7DA80062A30E /* Images.xcassets */; };
 		0A1FE3EC1B7B7DA80062A30E /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A1FE3EA1B7B7DA80062A30E /* LaunchScreen.xib */; };
 		0A1FE3F81B7B7DA80062A30E /* WildcatConnectGITTestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1FE3F71B7B7DA80062A30E /* WildcatConnectGITTestTests.m */; };
 		0A4A37E91B7B90D100AF3E36 /* SectionsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37E81B7B90D100AF3E36 /* SectionsTableViewController.m */; };
@@ -24,6 +23,16 @@
 		0A4A37FB1B7BA42200AF3E36 /* UsefulLinksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37FA1B7BA42200AF3E36 /* UsefulLinksViewController.m */; };
 		0A4A37FE1B7BA43900AF3E36 /* Staff DirectoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37FD1B7BA43900AF3E36 /* Staff DirectoryTableViewController.m */; };
 		0A4A380C1B7BCAF100AF3E36 /* NewsCenterTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A380B1B7BCAF100AF3E36 /* NewsCenterTableViewController.m */; };
+		0AB797C21B7DBDBA00113D94 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A1FE3E81B7B7DA80062A30E /* Images.xcassets */; };
+		0AB797C41B7DBF0B00113D94 /* theNews@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AB797C31B7DBF0B00113D94 /* theNews@2x.png */; };
+		0AB797C61B7DC08400113D94 /* extracurriculars@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AB797C51B7DC08400113D94 /* extracurriculars@2x.png */; };
+		0AB797C81B7DC1D100113D94 /* communityService@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AB797C71B7DC1D100113D94 /* communityService@2x.png */; };
+		0AB797CA1B7DC27200113D94 /* studentCenter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AB797C91B7DC27200113D94 /* studentCenter@2x.png */; };
+		0AB797CC1B7DC29900113D94 /* calendar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AB797CB1B7DC29900113D94 /* calendar@2x.png */; };
+		0AB797CE1B7DC2E300113D94 /* lunchMenus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AB797CD1B7DC2E300113D94 /* lunchMenus@2x.png */; };
+		0AB797D01B7DC35100113D94 /* usefulLinks@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AB797CF1B7DC35100113D94 /* usefulLinks@2x.png */; };
+		0AB797D21B7DC38900113D94 /* staffDirectory@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AB797D11B7DC38900113D94 /* staffDirectory@2x.png */; };
+		0AB797D51B7DC74400113D94 /* StaffMemberStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AB797D41B7DC74400113D94 /* StaffMemberStructure.m */; };
 		0AE74A2B1B7D7A2C0083EFF1 /* SplashScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE74A2A1B7D7A2C0083EFF1 /* SplashScreenViewController.m */; };
 		0AE74A2E1B7D84180083EFF1 /* MainTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE74A2D1B7D84180083EFF1 /* MainTabBarController.m */; };
 		0AF4BC4A1B7D14D3001149A5 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AF4BC481B7D14D3001149A5 /* Bolts.framework */; };
@@ -89,10 +98,21 @@
 		0A4A37FD1B7BA43900AF3E36 /* Staff DirectoryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Staff DirectoryTableViewController.m"; sourceTree = "<group>"; };
 		0A4A380A1B7BCAF100AF3E36 /* NewsCenterTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsCenterTableViewController.h; sourceTree = "<group>"; };
 		0A4A380B1B7BCAF100AF3E36 /* NewsCenterTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsCenterTableViewController.m; sourceTree = "<group>"; };
+		0AB797C31B7DBF0B00113D94 /* theNews@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "theNews@2x.png"; sourceTree = "<group>"; };
+		0AB797C51B7DC08400113D94 /* extracurriculars@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "extracurriculars@2x.png"; sourceTree = "<group>"; };
+		0AB797C71B7DC1D100113D94 /* communityService@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "communityService@2x.png"; sourceTree = "<group>"; };
+		0AB797C91B7DC27200113D94 /* studentCenter@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "studentCenter@2x.png"; sourceTree = "<group>"; };
+		0AB797CB1B7DC29900113D94 /* calendar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "calendar@2x.png"; sourceTree = "<group>"; };
+		0AB797CD1B7DC2E300113D94 /* lunchMenus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lunchMenus@2x.png"; sourceTree = "<group>"; };
+		0AB797CF1B7DC35100113D94 /* usefulLinks@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "usefulLinks@2x.png"; sourceTree = "<group>"; };
+		0AB797D11B7DC38900113D94 /* staffDirectory@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "staffDirectory@2x.png"; sourceTree = "<group>"; };
+		0AB797D31B7DC74400113D94 /* StaffMemberStructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaffMemberStructure.h; sourceTree = "<group>"; };
+		0AB797D41B7DC74400113D94 /* StaffMemberStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StaffMemberStructure.m; sourceTree = "<group>"; };
 		0AE74A291B7D7A2C0083EFF1 /* SplashScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashScreenViewController.h; sourceTree = "<group>"; };
 		0AE74A2A1B7D7A2C0083EFF1 /* SplashScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplashScreenViewController.m; sourceTree = "<group>"; };
 		0AE74A2C1B7D84180083EFF1 /* MainTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainTabBarController.h; sourceTree = "<group>"; };
 		0AE74A2D1B7D84180083EFF1 /* MainTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainTabBarController.m; sourceTree = "<group>"; };
+		0AE74A2F1B7DAE6E0083EFF1 /* image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image.png; sourceTree = "<group>"; };
 		0AF4BC481B7D14D3001149A5 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		0AF4BC491B7D14D3001149A5 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		0AF4BC4C1B7D14E6001149A5 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -150,6 +170,7 @@
 		0A1FE3CC1B7B7DA80062A30E = {
 			isa = PBXGroup;
 			children = (
+				0AE74A311B7DAE7D0083EFF1 /* Images */,
 				0AF4BC601B7D1536001149A5 /* libz.1.1.3.dylib */,
 				0AF4BC5E1B7D1520001149A5 /* libsqlite3.dylib */,
 				0AF4BC5C1B7D151A001149A5 /* libz.dylib */,
@@ -187,6 +208,8 @@
 				0A1FE3E01B7B7DA80062A30E /* FirstViewController.m */,
 				0AF4BC681B7D278B001149A5 /* NewsArticleStructure.h */,
 				0AF4BC691B7D278B001149A5 /* NewsArticleStructure.m */,
+				0AB797D31B7DC74400113D94 /* StaffMemberStructure.h */,
+				0AB797D41B7DC74400113D94 /* StaffMemberStructure.m */,
 				0AF4BC651B7D1BA2001149A5 /* AppManager.h */,
 				0AF4BC661B7D1BA2001149A5 /* AppManager.m */,
 				0A4A380A1B7BCAF100AF3E36 /* NewsCenterTableViewController.h */,
@@ -249,6 +272,22 @@
 				0A1FE3F61B7B7DA80062A30E /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0AE74A311B7DAE7D0083EFF1 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				0AB797D11B7DC38900113D94 /* staffDirectory@2x.png */,
+				0AB797CF1B7DC35100113D94 /* usefulLinks@2x.png */,
+				0AB797CD1B7DC2E300113D94 /* lunchMenus@2x.png */,
+				0AB797CB1B7DC29900113D94 /* calendar@2x.png */,
+				0AB797C91B7DC27200113D94 /* studentCenter@2x.png */,
+				0AB797C71B7DC1D100113D94 /* communityService@2x.png */,
+				0AB797C31B7DBF0B00113D94 /* theNews@2x.png */,
+				0AB797C51B7DC08400113D94 /* extracurriculars@2x.png */,
+				0AE74A2F1B7DAE6E0083EFF1 /* image.png */,
+			);
+			name = Images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -331,9 +370,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0AB797D01B7DC35100113D94 /* usefulLinks@2x.png in Resources */,
+				0AB797CE1B7DC2E300113D94 /* lunchMenus@2x.png in Resources */,
+				0AB797D21B7DC38900113D94 /* staffDirectory@2x.png in Resources */,
+				0AB797C81B7DC1D100113D94 /* communityService@2x.png in Resources */,
+				0AB797C21B7DBDBA00113D94 /* Images.xcassets in Resources */,
+				0AB797C41B7DBF0B00113D94 /* theNews@2x.png in Resources */,
+				0AB797CA1B7DC27200113D94 /* studentCenter@2x.png in Resources */,
+				0AB797C61B7DC08400113D94 /* extracurriculars@2x.png in Resources */,
 				0A1FE3E71B7B7DA80062A30E /* Main.storyboard in Resources */,
+				0AB797CC1B7DC29900113D94 /* calendar@2x.png in Resources */,
 				0A1FE3EC1B7B7DA80062A30E /* LaunchScreen.xib in Resources */,
-				0A1FE3E91B7B7DA80062A30E /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -361,6 +408,7 @@
 				0A1FE3DE1B7B7DA80062A30E /* AppDelegate.m in Sources */,
 				0A4A37FB1B7BA42200AF3E36 /* UsefulLinksViewController.m in Sources */,
 				0A4A380C1B7BCAF100AF3E36 /* NewsCenterTableViewController.m in Sources */,
+				0AB797D51B7DC74400113D94 /* StaffMemberStructure.m in Sources */,
 				0A4A37E91B7B90D100AF3E36 /* SectionsTableViewController.m in Sources */,
 				0AE74A2B1B7D7A2C0083EFF1 /* SplashScreenViewController.m in Sources */,
 				0AE74A2E1B7D84180083EFF1 /* MainTabBarController.m in Sources */,

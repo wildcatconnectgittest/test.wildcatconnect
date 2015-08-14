@@ -13,11 +13,13 @@
      NSMutableArray *newsArticles;
      NSMutableArray *newsArticleImages;
      NSMutableArray *likedNewsArticles;
+     NSMutableArray *staffMembers;
 }
 
 @property (nonatomic, retain) NSMutableArray *newsArticles;
 @property (nonatomic, retain) NSMutableArray *newsArticleImages;
 @property (nonatomic, retain) NSMutableArray *likedNewsArticles;
+@property (nonatomic, retain) NSMutableArray *staffMembers;
 
 + (AppManager *)getInstance;
 - (UIImage *)imageFromImage:(UIImage *)sourceImage scaledToWidth:(float)imageWidth;
@@ -28,5 +30,6 @@
 - (void)saveUserDefaults;
 
 - (void)loadNewsArticles:(NSObject *)object forViewController:(UIViewController *)viewController;
+- (void)loadStaffDirectory;
 
 @end

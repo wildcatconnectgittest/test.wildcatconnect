@@ -26,6 +26,16 @@
      
      self.sectionsArray = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"News Center", @"Extracurriculars", @"Community Service", @"Student Center", @"Calendar", @"Lunch Menus", @"Useful Links", @"Staff Directory", nil]];
      self.segueIDsArray = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"showNewsCenter", @"showExtracurriculars", @"showCommunityService", @"showStudentCenter", @"showCalendar", @"showLunchMenus", @"showUsefulLinks", @"showStaffDirectory", nil]];
+     NSBundle *mainBundle = [NSBundle mainBundle];
+     self.sectionsImagesArray = [[NSMutableArray alloc] init];
+     [self.sectionsImagesArray addObject:@"theNews@2x.png"];
+     [self.sectionsImagesArray addObject:@"extracurriculars@2x.png"];
+     [self.sectionsImagesArray addObject:@"communityService@2x.png"];
+     [self.sectionsImagesArray addObject:@"studentCenter@2x.png"];
+     [self.sectionsImagesArray addObject:@"calendar@2x.png"];
+     [self.sectionsImagesArray addObject:@"lunchMenus@2x.png"];
+     [self.sectionsImagesArray addObject:@"usefulLinks@2x.png"];
+     [self.sectionsImagesArray addObject:@"staffDirectory@2x.png"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -49,7 +59,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
      UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier" forIndexPath:indexPath];
      cell.textLabel.text = self.sectionsArray[indexPath.row];
-    
+          cell.imageView.image = [UIImage imageNamed:self.sectionsImagesArray[indexPath.row]];
     return cell;
 }
 

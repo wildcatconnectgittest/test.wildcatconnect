@@ -23,6 +23,11 @@
           // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
           // self.navigationItem.rightBarButtonItem = self.editButtonItem;
      manager = [AppManager getInstance];
+     /*UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"theNews@2x.png"] landscapeImagePhone:nil style:UIBarButtonItemStylePlain target:self action:nil];
+     barButton.enabled = false;
+     UIBarButtonItem *barButtonTwo = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"theNews@2x.png"] landscapeImagePhone:nil style:UIBarButtonItemStylePlain target:self action:nil];
+     barButtonTwo.enabled = false;
+     self.navigationItem.rightBarButtonItems = [[NSArray alloc] initWithObjects:barButton, barButtonTwo, nil];*/
 }
 
 - (void)didReceiveMemoryWarning {
@@ -50,10 +55,13 @@
 
  - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
  // Configure the cell...
+      NewsArticleStructure *newsArticleStructure = ((NewsArticleStructure *)[manager.newsArticles objectAtIndex:indexPath.row]);
       UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
-      cell.textLabel.text = ((NewsArticleStructure *)[manager.newsArticles objectAtIndex:indexPath.row]).titleString;
-      cell.detailTextLabel.text = @"Testing more!";
-      cell.imageView.image = (UIImage *)[manager.newsArticleImages objectAtIndex:indexPath.row];
+      cell.textLabel.text = newsArticleStructure.titleString;
+      cell.detailTextLabel.text = newsArticleStructure.summaryString;
+      cell.detailTextLabel.numberOfLines = 4;
+      if (newsArticleStructure.hasImage == [NSNumber numberWithInt:1])
+           cell.imageView.image = (UIImage *)[manager.newsArticleImages objectAtIndex:indexPath.row];
       return cell;
  }
 

@@ -17,6 +17,7 @@
 @property NSNumber *hasImage; // 0 = false, 1 = true
 @property PFFile *imageFile;
 @property NSString *titleString;
+@property NSString *summaryString;
 @property NSString *authorString;
 @property NSString *dateString;
 @property NSString *contentURLString;

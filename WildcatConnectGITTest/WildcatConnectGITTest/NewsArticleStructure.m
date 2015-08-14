@@ -16,6 +16,7 @@
 @dynamic hasImage; // 0 = false, 1 = true
 @dynamic imageFile;
 @dynamic titleString;
+@dynamic summaryString;
 @dynamic authorString;
 @dynamic dateString;
 @dynamic contentURLString;
