@@ -24,6 +24,8 @@
 		0A4A37FB1B7BA42200AF3E36 /* UsefulLinksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37FA1B7BA42200AF3E36 /* UsefulLinksViewController.m */; };
 		0A4A37FE1B7BA43900AF3E36 /* Staff DirectoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37FD1B7BA43900AF3E36 /* Staff DirectoryTableViewController.m */; };
 		0A4A380C1B7BCAF100AF3E36 /* NewsCenterTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A380B1B7BCAF100AF3E36 /* NewsCenterTableViewController.m */; };
+		0AE74A2B1B7D7A2C0083EFF1 /* SplashScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE74A2A1B7D7A2C0083EFF1 /* SplashScreenViewController.m */; };
+		0AE74A2E1B7D84180083EFF1 /* MainTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE74A2D1B7D84180083EFF1 /* MainTabBarController.m */; };
 		0AF4BC4A1B7D14D3001149A5 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AF4BC481B7D14D3001149A5 /* Bolts.framework */; };
 		0AF4BC4B1B7D14D3001149A5 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AF4BC491B7D14D3001149A5 /* Parse.framework */; };
 		0AF4BC4D1B7D14E6001149A5 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AF4BC4C1B7D14E6001149A5 /* AudioToolbox.framework */; };
@@ -87,6 +89,10 @@
 		0A4A37FD1B7BA43900AF3E36 /* Staff DirectoryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Staff DirectoryTableViewController.m"; sourceTree = "<group>"; };
 		0A4A380A1B7BCAF100AF3E36 /* NewsCenterTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsCenterTableViewController.h; sourceTree = "<group>"; };
 		0A4A380B1B7BCAF100AF3E36 /* NewsCenterTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsCenterTableViewController.m; sourceTree = "<group>"; };
+		0AE74A291B7D7A2C0083EFF1 /* SplashScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashScreenViewController.h; sourceTree = "<group>"; };
+		0AE74A2A1B7D7A2C0083EFF1 /* SplashScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplashScreenViewController.m; sourceTree = "<group>"; };
+		0AE74A2C1B7D84180083EFF1 /* MainTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainTabBarController.h; sourceTree = "<group>"; };
+		0AE74A2D1B7D84180083EFF1 /* MainTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainTabBarController.m; sourceTree = "<group>"; };
 		0AF4BC481B7D14D3001149A5 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		0AF4BC491B7D14D3001149A5 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		0AF4BC4C1B7D14E6001149A5 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -190,6 +196,10 @@
 				0A1FE3E21B7B7DA80062A30E /* SecondViewController.h */,
 				0A1FE3E31B7B7DA80062A30E /* SecondViewController.m */,
 				0A1FE3E51B7B7DA80062A30E /* Main.storyboard */,
+				0AE74A2C1B7D84180083EFF1 /* MainTabBarController.h */,
+				0AE74A2D1B7D84180083EFF1 /* MainTabBarController.m */,
+				0AE74A291B7D7A2C0083EFF1 /* SplashScreenViewController.h */,
+				0AE74A2A1B7D7A2C0083EFF1 /* SplashScreenViewController.m */,
 				0A4A37EA1B7BA32B00AF3E36 /* ExtracurricularsViewController.h */,
 				0A4A37EB1B7BA32B00AF3E36 /* ExtracurricularsViewController.m */,
 				0A4A37ED1B7BA33C00AF3E36 /* CommunityServiceViewController.h */,
@@ -352,6 +362,8 @@
 				0A4A37FB1B7BA42200AF3E36 /* UsefulLinksViewController.m in Sources */,
 				0A4A380C1B7BCAF100AF3E36 /* NewsCenterTableViewController.m in Sources */,
 				0A4A37E91B7B90D100AF3E36 /* SectionsTableViewController.m in Sources */,
+				0AE74A2B1B7D7A2C0083EFF1 /* SplashScreenViewController.m in Sources */,
+				0AE74A2E1B7D84180083EFF1 /* MainTabBarController.m in Sources */,
 				0A1FE3E11B7B7DA80062A30E /* FirstViewController.m in Sources */,
 				0A4A37F21B7BA34600AF3E36 /* StudentCenterViewController.m in Sources */,
 				0AF4BC641B7D1610001149A5 /* TestStructure.m in Sources */,
@@ -483,6 +495,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_OBJC_ARC = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/WildcatConnectGITTest",
@@ -498,6 +511,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_OBJC_ARC = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/WildcatConnectGITTest",

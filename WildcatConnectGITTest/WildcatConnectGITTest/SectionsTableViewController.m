@@ -54,8 +54,8 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-     [self performSegueWithIdentifier:self.segueIDsArray[indexPath.row] sender:self];
+          [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+          [self performSegueWithIdentifier:self.segueIDsArray[indexPath.row] sender:self];
 }
 
 /*

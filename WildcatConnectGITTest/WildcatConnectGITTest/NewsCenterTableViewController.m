@@ -8,6 +8,7 @@
 
 #import "NewsCenterTableViewController.h"
 #import "AppManager.h"
+#import "NewsArticleStructure.h"
 
 @implementation NewsCenterTableViewController {
      AppManager *manager;
@@ -22,7 +23,6 @@
           // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
           // self.navigationItem.rightBarButtonItem = self.editButtonItem;
      manager = [AppManager getInstance];
-     NSLog(@"%@", manager.testString);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -39,7 +39,8 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
           // Return the number of rows in the section.
-     return 2;
+     manager = [AppManager getInstance];
+     return manager.newsArticles.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -50,11 +51,15 @@
  - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
  // Configure the cell...
       UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
-      cell.textLabel.text = @"Testing...";
+      cell.textLabel.text = ((NewsArticleStructure *)[manager.newsArticles objectAtIndex:indexPath.row]).titleString;
       cell.detailTextLabel.text = @"Testing more!";
-      cell.imageView.image = [manager imageFromImage:[[UIImage alloc] initWithData:[[NSData alloc] initWithContentsOfURL:[[NSURL alloc] initWithString:@"http://www.kevinalyons.com/assets/BTC%20Picture%20B.jpg"]]] scaledToWidth:70];
+      cell.imageView.image = (UIImage *)[manager.newsArticleImages objectAtIndex:indexPath.row];
       return cell;
  }
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+     
+}
 
 /*
  // Override to support conditional editing of the table view.

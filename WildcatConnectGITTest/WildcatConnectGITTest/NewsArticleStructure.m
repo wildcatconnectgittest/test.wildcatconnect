@@ -14,11 +14,12 @@
      //@dynamic all properties...
 
 @dynamic hasImage; // 0 = false, 1 = true
-@dynamic imageURLString;
+@dynamic imageFile;
 @dynamic titleString;
 @dynamic authorString;
 @dynamic dateString;
 @dynamic contentURLString;
+@dynamic articleIDString;
 @dynamic likes;
 
 + (void)load {

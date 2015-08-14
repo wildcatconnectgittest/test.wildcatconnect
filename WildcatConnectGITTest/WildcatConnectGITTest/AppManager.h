@@ -10,12 +10,23 @@
 #import <UIKit/UIKit.h>
 
 @interface AppManager : NSObject {
-     NSString *testString;
+     NSMutableArray *newsArticles;
+     NSMutableArray *newsArticleImages;
+     NSMutableArray *likedNewsArticles;
 }
 
-@property (nonatomic, retain) NSString *testString;
+@property (nonatomic, retain) NSMutableArray *newsArticles;
+@property (nonatomic, retain) NSMutableArray *newsArticleImages;
+@property (nonatomic, retain) NSMutableArray *likedNewsArticles;
 
 + (AppManager *)getInstance;
 - (UIImage *)imageFromImage:(UIImage *)sourceImage scaledToWidth:(float)imageWidth;
+
+- (void)loadAllData:(NSObject *)object forViewController:(UIViewController *)viewController;
+
+- (void)loadUserDefaults;
+- (void)saveUserDefaults;
+
+- (void)loadNewsArticles:(NSObject *)object forViewController:(UIViewController *)viewController;
 
 @end

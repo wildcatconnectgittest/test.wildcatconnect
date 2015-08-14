@@ -15,11 +15,12 @@
      //Properties
 
 @property NSNumber *hasImage; // 0 = false, 1 = true
-@property NSString *imageURLString;
+@property PFFile *imageFile;
 @property NSString *titleString;
 @property NSString *authorString;
 @property NSString *dateString;
 @property NSString *contentURLString;
+@property NSString *articleIDString;
 @property NSNumber *likes;
 
 @end
