@@ -7,31 +7,31 @@
         <!--Home-->
         <scene sceneID="hNz-n2-bh7">
             <objects>
-                <viewController id="9pv-A4-QxB" customClass="FirstViewController" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="9pv-A4-QxB" customClass="FirstViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="n5g-vy-SgE">
-                        <rect key="frame" x="0.0" y="0.0" width="350" height="1000"/>
+                        <rect key="frame" x="0.0" y="0.0" width="350" height="1215"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="IsG-Uc-wRE">
-                                <rect key="frame" x="-6" y="54" width="356" height="1225"/>
+                                <rect key="frame" x="-6" y="66" width="356" height="1215"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tuesday, June 10th" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="IA6-hp-MMb">
-                                        <rect key="frame" x="17" y="18" width="148" height="21"/>
+                                        <rect key="frame" x="17" y="8" width="148" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Today is Day A" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="sNi-Fc-VOh">
-                                        <rect key="frame" x="8" y="47" width="318" height="21"/>
+                                        <rect key="frame" x="8" y="37" width="318" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="justified" id="XA5-EC-nuE">
-                                        <rect key="frame" x="8" y="71" width="318" height="200"/>
+                                        <rect key="frame" x="8" y="60" width="318" height="200"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <string key="text" base64-UTF8="YES">
@@ -42,11 +42,11 @@ cmlvZCA3A
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="justified" id="tOh-0Z-ax2">
-                                        <rect key="frame" x="8" y="259" width="318" height="649"/>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" textAlignment="justified" id="tOh-0Z-ax2">
+                                        <rect key="frame" x="8" y="249" width="318" height="634"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                        <mutableString key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.                    Here!!!</mutableString>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
@@ -57,7 +57,7 @@ cmlvZCA3A
                     </view>
                     <navigationItem key="navigationItem" title="Home" id="Vor-6a-mlj"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="350" height="1000"/>
+                    <size key="freeformSize" width="350" height="1215"/>
                     <connections>
                         <outlet property="bellSchedLabel" destination="XA5-EC-nuE" id="5K5-B6-Agy"/>
                         <outlet property="dateLabel" destination="IA6-hp-MMb" id="511-cX-qBn"/>
@@ -190,8 +190,8 @@ cmlvZCA3A
                         <segue destination="DEK-2l-Oyr" kind="push" identifier="showCalendar" id="UTc-BG-wcX"/>
                         <segue destination="WGA-yK-K6u" kind="push" identifier="showLunchMenus" id="qxG-3y-yJb"/>
                         <segue destination="hKn-Dy-vyV" kind="push" identifier="showUsefulLinks" id="BDA-xt-4AI"/>
-                        <segue destination="B7L-WI-RcR" kind="push" identifier="showStaffDirectory" id="Qpf-iC-3E1"/>
                         <segue destination="gMb-fc-ni7" kind="push" identifier="showNewsCenter" id="TdQ-Ul-cCQ"/>
+                        <segue destination="8IZ-F7-mqa" kind="push" identifier="showStaffDirectory" id="NBV-Qs-adg"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BKQ-09-6XT" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -318,42 +318,17 @@ cmlvZCA3A
             <point key="canvasLocation" x="3418" y="107"/>
         </scene>
         <!--Staff Directory-->
-        <scene sceneID="CY5-wi-cch">
+        <scene sceneID="4T1-ra-mSs">
             <objects>
-                <tableViewController id="B7L-WI-RcR" customClass="Staff_DirectoryTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="anw-7h-ItT">
+                <viewController id="8IZ-F7-mqa" customClass="StaffDirectoryMainTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="p5g-uY-7bc">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CellIdentifier" id="CUk-Lo-PHA">
-                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CUk-Lo-PHA" id="nEL-AE-9Fx">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="B7L-WI-RcR" id="UQb-BA-pGE"/>
-                            <outlet property="delegate" destination="B7L-WI-RcR" id="SxE-CQ-R08"/>
-                        </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Staff Directory" id="qBH-6i-Lta"/>
-                    <connections>
-                        <outlet property="searchDisplayController" destination="qEJ-Ae-WsL" id="LAm-I9-fDA"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="zsY-8J-07T" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <searchDisplayController id="qEJ-Ae-WsL">
-                    <connections>
-                        <outlet property="delegate" destination="B7L-WI-RcR" id="bKs-bm-hxz"/>
-                        <outlet property="searchContentsController" destination="B7L-WI-RcR" id="alr-a1-uk5"/>
-                        <outlet property="searchResultsDataSource" destination="B7L-WI-RcR" id="3ao-Li-I5z"/>
-                        <outlet property="searchResultsDelegate" destination="B7L-WI-RcR" id="2dF-gx-jTI"/>
-                    </connections>
-                </searchDisplayController>
+                    <navigationItem key="navigationItem" title="Staff Directory" id="jj2-fe-G8n"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1mW-6f-MuQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3784" y="107"/>
         </scene>
@@ -470,7 +445,7 @@ cmlvZCA3A
     <resources>
         <image name="about.png" width="25" height="25"/>
         <image name="alerts.png" width="25" height="25"/>
-        <image name="home.png" width="30" height="30"/>
+        <image name="home.png" width="25" height="25"/>
         <image name="sections.png" width="25" height="25"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

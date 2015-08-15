@@ -13,10 +13,10 @@
 
 @implementation AppManager
 
-@synthesize newsArticles;
+/*@synthesize newsArticles;
 @synthesize newsArticleImages;
 @synthesize likedNewsArticles;
-@synthesize staffMembers;
+@synthesize staffMembers;*/
 
 static AppManager *instance = nil;
 
@@ -53,8 +53,10 @@ static AppManager *instance = nil;
 
 - (void)loadAllData:(NSObject *)object forViewController:(UIViewController *)viewController {
      [self loadUserDefaults];
-     [self loadStaffDirectory];
-     [self loadNewsArticles:object forViewController:viewController];
+     dispatch_async(dispatch_get_main_queue(), ^(void) {
+          [(UIActivityIndicatorView *)object stopAnimating];
+          [viewController performSegueWithIdentifier:@"showApplicationSegue" sender:viewController];
+     });
 }
 
 - (void)loadNewsArticles:(NSObject *)object forViewController:(UIViewController *)viewController {
@@ -93,8 +95,16 @@ static AppManager *instance = nil;
      [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
           if (! error) {
                self.staffMembers = (NSMutableArray *)objects;
+               instance = self;
+               dispatch_async(dispatch_get_main_queue(), ^(void) {
+                         //
+               });
           }
      }];
+}
+
+- (NSMutableArray *)getStaffMembers {
+     return self.staffMembers;
 }
 
 @end

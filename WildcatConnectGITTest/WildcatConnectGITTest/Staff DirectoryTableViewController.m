@@ -33,14 +33,6 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
      manager = [AppManager getInstance];
      dictionaryArray = [self generateSectionsArray];
-     resultsArray = [NSMutableArray arrayWithCapacity:[manager.staffMembers count]];
-     searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
-     searchController.searchResultsUpdater = self;
-     searchController.searchBar.scopeButtonTitles = @[NSLocalizedString(@"ScopeButtonName",@"Name"),
-                                                      NSLocalizedString(@"ScopeButtonTitle",@"Title")];
-     self.tableView.tableHeaderView = self.searchController.searchBar;
-     self.definesPresentationContext = YES;
-     [self.searchController.searchBar sizeToFit];
 }
 
 - (void)didReceiveMemoryWarning {

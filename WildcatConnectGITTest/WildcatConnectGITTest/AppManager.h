@@ -32,4 +32,6 @@
 - (void)loadNewsArticles:(NSObject *)object forViewController:(UIViewController *)viewController;
 - (void)loadStaffDirectory;
 
+- (NSMutableArray *)getStaffMembers;
+
 @end

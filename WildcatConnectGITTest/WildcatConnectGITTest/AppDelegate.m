@@ -25,14 +25,14 @@
      // Initialize Parse.
      [Parse setApplicationId:@"cLBOvwh6ZTQYex37DSwxL1Cvg34MMiRWYAB4vqs0"
                    clientKey:@"jGjp3WuCzf4ZetH8kpTLGNnj1h3DgtHlCuK1QbTi"];
-     manager = [AppManager getInstance];
-     StaffMemberStructure *staffMemberStructure = [[StaffMemberStructure alloc] init];
+          //manager = [AppManager getInstance];
+     /*StaffMemberStructure *staffMemberStructure = [[StaffMemberStructure alloc] init];
      staffMemberStructure.staffMemberLastName = @"Lyons";
      staffMemberStructure.staffMemberFirstName = @"Kevin";
      staffMemberStructure.staffMemberTitle = @"Student Tester";
      staffMemberStructure.staffMemberEMail = @"16kalyons@weymouthstudents.org";
      staffMemberStructure.staffMemberPhone = @"(781) 812-5423";
-     [staffMemberStructure saveInBackground];
+     [staffMemberStructure saveInBackground];*/
      return YES;
 }
 

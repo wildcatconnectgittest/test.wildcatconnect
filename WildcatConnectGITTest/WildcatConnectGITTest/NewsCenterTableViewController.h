@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NewsCenterTableViewController : UITableViewController
+@interface NewsCenterTableViewController : UITableViewController {
+     NSMutableArray *newsArticles;
+     NSMutableArray *newsArticleImages;
+}
+
+@property (nonatomic, retain) NSMutableArray *newsArticles;
+@property (nonatomic, retain) NSMutableArray *newsArticleImages;
 
 @end
