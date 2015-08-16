@@ -7,17 +7,36 @@
 //
 
 #import "AppDelegate.h"
+#import <Parse/Parse.h>
+#import "AppManager.h"
+#import "StaffMemberStructure.h"
 
 @interface AppDelegate ()
 
 @end
 
-@implementation AppDelegate
+@implementation AppDelegate {
+     AppManager *manager;
+}
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	// Override point for customization after application launch.
-	return YES;
+     // Initialize Parse.
+     [Parse setApplicationId:@"cLBOvwh6ZTQYex37DSwxL1Cvg34MMiRWYAB4vqs0"
+                   clientKey:@"jGjp3WuCzf4ZetH8kpTLGNnj1h3DgtHlCuK1QbTi"];
+          //manager = [AppManager getInstance];
+     /*for (int i = 0; i < 20; i++) {
+     StaffMemberStructure *staffMemberStructure = [[StaffMemberStructure alloc] init];
+     staffMemberStructure.staffMemberLastName = @"Lyons";
+     staffMemberStructure.staffMemberFirstName = @"Kevin";
+     staffMemberStructure.staffMemberTitle = @"Student Tester";
+     staffMemberStructure.staffMemberEMail = @"16kalyons@weymouthstudents.org";
+     staffMemberStructure.staffMemberPhone = @"(781) 812-5423";
+     [staffMemberStructure saveInBackground];
+     }*/
+     
+     return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -28,6 +47,8 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application {
 	// Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
 	// If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+     [manager.likedNewsArticles addObject:@"001"];
+     [manager saveUserDefaults];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -39,7 +60,7 @@
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-	// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+	// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:
 }
 
 @end

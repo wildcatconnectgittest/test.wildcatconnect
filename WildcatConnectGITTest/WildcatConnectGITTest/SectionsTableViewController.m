@@ -7,6 +7,7 @@
 //
 
 #import "SectionsTableViewController.h"
+#import "NewsCenterTableViewController.h"
 
 @interface SectionsTableViewController ()
 
@@ -26,6 +27,16 @@
      
      self.sectionsArray = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"News Center", @"Extracurriculars", @"Community Service", @"Student Center", @"Calendar", @"Lunch Menus", @"Useful Links", @"Staff Directory", nil]];
      self.segueIDsArray = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"showNewsCenter", @"showExtracurriculars", @"showCommunityService", @"showStudentCenter", @"showCalendar", @"showLunchMenus", @"showUsefulLinks", @"showStaffDirectory", nil]];
+     NSBundle *mainBundle = [NSBundle mainBundle];
+     self.sectionsImagesArray = [[NSMutableArray alloc] init];
+     [self.sectionsImagesArray addObject:@"theNews@2x.png"];
+     [self.sectionsImagesArray addObject:@"extracurriculars@2x.png"];
+     [self.sectionsImagesArray addObject:@"communityService@2x.png"];
+     [self.sectionsImagesArray addObject:@"studentCenter@2x.png"];
+     [self.sectionsImagesArray addObject:@"calendar@2x.png"];
+     [self.sectionsImagesArray addObject:@"lunchMenus@2x.png"];
+     [self.sectionsImagesArray addObject:@"usefulLinks@2x.png"];
+     [self.sectionsImagesArray addObject:@"staffDirectory@2x.png"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -49,13 +60,13 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
      UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier" forIndexPath:indexPath];
      cell.textLabel.text = self.sectionsArray[indexPath.row];
-    
+          cell.imageView.image = [UIImage imageNamed:self.sectionsImagesArray[indexPath.row]];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-     [self performSegueWithIdentifier:self.segueIDsArray[indexPath.row] sender:self];
+          [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+          [self performSegueWithIdentifier:self.segueIDsArray[indexPath.row] sender:self];
 }
 
 /*
@@ -92,14 +103,36 @@
 }
 */
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+     NSMutableArray *array = [[NSMutableArray alloc] init];
+     array = [userDefaults objectForKey:@"visitedSectionsArray"];
+     if ([array containsObject:segue.identifier]) {
+          if ([segue.identifier isEqualToString:@"showNewsCenter"]) {
+               NewsCenterTableViewController *controller = (NewsCenterTableViewController *)segue.destinationViewController;
+               controller.loadNumber = [NSNumber numberWithInt:1];
+               NSMutableArray *newsArticlesArray = [userDefaults objectForKey:@"newsArticles"];
+               if (newsArticlesArray)
+                    controller.newsArticles = newsArticlesArray;
+               NSMutableArray *newsImagesArray = [userDefaults objectForKey:@"newsArticleImages"];
+               if (newsImagesArray)
+                    controller.newsArticleImages = newsImagesArray;
+          }
+     } else {
+          if (! array) {
+               array = [[NSMutableArray alloc] init];
+          }
+          [array addObject:segue.identifier];
+          [userDefaults setObject:array forKey:@"visitedSectionsArray"];
+          [userDefaults synchronize];
+     }
 }
-*/
+
 
 @end
