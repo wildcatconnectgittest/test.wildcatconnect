@@ -12,7 +12,7 @@
 
 @interface StaffDirectoryBaseTableViewController : UITableViewController
 
-- (void)configureCell:(UITableViewCell *)cell forStaffMemberStructure:(StaffMemberStructure *)staffMemberStructure;
+- (UITableViewCell *)configureCell:(UITableViewCell *)cell forStaffMemberStructure:(StaffMemberStructure *)staffMemberStructure;
 
 + (NSString *)kCellIdentifierString;
 

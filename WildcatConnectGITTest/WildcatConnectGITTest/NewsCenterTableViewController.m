@@ -16,110 +16,144 @@
 
 - (void)viewDidLoad {
      [super viewDidLoad];
-          // Uncomment the following line to preserve selection between presentations.
-          // self.clearsSelectionOnViewWillAppear = NO;
-     
-          // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-          // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-     /*UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"theNews@2x.png"] landscapeImagePhone:nil style:UIBarButtonItemStylePlain target:self action:nil];
-     barButton.enabled = false;
-     UIBarButtonItem *barButtonTwo = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"theNews@2x.png"] landscapeImagePhone:nil style:UIBarButtonItemStylePlain target:self action:nil];
-     barButtonTwo.enabled = false;
-     self.navigationItem.rightBarButtonItems = [[NSArray alloc] initWithObjects:barButton, barButtonTwo, nil];*/
-     activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(([UIScreen mainScreen].bounds.size.width) / 2 - 15, 300, 30, 30)];
-     [activity setBackgroundColor:[UIColor clearColor]];
-     [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-     [activity startAnimating];
-          //Create parallel thread group.
-     dispatch_async(dispatch_queue_create("testQueue", DISPATCH_QUEUE_SERIAL), ^{
-               //Create parallel thread group.
-          dispatch_queue_t parallelQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-          dispatch_group_t parallelGroup = dispatch_group_create();
-          newsArticles = [[NSMutableArray alloc] init];
-          PFQuery *query = [NewsArticleStructure query];
-          [query orderByAscending:@"createdAt"];
-          query.limit = 10;
-          __block NSMutableArray *arrayA = nil;
-          __block NSError *errorA = nil;
-          dispatch_group_async(parallelGroup, parallelQueue, ^ {
-               arrayA = (NSMutableArray *)[query findObjects:&errorA];
-          });
-          dispatch_group_wait(parallelGroup, DISPATCH_TIME_FOREVER);
-          newsArticles = arrayA;
-          NSMutableArray *theArray = [newsArticles copy];
-          __block NSError *errorB = nil;
-          NSMutableArray *theNewsArticleImages = [[NSMutableArray alloc] init];
-               NewsArticleStructure *newsArticleStructure;
-               for (int i = 0; i < theArray.count; i++) {
-                    newsArticleStructure = (NewsArticleStructure *)[theArray objectAtIndex:i];
-                    [newsArticleStructure fetchIfNeeded];
-                    PFFile *file = newsArticleStructure.imageFile;
-                    __block NSData *data;
-                    dispatch_group_async(parallelGroup, parallelQueue, ^ {
-                        data = [file getData:&errorB];
-                         UIImage *image = [UIImage imageWithData:data];
-                         image = [[AppManager getInstance] imageFromImage:image scaledToWidth:70];
-                         [theNewsArticleImages addObject:image];
-                    });
-                    dispatch_group_wait(parallelGroup, DISPATCH_TIME_FOREVER);
-                    newsArticleImages = [NSMutableArray arrayWithArray:theNewsArticleImages];
-               }
-          NSLog(@"We did it!");
-     });
-     dispatch_async(dispatch_get_main_queue(), ^{
-          [self.tableView reloadData];
-     });
-     /*dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-          newsArticleImages = [[NSMutableArray alloc] init];
-          newsArticles = [[NSMutableArray alloc] init];
-          PFQuery *query = [NewsArticleStructure query];
-          [query orderByAscending:@"createdAt"];
-          query.limit = 10;
-          [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-               if (! error) {
-                    newsArticles = (NSMutableArray *)objects;
-                    NewsArticleStructure *newsArticleStructure;
-                    for (int i = 0; i < newsArticles.count; i++) {
-                         newsArticleStructure = (NewsArticleStructure *)[newsArticles objectAtIndex:i];
-                         PFFile *file = newsArticleStructure.imageFile;
-                         [file getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
-                              if (! error) {
-                                   UIImage *image = [UIImage imageWithData:data];
-                                   image = [[AppManager getInstance] imageFromImage:image scaledToWidth:70];
-                                   [newsArticleImages addObject:image];
-                              }
-                         }];
-                    }
-                    dispatch_async(dispatch_get_main_queue(), ^(void) {
+     NSLog(@"%@", self.loadNumber);
+     if (self.loadNumber != [NSNumber numberWithInt:1]) {
+          activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+          [activity setBackgroundColor:[UIColor clearColor]];
+          [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+          UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:activity];
+          self.navigationItem.rightBarButtonItem = barButton;
+          [activity startAnimating];
+          [self testMethodWithCompletion:^(NSError *error, NSMutableArray *returnArrayA) {
+               NSLog(@"Done!");
+               NSLog(@"%@", returnArrayA);
+               self.newsArticles = returnArrayA;
+               [self testMethodTwoWithCompletion:^(NSError *error, NSMutableArray *returnArray) {
+                    NSLog(@"Made it here!!!");
+                    NSLog(@"%lu", (unsigned long)returnArray.count);
+                    self.newsArticleImages = returnArray;
+                    dispatch_async(dispatch_get_main_queue(), ^ {
                          [activity stopAnimating];
+                         [self.tableView reloadData];
+                         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(viewDidLoad)];
+                         self.navigationItem.rightBarButtonItem = barButtonItem;
+                         self.loadNumber = [NSNumber numberWithInt:0];
                     });
-               }
+               } withArray:returnArrayA];
           }];
+     }
+     else {
+          UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(viewDidLoad)];
+          self.navigationItem.rightBarButtonItem = barButtonItem;
+          self.loadNumber = [NSNumber numberWithInt:0];
+     }
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+     /*NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+     NSArray *testArray = [userDefaults objectForKey:@"newsArticles"];
+     NSArray *newsArticleArray = [NSArray arrayWithArray:self.newsArticles];
+     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:newsArticleArray];
+     [userDefaults setObject:data forKey:@"newsArticles"];
+          //[userDefaults setValue:newsArticleArray forKey:@"newsArticles"];          //[userDefaults setObject:self.newsArticleImages forKey:@"newsArticleImages2"];
+     [userDefaults synchronize];*/
+}
+
+     // - // add encoding capabilities
+
+- (void)testMethodWithCompletion:(void (^)(NSError *error, NSMutableArray *returnArray))completion {
+          //Define errors to be processed when everything is complete.
+          //One error per service; in this example we'll have two
+     __block NSError *firstError = nil;
+          //Create the dispatch group
+     dispatch_group_t serviceGroup = dispatch_group_create();
+          //Start the first service
+     dispatch_group_enter(serviceGroup);
+      NSMutableArray *returnArray = [[NSMutableArray alloc] init];
+     PFQuery *query = [NewsArticleStructure query];
+     [query orderByDescending:@"createdAt"];
+     query.limit = 10;
+     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+          [returnArray addObjectsFromArray:objects];
+          firstError = error;
+          dispatch_group_leave(serviceGroup);
+     }];
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^{
+          NSError *overallError = nil;
+          if (firstError)
+               overallError = firstError;
+          completion(overallError, returnArray);
      });
-     /*[(UIActivityIndicatorView *)object stopAnimating];
-     [viewController performSegueWithIdentifier:@"showApplicationSegue" sender:viewController];
-     newsArticleImages = [[NSMutableArray alloc] init];
-     newsArticles = [[NSMutableArray alloc] init];
+}
+
+- (void)testMethodTwoWithCompletion:(void (^)(NSError *error, NSMutableArray *returnArray))completion withArray:(NSMutableArray *)array {
+     /*NewsArticleStructure *newsArticleStructure;
+      for (int i = 0; i < newsArticles.count; i++) {
+      newsArticleStructure = (NewsArticleStructure *)[newsArticles objectAtIndex:i];
+      PFFile *file = newsArticleStructure.imageFile;
+      NSData *data = [file getData];
+      UIImage *image = [UIImage imageWithData:data];
+      image = [[AppManager getInstance] imageFromImage:image scaledToWidth:70];
+      [self.newsArticleImages addObject:image];
+      }*/
+     __block NSError *theError = nil;
+     dispatch_group_t theServiceGroup = dispatch_group_create();
+     dispatch_group_enter(theServiceGroup);
+     NewsArticleStructure *newsArticleStructure;
+     NSLog(@"Doing it...");
+     NSMutableArray *returnArray = [[NSMutableArray alloc] init];
+     NSLog(@"%lu", (unsigned long)array.count);
+     for (int i = 0; i < array.count; i++) {
+          NSLog(@"%i", i);
+          newsArticleStructure = (NewsArticleStructure *)[array objectAtIndex:i];
+          if (newsArticleStructure.hasImage == [NSNumber numberWithInt:1]) {
+               PFFile *file = newsArticleStructure.imageFile;
+               [file getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
+                    UIImage *image = [UIImage imageWithData:data];
+                    image = [[AppManager getInstance] imageFromImage:image scaledToWidth:70];
+                    [returnArray addObject:image];
+                    if (i == array.count - 1)
+                         dispatch_group_leave(theServiceGroup);
+               }];
+          }
+          else {
+               [returnArray addObject:[[NSObject alloc] init]];
+               if (i == array.count - 1)
+                    dispatch_group_leave(theServiceGroup);
+          }
+     }
+     dispatch_group_notify(theServiceGroup, dispatch_get_main_queue(), ^{
+          NSError *overallError = nil;
+          if (theError)
+               overallError = theError;
+          completion(overallError, returnArray);
+     });
+}
+
+- (void) functionDoingBackgroundWorkWithCompletionHandler {
+     
+     dispatch_group_t taskGroup = dispatch_group_create();
+     dispatch_group_enter(taskGroup);
      PFQuery *query = [NewsArticleStructure query];
      [query orderByAscending:@"createdAt"];
      query.limit = 10;
      [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
           if (! error) {
                self.newsArticles = (NSMutableArray *)objects;
-               NewsArticleStructure *newsArticleStructure;
-               for (int i = 0; i < newsArticles.count; i++) {
-                    newsArticleStructure = (NewsArticleStructure *)[newsArticles objectAtIndex:i];
-                    PFFile *file = newsArticleStructure.imageFile;
-                    [file getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
-                         if (! error) {
-                              UIImage *image = [UIImage imageWithData:data];
-                              image = [self imageFromImage:image scaledToWidth:70];
-                              [self.newsArticleImages addObject:image];
-                         }
-                    }];
-               }
+               dispatch_group_leave(taskGroup);
           }
-     }];*/
+     }];
+     dispatch_queue_t waitingQueue = dispatch_queue_create("com.WildcatConnect.WildcatConnectGITTest.waitingQueue", DISPATCH_QUEUE_CONCURRENT);
+     dispatch_async(waitingQueue, ^ {
+               //Waiting for threads.
+          dispatch_group_wait(taskGroup, DISPATCH_TIME_FOREVER);
+          dispatch_release(taskGroup);
+               //Background work complete
+          dispatch_async(dispatch_get_main_queue(), ^ {
+               NSLog(@"%@", newsArticles);
+          });
+          dispatch_release(waitingQueue);
+     });
 }
 
 - (void)didReceiveMemoryWarning {
@@ -136,7 +170,11 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
           // Return the number of rows in the section.
-     return newsArticles.count;
+     NSLog(@"Just did thisfjslsdjflsdfjsdl.");
+     NSLog(@"%lu", (unsigned long)self.newsArticles.count);
+     if (self.newsArticles.count == 0)
+          return 1;
+     return self.newsArticles.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -146,14 +184,20 @@
 
  - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
  // Configure the cell...
-      NewsArticleStructure *newsArticleStructure = ((NewsArticleStructure *)[newsArticles objectAtIndex:indexPath.row]);
-      UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
-      cell.textLabel.text = newsArticleStructure.titleString;
-      cell.detailTextLabel.text = newsArticleStructure.summaryString;
-      cell.detailTextLabel.numberOfLines = 4;
-      if (newsArticleStructure.hasImage == [NSNumber numberWithInt:1])
-           cell.imageView.image = (UIImage *)[newsArticleImages objectAtIndex:indexPath.row];
-      return cell;
+      if (self.newsArticles.count == 0) {
+           UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
+           cell.textLabel.text = @"No data to display.";
+           return  cell;
+      } else {
+           NewsArticleStructure *newsArticleStructure = ((NewsArticleStructure *)[self.newsArticles objectAtIndex:indexPath.row]);
+           UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
+           cell.textLabel.text = newsArticleStructure.titleString;
+           cell.detailTextLabel.text = newsArticleStructure.summaryString;
+           cell.detailTextLabel.numberOfLines = 4;
+           if (newsArticleStructure.hasImage == [NSNumber numberWithInt:1])
+                cell.imageView.image = (UIImage *)[self.newsArticleImages objectAtIndex:indexPath.row];
+           return cell;
+      }
  }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

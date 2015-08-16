@@ -25,8 +25,7 @@
 @end
 
 @implementation StaffDirectoryMainTableViewController {
-     NSArray *dictionaryArray;
-     NSArray *staffMembers;
+     UIActivityIndicatorView *activity;
 }
 
 - (void)viewDidLoad {
@@ -50,11 +49,80 @@
           //
      
      self.definesPresentationContext = YES;
-     staffMembers = [[AppManager getInstance] getStaffMembers];
-     dictionaryArray = [self generateSectionsArray];
-     ApplicationManager *applicationManager = [ApplicationManager sharedManager];
-     [applicationManager loadStaffMembers];
-     NSLog(@"%lu", (unsigned long)applicationManager.staffMembers.count);
+     activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+     [activity setBackgroundColor:[UIColor clearColor]];
+     [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+     UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:activity];
+     self.navigationItem.rightBarButtonItem = barButton;
+     [activity startAnimating];
+     [self testMethodWithCompletion:^(NSError *error, NSMutableArray *returnArrayA) {
+          NSLog(@"Done!!!");
+          NSLog(@"%@", returnArrayA);
+          self.staffMembers = returnArrayA;
+          [self testMethodTwoWithCompletion:^(NSError *error, NSMutableArray *dictionaryReturnArray) {
+               NSLog(@"Done!!!");
+               NSLog(@"%@", dictionaryReturnArray);
+               self.dictionaryArray = dictionaryReturnArray;
+               dispatch_async(dispatch_get_main_queue(), ^ {
+                    [activity stopAnimating];
+                    [self.tableView reloadData];
+                    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(viewDidLoad)];
+                    self.navigationItem.rightBarButtonItem = barButtonItem;
+               });
+          } withArray:returnArrayA];
+     }];
+}
+
+- (void)testMethodWithCompletion:(void (^)(NSError *error, NSMutableArray *returnArray))completion {
+     __block NSError *theError = nil;
+     dispatch_group_t serviceGroup = dispatch_group_create();
+     dispatch_group_enter(serviceGroup);
+     NSMutableArray *returnArray = [[NSMutableArray alloc] init];
+     PFQuery *query = [StaffMemberStructure query];
+     [query orderByAscending:@"staffMemberLastName"];
+     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+          [returnArray addObjectsFromArray:objects];
+          theError = error;
+          dispatch_group_leave(serviceGroup);
+     }];
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
+          NSError *overallError = nil;
+          if (theError)
+               overallError = theError;
+          completion(overallError, returnArray);
+     });
+}
+
+- (void)testMethodTwoWithCompletion:(void (^)(NSError *error, NSMutableArray *dictionaryReturnArray))completion withArray:(NSMutableArray *)theArray {
+     __block NSError *theError = nil;
+     __block NSMutableArray *currentArrayLeft = theArray;
+     NSMutableArray *array = [NSMutableArray new];
+     dispatch_group_t serviceGroup = dispatch_group_create();
+     dispatch_group_enter(serviceGroup);
+     NSLog(@"%@", currentArrayLeft);
+     for (char a = 'A'; a <= 'Z'; a++) {
+          NSMutableDictionary *row = [[[NSMutableDictionary alloc] init] autorelease];
+          NSMutableArray *words = [[[NSMutableArray alloc] init] autorelease];
+          StaffMemberStructure *staffMemberStructure;
+          for (int i = 0; i < currentArrayLeft.count; i++) {
+               NSLog(@"%@", currentArrayLeft);
+               staffMemberStructure = currentArrayLeft[i];
+               if (staffMemberStructure) {
+                    if ([[staffMemberStructure.staffMemberLastName substringToIndex:1] isEqualToString:[NSString stringWithFormat:@"%c", a]]) {
+                         [words addObject:staffMemberStructure];
+                    }
+               }
+          }
+          [row setValue:words forKey:@"rowValues"];
+          [row setValue:[NSString stringWithFormat:@"%c", a] forKey:@"headerTitle"];
+          [array addObject:row];
+          if (a == 'Z') {
+               dispatch_group_leave(serviceGroup);
+          }
+     }
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
+          completion(theError, array);
+     });
 }
 
 - (NSArray *)generateSectionsArray {
@@ -132,24 +200,37 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
           // Return the number of sections.
-          return [dictionaryArray count];
+     if (self.dictionaryArray.count == 0)
+          return 1;
+     return [self.dictionaryArray count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
           // Return the number of rows in the section.else
-          return ((NSArray *)[[dictionaryArray objectAtIndex:section] objectForKey:@"rowValues"]).count;
+     if (self.dictionaryArray.count == 0)
+          return 1;
+     return ((NSArray *)[[self.dictionaryArray objectAtIndex:section] objectForKey:@"rowValues"]).count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-     UITableViewCell *cell = (UITableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:@"cellID" forIndexPath:indexPath];
-     if (! cell) {
-          cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cellID"];
-               // More initializations if needed.
+     if (self.dictionaryArray.count == 0) {
+          UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+                                                         reuseIdentifier:@"cellID"];
+          cell.textLabel.text = @"No data to display yet.";
+          return cell;
      }
-     NSArray *array = ((NSArray *)[[dictionaryArray objectAtIndex:[indexPath section] ] objectForKey:@"rowValues"]);
-     StaffMemberStructure *staffMemberStructure = (tableView == self.tableView) ? array[indexPath.row] : self.resultsTableController.filteredStaffMembers[indexPath.row];
-     [self configureCell:cell forStaffMemberStructure:staffMemberStructure];
-     return cell;
+     else {
+          UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+                                                         reuseIdentifier:@"cellID"];
+          NSArray *array = ((NSArray *)[[self.dictionaryArray objectAtIndex:[indexPath section]] objectForKey:@"rowValues"]);
+          StaffMemberStructure *staffMemberStructure = (tableView == self.tableView) ? array[indexPath.row] : self.resultsTableController.filteredStaffMembers[indexPath.row];
+          cell = [self configureCell:cell forStaffMemberStructure:staffMemberStructure];
+          return cell;
+     }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+     return 60;
 }
 
 
@@ -173,13 +254,13 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
      if (tableView == self.tableView)
-          return [[dictionaryArray objectAtIndex:section] objectForKey:@"headerTitle"];
+          return [[self.dictionaryArray objectAtIndex:section] objectForKey:@"headerTitle"];
      else
           return nil;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-     NSArray *array = [[dictionaryArray objectAtIndex:[indexPath section]] objectForKey:@"rowValues"];
+     NSArray *array = [[self.dictionaryArray objectAtIndex:[indexPath section]] objectForKey:@"rowValues"];
      StaffMemberStructure *selectedStaffMemberStructure = (tableView == self.tableView) ? array[indexPath.row] : self.resultsTableController.filteredStaffMembers[indexPath.row];
      
      StaffDirectoryDetailViewController *detailViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"StaffDirectoryDetailViewController"];
@@ -194,7 +275,7 @@
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
           //udpate the filtered array based on the search text
      NSString *searchText = searchController.searchBar.text;
-     NSMutableArray *searchResults = [staffMembers mutableCopy];
+     NSMutableArray *searchResults = [self.staffMembers mutableCopy];
           //strip out all the leading and trailing spaces
      NSString *strippedString = [searchText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
           //break up the search terms (separated by spaces)

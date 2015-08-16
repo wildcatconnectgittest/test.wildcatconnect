@@ -8,6 +8,12 @@
 
 #import "StaffDirectoryBaseTableViewController.h"
 
-@interface StaffDirectoryMainTableViewController : StaffDirectoryBaseTableViewController
+@interface StaffDirectoryMainTableViewController : StaffDirectoryBaseTableViewController {
+     NSMutableArray *staffMembers;
+     NSMutableArray *dictionaryArray;
+}
+
+@property (nonatomic, retain) NSMutableArray *staffMembers;
+@property (nonatomic, retain) NSMutableArray *dictionaryArray;
 
 @end

@@ -19,9 +19,14 @@ NSString *const kTableCellNibName = @"TableCell";
      [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cellID"];
 }
 
-- (void)configureCell:(UITableViewCell *)cell forStaffMemberStructure:(StaffMemberStructure *)staffMemberStructure {
+- (UITableViewCell *)configureCell:(UITableViewCell *)cell forStaffMemberStructure:(StaffMemberStructure *)staffMemberStructure {
      cell.textLabel.text = [staffMemberStructure fullNameCommaString];
-     cell.detailTextLabel.text = staffMemberStructure.staffMemberTitle;
+     NSString *string = staffMemberStructure.staffMemberTitle;
+     cell.detailTextLabel.text = string;
+     NSLog(@"%@", staffMemberStructure.staffMemberTitle);
+     NSLog(@"%@", cell.detailTextLabel.text);
+     [cell setNeedsLayout];
+     return cell;
 }
 
 + (NSString*) kCellIdentifierString {

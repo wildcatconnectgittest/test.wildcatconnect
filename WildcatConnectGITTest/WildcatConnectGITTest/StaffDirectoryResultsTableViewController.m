@@ -14,6 +14,8 @@
 @synthesize filteredStaffMembers;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+     if (self.filteredStaffMembers.count == 0)
+          return 1;
      return self.filteredStaffMembers.count;
 }
 
@@ -23,14 +25,19 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-     UITableViewCell *cell = (UITableViewCell *)[self.tableView dequeueReusableHeaderFooterViewWithIdentifier:@"cellID"];
-     StaffMemberStructure *staffMemberStructure = self.filteredStaffMembers[indexPath.row];
-     if (!cell) {
-          cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cellID"];
-               // More initializations if needed.
+     if (self.filteredStaffMembers.count == 0) {
+          UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+                                                         reuseIdentifier:@"cellID"];
+          cell.textLabel.text = @"No results.";
+          return cell;
      }
-     [self configureCell:cell forStaffMemberStructure:staffMemberStructure];
-     return cell;
+     else {
+          UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+                                                         reuseIdentifier:@"cellID"];
+          StaffMemberStructure *staffMemberStructure = self.filteredStaffMembers[indexPath.row];
+          [self configureCell:cell forStaffMemberStructure:staffMemberStructure];
+          return cell;
+     }
 }
 
 @end

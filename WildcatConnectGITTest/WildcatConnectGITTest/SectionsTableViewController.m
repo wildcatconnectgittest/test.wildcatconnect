@@ -7,6 +7,7 @@
 //
 
 #import "SectionsTableViewController.h"
+#import "NewsCenterTableViewController.h"
 
 @interface SectionsTableViewController ()
 
@@ -102,14 +103,36 @@
 }
 */
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+     NSMutableArray *array = [[NSMutableArray alloc] init];
+     array = [userDefaults objectForKey:@"visitedSectionsArray"];
+     if ([array containsObject:segue.identifier]) {
+          if ([segue.identifier isEqualToString:@"showNewsCenter"]) {
+               NewsCenterTableViewController *controller = (NewsCenterTableViewController *)segue.destinationViewController;
+               controller.loadNumber = [NSNumber numberWithInt:1];
+               NSMutableArray *newsArticlesArray = [userDefaults objectForKey:@"newsArticles"];
+               if (newsArticlesArray)
+                    controller.newsArticles = newsArticlesArray;
+               NSMutableArray *newsImagesArray = [userDefaults objectForKey:@"newsArticleImages"];
+               if (newsImagesArray)
+                    controller.newsArticleImages = newsImagesArray;
+          }
+     } else {
+          if (! array) {
+               array = [[NSMutableArray alloc] init];
+          }
+          [array addObject:segue.identifier];
+          [userDefaults setObject:array forKey:@"visitedSectionsArray"];
+          [userDefaults synchronize];
+     }
 }
-*/
+
 
 @end

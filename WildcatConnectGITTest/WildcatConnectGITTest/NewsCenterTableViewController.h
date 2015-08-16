@@ -11,9 +11,11 @@
 @interface NewsCenterTableViewController : UITableViewController {
      NSMutableArray *newsArticles;
      NSMutableArray *newsArticleImages;
+     NSNumber *loadNumber;
 }
 
 @property (nonatomic, retain) NSMutableArray *newsArticles;
 @property (nonatomic, retain) NSMutableArray *newsArticleImages;
+@property (nonatomic, retain) NSNumber *loadNumber;
 
 @end
