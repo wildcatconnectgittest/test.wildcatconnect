@@ -110,7 +110,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
-     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+     /*NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
      NSMutableArray *array = [[NSMutableArray alloc] init];
      array = [userDefaults objectForKey:@"visitedSectionsArray"];
      if ([array containsObject:segue.identifier]) {
@@ -131,7 +131,7 @@
           [array addObject:segue.identifier];
           [userDefaults setObject:array forKey:@"visitedSectionsArray"];
           [userDefaults synchronize];
-     }
+     }*/
 }
 
 
