@@ -17,41 +17,146 @@
 - (void)viewDidLoad {
      [super viewDidLoad];
      NSLog(@"%@ sfjsljfs", self.loadNumber);
-     if (self.loadNumber == [NSNumber numberWithInt:1]) {
-          activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-          [activity setBackgroundColor:[UIColor clearColor]];
-          [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-          UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:activity];
-          self.navigationItem.rightBarButtonItem = barButton;
-          [activity startAnimating];
-          [self testMethodWithCompletion:^(NSError *error, NSMutableArray *returnArrayA) {
-               NSLog(@"Done!");
-               NSLog(@"%@", returnArrayA);
-               self.newsArticles = returnArrayA;
-               [self testMethodTwoWithCompletion:^(NSError *error, NSMutableArray *returnArray) {
+          if (self.loadNumber == [NSNumber numberWithInt:1]) {
+               [self refreshData];
+          }
+          else {
+               activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+               [activity setBackgroundColor:[UIColor clearColor]];
+               [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+               UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:activity];
+               self.navigationItem.rightBarButtonItem = barButton;
+               [activity startAnimating];
+               [self getOldDataWithCompletion:^(NSMutableArray *returnArray) {
                     NSLog(@"Made it here!!!");
                     NSLog(@"%lu", (unsigned long)returnArray.count);
-                    self.newsArticleImages = returnArray;
-                    dispatch_async(dispatch_get_main_queue(), ^ {
-                         [activity stopAnimating];
-                         [self.tableView reloadData];
-                         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(viewDidLoad)];
-                         self.navigationItem.rightBarButtonItem = barButtonItem;
-                         self.loadNumber = [NSNumber numberWithInt:0];
-                    });
-               } withArray:returnArrayA];
-          }];
+                    self.newsArticles = returnArray;
+                    [self getOldImagesWithCompletion:^(NSMutableArray *returnArrayB) {
+                         self.newsArticleImages = returnArrayB;
+                         dispatch_async(dispatch_get_main_queue(), ^ {
+                              [activity stopAnimating];
+                              [self.tableView reloadData];
+                              UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshData)];
+                              self.navigationItem.rightBarButtonItem = barButtonItem;
+                         });
+                    }];
+               }];
+          }
+}
+
+- (void)getOldImagesWithCompletion:(void (^)(NSMutableArray *returnArray))completion {
+     dispatch_group_t serviceGroup = dispatch_group_create();
+          //Start the first service
+     dispatch_group_enter(serviceGroup);
+     NSMutableArray *array = [[NSMutableArray alloc] init];
+     NSMutableArray *theArrayToSearch = [[NSUserDefaults standardUserDefaults] objectForKey:@"newsArticleImages"];
+     NSData *data;
+     UIImage *image;
+     for (int i = 0; i < theArrayToSearch.count; i++) {
+          data = theArrayToSearch[i];
+          image = [UIImage imageWithData:data];
+          [array addObject:image];
+          if (i == theArrayToSearch.count - 1) {
+               dispatch_group_leave(serviceGroup);
+          }
      }
-     else {
-          UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(viewDidLoad)];
-          self.navigationItem.rightBarButtonItem = barButtonItem;
-          self.loadNumber = [NSNumber numberWithInt:0];
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^{
+          completion(array);
+     });
+}
+
+- (void)getOldDataWithCompletion:(void (^)(NSMutableArray *returnArray))completion {
+     dispatch_group_t serviceGroup = dispatch_group_create();
+          //Start the first service
+     dispatch_group_enter(serviceGroup);
+     NSLog(@"%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"newsArticles"]);
+     NewsArticleStructure *newsArticleStructure;
+     NSMutableArray *array = [[NSMutableArray alloc] init];
+     NSMutableArray *theArrayToSearch = [[NSUserDefaults standardUserDefaults] objectForKey:@"newsArticles"];
+     NSDictionary *object;
+     for (int i = 0; i < theArrayToSearch.count; i ++) {
+          object = theArrayToSearch[i];
+          newsArticleStructure = [[NewsArticleStructure alloc] init];
+          newsArticleStructure.articleIDString = [object objectForKey:@"articleIDString"];
+          newsArticleStructure.authorString = [object objectForKey:@"authorString"];
+          newsArticleStructure.contentURLString = [object objectForKey:@"contentURLString"];
+          newsArticleStructure.dateString = [object objectForKey:@"dateString"];
+          newsArticleStructure.hasImage = [object objectForKey:@"hasImage"];
+          newsArticleStructure.imageURLString = [object objectForKey:@"imageURLString"];
+          newsArticleStructure.likes = [object objectForKey:@"likes"];
+          newsArticleStructure.summaryString = [object objectForKey:@"summaryString"];
+          newsArticleStructure.titleString = [object objectForKey:@"titleString"];
+          [array addObject:newsArticleStructure];
+          if (i == theArrayToSearch.count - 1)
+               dispatch_group_leave(serviceGroup);
      }
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^{
+          completion(array);
+     });
+}
+
+- (void)refreshData {
+     activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+     [activity setBackgroundColor:[UIColor clearColor]];
+     [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+     UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:activity];
+     self.navigationItem.rightBarButtonItem = barButton;
+     [activity startAnimating];
+     [self testMethodWithCompletion:^(NSError *error, NSMutableArray *returnArrayA) {
+          NSLog(@"Done!");
+          NSLog(@"%@", returnArrayA);
+          self.newsArticles = returnArrayA;
+          NSMutableArray *itemsToSave = [NSMutableArray array];
+          for (NewsArticleStructure *n in returnArrayA) {
+               NSLog(@"%@", n);
+               [itemsToSave addObject:@{ @"hasImage"     : n.hasImage,
+                                         @"imageURLString"    : n.imageURLString,
+                                         @"titleString" : n.titleString,
+                                         
+                                         @"summaryString" : n.summaryString,
+                                         
+                                         @"authorString" : n.authorString,
+                                         
+                                         @"dateString" : n.dateString,
+                                         
+                                         @"contentURLString" : n.contentURLString,
+                                         
+                                         @"articleIDString" : n.articleIDString,
+                                         
+                                         @"likes" : n.likes
+                                         
+                                         }];
+          }
+          NSLog(@"%@", itemsToSave);
+          NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+          [userDefaults setObject:itemsToSave forKey:@"newsArticles"];
+          NSLog(@"%@", [userDefaults objectForKey:@"newsArticles"]);
+          [self testMethodTwoWithCompletion:^(NSError *error, NSMutableArray *returnArray) {
+               NSLog(@"Made it here!!!");
+               NSLog(@"%lu", (unsigned long)returnArray.count);
+               self.newsArticleImages = returnArray;
+               NSMutableArray *moreItems = [NSMutableArray array];
+               NSData *data;
+               for (UIImage *image in returnArray) {
+                    data = UIImagePNGRepresentation(image);
+                    [moreItems addObject:data];
+               }
+               [userDefaults setObject:moreItems forKey:@"newsArticleImages"];
+               [userDefaults synchronize];
+               dispatch_async(dispatch_get_main_queue(), ^ {
+                    [activity stopAnimating];
+                    [self.tableView reloadData];
+                    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshData)];
+                    self.navigationItem.rightBarButtonItem = barButtonItem;
+               });
+          } withArray:returnArrayA];
+     }];
 }
 
 - (instancetype)initWithLoadNumber:(NSNumber *)theLoadNumber {
      [super init];
      self.loadNumber = theLoadNumber;
+     self.navigationItem.title = @"News Center";
      return self;
 }
 
@@ -63,9 +168,6 @@
      [userDefaults setObject:data forKey:@"newsArticles"];
           //[userDefaults setValue:newsArticleArray forKey:@"newsArticles"];          //[userDefaults setObject:self.newsArticleImages forKey:@"newsArticleImages2"];
      [userDefaults synchronize];*/
-     [[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:self.newsArticles] forKey:@"newsArticles"];
-     [[NSUserDefaults standardUserDefaults] synchronize];
-     NSLog(@"%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"newsArticles"]);
      NSMutableArray *itemsToSave = [NSMutableArray array];
      for (NewsArticleStructure *n in self.newsArticles) {
           [itemsToSave addObject:@{ @"hasImage"     : n.hasImage,
@@ -86,6 +188,11 @@
                                     
                                     }];
      }
+     NSLog(@"%@", itemsToSave);
+     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+     [userDefaults setObject:itemsToSave forKey:@"newsArticles"];
+     [userDefaults synchronize];
+     NSLog(@"%@", [userDefaults objectForKey:@"newsArticles"]);
 }
 
 - (void)encodeWithCoder:(NSCoder *)coder;

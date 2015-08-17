@@ -11,9 +11,13 @@
 @interface StaffDirectoryMainTableViewController : StaffDirectoryBaseTableViewController {
      NSMutableArray *staffMembers;
      NSMutableArray *dictionaryArray;
+     NSNumber *loadNumber;
 }
 
 @property (nonatomic, retain) NSMutableArray *staffMembers;
 @property (nonatomic, retain) NSMutableArray *dictionaryArray;
+@property (nonatomic, retain) NSNumber *loadNumber;
+
+- (instancetype)initWithLoadNumber:(NSNumber *)theLoadNumber;
 
 @end

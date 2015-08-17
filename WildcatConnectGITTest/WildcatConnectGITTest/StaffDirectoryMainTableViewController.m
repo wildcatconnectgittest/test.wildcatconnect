@@ -49,6 +49,86 @@
           //
      
      self.definesPresentationContext = YES;
+     if (self.loadNumber == [NSNumber numberWithInt:1]) {
+          [self refreshData];
+     } else {
+          activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+          [activity setBackgroundColor:[UIColor clearColor]];
+          [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+          UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:activity];
+          self.navigationItem.rightBarButtonItem = barButton;
+          [activity startAnimating];
+          [self getOldDataWithCompletion:^(NSMutableArray *returnArray) {
+                    //save the data
+               self.staffMembers = returnArray;
+               [self testMethodTwoWithCompletion:^(NSError *error, NSMutableArray *dictionaryReturnArray) {
+                    self.dictionaryArray = dictionaryReturnArray;
+                    dispatch_async(dispatch_get_main_queue(), ^ {
+                         [activity stopAnimating];
+                         [self.tableView reloadData];
+                         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshData)];
+                         self.navigationItem.rightBarButtonItem = barButtonItem;
+                    });
+               } withArray:returnArray];
+               dispatch_async(dispatch_get_main_queue(), ^ {
+                    [activity stopAnimating];
+                    [self.tableView reloadData];
+                    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshData)];
+                    self.navigationItem.rightBarButtonItem = barButtonItem;
+               });
+          }];
+     }
+     /*activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+     [activity setBackgroundColor:[UIColor clearColor]];
+     [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+     UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:activity];
+     self.navigationItem.rightBarButtonItem = barButton;
+     [activity startAnimating];
+     [self testMethodWithCompletion:^(NSError *error, NSMutableArray *returnArrayA) {
+          NSLog(@"Done!!!");
+          NSLog(@"%@", returnArrayA);
+          self.staffMembers = returnArrayA;
+          [self testMethodTwoWithCompletion:^(NSError *error, NSMutableArray *dictionaryReturnArray) {
+               NSLog(@"Done!!!");
+               NSLog(@"%@", dictionaryReturnArray);
+               self.dictionaryArray = dictionaryReturnArray;
+               dispatch_async(dispatch_get_main_queue(), ^ {
+                    [activity stopAnimating];
+                    [self.tableView reloadData];
+                    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(viewDidLoad)];
+                    self.navigationItem.rightBarButtonItem = barButtonItem;
+               });
+          } withArray:returnArrayA];
+     }];*/
+}
+
+- (void)getOldDataWithCompletion:(void (^)(NSMutableArray *returnArray))completion {
+     dispatch_group_t serviceGroup = dispatch_group_create();
+          //Start the first service
+     dispatch_group_enter(serviceGroup);
+     NSLog(@"%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"staffMembers"]);
+     StaffMemberStructure *staffMemberStructure;
+     NSMutableArray *array = [[NSMutableArray alloc] init];
+     NSMutableArray *theArrayToSearch = [[NSUserDefaults standardUserDefaults] objectForKey:@"staffMembers"];
+     NSDictionary *object;
+     for (int i = 0; i < theArrayToSearch.count; i ++) {
+          object = theArrayToSearch[i];
+          staffMemberStructure = [[StaffMemberStructure alloc] init];
+          staffMemberStructure.staffMemberEMail = [object objectForKey:@"staffMemberEMail"];
+          staffMemberStructure.staffMemberFirstName = [object objectForKey:@"staffMemberFirstName"];
+          staffMemberStructure.staffMemberLastName = [object objectForKey:@"staffMemberLastName"];
+          staffMemberStructure.staffMemberPhone = [object objectForKey:@"staffMemberPhone"];
+          staffMemberStructure.staffMemberTitle = [object objectForKey:@"staffMemberTitle"];
+          [array addObject:staffMemberStructure];
+          if (i == theArrayToSearch.count - 1)
+               dispatch_group_leave(serviceGroup);
+     }
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^{
+          completion(array);
+     });
+}
+
+- (void)refreshData {
      activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
      [activity setBackgroundColor:[UIColor clearColor]];
      [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
@@ -59,6 +139,21 @@
           NSLog(@"Done!!!");
           NSLog(@"%@", returnArrayA);
           self.staffMembers = returnArrayA;
+          NSMutableArray *itemsToSave = [NSMutableArray array];
+          for (StaffMemberStructure *s in returnArrayA) {
+               NSLog(@"%@", s);
+               [itemsToSave addObject:@{ @"staffMemberEMail"     : s.staffMemberEMail,
+                                         @"staffMemberFirstName"    : s.staffMemberFirstName,
+                                         @"staffMemberLastName" : s.staffMemberLastName,
+                                         
+                                         @"staffMemberPhone" : s.staffMemberPhone,
+                                         
+                                         @"staffMemberTitle" : s.staffMemberTitle
+                                         
+                                         }];
+          }
+          NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+          [userDefaults setObject:itemsToSave forKey:@"staffMembers"];
           [self testMethodTwoWithCompletion:^(NSError *error, NSMutableArray *dictionaryReturnArray) {
                NSLog(@"Done!!!");
                NSLog(@"%@", dictionaryReturnArray);
@@ -233,6 +328,12 @@
      return 60;
 }
 
+- (instancetype)initWithLoadNumber:(NSNumber *)theLoadNumber {
+     [super init];
+     self.loadNumber = theLoadNumber;
+     self.navigationItem.title = @"Staff Diretory";
+     return self;
+}
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
      if (self.tableView != tableView) {
