@@ -42,6 +42,7 @@
 		0AD4B0BE1B81F7F1004E23E4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AD4B0BD1B81F7F1004E23E4 /* AppDelegate.m */; };
 		0AD4B0C11B81FA3C004E23E4 /* ExtracurricularStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AD4B0C01B81FA3C004E23E4 /* ExtracurricularStructure.m */; };
 		0AD4B0C71B81FCA3004E23E4 /* ExtracurricularsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AD4B0C61B81FCA3004E23E4 /* ExtracurricularsTableViewController.m */; };
+		0AD4B0CA1B820252004E23E4 /* ExtracurricularUpdateStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AD4B0C91B820252004E23E4 /* ExtracurricularUpdateStructure.m */; };
 		0AE74A2B1B7D7A2C0083EFF1 /* SplashScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE74A2A1B7D7A2C0083EFF1 /* SplashScreenViewController.m */; };
 		0AE74A2E1B7D84180083EFF1 /* MainTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE74A2D1B7D84180083EFF1 /* MainTabBarController.m */; };
 		0AF4BC4A1B7D14D3001149A5 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AF4BC481B7D14D3001149A5 /* Bolts.framework */; };
@@ -133,6 +134,8 @@
 		0AD4B0C01B81FA3C004E23E4 /* ExtracurricularStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExtracurricularStructure.m; sourceTree = "<group>"; };
 		0AD4B0C51B81FCA3004E23E4 /* ExtracurricularsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExtracurricularsTableViewController.h; sourceTree = "<group>"; };
 		0AD4B0C61B81FCA3004E23E4 /* ExtracurricularsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExtracurricularsTableViewController.m; sourceTree = "<group>"; };
+		0AD4B0C81B820252004E23E4 /* ExtracurricularUpdateStructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExtracurricularUpdateStructure.h; sourceTree = "<group>"; };
+		0AD4B0C91B820252004E23E4 /* ExtracurricularUpdateStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExtracurricularUpdateStructure.m; sourceTree = "<group>"; };
 		0AE74A291B7D7A2C0083EFF1 /* SplashScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashScreenViewController.h; sourceTree = "<group>"; };
 		0AE74A2A1B7D7A2C0083EFF1 /* SplashScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplashScreenViewController.m; sourceTree = "<group>"; };
 		0AE74A2C1B7D84180083EFF1 /* MainTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainTabBarController.h; sourceTree = "<group>"; };
@@ -231,6 +234,8 @@
 			children = (
 				0AD4B0C51B81FCA3004E23E4 /* ExtracurricularsTableViewController.h */,
 				0AD4B0C61B81FCA3004E23E4 /* ExtracurricularsTableViewController.m */,
+				0AD4B0C81B820252004E23E4 /* ExtracurricularUpdateStructure.h */,
+				0AD4B0C91B820252004E23E4 /* ExtracurricularUpdateStructure.m */,
 				0A1FE3DC1B7B7DA80062A30E /* AppDelegate.h */,
 				0AD4B0BD1B81F7F1004E23E4 /* AppDelegate.m */,
 				0A1FE3DF1B7B7DA80062A30E /* FirstViewController.h */,
@@ -463,6 +468,7 @@
 				0A0A497E1B7EFEC800304629 /* ApplicationManager.m in Sources */,
 				0A4A37E91B7B90D100AF3E36 /* SectionsTableViewController.m in Sources */,
 				0AE74A2B1B7D7A2C0083EFF1 /* SplashScreenViewController.m in Sources */,
+				0AD4B0CA1B820252004E23E4 /* ExtracurricularUpdateStructure.m in Sources */,
 				0AE74A2E1B7D84180083EFF1 /* MainTabBarController.m in Sources */,
 				0A1FE3E11B7B7DA80062A30E /* FirstViewController.m in Sources */,
 				0A4A37F21B7BA34600AF3E36 /* StudentCenterViewController.m in Sources */,

@@ -16,8 +16,8 @@
 
 - (void)viewDidLoad {
      [super viewDidLoad];
-     NSLog(@"%@", self.loadNumber);
-     if (self.loadNumber != [NSNumber numberWithInt:1]) {
+     NSLog(@"%@ sfjsljfs", self.loadNumber);
+     if (self.loadNumber == [NSNumber numberWithInt:1]) {
           activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
           [activity setBackgroundColor:[UIColor clearColor]];
           [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
@@ -49,6 +49,12 @@
      }
 }
 
+- (instancetype)initWithLoadNumber:(NSNumber *)theLoadNumber {
+     [super init];
+     self.loadNumber = theLoadNumber;
+     return self;
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
      /*NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
      NSArray *testArray = [userDefaults objectForKey:@"newsArticles"];
@@ -57,9 +63,47 @@
      [userDefaults setObject:data forKey:@"newsArticles"];
           //[userDefaults setValue:newsArticleArray forKey:@"newsArticles"];          //[userDefaults setObject:self.newsArticleImages forKey:@"newsArticleImages2"];
      [userDefaults synchronize];*/
+     [[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:self.newsArticles] forKey:@"newsArticles"];
+     [[NSUserDefaults standardUserDefaults] synchronize];
+     NSLog(@"%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"newsArticles"]);
+     NSMutableArray *itemsToSave = [NSMutableArray array];
+     for (NewsArticleStructure *n in self.newsArticles) {
+          [itemsToSave addObject:@{ @"hasImage"     : n.hasImage,
+                                    @"imageURLString"    : n.imageURLString,
+                                    @"titleString" : n.titleString,
+                                    
+                                    @"summaryString" : n.summaryString,
+                                    
+                                    @"authorString" : n.authorString,
+                                    
+                                    @"dateString" : n.dateString,
+                                    
+                                    @"contentURLString" : n.contentURLString,
+                                    
+                                    @"articleIDString" : n.articleIDString,
+                                    
+                                    @"likes" : n.likes
+                                    
+                                    }];
+     }
 }
 
-     // - // add encoding capabilities
+- (void)encodeWithCoder:(NSCoder *)coder;
+{
+     [coder encodeObject:self.newsArticles forKey:@"newsArticles"];
+     [coder encodeObject:self.newsArticleImages forKey:@"newsArticleImages"];
+}
+
+- (id)initWithCoder:(NSCoder *)coder;
+{
+     self = [super init];
+     if (self != nil)
+     {
+          self.newsArticles = [[coder decodeObjectForKey:@"newsArticles"] retain];
+          self.newsArticleImages = [[coder decodeObjectForKey:@"newsArticleImages"] retain];
+     }
+     return self;
+}
 
 - (void)testMethodWithCompletion:(void (^)(NSError *error, NSMutableArray *returnArray))completion {
           //Define errors to be processed when everything is complete.

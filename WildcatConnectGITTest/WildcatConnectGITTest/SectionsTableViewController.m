@@ -65,10 +65,43 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-          [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-          [self performSegueWithIdentifier:self.segueIDsArray[indexPath.row] sender:self];
+          //[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+          //[self performSegueWithIdentifier:self.segueIDsArray[indexPath.row] sender:self];
+     /*[array enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+      if ([obj isKindOfClass:[MyClass class]]) {
+      foundIndex = idx;
+      // stop the enumeration
+      *stop = YES;
+      }
+      }];*/
+     
+     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+     NSMutableArray *visitedPagesArray = [userDefaults objectForKey:@"visitedPagesArray"];
+     if (!visitedPagesArray) {
+          visitedPagesArray = [[NSMutableArray alloc] init];
+          [visitedPagesArray addObject:[NSString stringWithFormat:@"%lu", (long)indexPath.row]];
+          [userDefaults setObject:visitedPagesArray forKey:@"visitedPagesArray"];
+          [userDefaults synchronize];
+          if (indexPath.row == 0) {
+               NewsCenterTableViewController *controller = [[NewsCenterTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
+               [self.navigationController pushViewController:controller animated:YES];
+          }
+     }
+     else {
+          if ([visitedPagesArray containsObject:[NSString stringWithFormat:@"%lu", (long)indexPath.row]]) {
+               if (indexPath.row == 0) {
+                    NewsCenterTableViewController *controller = [[NewsCenterTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:0]];
+                    [self.navigationController pushViewController:controller animated:YES];
+               }
+          }
+          else {
+               if (indexPath.row == 0) {
+                    NewsCenterTableViewController *controller = [[NewsCenterTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
+                    [self.navigationController pushViewController:controller animated:YES];
+               }
+          }
+     }
 }
-
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
