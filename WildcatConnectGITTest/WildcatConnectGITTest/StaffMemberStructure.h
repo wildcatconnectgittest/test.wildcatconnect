@@ -10,6 +10,7 @@
 
 @interface StaffMemberStructure : PFObject<PFSubclassing>
 
+
 + (NSString *)parseClassName;
 
 @property NSString *staffMemberLastName;

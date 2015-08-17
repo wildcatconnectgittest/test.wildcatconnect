@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ExtracurricularsViewController : UIViewController
+@interface ExtracurricularsViewController : UIViewController{
+    IBOutlet UIScrollView *scrollerextra;
+    
+}
+
 
 @end

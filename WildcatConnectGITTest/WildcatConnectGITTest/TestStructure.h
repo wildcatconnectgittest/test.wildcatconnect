@@ -10,6 +10,9 @@
 
 @interface TestStructure : PFObject<PFSubclassing>
 
+
+
+
 + (NSString *)parseClassName;
 
 @property (nonatomic, strong) NSString *testStructureName;

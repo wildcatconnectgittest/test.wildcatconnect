@@ -9,6 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface NewsCenterTableViewController : UITableViewController {
+ 
+       
+    
+
      NSMutableArray *newsArticles;
      NSMutableArray *newsArticleImages;
      NSNumber *loadNumber;

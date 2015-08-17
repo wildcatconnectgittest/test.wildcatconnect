@@ -10,7 +10,10 @@
 #import <UIKit/UIKit.h>
 
 @interface AppManager : NSObject {
-     NSMutableArray *newsArticles;
+    
+   
+    
+    NSMutableArray *newsArticles;
      NSMutableArray *newsArticleImages;
      NSMutableArray *likedNewsArticles;
      NSMutableArray *staffMembers;

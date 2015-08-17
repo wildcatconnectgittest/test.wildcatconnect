@@ -10,6 +10,8 @@
 
 @interface NewsArticleStructure : PFObject<PFSubclassing>
 
+
+
 + (NSString *)parseClassName;
 
      //Properties

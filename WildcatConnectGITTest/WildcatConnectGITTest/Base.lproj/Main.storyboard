@@ -198,7 +198,7 @@ cmlvZCA3A
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BKQ-09-6XT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1739" y="-552"/>
+            <point key="canvasLocation" x="1739" y="-536"/>
         </scene>
         <!--News Center-->
         <scene sceneID="NDL-wC-CEC">
@@ -232,13 +232,32 @@ cmlvZCA3A
         <!--Extracurriculars-->
         <scene sceneID="rhX-8r-9tK">
             <objects>
-                <viewController id="VGZ-Fc-wNR" sceneMemberID="viewController">
+                <viewController id="VGZ-Fc-wNR" customClass="ExtracurricularsViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="t2L-k0-4dl">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="350" height="1000"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="U3k-C1-jgh">
+                                <rect key="frame" x="0.0" y="56" width="366" height="970"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="test" borderStyle="roundedRect" minimumFontSize="17" id="dZZ-c3-TtF">
+                                        <rect key="frame" x="142" y="457" width="97" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                </subviews>
+                            </scrollView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Extracurriculars" id="5K8-bF-hVf"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="350" height="1000"/>
+                    <connections>
+                        <outlet property="scrollerextra" destination="U3k-C1-jgh" id="5rU-FQ-kmc"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S5w-k9-KBH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -251,6 +270,12 @@ cmlvZCA3A
                     <view key="view" contentMode="scaleToFill" id="bvO-Gs-atL">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="5V9-ms-z6h">
+                                <rect key="frame" x="-31" y="63" width="351" height="555"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </scrollView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Community Service" id="PoM-5s-gYk"/>
@@ -266,6 +291,22 @@ cmlvZCA3A
                     <view key="view" contentMode="scaleToFill" id="EBY-Zp-jHY">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="kAc-8N-b0A">
+                                <rect key="frame" x="-35" y="-47" width="355" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="gG2-rz-XYL">
+                                        <rect key="frame" x="33" y="111" width="322" height="577"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
+                                </subviews>
+                            </scrollView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Student Center" id="IXD-5O-fya"/>
@@ -302,7 +343,7 @@ cmlvZCA3A
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="J7C-Tu-PIr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3050" y="107"/>
+            <point key="canvasLocation" x="3048" y="107"/>
         </scene>
         <!--Useful Links-->
         <scene sceneID="H8f-Rh-VIg">

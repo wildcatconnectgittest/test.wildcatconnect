@@ -9,7 +9,10 @@
 #import <Foundation/Foundation.h>
 
 @interface ApplicationManager : NSObject {
-     NSString *someProperty;
+    
+ 
+
+    NSString *someProperty;
      NSArray *staffMembers;
 }
 

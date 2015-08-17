@@ -17,6 +17,7 @@
 
 @implementation AppDelegate {
      AppManager *manager;
+    
 }
 
 
