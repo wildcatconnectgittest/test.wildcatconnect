@@ -22,7 +22,6 @@
 		0A1FE3EC1B7B7DA80062A30E /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A1FE3EA1B7B7DA80062A30E /* LaunchScreen.xib */; };
 		0A1FE3F81B7B7DA80062A30E /* WildcatConnectGITTestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1FE3F71B7B7DA80062A30E /* WildcatConnectGITTestTests.m */; };
 		0A4A37E91B7B90D100AF3E36 /* SectionsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37E81B7B90D100AF3E36 /* SectionsTableViewController.m */; };
-		0A4A37EC1B7BA32B00AF3E36 /* ExtracurricularsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37EB1B7BA32B00AF3E36 /* ExtracurricularsViewController.m */; };
 		0A4A37EF1B7BA33C00AF3E36 /* CommunityServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37EE1B7BA33C00AF3E36 /* CommunityServiceViewController.m */; };
 		0A4A37F21B7BA34600AF3E36 /* StudentCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37F11B7BA34600AF3E36 /* StudentCenterViewController.m */; };
 		0A4A37F51B7BA41100AF3E36 /* CalendarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37F41B7BA41100AF3E36 /* CalendarViewController.m */; };
@@ -42,6 +41,7 @@
 		0AB797D51B7DC74400113D94 /* StaffMemberStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AB797D41B7DC74400113D94 /* StaffMemberStructure.m */; };
 		0AD4B0BE1B81F7F1004E23E4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AD4B0BD1B81F7F1004E23E4 /* AppDelegate.m */; };
 		0AD4B0C11B81FA3C004E23E4 /* ExtracurricularStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AD4B0C01B81FA3C004E23E4 /* ExtracurricularStructure.m */; };
+		0AD4B0C71B81FCA3004E23E4 /* ExtracurricularsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AD4B0C61B81FCA3004E23E4 /* ExtracurricularsTableViewController.m */; };
 		0AE74A2B1B7D7A2C0083EFF1 /* SplashScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE74A2A1B7D7A2C0083EFF1 /* SplashScreenViewController.m */; };
 		0AE74A2E1B7D84180083EFF1 /* MainTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE74A2D1B7D84180083EFF1 /* MainTabBarController.m */; };
 		0AF4BC4A1B7D14D3001149A5 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AF4BC481B7D14D3001149A5 /* Bolts.framework */; };
@@ -103,8 +103,6 @@
 		0A1FE3F71B7B7DA80062A30E /* WildcatConnectGITTestTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WildcatConnectGITTestTests.m; sourceTree = "<group>"; };
 		0A4A37E71B7B90D100AF3E36 /* SectionsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SectionsTableViewController.h; sourceTree = "<group>"; };
 		0A4A37E81B7B90D100AF3E36 /* SectionsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SectionsTableViewController.m; sourceTree = "<group>"; };
-		0A4A37EA1B7BA32B00AF3E36 /* ExtracurricularsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExtracurricularsViewController.h; sourceTree = "<group>"; };
-		0A4A37EB1B7BA32B00AF3E36 /* ExtracurricularsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExtracurricularsViewController.m; sourceTree = "<group>"; };
 		0A4A37ED1B7BA33C00AF3E36 /* CommunityServiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommunityServiceViewController.h; sourceTree = "<group>"; };
 		0A4A37EE1B7BA33C00AF3E36 /* CommunityServiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommunityServiceViewController.m; sourceTree = "<group>"; };
 		0A4A37F01B7BA34600AF3E36 /* StudentCenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentCenterViewController.h; sourceTree = "<group>"; };
@@ -132,6 +130,8 @@
 		0AD4B0BD1B81F7F1004E23E4 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		0AD4B0BF1B81FA3C004E23E4 /* ExtracurricularStructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExtracurricularStructure.h; sourceTree = "<group>"; };
 		0AD4B0C01B81FA3C004E23E4 /* ExtracurricularStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExtracurricularStructure.m; sourceTree = "<group>"; };
+		0AD4B0C51B81FCA3004E23E4 /* ExtracurricularsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExtracurricularsTableViewController.h; sourceTree = "<group>"; };
+		0AD4B0C61B81FCA3004E23E4 /* ExtracurricularsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExtracurricularsTableViewController.m; sourceTree = "<group>"; };
 		0AE74A291B7D7A2C0083EFF1 /* SplashScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashScreenViewController.h; sourceTree = "<group>"; };
 		0AE74A2A1B7D7A2C0083EFF1 /* SplashScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplashScreenViewController.m; sourceTree = "<group>"; };
 		0AE74A2C1B7D84180083EFF1 /* MainTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainTabBarController.h; sourceTree = "<group>"; };
@@ -226,6 +226,8 @@
 		0A1FE3D71B7B7DA80062A30E /* WildcatConnectGITTest */ = {
 			isa = PBXGroup;
 			children = (
+				0AD4B0C51B81FCA3004E23E4 /* ExtracurricularsTableViewController.h */,
+				0AD4B0C61B81FCA3004E23E4 /* ExtracurricularsTableViewController.m */,
 				0A1FE3DC1B7B7DA80062A30E /* AppDelegate.h */,
 				0AD4B0BD1B81F7F1004E23E4 /* AppDelegate.m */,
 				0A1FE3DF1B7B7DA80062A30E /* FirstViewController.h */,
@@ -259,8 +261,6 @@
 				0AE74A2D1B7D84180083EFF1 /* MainTabBarController.m */,
 				0AE74A291B7D7A2C0083EFF1 /* SplashScreenViewController.h */,
 				0AE74A2A1B7D7A2C0083EFF1 /* SplashScreenViewController.m */,
-				0A4A37EA1B7BA32B00AF3E36 /* ExtracurricularsViewController.h */,
-				0A4A37EB1B7BA32B00AF3E36 /* ExtracurricularsViewController.m */,
 				0A4A37ED1B7BA33C00AF3E36 /* CommunityServiceViewController.h */,
 				0A4A37EE1B7BA33C00AF3E36 /* CommunityServiceViewController.m */,
 				0A4A37F01B7BA34600AF3E36 /* StudentCenterViewController.h */,
@@ -443,12 +443,12 @@
 				0A4A37F81B7BA41A00AF3E36 /* LunchMenusViewController.m in Sources */,
 				0A4A37EF1B7BA33C00AF3E36 /* CommunityServiceViewController.m in Sources */,
 				0AD4B0C11B81FA3C004E23E4 /* ExtracurricularStructure.m in Sources */,
-				0A4A37EC1B7BA32B00AF3E36 /* ExtracurricularsViewController.m in Sources */,
 				0AF4BC671B7D1BA2001149A5 /* AppManager.m in Sources */,
 				F75C21971B7B99D00052BC87 /* AboutViewController.m in Sources */,
 				0AF4BC6A1B7D278B001149A5 /* NewsArticleStructure.m in Sources */,
 				0A1FE3E41B7B7DA80062A30E /* SecondViewController.m in Sources */,
 				0A4A37FB1B7BA42200AF3E36 /* UsefulLinksViewController.m in Sources */,
+				0AD4B0C71B81FCA3004E23E4 /* ExtracurricularsTableViewController.m in Sources */,
 				0A4A380C1B7BCAF100AF3E36 /* NewsCenterTableViewController.m in Sources */,
 				0A0A49751B7EA02300304629 /* StaffDirectoryDetailViewController.m in Sources */,
 				0A0A496C1B7E75A500304629 /* StaffDirectoryBaseTableViewController.m in Sources */,

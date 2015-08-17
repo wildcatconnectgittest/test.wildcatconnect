@@ -17,9 +17,9 @@
 {
      [Parse setApplicationId:@"cLBOvwh6ZTQYex37DSwxL1Cvg34MMiRWYAB4vqs0"
                    clientKey:@"jGjp3WuCzf4ZetH8kpTLGNnj1h3DgtHlCuK1QbTi"];
-     ExtracurricularStructure *EC = [[ExtracurricularStructure alloc] init];
+     /*ExtracurricularStructure *EC = [[ExtracurricularStructure alloc] init];
      EC.titleString = @"Test Title...";
-     [EC saveInBackground];
+     [EC saveInBackground];*/
      return YES;
 }
 
