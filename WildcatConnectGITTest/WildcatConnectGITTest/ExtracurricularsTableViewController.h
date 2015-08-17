@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ExtracurricularsTableViewController : UITableViewController
+@interface ExtracurricularsTableViewController : UITableViewController {
+     NSArray *sectionTitlesArray;
+}
+
+@property (nonatomic, retain) NSArray *sectionTitlesArray;
 
 @end

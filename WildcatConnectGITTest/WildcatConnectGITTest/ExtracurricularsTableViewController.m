@@ -7,12 +7,15 @@
 //
 
 #import "ExtracurricularsTableViewController.h"
+#import "ExtracurricularStructure.h"
 
 @interface ExtracurricularsTableViewController ()
 
 @end
 
-@implementation ExtracurricularsTableViewController
+@implementation ExtracurricularsTableViewController {
+     UIActivityIndicatorView *activity;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -23,9 +26,26 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
      
-     if (self.tableView) {
-          [self.tableView removeFromSuperview];
-     }
+     self.sectionTitlesArray = [[NSArray alloc] initWithObjects:@"Extracurricular Updates", @"All Extracurriculars", nil];
+     
+          //Load data from Parse
+     
+     activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+     [activity setBackgroundColor:[UIColor clearColor]];
+     [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+     UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:activity];
+     self.navigationItem.rightBarButtonItem = barButton;
+     [activity startAnimating];
+     
+     
+}
+
+- (void)testMethodWithCompletion:(void (^)(NSError *error, NSMutableArray *returnArray))completion {
+     __block NSError *theError = nil;
+     dispatch_group_t theServiceGroup = dispatch_group_create();
+     dispatch_group_enter(theServiceGroup);
+     NSMutableArray *returnArray = [[NSMutableArray alloc] init];
+     PFQuery *query = [ExtracurricularStructure query];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -42,18 +62,21 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return 1;
+    return 2;
 }
 
-/*
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier" forIndexPath:indexPath];
     
-    // Configure the cell...
-    
+          // Configure the cell...
+     
     return cell;
 }
-*/
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+     return self.sectionTitlesArray[section];
+}
 
 /*
 // Override to support conditional editing of the table view.

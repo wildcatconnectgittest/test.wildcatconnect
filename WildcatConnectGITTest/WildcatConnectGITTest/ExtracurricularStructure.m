@@ -19,6 +19,7 @@
 @dynamic imageFile;
 @dynamic meetingString;
 @dynamic contactInformationArray;
+@dynamic extracurricularIDString;
 
 + (void)load {
      [self registerSubclass];

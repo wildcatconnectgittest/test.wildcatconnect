@@ -22,4 +22,6 @@
 @property (nonatomic, retain) NSMutableArray *newsArticleImages;
 @property (nonatomic, retain) NSNumber *loadNumber;
 
+- (instancetype)initWithLoadNumber:(NSNumber *)theLoadNumber;
+
 @end

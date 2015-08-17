@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "AppDelegate.h"
 #import <Parse/Parse.h>
-#import "ExtracurricularStructure.h"
+#import "ExtracurricularUpdateStructure.h"
 
 @implementation AppDelegate
 
@@ -17,10 +17,17 @@
 {
      [Parse setApplicationId:@"cLBOvwh6ZTQYex37DSwxL1Cvg34MMiRWYAB4vqs0"
                    clientKey:@"jGjp3WuCzf4ZetH8kpTLGNnj1h3DgtHlCuK1QbTi"];
-     /*ExtracurricularStructure *EC = [[ExtracurricularStructure alloc] init];
-     EC.titleString = @"Test Title...";
-     [EC saveInBackground];*/
      return YES;
+}
+
+- (void)applicationWillResignActive:(UIApplication *)application {
+     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+     [userDefaults removeObjectForKey:@"visitedPagesArray"];
+}
+
+- (void)applicationWillTerminate:(UIApplication *)application {
+     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+     [userDefaults removeObjectForKey:@"visitedPagesArray"];
 }
 
 @end

@@ -20,5 +20,6 @@
 @property PFFile *imageFile;
 @property NSString *meetingString;
 @property NSArray *contactInformationArray;
+@property NSString *extracurricularIDString;
 
 @end

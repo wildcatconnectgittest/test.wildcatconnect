@@ -23,6 +23,7 @@
 @dynamic articleIDString;
 @dynamic likes;
 
+
 + (void)load {
      [self registerSubclass];
 }
