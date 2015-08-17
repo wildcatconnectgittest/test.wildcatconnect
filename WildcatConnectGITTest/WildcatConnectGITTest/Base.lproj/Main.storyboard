@@ -186,14 +186,14 @@ cmlvZCA3A
                     </tableView>
                     <navigationItem key="navigationItem" title="Sections" id="7L9-bd-PME"/>
                     <connections>
-                        <segue destination="NmF-jh-3cD" kind="push" identifier="showCommunityService" id="KdN-aX-1Qb"/>
-                        <segue destination="5TE-af-DEx" kind="push" identifier="showStudentCenter" id="Xun-aG-2o9"/>
                         <segue destination="DEK-2l-Oyr" kind="push" identifier="showCalendar" id="UTc-BG-wcX"/>
                         <segue destination="WGA-yK-K6u" kind="push" identifier="showLunchMenus" id="qxG-3y-yJb"/>
                         <segue destination="hKn-Dy-vyV" kind="push" identifier="showUsefulLinks" id="BDA-xt-4AI"/>
                         <segue destination="gMb-fc-ni7" kind="push" identifier="showNewsCenter" id="TdQ-Ul-cCQ"/>
                         <segue destination="8IZ-F7-mqa" kind="push" identifier="showStaffDirectory" id="NBV-Qs-adg"/>
                         <segue destination="Rbn-vX-3Ly" kind="push" identifier="showExtracurriculars" id="gD4-PG-iH4"/>
+                        <segue destination="iCU-ZJ-Uad" kind="push" identifier="showCommunityService" id="V4Y-XD-Grn"/>
+                        <segue destination="YqG-or-Smk" kind="push" identifier="showStudentCenter" id="Xgc-Xt-03o"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BKQ-09-6XT" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -204,13 +204,13 @@ cmlvZCA3A
         <scene sceneID="M6Q-ke-4jV">
             <objects>
                 <tableViewController id="Rbn-vX-3Ly" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="cm5-HH-epf">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="cm5-HH-epf">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="wZm-8z-da1">
-                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CellIdentifier" id="wZm-8z-da1">
+                                <rect key="frame" x="0.0" y="113.5" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wZm-8z-da1" id="jbz-RU-DZR">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
@@ -227,19 +227,19 @@ cmlvZCA3A
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PTl-O6-3Fx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2100" y="-603"/>
+            <point key="canvasLocation" x="2805" y="-413"/>
         </scene>
         <!--News Center-->
         <scene sceneID="NDL-wC-CEC">
             <objects>
                 <tableViewController id="gMb-fc-ni7" customClass="NewsCenterTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="vJ9-5H-EuX">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="vJ9-5H-EuX">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CellIdentifier" id="7cF-0U-qWv">
-                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="113.5" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7cF-0U-qWv" id="Smn-m7-Ukc">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
@@ -256,75 +256,65 @@ cmlvZCA3A
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xmI-A0-y3b" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2173" y="-708"/>
+            <point key="canvasLocation" x="2163" y="-413"/>
         </scene>
         <!--Community Service-->
-        <scene sceneID="EgN-38-lfO">
+        <scene sceneID="UGb-kX-tXz">
             <objects>
-                <viewController id="NmF-jh-3cD" customClass="CommunityServiceViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="bvO-Gs-atL">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="1000"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="5V9-ms-z6h">
-                                <rect key="frame" x="-31" y="63" width="351" height="987"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <subviews>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Upcoming Oppurtunities " borderStyle="roundedRect" minimumFontSize="17" id="5wG-ax-quR">
-                                        <rect key="frame" x="37" y="8" width="183" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
-                                </subviews>
-                            </scrollView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Community Service" id="PoM-5s-gYk"/>
-                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="320" height="1000"/>
-                    <connections>
-                        <outlet property="scrollerCommService" destination="5V9-ms-z6h" id="Qu7-h1-kUG"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="tkj-h3-bwp" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2878" y="-738"/>
-        </scene>
-        <!--Student Center-->
-        <scene sceneID="Adv-5a-CQF">
-            <objects>
-                <viewController id="5TE-af-DEx" customClass="StudentCenterViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="EBY-Zp-jHY">
+                <tableViewController id="iCU-ZJ-Uad" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="iu1-p5-KuP">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="kAc-8N-b0A">
-                                <rect key="frame" x="-35" y="-2" width="355" height="572"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <subviews>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="gG2-rz-XYL">
-                                        <rect key="frame" x="33" y="8" width="322" height="460"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                    </textView>
-                                </subviews>
-                            </scrollView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Student Center" id="IXD-5O-fya"/>
-                    <connections>
-                        <outlet property="scrollerStuCenter" destination="kAc-8N-b0A" id="vbg-Nq-SOg"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="mqz-Md-Fm4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CellIdentifier" id="Tdh-WK-NPc">
+                                <rect key="frame" x="0.0" y="113.5" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Tdh-WK-NPc" id="6MR-xP-eHU">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="iCU-ZJ-Uad" id="5GG-H2-eEq"/>
+                            <outlet property="delegate" destination="iCU-ZJ-Uad" id="PnW-Yi-V9J"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Community Service" id="FMk-ms-Bjw"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HsL-Hy-NNJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3281" y="-765"/>
+            <point key="canvasLocation" x="2483" y="-413"/>
+        </scene>
+        <!--Student Center-->
+        <scene sceneID="pch-Gi-mKF">
+            <objects>
+                <tableViewController id="YqG-or-Smk" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="lll-N7-l4k">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CellIdentifier" id="ky3-Pq-BND">
+                                <rect key="frame" x="0.0" y="113.5" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ky3-Pq-BND" id="WxZ-M9-dt5">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="YqG-or-Smk" id="NUJ-Jp-Twt"/>
+                            <outlet property="delegate" destination="YqG-or-Smk" id="xWj-0T-iHo"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Student Center" id="3lB-mj-srA"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pzB-ib-x4b" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2100" y="-660"/>
         </scene>
         <!--Calendar-->
         <scene sceneID="UMS-TI-xmy">
