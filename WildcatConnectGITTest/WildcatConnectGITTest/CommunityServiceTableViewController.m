@@ -21,6 +21,7 @@
     [super viewDidLoad];
     // NSLog(@"%@", self.IsNewNumber);
     //if (self.IsNewNumber != [NSNumber numberWithInt:1]) {
+    //self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) style:UITableViewStyleGrouped];
     activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
     [activity setBackgroundColor:[UIColor clearColor]];
     [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
@@ -58,7 +59,12 @@
     // Do any additional setup after loading the view.
 }
 
-
+- (instancetype)initWithLoadNumber:(NSNumber *)theLoadNumber {
+     [super init];
+     self.loadNumber = theLoadNumber;
+     self.navigationItem.title = @"Community Service";
+     return self;
+}
 
 - (void)testMethodWithCompletion:(void (^)(NSError *error, NSMutableArray *returnArray))completion {
     //Define errors to be processed when everything is complete.

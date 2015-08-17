@@ -13,13 +13,16 @@
     NSMutableArray *commImages;
     NSMutableArray *newOpps;
     NSMutableArray *oldOpps;
-    
+     NSNumber *loadNumber;
     
 }
 @property (nonatomic, retain) NSMutableArray *allOpps;
 @property (nonatomic, retain) NSMutableArray *newOpps;
 @property (nonatomic, retain) NSMutableArray *oldOpps;
 @property (nonatomic, retain) NSMutableArray *commImages;
+@property (nonatomic, retain) NSNumber *loadNumber;
+
+-(instancetype)initWithLoadNumber:(NSNumber *)theLoadNumber;
 @end
 
 

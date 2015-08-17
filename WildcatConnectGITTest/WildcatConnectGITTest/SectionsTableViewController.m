@@ -9,6 +9,7 @@
 #import "SectionsTableViewController.h"
 #import "NewsCenterTableViewController.h"
 #import "StaffDirectoryMainTableViewController.h"
+#import "CommunityServiceTableViewController.h"
 
 @interface SectionsTableViewController ()
 
@@ -112,6 +113,10 @@
                NewsCenterTableViewController *controller = [[NewsCenterTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
                [self.navigationController pushViewController:controller animated:YES];
           }
+          else if (indexPath.row == 2) {
+               CommunityServiceTableViewController *controller = [[CommunityServiceTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
+               [self.navigationController pushViewController:controller animated:YES];
+          }
           else if (indexPath.row == 7) {
                StaffDirectoryMainTableViewController *controller = [[StaffDirectoryMainTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
                [self.navigationController pushViewController:controller animated:YES];
@@ -121,6 +126,10 @@
           if ([visitedPagesArray containsObject:[NSString stringWithFormat:@"%lu", (long)indexPath.row]]) {
                if (indexPath.row == 0) {
                     NewsCenterTableViewController *controller = [[NewsCenterTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:0]];
+                    [self.navigationController pushViewController:controller animated:YES];
+               }
+               else if (indexPath.row == 2) {
+                    CommunityServiceTableViewController *controller = [[CommunityServiceTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:0]];
                     [self.navigationController pushViewController:controller animated:YES];
                }
                else if (indexPath.row == 7) {
@@ -135,7 +144,11 @@
                if (indexPath.row == 0) {
                     NewsCenterTableViewController *controller = [[NewsCenterTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
                     [self.navigationController pushViewController:controller animated:YES];
-               } else if (indexPath.row == 7) {
+               } else if (indexPath.row == 2) {
+                    CommunityServiceTableViewController *controller = [[CommunityServiceTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
+                    [self.navigationController pushViewController:controller animated:YES];
+               }
+               else if (indexPath.row == 7) {
                     StaffDirectoryMainTableViewController *controller = [[StaffDirectoryMainTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
                     [self.navigationController pushViewController:controller animated:YES];
                }
