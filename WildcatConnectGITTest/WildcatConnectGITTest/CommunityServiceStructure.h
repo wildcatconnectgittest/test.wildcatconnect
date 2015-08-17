@@ -20,5 +20,6 @@
 @property NSString *commSummaryString;
 @property NSNumber *IsNewNumber;
 @property PFFile *commImageFile;
-//0=no 1 = yes
+@property NSNumber *hasImage;
+//0=no, old 1 = yes, new
 @end

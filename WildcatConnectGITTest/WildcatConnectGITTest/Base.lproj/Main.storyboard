@@ -261,7 +261,7 @@ cmlvZCA3A
         <!--Community Service-->
         <scene sceneID="UGb-kX-tXz">
             <objects>
-                <tableViewController id="iCU-ZJ-Uad" sceneMemberID="viewController">
+                <tableViewController id="iCU-ZJ-Uad" customClass="CommunityServiceTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="iu1-p5-KuP">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

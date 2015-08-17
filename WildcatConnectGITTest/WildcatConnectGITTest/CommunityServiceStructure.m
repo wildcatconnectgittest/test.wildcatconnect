@@ -17,6 +17,7 @@
 @dynamic commTitleString;
 @dynamic IsNewNumber;
 @dynamic commImageFile;
+@dynamic hasImage;
 
 + (void)load {
     [self registerSubclass];
