@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface StudentCenterViewController : UIViewController
+@interface StudentCenterViewController : UIViewController{
+    IBOutlet UIScrollView *scrollerStuCenter;
+    
+}
 
 @end

@@ -241,8 +241,8 @@ cmlvZCA3A
                                 <rect key="frame" x="0.0" y="56" width="366" height="970"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="test" borderStyle="roundedRect" minimumFontSize="17" id="dZZ-c3-TtF">
-                                        <rect key="frame" x="142" y="457" width="97" height="30"/>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Cancellations" borderStyle="roundedRect" minimumFontSize="17" id="dZZ-c3-TtF">
+                                        <rect key="frame" x="8" y="8" width="109" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
@@ -266,19 +266,32 @@ cmlvZCA3A
         <!--Community Service-->
         <scene sceneID="EgN-38-lfO">
             <objects>
-                <viewController id="NmF-jh-3cD" sceneMemberID="viewController">
+                <viewController id="NmF-jh-3cD" customClass="CommunityServiceViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="bvO-Gs-atL">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="1000"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="5V9-ms-z6h">
-                                <rect key="frame" x="-31" y="63" width="351" height="555"/>
+                                <rect key="frame" x="-31" y="63" width="351" height="987"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Upcoming Oppurtunities " borderStyle="roundedRect" minimumFontSize="17" id="5wG-ax-quR">
+                                        <rect key="frame" x="37" y="8" width="183" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                </subviews>
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Community Service" id="PoM-5s-gYk"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="1000"/>
+                    <connections>
+                        <outlet property="scrollerCommService" destination="5V9-ms-z6h" id="Qu7-h1-kUG"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tkj-h3-bwp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -287,7 +300,7 @@ cmlvZCA3A
         <!--Student Center-->
         <scene sceneID="Adv-5a-CQF">
             <objects>
-                <viewController id="5TE-af-DEx" sceneMemberID="viewController">
+                <viewController id="5TE-af-DEx" customClass="StudentCenterViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="EBY-Zp-jHY">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -310,6 +323,9 @@ cmlvZCA3A
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Student Center" id="IXD-5O-fya"/>
+                    <connections>
+                        <outlet property="scrollerStuCenter" destination="kAc-8N-b0A" id="vbg-Nq-SOg"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mqz-Md-Fm4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

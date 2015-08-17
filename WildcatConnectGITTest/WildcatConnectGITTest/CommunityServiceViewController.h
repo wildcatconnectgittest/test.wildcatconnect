@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CommunityServiceViewController : UIViewController
+@interface CommunityServiceViewController : UIViewController{
+    IBOutlet UIScrollView *scrollerCommService;
+    
+}
+
 
 @end

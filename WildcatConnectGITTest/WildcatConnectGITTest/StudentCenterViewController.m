@@ -16,6 +16,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [scrollerStuCenter setScrollEnabled:YES];
+    [scrollerStuCenter setContentSize:CGSizeMake(320, 1000)];
+
     // Do any additional setup after loading the view.
 }
 
