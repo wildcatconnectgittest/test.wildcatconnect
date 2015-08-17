@@ -16,7 +16,6 @@
 		0A0A497B1B7EAE7100304629 /* about@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A0A497A1B7EAE7100304629 /* about@2x.png */; };
 		0A0A497E1B7EFEC800304629 /* ApplicationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0A497D1B7EFEC800304629 /* ApplicationManager.m */; };
 		0A1FE3DB1B7B7DA80062A30E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1FE3DA1B7B7DA80062A30E /* main.m */; };
-		0A1FE3DE1B7B7DA80062A30E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1FE3DD1B7B7DA80062A30E /* AppDelegate.m */; };
 		0A1FE3E11B7B7DA80062A30E /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1FE3E01B7B7DA80062A30E /* FirstViewController.m */; };
 		0A1FE3E41B7B7DA80062A30E /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1FE3E31B7B7DA80062A30E /* SecondViewController.m */; };
 		0A1FE3E71B7B7DA80062A30E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A1FE3E51B7B7DA80062A30E /* Main.storyboard */; };
@@ -41,6 +40,7 @@
 		0AB797D01B7DC35100113D94 /* usefulLinks@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AB797CF1B7DC35100113D94 /* usefulLinks@2x.png */; };
 		0AB797D21B7DC38900113D94 /* staffDirectory@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AB797D11B7DC38900113D94 /* staffDirectory@2x.png */; };
 		0AB797D51B7DC74400113D94 /* StaffMemberStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AB797D41B7DC74400113D94 /* StaffMemberStructure.m */; };
+		0AD4B0BC1B81F69F004E23E4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AD4B0BB1B81F69F004E23E4 /* AppDelegate.m */; };
 		0AE74A2B1B7D7A2C0083EFF1 /* SplashScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE74A2A1B7D7A2C0083EFF1 /* SplashScreenViewController.m */; };
 		0AE74A2E1B7D84180083EFF1 /* MainTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE74A2D1B7D84180083EFF1 /* MainTabBarController.m */; };
 		0AF4BC4A1B7D14D3001149A5 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AF4BC481B7D14D3001149A5 /* Bolts.framework */; };
@@ -90,7 +90,6 @@
 		0A1FE3D91B7B7DA80062A30E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A1FE3DA1B7B7DA80062A30E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0A1FE3DC1B7B7DA80062A30E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		0A1FE3DD1B7B7DA80062A30E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		0A1FE3DF1B7B7DA80062A30E /* FirstViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FirstViewController.h; sourceTree = "<group>"; };
 		0A1FE3E01B7B7DA80062A30E /* FirstViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FirstViewController.m; sourceTree = "<group>"; };
 		0A1FE3E21B7B7DA80062A30E /* SecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
@@ -129,6 +128,7 @@
 		0AB797D11B7DC38900113D94 /* staffDirectory@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "staffDirectory@2x.png"; sourceTree = "<group>"; };
 		0AB797D31B7DC74400113D94 /* StaffMemberStructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaffMemberStructure.h; sourceTree = "<group>"; };
 		0AB797D41B7DC74400113D94 /* StaffMemberStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StaffMemberStructure.m; sourceTree = "<group>"; };
+		0AD4B0BB1B81F69F004E23E4 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = ../AppDelegate.m; sourceTree = "<group>"; };
 		0AE74A291B7D7A2C0083EFF1 /* SplashScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashScreenViewController.h; sourceTree = "<group>"; };
 		0AE74A2A1B7D7A2C0083EFF1 /* SplashScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplashScreenViewController.m; sourceTree = "<group>"; };
 		0AE74A2C1B7D84180083EFF1 /* MainTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainTabBarController.h; sourceTree = "<group>"; };
@@ -224,7 +224,7 @@
 			isa = PBXGroup;
 			children = (
 				0A1FE3DC1B7B7DA80062A30E /* AppDelegate.h */,
-				0A1FE3DD1B7B7DA80062A30E /* AppDelegate.m */,
+				0AD4B0BB1B81F69F004E23E4 /* AppDelegate.m */,
 				0A1FE3DF1B7B7DA80062A30E /* FirstViewController.h */,
 				0A1FE3E01B7B7DA80062A30E /* FirstViewController.m */,
 				0AF4BC681B7D278B001149A5 /* NewsArticleStructure.h */,
@@ -442,7 +442,6 @@
 				F75C21971B7B99D00052BC87 /* AboutViewController.m in Sources */,
 				0AF4BC6A1B7D278B001149A5 /* NewsArticleStructure.m in Sources */,
 				0A1FE3E41B7B7DA80062A30E /* SecondViewController.m in Sources */,
-				0A1FE3DE1B7B7DA80062A30E /* AppDelegate.m in Sources */,
 				0A4A37FB1B7BA42200AF3E36 /* UsefulLinksViewController.m in Sources */,
 				0A4A380C1B7BCAF100AF3E36 /* NewsCenterTableViewController.m in Sources */,
 				0A0A49751B7EA02300304629 /* StaffDirectoryDetailViewController.m in Sources */,
@@ -455,6 +454,7 @@
 				0AE74A2E1B7D84180083EFF1 /* MainTabBarController.m in Sources */,
 				0A1FE3E11B7B7DA80062A30E /* FirstViewController.m in Sources */,
 				0A4A37F21B7BA34600AF3E36 /* StudentCenterViewController.m in Sources */,
+				0AD4B0BC1B81F69F004E23E4 /* AppDelegate.m in Sources */,
 				0A0A49721B7E776500304629 /* StaffDirectoryResultsTableViewController.m in Sources */,
 				0AF4BC641B7D1610001149A5 /* TestStructure.m in Sources */,
 				0A4A37F51B7BA41100AF3E36 /* CalendarViewController.m in Sources */,
