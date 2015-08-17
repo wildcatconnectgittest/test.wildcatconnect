@@ -1,0 +1,55 @@
+TODO.txt
+
+*** Always run 'git pull origin master' before making any changes to the application.
+
+1) Implement ExtracurricularTableViewController to operate in similar fashion to CommunityServiceTableView Controller, except for the following key distinctions...
+     - The top section (section 0) will contain objects from the array of ExtracurricularUpdateStructures, could be a cancellation, addition, or notice
+     - The bottom section (section 1) will contain objects from the array of ExtracurricularStructures, which will function just like the CommunityServiceStructures
+
+2) Implement LunchMenuStructure, which must have two sub-parts: breakfast and lunch - each of these two should have string properties, thus overall LunchMenuStructure has two variables...
+
+- breakfastString
+- lunchString
+
+3) Implement LunchMenusTableViewController to operate in similar fashion to CommunityServiceTableViewController, with possible section structure (i.e. sections would be TODAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY...always extending to the next four adjacent SchoolDay structures
+
+4) Implement StudentCenter(Table)ViewController - need to decide on the style we would like for this
+
+5) Implement CalendarTableViewController to operate in similar fashion to CommunityServiceTableViewController, with following properties:
+
+- SECTIONS will be TODAY, THIS WEEK and UPCOMING
+- Must implement a CalendarEventStructure with the following attributes
+
+- dateString
+- timeString
+- ability to remind???
+- ability to check in???
+- ability to indicate going? (like Facebook)
+- descriptionString
+- contactInformationArray - possible links/email/etc...
+
+6) Implement UsefulLinksTableViewController - grouped sections, basic links to third-party services like X2, Student Webmail, etc...
+
+7) Implement the NewsCenterDetailViewController - will display a single NewsArticleStructure by loading all data
+
+8) Implement the ExtracurricularsDetailViewController - will display a single ExtracurricularsStructure by loading all data
+
+9) Implement the CommunityServiceDetailViewController - will display a single Community ServiceStructure by loadiing all data
+
+10) An ExtracurricularsUpdateStructure will link back to its parentn ExtracurricularsStructure and add the necessary alert to the view - add parameter for this
+
+11) Implement StaffDirectoryDetailViewController - will display a single StaffMemberStructure by loading all data
+
+12) Fix home page, link with Parse
+
+13) Fill about page, link with Parse *** - for future changes to staff/versions/etc...
+
+14) Fix splash startup screen and LoadScreen.xib to house logo with sponsors
+
+15) Implement SchoolDay structure that links to its attached properties...
+
+- SchoolDaySchedule
+- SchoolDayLunch (see above)
+- array of next 'n' SchoolDays
+
+16) appWide variable - APPMANAGER - will house SchoolDayID, other needed properties, SponsorID if needed... 
