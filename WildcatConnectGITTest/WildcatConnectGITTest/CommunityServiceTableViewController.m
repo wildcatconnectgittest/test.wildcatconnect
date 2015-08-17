@@ -227,6 +227,18 @@
     
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if (self.allOpps.count == 0)
+        return @"";
+    else {
+        if (section == 0)
+            return @"NEW OPPORTUNITIES";
+        else if (section == 1)
+            return @"OLD OPPORTUNITIES";
+    }
+    return nil;
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

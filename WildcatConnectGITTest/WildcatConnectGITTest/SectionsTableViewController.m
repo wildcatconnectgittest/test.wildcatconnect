@@ -67,7 +67,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
           //[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-          [self performSegueWithIdentifier:self.segueIDsArray[indexPath.row] sender:self];
+         // [self performSegueWithIdentifier:self.segueIDsArray[indexPath.row] sender:self];
      /*[array enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
       if ([obj isKindOfClass:[MyClass class]]) {
       foundIndex = idx;

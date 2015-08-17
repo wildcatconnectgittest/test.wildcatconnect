@@ -17,7 +17,7 @@
 - (void)viewDidLoad {
      [super viewDidLoad];
      NSLog(@"%@ sfjsljfs", self.loadNumber);
-          if (self.loadNumber == [NSNumber numberWithInt:1]) {
+          if (self.loadNumber == [NSNumber numberWithInt:1] || ! self.loadNumber) {
                [self refreshData];
           }
           else {
