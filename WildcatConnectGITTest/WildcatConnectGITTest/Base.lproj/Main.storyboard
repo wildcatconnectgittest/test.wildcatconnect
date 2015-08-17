@@ -171,7 +171,7 @@ cmlvZCA3A
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CellIdentifier" id="Wqj-he-UlG">
-                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Wqj-he-UlG" id="DGz-aE-PHY">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
@@ -186,7 +186,6 @@ cmlvZCA3A
                     </tableView>
                     <navigationItem key="navigationItem" title="Sections" id="7L9-bd-PME"/>
                     <connections>
-                        <segue destination="VGZ-Fc-wNR" kind="push" identifier="showExtracurriculars" id="rhX-sT-mAp"/>
                         <segue destination="NmF-jh-3cD" kind="push" identifier="showCommunityService" id="KdN-aX-1Qb"/>
                         <segue destination="5TE-af-DEx" kind="push" identifier="showStudentCenter" id="Xun-aG-2o9"/>
                         <segue destination="DEK-2l-Oyr" kind="push" identifier="showCalendar" id="UTc-BG-wcX"/>
@@ -194,11 +193,41 @@ cmlvZCA3A
                         <segue destination="hKn-Dy-vyV" kind="push" identifier="showUsefulLinks" id="BDA-xt-4AI"/>
                         <segue destination="gMb-fc-ni7" kind="push" identifier="showNewsCenter" id="TdQ-Ul-cCQ"/>
                         <segue destination="8IZ-F7-mqa" kind="push" identifier="showStaffDirectory" id="NBV-Qs-adg"/>
+                        <segue destination="Rbn-vX-3Ly" kind="push" identifier="showExtracurriculars" id="gD4-PG-iH4"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BKQ-09-6XT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1739" y="-536"/>
+        </scene>
+        <!--Extracurriculars-->
+        <scene sceneID="M6Q-ke-4jV">
+            <objects>
+                <tableViewController id="Rbn-vX-3Ly" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="cm5-HH-epf">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="wZm-8z-da1">
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wZm-8z-da1" id="jbz-RU-DZR">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="Rbn-vX-3Ly" id="Bx2-oP-TG8"/>
+                            <outlet property="delegate" destination="Rbn-vX-3Ly" id="u9d-kf-xr6"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Extracurriculars" id="xEc-hB-bPH"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PTl-O6-3Fx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2100" y="-603"/>
         </scene>
         <!--News Center-->
         <scene sceneID="NDL-wC-CEC">
@@ -210,7 +239,7 @@ cmlvZCA3A
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CellIdentifier" id="7cF-0U-qWv">
-                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7cF-0U-qWv" id="Smn-m7-Ukc">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
@@ -227,46 +256,7 @@ cmlvZCA3A
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xmI-A0-y3b" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2126" y="-552"/>
-        </scene>
-        <!--Extracurriculars-->
-        <scene sceneID="rhX-8r-9tK">
-            <objects>
-                <viewController id="VGZ-Fc-wNR" customClass="ExtracurricularsViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="t2L-k0-4dl">
-                        <rect key="frame" x="0.0" y="0.0" width="350" height="1000"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="U3k-C1-jgh">
-                                <rect key="frame" x="0.0" y="0.0" width="350" height="1000"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <subviews>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Cancellations" borderStyle="roundedRect" minimumFontSize="17" id="dZZ-c3-TtF">
-                                        <rect key="frame" x="8" y="8" width="109" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="fie-Sq-JRX">
-                                        <rect key="frame" x="0.0" y="66" width="350" height="500"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </tableView>
-                                </subviews>
-                            </scrollView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Extracurriculars" id="5K8-bF-hVf"/>
-                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="350" height="1000"/>
-                    <connections>
-                        <outlet property="scrollerextra" destination="U3k-C1-jgh" id="5rU-FQ-kmc"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="S5w-k9-KBH" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2518" y="-552"/>
+            <point key="canvasLocation" x="2173" y="-708"/>
         </scene>
         <!--Community Service-->
         <scene sceneID="EgN-38-lfO">
@@ -300,7 +290,7 @@ cmlvZCA3A
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tkj-h3-bwp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2886" y="-552"/>
+            <point key="canvasLocation" x="2878" y="-738"/>
         </scene>
         <!--Student Center-->
         <scene sceneID="Adv-5a-CQF">
@@ -334,7 +324,7 @@ cmlvZCA3A
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mqz-Md-Fm4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3255" y="-575"/>
+            <point key="canvasLocation" x="3281" y="-765"/>
         </scene>
         <!--Calendar-->
         <scene sceneID="UMS-TI-xmy">
