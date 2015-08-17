@@ -61,6 +61,7 @@
 		0AF4BC671B7D1BA2001149A5 /* AppManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF4BC661B7D1BA2001149A5 /* AppManager.m */; };
 		0AF4BC6A1B7D278B001149A5 /* NewsArticleStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF4BC691B7D278B001149A5 /* NewsArticleStructure.m */; };
 		F75C21971B7B99D00052BC87 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F75C21961B7B99D00052BC87 /* AboutViewController.m */; };
+		F768D0611B8208980064E296 /* CommunityServiceStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = F768D0601B8208980064E296 /* CommunityServiceStructure.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -158,6 +159,8 @@
 		0AF4BC691B7D278B001149A5 /* NewsArticleStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsArticleStructure.m; sourceTree = "<group>"; };
 		F75C21951B7B99D00052BC87 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
 		F75C21961B7B99D00052BC87 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
+		F768D05F1B8208980064E296 /* CommunityServiceStructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommunityServiceStructure.h; sourceTree = "<group>"; };
+		F768D0601B8208980064E296 /* CommunityServiceStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommunityServiceStructure.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -234,6 +237,8 @@
 				0A1FE3E01B7B7DA80062A30E /* FirstViewController.m */,
 				0AF4BC681B7D278B001149A5 /* NewsArticleStructure.h */,
 				0AF4BC691B7D278B001149A5 /* NewsArticleStructure.m */,
+				F768D05F1B8208980064E296 /* CommunityServiceStructure.h */,
+				F768D0601B8208980064E296 /* CommunityServiceStructure.m */,
 				0AB797D31B7DC74400113D94 /* StaffMemberStructure.h */,
 				0AB797D41B7DC74400113D94 /* StaffMemberStructure.m */,
 				0AF4BC651B7D1BA2001149A5 /* AppManager.h */,
@@ -442,6 +447,7 @@
 			files = (
 				0A4A37F81B7BA41A00AF3E36 /* LunchMenusViewController.m in Sources */,
 				0A4A37EF1B7BA33C00AF3E36 /* CommunityServiceViewController.m in Sources */,
+				F768D0611B8208980064E296 /* CommunityServiceStructure.m in Sources */,
 				0AD4B0C11B81FA3C004E23E4 /* ExtracurricularStructure.m in Sources */,
 				0AF4BC671B7D1BA2001149A5 /* AppManager.m in Sources */,
 				F75C21971B7B99D00052BC87 /* AboutViewController.m in Sources */,

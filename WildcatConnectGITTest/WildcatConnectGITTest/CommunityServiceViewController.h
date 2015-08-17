@@ -9,8 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface CommunityServiceViewController : UIViewController{
+    NSMutableArray *upcomingOpps;
+    NSMutableArray *commImages;
+    
     
 }
-
-
+@property (nonatomic, retain) NSMutableArray *upcomingOpps;
+@property (nonatomic, retain) NSMutableArray *commImages;
 @end
