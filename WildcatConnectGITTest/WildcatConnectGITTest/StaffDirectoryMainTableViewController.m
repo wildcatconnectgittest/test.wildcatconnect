@@ -66,16 +66,9 @@
                     dispatch_async(dispatch_get_main_queue(), ^ {
                          [activity stopAnimating];
                          [self.tableView reloadData];
-                         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshData)];
-                         self.navigationItem.rightBarButtonItem = barButtonItem;
+                         self.navigationItem.rightBarButtonItem = nil;
                     });
                } withArray:returnArray];
-               dispatch_async(dispatch_get_main_queue(), ^ {
-                    [activity stopAnimating];
-                    [self.tableView reloadData];
-                    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshData)];
-                    self.navigationItem.rightBarButtonItem = barButtonItem;
-               });
           }];
      }
      /*activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
@@ -161,8 +154,7 @@
                dispatch_async(dispatch_get_main_queue(), ^ {
                     [activity stopAnimating];
                     [self.tableView reloadData];
-                    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(viewDidLoad)];
-                    self.navigationItem.rightBarButtonItem = barButtonItem;
+                    self.navigationItem.rightBarButtonItem = nil;
                });
           } withArray:returnArrayA];
      }];

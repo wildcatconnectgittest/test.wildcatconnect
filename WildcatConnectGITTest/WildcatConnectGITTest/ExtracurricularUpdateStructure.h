@@ -15,8 +15,10 @@
 
      //Properties...
 
-@property NSString *extracurricularIDString;
+@property NSNumber *extracurricularID;
 @property NSString *messageString;
-@property NSString *extracurricularUpdateIDString;
+@property NSNumber *extracurricularUpdateID;
+
+- (ExtracurricularStructure *)getStructureForUpdate:(ExtracurricularUpdateStructure *) update withArray:(NSMutableArray *)array;
 
 @end

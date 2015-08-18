@@ -11,12 +11,26 @@
 
 @implementation ExtracurricularUpdateStructure
 
+@dynamic extracurricularID;
+@dynamic messageString;
+@dynamic extracurricularUpdateID;
+
 + (void)load {
      [self registerSubclass];
 }
 
 + (NSString *)parseClassName {
      return @"ExtracurricularUpdateStructure";
+}
+
+- (ExtracurricularStructure *)getStructureForUpdate:(ExtracurricularUpdateStructure *)update withArray:(NSMutableArray *)array {
+     NSNumber *ID = update.extracurricularID;
+     for (ExtracurricularStructure *e in array) {
+          if (e.extracurricularID == ID) {
+               return e;
+          }
+     }
+     return nil;
 }
 
 @end

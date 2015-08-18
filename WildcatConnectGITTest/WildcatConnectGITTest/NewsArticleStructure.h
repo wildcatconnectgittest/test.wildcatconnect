@@ -23,7 +23,7 @@
 @property NSString *authorString;
 @property NSString *dateString;
 @property NSString *contentURLString;
-@property NSString *articleIDString;
+@property NSNumber *articleID;
 @property NSNumber *likes;
 @property NSString *imageURLString;
 

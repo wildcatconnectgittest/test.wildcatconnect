@@ -77,7 +77,7 @@
      for (int i = 0; i < theArrayToSearch.count; i ++) {
           object = theArrayToSearch[i];
           newsArticleStructure = [[NewsArticleStructure alloc] init];
-          newsArticleStructure.articleIDString = [object objectForKey:@"articleIDString"];
+          newsArticleStructure.articleID = [object objectForKey:@"articleID"];
           newsArticleStructure.authorString = [object objectForKey:@"authorString"];
           newsArticleStructure.contentURLString = [object objectForKey:@"contentURLString"];
           newsArticleStructure.dateString = [object objectForKey:@"dateString"];
@@ -121,7 +121,7 @@
                                          
                                          @"contentURLString" : n.contentURLString,
                                          
-                                         @"articleIDString" : n.articleIDString,
+                                         @"articleID" : n.articleID,
                                          
                                          @"likes" : n.likes
                                          
@@ -137,9 +137,14 @@
                self.newsArticleImages = returnArray;
                NSMutableArray *moreItems = [NSMutableArray array];
                NSData *data;
-               for (UIImage *image in returnArray) {
-                    data = UIImagePNGRepresentation(image);
-                    [moreItems addObject:data];
+               for (int i = 0; i < returnArray.count; i++) {
+                    if ([returnArray[i] isKindOfClass:[NSObject class]])
+                         [moreItems addObject:[[NSData alloc] init]];
+                    else if ([returnArray[i] isKindOfClass:[UIImage class]]) {
+                         data = [[NSData alloc] init];
+                         data = UIImagePNGRepresentation(returnArray[i]);
+                         [moreItems addObject:data];
+                    }
                }
                [userDefaults setObject:moreItems forKey:@"newsArticleImages"];
                [userDefaults synchronize];
@@ -168,7 +173,7 @@
      [userDefaults setObject:data forKey:@"newsArticles"];
           //[userDefaults setValue:newsArticleArray forKey:@"newsArticles"];          //[userDefaults setObject:self.newsArticleImages forKey:@"newsArticleImages2"];
      [userDefaults synchronize];*/
-     NSMutableArray *itemsToSave = [NSMutableArray array];
+     /*NSMutableArray *itemsToSave = [NSMutableArray array];
      for (NewsArticleStructure *n in self.newsArticles) {
           [itemsToSave addObject:@{ @"hasImage"     : n.hasImage,
                                     @"imageURLString"    : n.imageURLString,
@@ -192,7 +197,7 @@
      NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
      [userDefaults setObject:itemsToSave forKey:@"newsArticles"];
      [userDefaults synchronize];
-     NSLog(@"%@", [userDefaults objectForKey:@"newsArticles"]);
+     NSLog(@"%@", [userDefaults objectForKey:@"newsArticles"]);*/
 }
 
 - (void)encodeWithCoder:(NSCoder *)coder;

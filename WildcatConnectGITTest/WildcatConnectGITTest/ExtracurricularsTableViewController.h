@@ -9,9 +9,17 @@
 #import <UIKit/UIKit.h>
 
 @interface ExtracurricularsTableViewController : UITableViewController {
-     NSArray *sectionTitlesArray;
+     NSNumber *loadNumber;
+     NSMutableArray *updatesArray;
+     NSMutableArray *extracurricularsArray;
+     NSMutableArray *ECImagesArray;
 }
 
-@property (nonatomic, retain) NSArray *sectionTitlesArray;
+@property (nonatomic, retain) NSNumber *loadNumber;
+@property (nonatomic, retain) NSMutableArray *updatesArray;
+@property (nonatomic, retain) NSMutableArray *extracurricularsArray;
+@property (nonatomic, retain) NSMutableArray *ECImagesArray;
+
+- (instancetype)initWithLoadNumber:(NSNumber *)theLoadNumber;
 
 @end

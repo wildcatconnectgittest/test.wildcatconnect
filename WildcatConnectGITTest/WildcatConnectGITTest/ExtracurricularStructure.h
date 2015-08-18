@@ -15,11 +15,12 @@
      //Properties
 
 @property NSString *titleString;
-@property NSArray *descriptionString;
+@property NSString *descriptionString;
 @property NSNumber *hasImage;
 @property PFFile *imageFile;
+@property NSString *imageURLString;
 @property NSString *meetingString;
-@property NSArray *contactInformationArray;
-@property NSString *extracurricularIDString;
+@property NSDictionary *contactInformationDictionary;
+@property NSNumber *extracurricularID;
 
 @end

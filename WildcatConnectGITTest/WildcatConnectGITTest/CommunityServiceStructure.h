@@ -21,5 +21,6 @@
 @property NSNumber *IsNewNumber;
 @property PFFile *commImageFile;
 @property NSNumber *hasImage;
+@property NSNumber *communityServiceID;
 //0=no, old 1 = yes, new
 @end

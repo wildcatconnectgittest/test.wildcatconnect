@@ -10,6 +10,7 @@
 #import "NewsCenterTableViewController.h"
 #import "StaffDirectoryMainTableViewController.h"
 #import "CommunityServiceTableViewController.h"
+#import "ExtracurricularsTableViewController.h"
 
 @interface SectionsTableViewController ()
 
@@ -103,7 +104,9 @@
                }
           }
       }*/NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-     NSMutableArray *visitedPagesArray = [userDefaults objectForKey:@"visitedPagesArray"];
+     NSMutableArray *theVisitedPagesArray = [userDefaults objectForKey:@"visitedPagesArray"];
+     NSMutableArray *visitedPagesArray = [[NSMutableArray alloc] init];
+     [visitedPagesArray addObjectsFromArray:theVisitedPagesArray];
      if (! visitedPagesArray) {
           visitedPagesArray = [[NSMutableArray alloc] init];
           [visitedPagesArray addObject:[NSString stringWithFormat:@"%lu", (long)indexPath.row]];
@@ -111,6 +114,10 @@
           [userDefaults synchronize];
           if (indexPath.row == 0) {
                NewsCenterTableViewController *controller = [[NewsCenterTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
+               [self.navigationController pushViewController:controller animated:YES];
+          }
+          else if (indexPath.row == 1) {
+               ExtracurricularsTableViewController *controller = [[ExtracurricularsTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
                [self.navigationController pushViewController:controller animated:YES];
           }
           else if (indexPath.row == 2) {
@@ -128,6 +135,10 @@
                     NewsCenterTableViewController *controller = [[NewsCenterTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:0]];
                     [self.navigationController pushViewController:controller animated:YES];
                }
+               else if (indexPath.row == 1) {
+                    ExtracurricularsTableViewController *controller = [[ExtracurricularsTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:0]];
+                    [self.navigationController pushViewController:controller animated:YES];
+               }
                else if (indexPath.row == 2) {
                     CommunityServiceTableViewController *controller = [[CommunityServiceTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:0]];
                     [self.navigationController pushViewController:controller animated:YES];
@@ -143,6 +154,9 @@
                [userDefaults synchronize];
                if (indexPath.row == 0) {
                     NewsCenterTableViewController *controller = [[NewsCenterTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
+                    [self.navigationController pushViewController:controller animated:YES];
+               }else if (indexPath.row == 1) {
+                    ExtracurricularsTableViewController *controller = [[ExtracurricularsTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
                     [self.navigationController pushViewController:controller animated:YES];
                } else if (indexPath.row == 2) {
                     CommunityServiceTableViewController *controller = [[CommunityServiceTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];

@@ -13,7 +13,7 @@
     NSMutableArray *commImages;
     NSMutableArray *newOpps;
     NSMutableArray *oldOpps;
-     NSNumber *loadNumber;
+NSNumber *loadNumber;
     
 }
 @property (nonatomic, retain) NSMutableArray *allOpps;

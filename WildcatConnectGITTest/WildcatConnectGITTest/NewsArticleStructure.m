@@ -20,7 +20,7 @@
 @dynamic authorString;
 @dynamic dateString;
 @dynamic contentURLString;
-@dynamic articleIDString;
+@dynamic articleID;
 @dynamic likes;
 
 

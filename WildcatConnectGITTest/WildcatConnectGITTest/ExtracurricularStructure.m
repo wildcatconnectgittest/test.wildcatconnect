@@ -17,9 +17,10 @@
 @dynamic descriptionString;
 @dynamic hasImage;
 @dynamic imageFile;
+@dynamic imageURLString;
 @dynamic meetingString;
-@dynamic contactInformationArray;
-@dynamic extracurricularIDString;
+@dynamic contactInformationDictionary;
+@dynamic extracurricularID;
 
 + (void)load {
      [self registerSubclass];
