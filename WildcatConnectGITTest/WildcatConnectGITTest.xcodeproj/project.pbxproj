@@ -63,6 +63,7 @@
 		F75C21971B7B99D00052BC87 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F75C21961B7B99D00052BC87 /* AboutViewController.m */; };
 		F768D0611B8208980064E296 /* CommunityServiceStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = F768D0601B8208980064E296 /* CommunityServiceStructure.m */; };
 		F768D0641B821A000064E296 /* CommunityServiceTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F768D0631B821A000064E296 /* CommunityServiceTableViewController.m */; };
+		F768D0821B85381B0064E296 /* LunchMenusStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = F768D0811B85381B0064E296 /* LunchMenusStructure.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -164,6 +165,8 @@
 		F768D0601B8208980064E296 /* CommunityServiceStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommunityServiceStructure.m; sourceTree = "<group>"; };
 		F768D0621B821A000064E296 /* CommunityServiceTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommunityServiceTableViewController.h; sourceTree = "<group>"; };
 		F768D0631B821A000064E296 /* CommunityServiceTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommunityServiceTableViewController.m; sourceTree = "<group>"; };
+		F768D0801B85381B0064E296 /* LunchMenusStructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LunchMenusStructure.h; sourceTree = "<group>"; };
+		F768D0811B85381B0064E296 /* LunchMenusStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LunchMenusStructure.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -236,6 +239,10 @@
 				0AD4B0C61B81FCA3004E23E4 /* ExtracurricularsTableViewController.m */,
 				0AD4B0C81B820252004E23E4 /* ExtracurricularUpdateStructure.h */,
 				0AD4B0C91B820252004E23E4 /* ExtracurricularUpdateStructure.m */,
+				F768D0801B85381B0064E296 /* LunchMenusStructure.h */,
+				F768D0811B85381B0064E296 /* LunchMenusStructure.m */,
+				0A4A37F61B7BA41A00AF3E36 /* LunchMenusViewController.h */,
+				0A4A37F71B7BA41A00AF3E36 /* LunchMenusViewController.m */,
 				0A1FE3DC1B7B7DA80062A30E /* AppDelegate.h */,
 				0AD4B0BD1B81F7F1004E23E4 /* AppDelegate.m */,
 				0A1FE3DF1B7B7DA80062A30E /* FirstViewController.h */,
@@ -277,8 +284,6 @@
 				0A4A37F11B7BA34600AF3E36 /* StudentCenterViewController.m */,
 				0A4A37F31B7BA41100AF3E36 /* CalendarViewController.h */,
 				0A4A37F41B7BA41100AF3E36 /* CalendarViewController.m */,
-				0A4A37F61B7BA41A00AF3E36 /* LunchMenusViewController.h */,
-				0A4A37F71B7BA41A00AF3E36 /* LunchMenusViewController.m */,
 				0A4A37F91B7BA42200AF3E36 /* UsefulLinksViewController.h */,
 				0A4A37FA1B7BA42200AF3E36 /* UsefulLinksViewController.m */,
 				0A4A37FC1B7BA43900AF3E36 /* Staff DirectoryTableViewController.h */,
@@ -457,6 +462,7 @@
 				F75C21971B7B99D00052BC87 /* AboutViewController.m in Sources */,
 				0AF4BC6A1B7D278B001149A5 /* NewsArticleStructure.m in Sources */,
 				0A1FE3E41B7B7DA80062A30E /* SecondViewController.m in Sources */,
+				F768D0821B85381B0064E296 /* LunchMenusStructure.m in Sources */,
 				0A4A37FB1B7BA42200AF3E36 /* UsefulLinksViewController.m in Sources */,
 				0AD4B0C71B81FCA3004E23E4 /* ExtracurricularsTableViewController.m in Sources */,
 				0A4A380C1B7BCAF100AF3E36 /* NewsCenterTableViewController.m in Sources */,

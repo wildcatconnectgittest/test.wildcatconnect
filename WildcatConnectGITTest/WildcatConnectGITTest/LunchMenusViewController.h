@@ -8,6 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LunchMenusViewController : UIViewController
+@interface LunchMenusViewController : UIViewController{
+    
+    NSMutableArray *lunchArray;
+    NSMutableArray *breakfastArray;
+    
+}
+@property (nonatomic, retain) NSMutableArray *lunchArray;
+@property (nonatomic, retain) NSMutableArray *breakfastArray;
 
 @end
