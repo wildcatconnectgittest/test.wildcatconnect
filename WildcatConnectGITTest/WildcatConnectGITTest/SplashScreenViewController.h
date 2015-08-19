@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface SplashScreenViewController : UIViewController
+@property (retain, nonatomic) IBOutlet UIImageView *StartImage;
 
 @property (strong, nonatomic) IBOutlet UILabel *statusLabel;
 @property (nonatomic) UIBackgroundTaskIdentifier backgroundTask;

@@ -64,6 +64,7 @@
 		F768D0611B8208980064E296 /* CommunityServiceStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = F768D0601B8208980064E296 /* CommunityServiceStructure.m */; };
 		F768D0641B821A000064E296 /* CommunityServiceTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F768D0631B821A000064E296 /* CommunityServiceTableViewController.m */; };
 		F768D0821B85381B0064E296 /* LunchMenusStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = F768D0811B85381B0064E296 /* LunchMenusStructure.m */; };
+		F768D0861B854D4B0064E296 /* wildcat.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = F768D0851B854D4B0064E296 /* wildcat.jpeg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -167,6 +168,7 @@
 		F768D0631B821A000064E296 /* CommunityServiceTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommunityServiceTableViewController.m; sourceTree = "<group>"; };
 		F768D0801B85381B0064E296 /* LunchMenusStructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LunchMenusStructure.h; sourceTree = "<group>"; };
 		F768D0811B85381B0064E296 /* LunchMenusStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LunchMenusStructure.m; sourceTree = "<group>"; };
+		F768D0851B854D4B0064E296 /* wildcat.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = wildcat.jpeg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -302,6 +304,7 @@
 		0A1FE3D81B7B7DA80062A30E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				F768D0851B854D4B0064E296 /* wildcat.jpeg */,
 				0A1FE3D91B7B7DA80062A30E /* Info.plist */,
 				0A1FE3DA1B7B7DA80062A30E /* main.m */,
 			);
@@ -432,6 +435,7 @@
 				0A0A49791B7EAE4900304629 /* sections@2x.png in Resources */,
 				0AB797C21B7DBDBA00113D94 /* Images.xcassets in Resources */,
 				0A0A49771B7EAE2B00304629 /* home@2x.png in Resources */,
+				F768D0861B854D4B0064E296 /* wildcat.jpeg in Resources */,
 				0AB797C41B7DBF0B00113D94 /* theNews@2x.png in Resources */,
 				0AB797CA1B7DC27200113D94 /* studentCenter@2x.png in Resources */,
 				0AB797C61B7DC08400113D94 /* extracurriculars@2x.png in Resources */,

@@ -16,11 +16,15 @@
      int locationY;
      NSOperationQueue *opQue;
 }
-
+@synthesize StartImage;
 @synthesize statusLabel;
 
 - (void)viewDidLoad {
-     [super viewDidLoad];
+    
+    UIImage *Simage = [UIImage imageNamed:@"wildcat.jpg"];
+    [StartImage setImage:Simage];
+    
+    [super viewDidLoad];
      self.navigationController.navigationBarHidden = YES;
      opQue = [[NSOperationQueue alloc] init];
      locationY = statusLabel.frame.origin.y;
@@ -40,4 +44,8 @@
           // Dispose of any resources that can be recreated.
 }
 
+- (void)dealloc {
+    [StartImage release];
+    [super dealloc];
+}
 @end
