@@ -16,12 +16,14 @@
      int locationY;
      NSOperationQueue *opQue;
 }
+
+
 @synthesize StartImage;
 @synthesize statusLabel;
 
 - (void)viewDidLoad {
     
-    UIImage *Simage = [UIImage imageNamed:@"wildcat.jpg"];
+    UIImage *Simage = [UIImage imageNamed:@"wildcat.jpeg"];
     [StartImage setImage:Simage];
     
     [super viewDidLoad];
