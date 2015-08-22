@@ -14,11 +14,11 @@
 @dynamic lunchString;
 
 + (void)load {
- //   [self registerSubclass];
+    [self registerSubclass];
 }
 
 + (NSString *)parseClassName {
-    return @"NewsArticleStructure";
+    return @"LunchMenusStructure";
 }
 
 @end

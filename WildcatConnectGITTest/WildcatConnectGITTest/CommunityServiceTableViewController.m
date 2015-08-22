@@ -8,6 +8,7 @@
 
 #import "CommunityServiceTableViewController.h"
 #import "CommunityServiceStructure.h"
+#import "AppManager.h"
 @interface CommunityServiceTableViewController ()
 
 @end
@@ -19,9 +20,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // NSLog(@"%@", self.IsNewNumber);
-    //if (self.IsNewNumber != [NSNumber numberWithInt:1]) {
-    //self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) style:UITableViewStyleGrouped];
     activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
     [activity setBackgroundColor:[UIColor clearColor]];
     [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
@@ -32,31 +30,58 @@
         NSLog(@"Done!");
         NSLog(@"%@", returnArrayA);
         self.allOpps = returnArrayA;
-        [self testMethodThreeWithCompletion:^(NSMutableArray *returnArrayB, NSMutableArray *returnArray2) {
-            //first is old - B
-            //new ones
-            NSLog(@"%@", returnArrayB);
-            NSLog(@"%@", returnArray2);
-            self.newOpps = returnArray2;
-            self.oldOpps = returnArrayB;
-            dispatch_async(dispatch_get_main_queue(), ^ {
-                [activity stopAnimating];
-                                 [self.tableView reloadData];
-                UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(viewDidLoad)];
-                self.navigationItem.rightBarButtonItem = barButtonItem;
-            });
-        } withArray:returnArrayA];
+         [self imagesMethodWithCompletion:^(NSError *error, NSMutableArray *returnArray) {
+              self.commImages = returnArray;
+              [self testMethodThreeWithCompletion:^(NSMutableArray *returnArrayB, NSMutableArray *returnArray2) {
+                        //first is old - B
+                        //new ones
+                   NSLog(@"%@", returnArrayB);
+                   NSLog(@"%@", returnArray2);
+                   self.newOpps = returnArray2;
+                   self.oldOpps = returnArrayB;
+                   dispatch_async(dispatch_get_main_queue(), ^ {
+                        [activity stopAnimating];
+                        [self.tableView reloadData];
+                        UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(viewDidLoad)];
+                        self.navigationItem.rightBarButtonItem = barButtonItem;
+                   });
+              } withArray:returnArrayA];
+         } withArray:returnArrayA];
     }];
-    //   }
-    /*  else {
-     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(viewDidLoad)];
-     self.navigationItem.rightBarButtonItem = barButtonItem;
-     self.loadNumber = [NSNumber numberWithInt:0];
-     }*/
-    
-    
-    
-    // Do any additional setup after loading the view.
+}
+
+- (void)imagesMethodWithCompletion:(void (^)(NSError *error, NSMutableArray *returnArray))completion withArray:(NSMutableArray *)array {
+     __block NSError *theError = nil;
+     dispatch_group_t theServiceGroup = dispatch_group_create();
+     dispatch_group_enter(theServiceGroup);
+     CommunityServiceStructure *communityServiceStructure;
+     NSMutableArray *returnArray = [[NSMutableArray alloc] init];
+     for (int i = 0; i < array.count; i++) {
+          communityServiceStructure = (CommunityServiceStructure *)[array objectAtIndex:i];
+          if (communityServiceStructure.hasImage == [NSNumber numberWithInt:1]) {
+               PFFile *file = communityServiceStructure.commImageFile;
+               [file getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
+                    UIImage *image = [UIImage imageWithData:data];
+                    image = [[AppManager getInstance] imageFromImage:image scaledToWidth:70];
+                    [returnArray addObject:image];
+                    if (i == array.count - 1)
+                         dispatch_group_leave(theServiceGroup);
+               }];
+          }
+          else {
+               [returnArray addObject:[[NSObject alloc] init]];
+               if (i == array.count - 1)
+                    dispatch_group_leave(theServiceGroup);
+          }
+     }
+     if (array.count == 0)
+          dispatch_group_leave(theServiceGroup);
+     dispatch_group_notify(theServiceGroup, dispatch_get_main_queue(), ^{
+          NSError *overallError = nil;
+          if (theError)
+               overallError = theError;
+          completion(overallError, returnArray);
+     });
 }
 
 - (instancetype)initWithLoadNumber:(NSNumber *)theLoadNumber {
@@ -185,9 +210,9 @@
         return 1;
     else {
         if (section == 0)
-            return self.newOpps.count;
+             return (self.newOpps.count == 0) ? 1 : self.newOpps.count;
         else if (section == 1)
-            return self.oldOpps.count;
+             return (self.oldOpps.count == 0) ? 1 : self.oldOpps.count;
         return nil;
     }
     return nil;
@@ -206,23 +231,36 @@
         return  cell;
     } else {
         if (indexPath.section == 0) {
-            CommunityServiceStructure *commServiceStructure = ((CommunityServiceStructure *)[self.newOpps objectAtIndex:indexPath.row]);
-            UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
-            cell.textLabel.text = commServiceStructure.commTitleString;
-            cell.detailTextLabel.text = commServiceStructure.commSummaryString;
-            cell.detailTextLabel.numberOfLines = 4;
-            //if (commServiceStructure.hasImage == [NSNumber numberWithInt:1])
-                //cell.imageView.image = (UIImage *)[self.commImages objectAtIndex:indexPath.row];
-            return cell;
+             if (self.newOpps.count == 0) {
+                  UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
+                  cell.textLabel.text = @"No data to display.";
+                  return  cell;
+             } else {
+                  CommunityServiceStructure *commServiceStructure = ((CommunityServiceStructure *)[self.newOpps objectAtIndex:indexPath.row]);
+                  UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
+                  cell.textLabel.text = commServiceStructure.commTitleString;
+                  cell.detailTextLabel.text = commServiceStructure.commSummaryString;
+                  cell.detailTextLabel.numberOfLines = 4;
+                  if (commServiceStructure.hasImage == [NSNumber numberWithInt:1]) {
+                       cell.imageView.image = (UIImage *)[self.commImages objectAtIndex:indexPath.row];
+                  }
+                  return cell;
+             }
         } else if (indexPath.section == 1) {
-            CommunityServiceStructure *commServiceStructure = ((CommunityServiceStructure *)[self.oldOpps objectAtIndex:indexPath.row]);
-            UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
-            cell.textLabel.text = commServiceStructure.commTitleString;
-            cell.detailTextLabel.text = commServiceStructure.commSummaryString;
-            cell.detailTextLabel.numberOfLines = 4;
-            //if (commServiceStructure.hasImage == [NSNumber numberWithInt:1])
-                //cell.imageView.image = (UIImage *)[self.commImages objectAtIndex:indexPath.row];
-            return cell;
+             if (self.oldOpps.count == 0) {
+                  UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
+                  cell.textLabel.text = @"No data to display.";
+                  return  cell;
+             } else {
+                  CommunityServiceStructure *commServiceStructure = ((CommunityServiceStructure *)[self.oldOpps objectAtIndex:indexPath.row]);
+                  UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
+                  cell.textLabel.text = commServiceStructure.commTitleString;
+                  cell.detailTextLabel.text = commServiceStructure.commSummaryString;
+                  cell.detailTextLabel.numberOfLines = 4;
+                  if (commServiceStructure.hasImage == [NSNumber numberWithInt:1])
+                       cell.imageView.image = (UIImage *)[self.commImages objectAtIndex:indexPath.row];
+                  return cell;
+             }
         }
         else return nil;
     }

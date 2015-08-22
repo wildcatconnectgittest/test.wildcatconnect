@@ -34,7 +34,7 @@
                     [self getOldImagesWithCompletion:^(NSMutableArray *returnArrayB) {
                          self.newsArticleImages = returnArrayB;
                          dispatch_async(dispatch_get_main_queue(), ^ {
-                              [activity stopAnimating];
+                              [activity removeFromSuperview];
                               [self.tableView reloadData];
                               UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshData)];
                               self.navigationItem.rightBarButtonItem = barButtonItem;
@@ -55,10 +55,16 @@
      for (int i = 0; i < theArrayToSearch.count; i++) {
           data = theArrayToSearch[i];
           image = [UIImage imageWithData:data];
-          [array addObject:image];
+          if (image)
+               [array addObject:image];
+          else
+               [array addObject:[[NSObject alloc] init]];
           if (i == theArrayToSearch.count - 1) {
                dispatch_group_leave(serviceGroup);
           }
+     }
+     if (theArrayToSearch.count == 0) {
+          dispatch_group_leave(serviceGroup);
      }
      dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^{
           completion(array);
@@ -89,6 +95,9 @@
           [array addObject:newsArticleStructure];
           if (i == theArrayToSearch.count - 1)
                dispatch_group_leave(serviceGroup);
+     }
+     if (theArrayToSearch.count == 0) {
+          dispatch_group_leave(serviceGroup);
      }
      dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^{
           completion(array);
@@ -138,18 +147,18 @@
                NSMutableArray *moreItems = [NSMutableArray array];
                NSData *data;
                for (int i = 0; i < returnArray.count; i++) {
-                    if ([returnArray[i] isKindOfClass:[NSObject class]])
-                         [moreItems addObject:[[NSData alloc] init]];
-                    else if ([returnArray[i] isKindOfClass:[UIImage class]]) {
+                    if ([returnArray[i] isKindOfClass:[UIImage class]]) {
                          data = [[NSData alloc] init];
                          data = UIImagePNGRepresentation(returnArray[i]);
                          [moreItems addObject:data];
                     }
-               }
+                    else
+                         [moreItems addObject:[[NSData alloc] init]];
+                    }
                [userDefaults setObject:moreItems forKey:@"newsArticleImages"];
                [userDefaults synchronize];
                dispatch_async(dispatch_get_main_queue(), ^ {
-                    [activity stopAnimating];
+                    [activity removeFromSuperview];
                     [self.tableView reloadData];
                     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshData)];
                     self.navigationItem.rightBarButtonItem = barButtonItem;
@@ -227,7 +236,7 @@
      dispatch_group_enter(serviceGroup);
       NSMutableArray *returnArray = [[NSMutableArray alloc] init];
      PFQuery *query = [NewsArticleStructure query];
-     [query orderByDescending:@"createdAt"];
+     [query orderByAscending:@"articleID"];
      query.limit = 10;
      [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
           [returnArray addObjectsFromArray:objects];
@@ -253,36 +262,36 @@
       [self.newsArticleImages addObject:image];
       }*/
      __block NSError *theError = nil;
+     __block BOOL lastNone = false;
      dispatch_group_t theServiceGroup = dispatch_group_create();
      dispatch_group_enter(theServiceGroup);
-     NewsArticleStructure *newsArticleStructure;
-     NSLog(@"Doing it...");
-     NSMutableArray *returnArray = [[NSMutableArray alloc] init];
-     NSLog(@"%lu", (unsigned long)array.count);
+     NSMutableArray *theReturnArray = [NSMutableArray arrayWithArray:array];
+     NewsArticleStructure *ECStructure;
      for (int i = 0; i < array.count; i++) {
-          NSLog(@"%i", i);
-          newsArticleStructure = (NewsArticleStructure *)[array objectAtIndex:i];
-          if (newsArticleStructure.hasImage == [NSNumber numberWithInt:1]) {
-               PFFile *file = newsArticleStructure.imageFile;
+          ECStructure = (NewsArticleStructure *)[array objectAtIndex:i];
+          if (ECStructure.hasImage == [NSNumber numberWithInt:1]) {
+               PFFile *file = ECStructure.imageFile;
                [file getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
+                    theError = error;
                     UIImage *image = [UIImage imageWithData:data];
                     image = [[AppManager getInstance] imageFromImage:image scaledToWidth:70];
-                    [returnArray addObject:image];
-                    if (i == array.count - 1)
+                    [theReturnArray setObject:image atIndexedSubscript:[[NSNumber numberWithInt:i] integerValue]];
+                    if (i == array.count - 1) {
                          dispatch_group_leave(theServiceGroup);
+                    }
                }];
+          } else {
+               [theReturnArray setObject:[[NSObject alloc] init] atIndexedSubscript:[[NSNumber numberWithInt:i] integerValue]];
           }
-          else {
-               [returnArray addObject:[[NSObject alloc] init]];
-               if (i == array.count - 1)
-                    dispatch_group_leave(theServiceGroup);
-          }
+     }
+     if (array.count == 0) {
+          dispatch_group_leave(theServiceGroup);
      }
      dispatch_group_notify(theServiceGroup, dispatch_get_main_queue(), ^{
           NSError *overallError = nil;
           if (theError)
                overallError = theError;
-          completion(overallError, returnArray);
+          completion(overallError, theReturnArray);
      });
 }
 
@@ -291,7 +300,7 @@
      dispatch_group_t taskGroup = dispatch_group_create();
      dispatch_group_enter(taskGroup);
      PFQuery *query = [NewsArticleStructure query];
-     [query orderByAscending:@"createdAt"];
+     [query orderByAscending:@"articleID"];
      query.limit = 10;
      [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
           if (! error) {

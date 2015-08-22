@@ -122,6 +122,9 @@
           if (i == theArrayToSearch.count - 1)
                dispatch_group_leave(serviceGroup);
      }
+     if (theArrayToSearch.count == 0) {
+          dispatch_group_leave(serviceGroup);
+     }
      dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
           completion(array);
      });
@@ -146,6 +149,9 @@
                dispatch_group_leave(serviceGroup);
           }
      }
+     if (theArrayToSearch.count == 0) {
+          dispatch_group_leave(serviceGroup);
+     }
      dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^{
           completion(array);
      });
@@ -167,6 +173,9 @@
           [array addObject:ECUpdateStructure];
           if (i == theArrayToSearch.count - 1)
                dispatch_group_leave(serviceGroup);
+     }
+     if (theArrayToSearch.count == 0) {
+          dispatch_group_leave(serviceGroup);
      }
      dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
           completion(array);
@@ -213,6 +222,9 @@
           } else {
                [theReturnArray setObject:[[NSObject alloc] init] atIndexedSubscript:[[NSNumber numberWithInt:i] integerValue]];
           }
+     }
+     if (array.count == 0) {
+          dispatch_group_leave(theServiceGroup);
      }
      dispatch_group_notify(theServiceGroup, dispatch_get_main_queue(), ^{
           NSError *overallError = nil;
