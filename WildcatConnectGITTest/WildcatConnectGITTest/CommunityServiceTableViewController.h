@@ -10,7 +10,8 @@
 
 @interface CommunityServiceTableViewController : UITableViewController{
     NSMutableArray *allOpps;
-    NSMutableArray *commImages;
+     NSMutableArray *oldImages;
+     NSMutableArray *newImages;
     NSMutableArray *newOpps;
     NSMutableArray *oldOpps;
      NSNumber *loadNumber;
@@ -19,7 +20,8 @@
 @property (nonatomic, retain) NSMutableArray *allOpps;
 @property (nonatomic, retain) NSMutableArray *newOpps;
 @property (nonatomic, retain) NSMutableArray *oldOpps;
-@property (nonatomic, retain) NSMutableArray *commImages;
+@property (nonatomic, retain) NSMutableArray *oldImages;
+@property (nonatomic, retain) NSMutableArray *newImages;
 @property (nonatomic, retain) NSNumber *loadNumber;
 
 -(instancetype)initWithLoadNumber:(NSNumber *)theLoadNumber;

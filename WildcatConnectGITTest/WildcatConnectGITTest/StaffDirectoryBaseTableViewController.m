@@ -23,8 +23,6 @@ NSString *const kTableCellNibName = @"TableCell";
      cell.textLabel.text = [staffMemberStructure fullNameCommaString];
      NSString *string = staffMemberStructure.staffMemberTitle;
      cell.detailTextLabel.text = string;
-     NSLog(@"%@", staffMemberStructure.staffMemberTitle);
-     NSLog(@"%@", cell.detailTextLabel.text);
      [cell setNeedsLayout];
      return cell;
 }

@@ -11,12 +11,18 @@
 #import "StaffDirectoryMainTableViewController.h"
 #import "CommunityServiceTableViewController.h"
 #import "ExtracurricularsTableViewController.h"
+#import <Parse/Parse.h>
+#import "NewsArticleStructure.h"
+#import "ExtracurricularUpdateStructure.h"
+#import "CommunityServiceStructure.h"
 
 @interface SectionsTableViewController ()
 
 @end
 
-@implementation SectionsTableViewController
+@implementation SectionsTableViewController {
+     UIActivityIndicatorView *activity;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -30,7 +36,6 @@
      
      self.sectionsArray = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"News Center", @"Extracurriculars", @"Community Service", @"Student Center", @"Calendar", @"Lunch Menus", @"Useful Links", @"Staff Directory", nil]];
      self.segueIDsArray = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"showNewsCenter", @"showExtracurriculars", @"showCommunityService", @"showStudentCenter", @"showCalendar", @"showLunchMenus", @"showUsefulLinks", @"showStaffDirectory", nil]];
-     NSBundle *mainBundle = [NSBundle mainBundle];
      self.sectionsImagesArray = [[NSMutableArray alloc] init];
      [self.sectionsImagesArray addObject:@"theNews@2x.png"];
      [self.sectionsImagesArray addObject:@"extracurriculars@2x.png"];
@@ -40,6 +45,120 @@
      [self.sectionsImagesArray addObject:@"lunchMenus@2x.png"];
      [self.sectionsImagesArray addObject:@"usefulLinks@2x.png"];
      [self.sectionsImagesArray addObject:@"staffDirectory@2x.png"];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+     [super viewWillAppear:animated];
+          //Load the sectionsNumbersArray
+     NSMutableArray *numbersArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"sectionsNumbersArray"];
+     if (numbersArray) {
+          self.sectionsNumbersArray = numbersArray;
+     }
+     else {
+               //Create new array
+          self.sectionsNumbersArray = [self createNewNumbersArray];
+     }
+     NSMutableArray *readNewsArticlesArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"readNewsArticlesArray"];
+     if (! readNewsArticlesArray) {
+          readNewsArticlesArray = [[NSMutableArray alloc] init];
+     }
+     NSMutableArray *readECArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"readECArray"];
+     if (! readECArray) {
+          readECArray = [[NSMutableArray alloc] init];
+     }
+     NSMutableArray *readCommArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"readCommArray"];
+     if (! readCommArray) {
+          readCommArray = [[NSMutableArray alloc] init];
+     }
+     NSMutableArray *updatingArray = [self.sectionsNumbersArray mutableCopy];
+     activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+     [activity setBackgroundColor:[UIColor clearColor]];
+     [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+     UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:activity];
+     self.navigationItem.rightBarButtonItem = barButton;
+     [activity startAnimating];
+     [self updateSectionNumbersOneWithCompletion:^(NSError *error, NSNumber *numberOne) {
+          [updatingArray setObject:numberOne atIndexedSubscript:[[NSNumber numberWithInt:0] integerValue]];
+          [self updateSectionNumbersTwoWithCompletion:^(NSError *error, NSNumber *numberTwo) {
+               [updatingArray setObject:numberTwo atIndexedSubscript:[[NSNumber numberWithInt:1] integerValue]];
+               [self updateSectionNumbersThreeWithCompletion:^(NSError *error, NSNumber *numberThree) {
+                    [updatingArray setObject:numberThree atIndexedSubscript:[[NSNumber numberWithInt:2] integerValue]];
+                    [activity stopAnimating];
+                    self.sectionsNumbersArray = updatingArray;
+                    [self.tableView reloadData];
+               } withArray:readCommArray];
+          } withArray:readECArray];
+     } withArray:readNewsArticlesArray];
+}
+
+- (void)updateSectionNumbersOneWithCompletion:(void (^) (NSError *error, NSNumber *numberOne))completion withArray:(NSMutableArray *)array {
+     __block NSError *theError = nil;
+     dispatch_group_t serviceGroup = dispatch_group_create();
+     dispatch_group_enter(serviceGroup);
+          //One = News (get)
+     __block NSNumber *returnNumber = [[NSNumber alloc] init];
+     PFQuery *query = [NewsArticleStructure query];
+     [query whereKey:@"articleID" notContainedIn:array];
+     [query countObjectsInBackgroundWithBlock:^(int number, NSError *error) {
+          returnNumber = [NSNumber numberWithInt:number];
+          dispatch_group_leave(serviceGroup);
+          theError = error;
+     }];
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
+          completion(theError, returnNumber);
+     });
+}
+
+- (void)updateSectionNumbersTwoWithCompletion:(void (^) (NSError *error, NSNumber *numberTwo))completion withArray:(NSMutableArray *)array {
+     __block NSError *theError = nil;
+     dispatch_group_t serviceGroup = dispatch_group_create();
+     dispatch_group_enter(serviceGroup);
+          //One = News (get)
+     __block NSNumber *returnNumber = [[NSNumber alloc] init];
+     PFQuery *query = [ExtracurricularStructure query];
+     [query whereKey:@"extracurricularID" notContainedIn:array];
+     [query countObjectsInBackgroundWithBlock:^(int number, NSError *error) {
+          returnNumber = [NSNumber numberWithInt:number];
+          dispatch_group_leave(serviceGroup);
+          theError = error;
+     }];
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
+          completion(theError, returnNumber);
+     });
+}
+
+- (void)updateSectionNumbersThreeWithCompletion:(void (^) (NSError *error, NSNumber *numberThree))completion withArray:(NSMutableArray *)array {
+     __block NSError *theError = nil;
+     dispatch_group_t serviceGroup = dispatch_group_create();
+     dispatch_group_enter(serviceGroup);
+          //One = News (get)
+     __block NSNumber *returnNumber = [[NSNumber alloc] init];
+     PFQuery *query = [CommunityServiceStructure query];
+     [query whereKey:@"communityServiceID" notContainedIn:array];
+     [query whereKey:@"IsNewNumber" equalTo:[NSNumber numberWithInt:1]];
+     [query countObjectsInBackgroundWithBlock:^(int number, NSError *error) {
+          returnNumber = [NSNumber numberWithInt:number];
+          dispatch_group_leave(serviceGroup);
+          theError = error;
+     }];
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
+          completion(theError, returnNumber);
+     });
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+     [super viewWillDisappear:animated];
+     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+     [userDefaults setObject:self.sectionsNumbersArray forKey:@"sectionsNumbersArray"];
+     [userDefaults synchronize];
+}
+
+- (NSMutableArray *)createNewNumbersArray {
+     NSMutableArray *returnArray = [[NSMutableArray alloc] init];
+     for (int i = 0; i < self.sectionsArray.count; i ++) {
+          [returnArray addObject:[NSNumber numberWithInt:0]];
+     }
+     return returnArray;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -63,8 +182,23 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
      UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier" forIndexPath:indexPath];
      cell.textLabel.text = self.sectionsArray[indexPath.row];
-          cell.imageView.image = [UIImage imageNamed:self.sectionsImagesArray[indexPath.row]];
-    return cell;
+     cell.imageView.image = [UIImage imageNamed:self.sectionsImagesArray[indexPath.row]];
+     /*UIButton *button = [[UIButton alloc] init];
+     button.titleLabel.text = @"Testing";
+     cell.accessoryView = button;*/
+          //cell.accessoryType = UITableViewCellAccessoryDetailButton;
+     
+     NSNumber *number = [self.sectionsNumbersArray objectAtIndex:indexPath.row];
+     if (number != [NSNumber numberWithInt:0]) {
+          UIButton *downloadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+          [downloadButton setTitle:[number stringValue] forState:UIControlStateNormal];
+          [downloadButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+          downloadButton.enabled = false;
+          [downloadButton sizeToFit];
+          [downloadButton setFrame:CGRectMake(0, 0, downloadButton.frame.size.width, downloadButton.frame.size.height)];
+          cell.accessoryView = downloadButton;
+     }
+     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

@@ -16,7 +16,6 @@
 
 - (void)viewDidLoad {
      [super viewDidLoad];
-     NSLog(@"%@ sfjsljfs", self.loadNumber);
           if (self.loadNumber == [NSNumber numberWithInt:1] || ! self.loadNumber) {
                [self refreshData];
           }
@@ -28,16 +27,15 @@
                self.navigationItem.rightBarButtonItem = barButton;
                [activity startAnimating];
                [self getOldDataWithCompletion:^(NSMutableArray *returnArray) {
-                    NSLog(@"Made it here!!!");
-                    NSLog(@"%lu", (unsigned long)returnArray.count);
                     self.newsArticles = returnArray;
                     [self getOldImagesWithCompletion:^(NSMutableArray *returnArrayB) {
                          self.newsArticleImages = returnArrayB;
                          dispatch_async(dispatch_get_main_queue(), ^ {
-                              [activity removeFromSuperview];
+                              [activity stopAnimating];
                               [self.tableView reloadData];
                               UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshData)];
                               self.navigationItem.rightBarButtonItem = barButtonItem;
+                              [self refreshControl];
                          });
                     }];
                }];
@@ -75,7 +73,6 @@
      dispatch_group_t serviceGroup = dispatch_group_create();
           //Start the first service
      dispatch_group_enter(serviceGroup);
-     NSLog(@"%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"newsArticles"]);
      NewsArticleStructure *newsArticleStructure;
      NSMutableArray *array = [[NSMutableArray alloc] init];
      NSMutableArray *theArrayToSearch = [[NSUserDefaults standardUserDefaults] objectForKey:@"newsArticles"];
@@ -112,12 +109,9 @@
      self.navigationItem.rightBarButtonItem = barButton;
      [activity startAnimating];
      [self testMethodWithCompletion:^(NSError *error, NSMutableArray *returnArrayA) {
-          NSLog(@"Done!");
-          NSLog(@"%@", returnArrayA);
           self.newsArticles = returnArrayA;
           NSMutableArray *itemsToSave = [NSMutableArray array];
           for (NewsArticleStructure *n in returnArrayA) {
-               NSLog(@"%@", n);
                [itemsToSave addObject:@{ @"hasImage"     : n.hasImage,
                                          @"imageURLString"    : n.imageURLString,
                                          @"titleString" : n.titleString,
@@ -136,13 +130,9 @@
                                          
                                          }];
           }
-          NSLog(@"%@", itemsToSave);
           NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
           [userDefaults setObject:itemsToSave forKey:@"newsArticles"];
-          NSLog(@"%@", [userDefaults objectForKey:@"newsArticles"]);
           [self testMethodTwoWithCompletion:^(NSError *error, NSMutableArray *returnArray) {
-               NSLog(@"Made it here!!!");
-               NSLog(@"%lu", (unsigned long)returnArray.count);
                self.newsArticleImages = returnArray;
                NSMutableArray *moreItems = [NSMutableArray array];
                NSData *data;
@@ -158,10 +148,11 @@
                [userDefaults setObject:moreItems forKey:@"newsArticleImages"];
                [userDefaults synchronize];
                dispatch_async(dispatch_get_main_queue(), ^ {
-                    [activity removeFromSuperview];
+                    [activity stopAnimating];
                     [self.tableView reloadData];
                     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshData)];
                     self.navigationItem.rightBarButtonItem = barButtonItem;
+                    [self refreshControl];
                });
           } withArray:returnArrayA];
      }];
@@ -175,38 +166,7 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-     /*NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-     NSArray *testArray = [userDefaults objectForKey:@"newsArticles"];
-     NSArray *newsArticleArray = [NSArray arrayWithArray:self.newsArticles];
-     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:newsArticleArray];
-     [userDefaults setObject:data forKey:@"newsArticles"];
-          //[userDefaults setValue:newsArticleArray forKey:@"newsArticles"];          //[userDefaults setObject:self.newsArticleImages forKey:@"newsArticleImages2"];
-     [userDefaults synchronize];*/
-     /*NSMutableArray *itemsToSave = [NSMutableArray array];
-     for (NewsArticleStructure *n in self.newsArticles) {
-          [itemsToSave addObject:@{ @"hasImage"     : n.hasImage,
-                                    @"imageURLString"    : n.imageURLString,
-                                    @"titleString" : n.titleString,
-                                    
-                                    @"summaryString" : n.summaryString,
-                                    
-                                    @"authorString" : n.authorString,
-                                    
-                                    @"dateString" : n.dateString,
-                                    
-                                    @"contentURLString" : n.contentURLString,
-                                    
-                                    @"articleIDString" : n.articleIDString,
-                                    
-                                    @"likes" : n.likes
-                                    
-                                    }];
-     }
-     NSLog(@"%@", itemsToSave);
-     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-     [userDefaults setObject:itemsToSave forKey:@"newsArticles"];
-     [userDefaults synchronize];
-     NSLog(@"%@", [userDefaults objectForKey:@"newsArticles"]);*/
+     
 }
 
 - (void)encodeWithCoder:(NSCoder *)coder;
@@ -282,6 +242,9 @@
                }];
           } else {
                [theReturnArray setObject:[[NSObject alloc] init] atIndexedSubscript:[[NSNumber numberWithInt:i] integerValue]];
+               if (i == array.count - 1) {
+                    dispatch_group_leave(theServiceGroup);
+               }
           }
      }
      if (array.count == 0) {
@@ -292,32 +255,6 @@
           if (theError)
                overallError = theError;
           completion(overallError, theReturnArray);
-     });
-}
-
-- (void) functionDoingBackgroundWorkWithCompletionHandler {
-     
-     dispatch_group_t taskGroup = dispatch_group_create();
-     dispatch_group_enter(taskGroup);
-     PFQuery *query = [NewsArticleStructure query];
-     [query orderByAscending:@"articleID"];
-     query.limit = 10;
-     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-          if (! error) {
-               self.newsArticles = (NSMutableArray *)objects;
-               dispatch_group_leave(taskGroup);
-          }
-     }];
-     dispatch_queue_t waitingQueue = dispatch_queue_create("com.WildcatConnect.WildcatConnectGITTest.waitingQueue", DISPATCH_QUEUE_CONCURRENT);
-     dispatch_async(waitingQueue, ^ {
-               //Waiting for threads.
-          dispatch_group_wait(taskGroup, DISPATCH_TIME_FOREVER);
-          dispatch_release(taskGroup);
-               //Background work complete
-          dispatch_async(dispatch_get_main_queue(), ^ {
-               NSLog(@"%@", newsArticles);
-          });
-          dispatch_release(waitingQueue);
      });
 }
 
@@ -335,8 +272,6 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
           // Return the number of rows in the section.
-     NSLog(@"Just did thisfjslsdjflsdfjsdl.");
-     NSLog(@"%lu", (unsigned long)self.newsArticles.count);
      if (self.newsArticles.count == 0)
           return 1;
      return self.newsArticles.count;

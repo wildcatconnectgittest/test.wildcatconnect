@@ -18,7 +18,6 @@
      [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
           if (! error) {
                _staffMembers = (NSMutableArray *)objects;
-               NSLog(@"%@", _staffMembers);
           }
      }];
 }

@@ -41,6 +41,7 @@
                               [self.tableView reloadData];
                               UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshData)];
                               self.navigationItem.rightBarButtonItem = barButtonItem;
+                              [self refreshControl];
                          });
                     }];
                }];
@@ -221,6 +222,9 @@
                }];
           } else {
                [theReturnArray setObject:[[NSObject alloc] init] atIndexedSubscript:[[NSNumber numberWithInt:i] integerValue]];
+               if (i == array.count - 1) {
+                    dispatch_group_leave(theServiceGroup);
+               }
           }
      }
      if (array.count == 0) {
@@ -339,18 +343,13 @@
                return  cell;
           } else {
                ExtracurricularUpdateStructure *extracurricularUpdateStructure = ((ExtracurricularUpdateStructure *)[self.updatesArray objectAtIndex:indexPath.row]);
+               ExtracurricularStructure *EC = [extracurricularUpdateStructure getStructureForUpdate:extracurricularUpdateStructure withArray:[self.extracurricularsArray copy]];
                UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
-               cell.textLabel.text = @"Sample title...";
+               cell.textLabel.text = EC.titleString;
                cell.detailTextLabel.text = extracurricularUpdateStructure.messageString;
                cell.detailTextLabel.numberOfLines = 4;
-               ExtracurricularStructure *EC = [extracurricularUpdateStructure getStructureForUpdate:extracurricularUpdateStructure withArray:[self.extracurricularsArray copy]];
                NSNumber *index = EC.extracurricularID;
                NSUInteger *theIndex = [index integerValue];
-                    //NSLog(@"%lu", (unsigned long)index);
-                    //EC = (ExtracurricularStructure *)([self.extracurricularsArray objectAtIndex:index]);
-                    //NSLog(@"%@", EC.extracurricularIDString);
-                    //NSInteger *index = [EC.extracurricularIDString integerValue] - 1;
-                    //NSUInteger *index = [self.extracurricularsArray indexOfObject:EC];
                if (EC.hasImage == [NSNumber numberWithInt:1])
                     cell.imageView.image = (UIImage *)[self.ECImagesArray objectAtIndex:theIndex];
                return cell;

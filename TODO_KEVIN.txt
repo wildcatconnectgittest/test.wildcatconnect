@@ -1,0 +1,7 @@
+Apply changes in CommunityServiceTableViewController.newImagesMethodWithCompletion to all such completion methods - this ensures that all the objects in any given images array will be either a UIImage or an NSObject w/ corresponding hasImage properties, no more errors.
+
+Ensure that UIActivityIndicatorView stops spinning correctly.
+
+Implement refreshData method for CommunityServiceTableViewController.
+
+Implement Detail view controllers, etc...

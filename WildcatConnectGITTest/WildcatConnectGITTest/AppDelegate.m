@@ -81,7 +81,7 @@
       @property NSNumber *hasImage;
       @property NSNumber *communityServiceID;*/
      
-     CommunityServiceStructure *comm;
+     /*CommunityServiceStructure *comm;
      for (int i = 0; i < 10; i++) {
           comm = [[CommunityServiceStructure alloc] init];
           comm.commTitleString = @"Test Title";

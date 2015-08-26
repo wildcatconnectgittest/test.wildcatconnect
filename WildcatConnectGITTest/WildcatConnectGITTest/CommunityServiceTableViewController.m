@@ -27,60 +27,145 @@
     self.navigationItem.rightBarButtonItem = barButton;
     [activity startAnimating];
     [self testMethodWithCompletion:^(NSError *error, NSMutableArray *returnArrayA) {
-        NSLog(@"Done!");
-        NSLog(@"%@", returnArrayA);
         self.allOpps = returnArrayA;
-         [self imagesMethodWithCompletion:^(NSError *error, NSMutableArray *returnArray) {
-              self.commImages = returnArray;
-              [self testMethodThreeWithCompletion:^(NSMutableArray *returnArrayB, NSMutableArray *returnArray2) {
-                        //first is old - B
-                        //new ones
-                   NSLog(@"%@", returnArrayB);
-                   NSLog(@"%@", returnArray2);
-                   self.newOpps = returnArray2;
-                   self.oldOpps = returnArrayB;
-                   dispatch_async(dispatch_get_main_queue(), ^ {
-                        [activity stopAnimating];
-                        [self.tableView reloadData];
-                        UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(viewDidLoad)];
-                        self.navigationItem.rightBarButtonItem = barButtonItem;
-                   });
-              } withArray:returnArrayA];
+         [self testMethodThreeWithCompletion:^(NSMutableArray *returnArrayB, NSMutableArray *returnArray2) {
+              self.newOpps = returnArray2;
+              self.oldOpps = returnArrayB;
+              [self newImagesMethodWithCompletion:^(NSError *error, NSMutableArray *returnArray) {
+                   self.newImages = returnArray;
+                        [self oldImagesMethodWithCompletion:^(NSError *error, NSMutableArray *returnArrayX) {
+                             self.oldImages = returnArrayX;
+                             dispatch_async(dispatch_get_main_queue(), ^ {
+                                  [activity stopAnimating];
+                                  [self.tableView reloadData];
+                                  UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(viewDidLoad)];
+                                  self.navigationItem.rightBarButtonItem = barButtonItem;
+                             });
+                        } withArray:returnArrayB];
+              } withArray:returnArray2];
          } withArray:returnArrayA];
     }];
 }
 
-- (void)imagesMethodWithCompletion:(void (^)(NSError *error, NSMutableArray *returnArray))completion withArray:(NSMutableArray *)array {
+- (void)newImagesMethodWithCompletion:(void (^)(NSError *error, NSMutableArray *returnArray))completion withArray:(NSMutableArray *)array {
      __block NSError *theError = nil;
+     __block BOOL lastNone = false;
      dispatch_group_t theServiceGroup = dispatch_group_create();
      dispatch_group_enter(theServiceGroup);
-     CommunityServiceStructure *communityServiceStructure;
-     NSMutableArray *returnArray = [[NSMutableArray alloc] init];
-     for (int i = 0; i < array.count; i++) {
-          communityServiceStructure = (CommunityServiceStructure *)[array objectAtIndex:i];
-          if (communityServiceStructure.hasImage == [NSNumber numberWithInt:1]) {
-               PFFile *file = communityServiceStructure.commImageFile;
+     NSMutableArray *theReturnArray = [NSMutableArray arrayWithArray:array];
+     __block int i = 0;
+     for (CommunityServiceStructure *CStructure in array) {
+          if (CStructure.hasImage == [NSNumber numberWithInt:1]) {
+               PFFile *file = CStructure.commImageFile;
                [file getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
+                    NSLog(@"%i", i);
                     UIImage *image = [UIImage imageWithData:data];
                     image = [[AppManager getInstance] imageFromImage:image scaledToWidth:70];
-                    [returnArray addObject:image];
-                    if (i == array.count - 1)
+                    [theReturnArray setObject:image atIndexedSubscript:[[NSNumber numberWithInt:i] integerValue]];
+                    BOOL go = true;
+                    if (i == array.count - 1) {
                          dispatch_group_leave(theServiceGroup);
+                    }
+                    else {
+                         i++;
+                         for (NSObject *object in theReturnArray) {
+                              if (object.class == [CommunityServiceStructure class]) {
+                                   go = false;
+                                   break;
+                              }
+                         }
+                         if (go == true) {
+                              dispatch_group_leave(theServiceGroup);
+                         }
+                    }
                }];
-          }
-          else {
-               [returnArray addObject:[[NSObject alloc] init]];
-               if (i == array.count - 1)
-                    dispatch_group_leave(theServiceGroup);
+          } else {
+               [theReturnArray setObject:[[NSObject alloc] init] atIndexedSubscript:[[NSNumber numberWithInt:i] integerValue]];
+               BOOL go = true;
+               if (i == array.count - 1) {
+                    for (NSObject *object in theReturnArray) {
+                         if (object.class == [CommunityServiceStructure class]) {
+                              go = false;
+                              break;
+                         }
+                    }
+                    if (go == true) {
+                         dispatch_group_leave(theServiceGroup);
+                    }
+               }
           }
      }
-     if (array.count == 0)
+     if (array.count == 0) {
           dispatch_group_leave(theServiceGroup);
+     }
      dispatch_group_notify(theServiceGroup, dispatch_get_main_queue(), ^{
           NSError *overallError = nil;
           if (theError)
                overallError = theError;
-          completion(overallError, returnArray);
+          completion(overallError, theReturnArray);
+     });
+}
+
+     //- (BOOL)canContinue:(NSMutableArray *)array {
+     
+     //}
+
+- (void)oldImagesMethodWithCompletion:(void (^)(NSError *error, NSMutableArray *returnArray))completion withArray:(NSMutableArray *)array {
+     __block NSError *theError = nil;
+     __block BOOL lastNone = false;
+     dispatch_group_t theServiceGroup = dispatch_group_create();
+     dispatch_group_enter(theServiceGroup);
+     NSMutableArray *theReturnArray = [NSMutableArray arrayWithArray:array];
+     CommunityServiceStructure *CStructure;
+     for (int i = 0; i < array.count; i++) {
+          CStructure = (CommunityServiceStructure *)[array objectAtIndex:i];
+          if (CStructure.hasImage == [NSNumber numberWithInt:1]) {
+               PFFile *file = CStructure.commImageFile;
+               [file getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
+                    NSLog(@"%i", i);
+                    UIImage *image = [UIImage imageWithData:data];
+                    image = [[AppManager getInstance] imageFromImage:image scaledToWidth:70];
+                    [theReturnArray setObject:image atIndexedSubscript:[[NSNumber numberWithInt:i] integerValue]];
+                    BOOL go = true;
+                    if (i == array.count - 1) {
+                         dispatch_group_leave(theServiceGroup);
+                    }
+                    else {
+                         for (NSObject *object in theReturnArray) {
+                              if (object.class == [CommunityServiceStructure class]) {
+                                   go = false;
+                                   break;
+                              }
+                         }
+                         if (go == true) {
+                              dispatch_group_leave(theServiceGroup);
+                         }
+                    }
+               }];
+          } else {
+               [theReturnArray setObject:[[NSObject alloc] init] atIndexedSubscript:[[NSNumber numberWithInt:i] integerValue]];
+               BOOL go = true;
+               if (i == array.count - 1) {
+                    for (NSObject *object in theReturnArray) {
+                         if (object.class == [CommunityServiceStructure class]) {
+                              go = false;
+                              break;
+                         }
+                    }
+                    if (go == true) {
+                         dispatch_group_leave(theServiceGroup);
+                    }
+               }
+          }
+     }
+     if (array.count == 0) {
+          dispatch_group_leave(theServiceGroup);
+     }
+     dispatch_group_notify(theServiceGroup, dispatch_get_main_queue(), ^{
+          NSError *overallError = nil;
+          if (theError)
+               overallError = theError;
+          completion(overallError, theReturnArray);
      });
 }
 
@@ -101,7 +186,7 @@
     dispatch_group_enter(serviceGroup);
     NSMutableArray *returnArray = [[NSMutableArray alloc] init];
     PFQuery *query = [CommunityServiceStructure query];
-    [query orderByDescending:@"createdAt"];
+    [query orderByAscending:@"communityServiceID"];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         [returnArray addObjectsFromArray:objects];
         firstError = error;
@@ -133,11 +218,8 @@
     dispatch_group_t theServiceGroup = dispatch_group_create();
     dispatch_group_enter(theServiceGroup);
     CommunityServiceStructure *commServiceStructure;
-    NSLog(@"Doing it...");
     NSMutableArray *returnArray = [[NSMutableArray alloc] init];
-    NSLog(@"%lu", (unsigned long)array.count);
     for (int i = 0; i < array.count; i++) {
-        NSLog(@"%i", i);
         commServiceStructure = (CommunityServiceStructure *)[array objectAtIndex:i];
         /*if (commServiceStructure.hasImage == [NSNumber numberWithInt:1]) {
          PFFile *file = newsArticleStructure.imageFile;
@@ -170,12 +252,10 @@
     dispatch_group_t theServiceGroup = dispatch_group_create();
     dispatch_group_enter(theServiceGroup);
     CommunityServiceStructure *commServiceStructure;
-    NSLog(@"CheckOne");
     NSMutableArray *returnArray =[[NSMutableArray alloc]init];//old
     NSMutableArray *returnArray2 =[[NSMutableArray alloc]init];//new
     for(int a = 0; a < array.count; a++ )
     {
-        NSLog(@"CheckA");
         commServiceStructure = (CommunityServiceStructure *)[array objectAtIndex:a];
         if(commServiceStructure.IsNewNumber == [NSNumber numberWithInt:0])
         {
@@ -204,8 +284,6 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    NSLog(@"Just did thisfjslsdjflsdfjsdl.");
-    NSLog(@"%lu", (unsigned long)self.allOpps.count);
     if (self.allOpps.count == 0)
         return 1;
     else {
@@ -242,7 +320,7 @@
                   cell.detailTextLabel.text = commServiceStructure.commSummaryString;
                   cell.detailTextLabel.numberOfLines = 4;
                   if (commServiceStructure.hasImage == [NSNumber numberWithInt:1]) {
-                       cell.imageView.image = (UIImage *)[self.commImages objectAtIndex:indexPath.row];
+                       cell.imageView.image = (UIImage *)[self.newImages objectAtIndex:indexPath.row];
                   }
                   return cell;
              }
@@ -258,7 +336,7 @@
                   cell.detailTextLabel.text = commServiceStructure.commSummaryString;
                   cell.detailTextLabel.numberOfLines = 4;
                   if (commServiceStructure.hasImage == [NSNumber numberWithInt:1])
-                       cell.imageView.image = (UIImage *)[self.commImages objectAtIndex:indexPath.row];
+                       cell.imageView.image = (UIImage *)[self.oldImages objectAtIndex:indexPath.row];
                   return cell;
              }
         }

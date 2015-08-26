@@ -62,44 +62,23 @@
                     //save the data
                self.staffMembers = returnArray;
                [self testMethodTwoWithCompletion:^(NSError *error, NSMutableArray *dictionaryReturnArray) {
-                    self.dictionaryArray = dictionaryReturnArray;
-                    dispatch_async(dispatch_get_main_queue(), ^ {
-                         [activity stopAnimating];
-                         [self.tableView reloadData];
-                         self.navigationItem.rightBarButtonItem = nil;
-                    });
+                    [self removeUnusedLettersWithCompletion:^(NSError *error, NSMutableArray *returnArray) {
+                         self.dictionaryArray = returnArray;
+                         dispatch_async(dispatch_get_main_queue(), ^ {
+                              [activity stopAnimating];
+                              [self.tableView reloadData];
+                              self.navigationItem.rightBarButtonItem = nil;
+                         });
+                    } withArray:dictionaryReturnArray];
                } withArray:returnArray];
           }];
      }
-     /*activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-     [activity setBackgroundColor:[UIColor clearColor]];
-     [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-     UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:activity];
-     self.navigationItem.rightBarButtonItem = barButton;
-     [activity startAnimating];
-     [self testMethodWithCompletion:^(NSError *error, NSMutableArray *returnArrayA) {
-          NSLog(@"Done!!!");
-          NSLog(@"%@", returnArrayA);
-          self.staffMembers = returnArrayA;
-          [self testMethodTwoWithCompletion:^(NSError *error, NSMutableArray *dictionaryReturnArray) {
-               NSLog(@"Done!!!");
-               NSLog(@"%@", dictionaryReturnArray);
-               self.dictionaryArray = dictionaryReturnArray;
-               dispatch_async(dispatch_get_main_queue(), ^ {
-                    [activity stopAnimating];
-                    [self.tableView reloadData];
-                    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(viewDidLoad)];
-                    self.navigationItem.rightBarButtonItem = barButtonItem;
-               });
-          } withArray:returnArrayA];
-     }];*/
 }
 
 - (void)getOldDataWithCompletion:(void (^)(NSMutableArray *returnArray))completion {
      dispatch_group_t serviceGroup = dispatch_group_create();
           //Start the first service
      dispatch_group_enter(serviceGroup);
-     NSLog(@"%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"staffMembers"]);
      StaffMemberStructure *staffMemberStructure;
      NSMutableArray *array = [[NSMutableArray alloc] init];
      NSMutableArray *theArrayToSearch = [[NSUserDefaults standardUserDefaults] objectForKey:@"staffMembers"];
@@ -129,12 +108,9 @@
      self.navigationItem.rightBarButtonItem = barButton;
      [activity startAnimating];
      [self testMethodWithCompletion:^(NSError *error, NSMutableArray *returnArrayA) {
-          NSLog(@"Done!!!");
-          NSLog(@"%@", returnArrayA);
           self.staffMembers = returnArrayA;
           NSMutableArray *itemsToSave = [NSMutableArray array];
           for (StaffMemberStructure *s in returnArrayA) {
-               NSLog(@"%@", s);
                [itemsToSave addObject:@{ @"staffMemberEMail"     : s.staffMemberEMail,
                                          @"staffMemberFirstName"    : s.staffMemberFirstName,
                                          @"staffMemberLastName" : s.staffMemberLastName,
@@ -148,14 +124,14 @@
           NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
           [userDefaults setObject:itemsToSave forKey:@"staffMembers"];
           [self testMethodTwoWithCompletion:^(NSError *error, NSMutableArray *dictionaryReturnArray) {
-               NSLog(@"Done!!!");
-               NSLog(@"%@", dictionaryReturnArray);
-               self.dictionaryArray = dictionaryReturnArray;
-               dispatch_async(dispatch_get_main_queue(), ^ {
-                    [activity stopAnimating];
-                    [self.tableView reloadData];
-                    self.navigationItem.rightBarButtonItem = nil;
-               });
+               [self removeUnusedLettersWithCompletion:^(NSError *error, NSMutableArray *returnArray) {
+                    self.dictionaryArray = returnArray;
+                    dispatch_async(dispatch_get_main_queue(), ^ {
+                         [activity stopAnimating];
+                         [self.tableView reloadData];
+                         self.navigationItem.rightBarButtonItem = nil;
+                    });
+               } withArray:dictionaryReturnArray];
           } withArray:returnArrayA];
      }];
 }
@@ -186,13 +162,11 @@
      NSMutableArray *array = [NSMutableArray new];
      dispatch_group_t serviceGroup = dispatch_group_create();
      dispatch_group_enter(serviceGroup);
-     NSLog(@"%@", currentArrayLeft);
      for (char a = 'A'; a <= 'Z'; a++) {
           NSMutableDictionary *row = [[[NSMutableDictionary alloc] init] autorelease];
           NSMutableArray *words = [[[NSMutableArray alloc] init] autorelease];
           StaffMemberStructure *staffMemberStructure;
           for (int i = 0; i < currentArrayLeft.count; i++) {
-               NSLog(@"%@", currentArrayLeft);
                staffMemberStructure = currentArrayLeft[i];
                if (staffMemberStructure) {
                     if ([[staffMemberStructure.staffMemberLastName substringToIndex:1] isEqualToString:[NSString stringWithFormat:@"%c", a]]) {
@@ -209,6 +183,30 @@
      }
      dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
           completion(theError, array);
+     });
+}
+
+     //- (void)testMethodTwoWithCompletion:(void (^)(NSError *error, NSMutableArray *dictionaryReturnArray))
+
+- (void)removeUnusedLettersWithCompletion:(void (^)(NSError *error, NSMutableArray *returnArray))completion withArray:(NSMutableArray *)inputArray {
+     __block NSError *theError = nil;
+     dispatch_group_t serviceGroup = dispatch_group_create();
+     dispatch_group_enter(serviceGroup);
+          //Loop through inputArray - if the dictionary at index i contains no objects in "rowValues" key, do not add to finalArray; else, add to final array
+     NSMutableArray *finalArray = [[NSMutableArray alloc] init];
+     NSDictionary *dictionary;
+     for (int i = 0; i < inputArray.count; i++) {
+          dictionary = [[NSDictionary alloc] init];
+          dictionary = [inputArray objectAtIndex:i];
+          if ([[dictionary objectForKey:@"rowValues"] count] > 0) {
+               [finalArray addObject:dictionary];
+          }
+          if (i == inputArray.count - 1) {
+               dispatch_group_leave(serviceGroup);
+          }
+     }
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
+          completion(theError, finalArray);
      });
 }
 
