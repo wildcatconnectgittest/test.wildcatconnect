@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface UsefulLinksTableViewController : UITableViewController {
-     NSMutableDictionary *linksDictionary;
+     NSMutableArray *linksArray;
 }
 
-@property (nonatomic, retain) NSMutableDictionary *linksDictionary;
+@property (nonatomic, retain) NSMutableArray *linksArray;
 
 @end

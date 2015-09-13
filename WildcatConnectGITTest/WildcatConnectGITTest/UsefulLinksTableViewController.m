@@ -7,7 +7,7 @@
 //
 
 #import "UsefulLinksTableViewController.h"
-#import "LinkStructure.h"
+#import "UsefulLinkArray.h"
 
 @interface UsefulLinksTableViewController ()
 
@@ -22,6 +22,34 @@
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+          //Load the linksDictionary...
+     
+     [self loadLinksWithCompletion:^(NSMutableArray *returnArray) {
+          self.linksArray = returnArray;
+          [self.tableView reloadData];
+     }];
+}
+
+- (void)loadLinksWithCompletion:(void (^)(NSMutableArray *returnArray))completion {
+     dispatch_group_t serviceGroup = dispatch_group_create();
+     dispatch_group_enter(serviceGroup);
+     PFQuery *query = [UsefulLinkArray query];
+     [query orderByAscending:@"index"];
+     __block NSMutableDictionary *dictionary;
+     NSMutableArray *array = [[NSMutableArray alloc] init];
+     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+          for (UsefulLinkArray *object in objects) {
+               dictionary = [[NSMutableDictionary alloc] init];
+               [dictionary setObject:object.headerTitle forKey:@"headerTitle"];
+               [dictionary setObject:object.linksArray forKey:@"linksArray"];
+               [array addObject:dictionary];
+          }
+          dispatch_group_leave(serviceGroup);
+     }];
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
+          completion(array);
+     });
 }
 
 - (void)didReceiveMemoryWarning {
@@ -32,25 +60,31 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+     return self.linksArray.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return 5;
+     return [[[self.linksArray objectAtIndex:section] objectForKey:@"linksArray"] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
      
-     cell.textLabel.text = @"Testing...";
+     cell.textLabel.text = [[((NSMutableArray *)([[self.linksArray objectAtIndex:indexPath.section] objectForKey:@"linksArray"])) objectAtIndex:indexPath.row] objectForKey:@"titleString"];
     
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+     NSString *URLString = [[((NSMutableArray *)([[self.linksArray objectAtIndex:indexPath.section] objectForKey:@"linksArray"])) objectAtIndex:indexPath.row] objectForKey:@"URLString"];
+     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:URLString]];
+     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-     return @"TEST HEADER!!!";
+     return [[self.linksArray objectAtIndex:section] objectForKey:@"headerTitle"];
 }
 
 /*

@@ -12,7 +12,8 @@
 
 + (NSString *)parseClassName;
 
-@property NSMutableArray *linksArray;
+@property NSArray *linksArray;
 @property NSString *headerTitle;
+@property NSNumber *index;
 
 @end

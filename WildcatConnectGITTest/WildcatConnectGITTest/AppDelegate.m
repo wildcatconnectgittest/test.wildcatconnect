@@ -131,6 +131,7 @@
      /*UsefulLinkArray *districtPagesArray = [[UsefulLinkArray alloc] init];
      NSMutableArray *arrayOne = [[NSMutableArray alloc] init];
      districtPagesArray.headerTitle = @"DISTRICT PAGES";
+     districtPagesArray.index = [NSNumber numberWithInt:0];
      arrayOne = [[NSMutableArray alloc] init];
      NSDictionary *dictionary = [[NSMutableDictionary alloc] init];
      [dictionary setValue:@"Weymouth Public Schools Website" forKey:@"titleString"];
@@ -145,7 +146,8 @@
      
      UsefulLinkArray *studentLoginsArray = [[UsefulLinkArray alloc] init];
      NSMutableArray *arrayTwo = [[NSMutableArray alloc] init];
-     studentLoginsArray.headerTitle = @"STUDENT LOGINS";\
+     studentLoginsArray.headerTitle = @"STUDENT LOGINS";
+     studentLoginsArray.index = [NSNumber numberWithInt:1];
      dictionary = [[NSMutableDictionary alloc] init];
      [dictionary setValue:@"X2 Portal" forKey:@"titleString"];
      [dictionary setValue:@"https://x2.weymouthschools.org/x2sis/logon.do" forKey:@"URLString"];
@@ -162,6 +164,7 @@
      [dictionary setValue:@"Naviance" forKey:@"titleString"];
      [dictionary setValue:@"https://connection.naviance.com/family-connection/auth/login/?hsid=weymouth" forKey:@"URLString"];
      [arrayTwo addObject:dictionary];
+     studentLoginsArray.linksArray = [arrayTwo copy];
      [studentLoginsArray saveInBackground];*/
      
     return YES;

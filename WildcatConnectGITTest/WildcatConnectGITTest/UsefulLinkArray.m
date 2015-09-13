@@ -13,6 +13,7 @@
 
 @dynamic linksArray;
 @dynamic headerTitle;
+@dynamic index;
 
 + (void)load {
      [self registerSubclass];

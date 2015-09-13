@@ -28,7 +28,6 @@
 		0A4A37FE1B7BA43900AF3E36 /* Staff DirectoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37FD1B7BA43900AF3E36 /* Staff DirectoryTableViewController.m */; };
 		0A4A380C1B7BCAF100AF3E36 /* NewsCenterTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A380B1B7BCAF100AF3E36 /* NewsCenterTableViewController.m */; };
 		0A61185C1BA5ABDD00D632A6 /* UsefulLinksTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A61185B1BA5ABDD00D632A6 /* UsefulLinksTableViewController.m */; };
-		0A61185F1BA5B05400D632A6 /* LinkStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A61185E1BA5B05400D632A6 /* LinkStructure.m */; };
 		0A6118621BA5B1A100D632A6 /* UsefulLinkArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6118611BA5B1A100D632A6 /* UsefulLinkArray.m */; };
 		0AB797C21B7DBDBA00113D94 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A1FE3E81B7B7DA80062A30E /* Images.xcassets */; };
 		0AB797C41B7DBF0B00113D94 /* theNews@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AB797C31B7DBF0B00113D94 /* theNews@2x.png */; };
@@ -121,8 +120,6 @@
 		0A4A380B1B7BCAF100AF3E36 /* NewsCenterTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsCenterTableViewController.m; sourceTree = "<group>"; };
 		0A61185A1BA5ABDD00D632A6 /* UsefulLinksTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsefulLinksTableViewController.h; sourceTree = "<group>"; };
 		0A61185B1BA5ABDD00D632A6 /* UsefulLinksTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsefulLinksTableViewController.m; sourceTree = "<group>"; };
-		0A61185D1BA5B05400D632A6 /* LinkStructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinkStructure.h; sourceTree = "<group>"; };
-		0A61185E1BA5B05400D632A6 /* LinkStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LinkStructure.m; sourceTree = "<group>"; };
 		0A6118601BA5B1A100D632A6 /* UsefulLinkArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsefulLinkArray.h; sourceTree = "<group>"; };
 		0A6118611BA5B1A100D632A6 /* UsefulLinkArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsefulLinkArray.m; sourceTree = "<group>"; };
 		0AB797C31B7DBF0B00113D94 /* theNews@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "theNews@2x.png"; sourceTree = "<group>"; };
@@ -245,8 +242,6 @@
 			children = (
 				0A61185A1BA5ABDD00D632A6 /* UsefulLinksTableViewController.h */,
 				0A61185B1BA5ABDD00D632A6 /* UsefulLinksTableViewController.m */,
-				0A61185D1BA5B05400D632A6 /* LinkStructure.h */,
-				0A61185E1BA5B05400D632A6 /* LinkStructure.m */,
 				0AD4B0C51B81FCA3004E23E4 /* ExtracurricularsTableViewController.h */,
 				0AD4B0C61B81FCA3004E23E4 /* ExtracurricularsTableViewController.m */,
 				0AD4B0C81B820252004E23E4 /* ExtracurricularUpdateStructure.h */,
@@ -499,7 +494,6 @@
 				0A4A37F51B7BA41100AF3E36 /* CalendarViewController.m in Sources */,
 				0A1FE3DB1B7B7DA80062A30E /* main.m in Sources */,
 				0A4A37FE1B7BA43900AF3E36 /* Staff DirectoryTableViewController.m in Sources */,
-				0A61185F1BA5B05400D632A6 /* LinkStructure.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
