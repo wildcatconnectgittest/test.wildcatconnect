@@ -20,31 +20,201 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-    [activity setBackgroundColor:[UIColor clearColor]];
-    [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:activity];
-    self.navigationItem.rightBarButtonItem = barButton;
-    [activity startAnimating];
-    [self testMethodWithCompletion:^(NSError *error, NSMutableArray *returnArrayA) {
-        self.allOpps = returnArrayA;
-         [self testMethodThreeWithCompletion:^(NSMutableArray *returnArrayB, NSMutableArray *returnArray2) {
-              self.newOpps = returnArray2;
-              self.oldOpps = returnArrayB;
-              [self newImagesMethodWithCompletion:^(NSError *error, NSMutableArray *returnArray) {
-                   self.newImages = returnArray;
-                        [self oldImagesMethodWithCompletion:^(NSError *error, NSMutableArray *returnArrayX) {
-                             self.oldImages = returnArrayX;
-                             dispatch_async(dispatch_get_main_queue(), ^ {
-                                  [activity stopAnimating];
-                                  [self.tableView reloadData];
-                                  UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(viewDidLoad)];
-                                  self.navigationItem.rightBarButtonItem = barButtonItem;
-                             });
-                        } withArray:returnArrayB];
-              } withArray:returnArray2];
-         } withArray:returnArrayA];
-    }];
+     
+     if (self.loadNumber == [NSNumber numberWithInt:1] || ! self.loadNumber) {
+          [self refreshData];
+     } else {
+          [self getPreviousNewCommunityServiceStructuresWithCompletion:^(NSMutableArray *returnArray) {
+               self.newOpps = returnArray;
+               [self getPreviousOldCommunityServiceStructuresWithCompletion:^(NSMutableArray *returnArrayB) {
+                    self.oldOpps = returnArrayB;
+                    self.allOpps = [[self.newOpps arrayByAddingObjectsFromArray:self.oldOpps] mutableCopy];
+                    [self getPreviousNewImagesWithCompletion:^(NSMutableArray *returnArrayC) {
+                         self.newImages = returnArrayC;
+                         [self getPreviousOldImagesWithCompletion:^(NSMutableArray *returnArrayD) {
+                              self.oldImages = returnArrayD;
+                              dispatch_async(dispatch_get_main_queue(), ^ {
+                                   [self.tableView reloadData];
+                                   [self refreshControl];
+                              });
+                         }];
+                    }];
+                }];
+          }];
+     }
+}
+
+- (void)refreshData {
+     [self testMethodWithCompletion:^(NSError *error, NSMutableArray *returnArrayA) {
+          self.allOpps = returnArrayA;
+          [self testMethodThreeWithCompletion:^(NSMutableArray *returnArrayB, NSMutableArray *returnArray2) {
+               self.newOpps = returnArray2;
+               self.oldOpps = returnArrayB;
+               NSMutableArray *itemsToSave = [NSMutableArray array];
+               for (CommunityServiceStructure *c in returnArray2) {
+                    [itemsToSave addObject:@{ @"commTitleString"     : c.commTitleString,
+                                              @"commPreviewString"    : c.commPreviewString,
+                                              @"commDateString" :c.commDateString , @"commSummaryString" : c.commSummaryString, @"IsNewNumber" : c.IsNewNumber, @"hasImage" : c.hasImage, @"communityServiceID"  : c.communityServiceID
+                                              }];
+               }
+               NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+               [userDefaults setObject:itemsToSave forKey:@"newCommServiceItems"];
+               itemsToSave = [NSMutableArray array];
+               for (CommunityServiceStructure *c in returnArrayB) {
+                    [itemsToSave addObject:@{ @"commTitleString"     : c.commTitleString,
+                                              @"commPreviewString"    : c.commPreviewString,
+                                              @"commDateString" :c.commDateString , @"commSummaryString" : c.commSummaryString, @"IsNewNumber" : c.IsNewNumber, @"hasImage" : c.hasImage, @"communityServiceID"  : c.communityServiceID
+                                              }];
+               }
+               [userDefaults setObject:itemsToSave forKey:@"oldCommServiceItems"];
+               [self newImagesMethodWithCompletion:^(NSError *error, NSMutableArray *returnArrayX) {
+                    self.newImages = returnArrayX;
+                    NSMutableArray *moreItems = [NSMutableArray array];
+                    NSData *data;
+                    for (int i = 0; i < returnArrayX.count; i++) {
+                         if ([returnArrayX[i] isKindOfClass:[UIImage class]]) {
+                              data = [[NSData alloc] init];
+                              data = UIImagePNGRepresentation(returnArrayX[i]);
+                              [moreItems addObject:data];
+                         } else {
+                              [moreItems addObject:[[NSData alloc] init]];
+                         }
+                    }
+                    [userDefaults setObject:moreItems forKey:@"newCommServiceImages"];
+                    [self oldImagesMethodWithCompletion:^(NSError *error, NSMutableArray *returnArrayU) {
+                         self.oldImages = returnArrayU;
+                         NSMutableArray *moreItemsTwo = [NSMutableArray array];
+                         NSData *data;
+                         for (int i = 0; i < returnArrayU.count; i++) {
+                              if ([returnArrayU[i] isKindOfClass:[UIImage class]]) {
+                                   data = [[NSData alloc] init];
+                                   data = UIImagePNGRepresentation(returnArrayU[i]);
+                                   [moreItemsTwo addObject:data];
+                              } else {
+                                   [moreItemsTwo addObject:[[NSData alloc] init]];
+                              }
+                         }
+                         [userDefaults setObject:moreItems forKey:@"oldCommServiceImages"];
+                         [userDefaults synchronize];
+                         dispatch_async(dispatch_get_main_queue(), ^ {
+                              [activity stopAnimating];
+                              [self.tableView reloadData];
+                              UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(viewDidLoad)];
+                              self.navigationItem.rightBarButtonItem = barButtonItem;
+                         });
+                    } withArray:returnArrayB];
+               } withArray:returnArray2];
+          } withArray:returnArrayA];
+     }];
+
+}
+
+- (void)getPreviousOldImagesWithCompletion:(void (^)(NSMutableArray *returnArray))completion {
+     dispatch_group_t serviceGroup = dispatch_group_create();
+     dispatch_group_enter(serviceGroup);
+     NSMutableArray *array = [[NSMutableArray alloc] init];
+     NSMutableArray *theArrayToSearch = [[NSUserDefaults standardUserDefaults] objectForKey:@"oldCommServiceImages"];
+     NSData *data;
+     UIImage *image;
+     for (int i = 0; i < theArrayToSearch.count; i++) {
+          data = theArrayToSearch[i];
+          image = [UIImage imageWithData:data];
+          if (image) {
+               [array addObject:image];
+          }
+          else
+               [array addObject:[[NSObject alloc] init]];
+          if (i == theArrayToSearch.count - 1) {
+               dispatch_group_leave(serviceGroup);
+          }
+     }
+     if (theArrayToSearch.count == 0) {
+          dispatch_group_leave(serviceGroup);
+     }
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^{
+          completion(array);
+     });
+}
+
+- (void)getPreviousNewImagesWithCompletion:(void (^)(NSMutableArray *returnArray))completion {
+     dispatch_group_t serviceGroup = dispatch_group_create();
+     dispatch_group_enter(serviceGroup);
+     NSMutableArray *array = [[NSMutableArray alloc] init];
+     NSMutableArray *theArrayToSearch = [[NSUserDefaults standardUserDefaults] objectForKey:@"newCommServiceImages"];
+     NSData *data;
+     UIImage *image;
+     for (int i = 0; i < theArrayToSearch.count; i++) {
+          data = theArrayToSearch[i];
+          image = [UIImage imageWithData:data];
+          if (image) {
+               [array addObject:image];
+          }
+          else
+               [array addObject:[[NSObject alloc] init]];
+          if (i == theArrayToSearch.count - 1) {
+               dispatch_group_leave(serviceGroup);
+          }
+     }
+     if (theArrayToSearch.count == 0) {
+          dispatch_group_leave(serviceGroup);
+     }
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^{
+          completion(array);
+     });
+}
+
+- (void)getPreviousOldCommunityServiceStructuresWithCompletion:(void (^)(NSMutableArray *returnArray))completion {
+     dispatch_group_t serviceGroup = dispatch_group_create();
+     dispatch_group_enter(serviceGroup);
+     CommunityServiceStructure *CSStructure;
+     NSMutableArray *array = [[NSMutableArray alloc] init];
+     NSMutableArray *theArrayToSearch = [[NSUserDefaults standardUserDefaults] objectForKey:@"oldCommServiceItems"];
+     NSDictionary *object;
+     for (int i = 0; i < theArrayToSearch.count; i++) {
+          object = theArrayToSearch[i];
+          CSStructure = [[CommunityServiceStructure alloc] init];
+          CSStructure.commTitleString = [object objectForKey:@"commTitleString"];
+          CSStructure.commPreviewString = [object objectForKey:@"commPreviewString"];
+          CSStructure.commDateString = [object objectForKey:@"commDateString"];
+          CSStructure.commSummaryString = [object objectForKey:@"commSummaryString"];
+          CSStructure.IsNewNumber = [object objectForKey:@"IsNewNumber"];
+          CSStructure.hasImage = [object objectForKey:@"hasImage"];
+          CSStructure.communityServiceID = [object objectForKey:@"communityServiceID"];if (i == theArrayToSearch.count - 1)
+               dispatch_group_leave(serviceGroup);
+     }
+     if (theArrayToSearch.count == 0) {
+          dispatch_group_leave(serviceGroup);
+     }
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
+          completion(array);
+     });
+}
+
+- (void)getPreviousNewCommunityServiceStructuresWithCompletion:(void (^)(NSMutableArray *returnArray))completion {
+     dispatch_group_t serviceGroup = dispatch_group_create();
+     dispatch_group_enter(serviceGroup);
+     CommunityServiceStructure *CSStructure;
+     NSMutableArray *array = [[NSMutableArray alloc] init];
+     NSMutableArray *theArrayToSearch = [[NSUserDefaults standardUserDefaults] objectForKey:@"newCommServiceItems"];
+     NSDictionary *object;
+     for (int i = 0; i < theArrayToSearch.count; i++) {
+          object = theArrayToSearch[i];
+          CSStructure = [[CommunityServiceStructure alloc] init];
+          CSStructure.commTitleString = [object objectForKey:@"commTitleString"];
+          CSStructure.commPreviewString = [object objectForKey:@"commPreviewString"];
+          CSStructure.commDateString = [object objectForKey:@"commDateString"];
+          CSStructure.commSummaryString = [object objectForKey:@"commSummaryString"];
+          CSStructure.IsNewNumber = [object objectForKey:@"IsNewNumber"];
+          CSStructure.hasImage = [object objectForKey:@"hasImage"];
+          CSStructure.communityServiceID = [object objectForKey:@"communityServiceID"];if (i == theArrayToSearch.count - 1)
+               dispatch_group_leave(serviceGroup);
+     }
+     if (theArrayToSearch.count == 0) {
+          dispatch_group_leave(serviceGroup);
+     }
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
+          completion(array);
+     });
 }
 
 - (void)newImagesMethodWithCompletion:(void (^)(NSError *error, NSMutableArray *returnArray))completion withArray:(NSMutableArray *)array {
