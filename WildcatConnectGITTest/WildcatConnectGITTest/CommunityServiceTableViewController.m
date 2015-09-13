@@ -53,45 +53,24 @@
      dispatch_group_t theServiceGroup = dispatch_group_create();
      dispatch_group_enter(theServiceGroup);
      NSMutableArray *theReturnArray = [NSMutableArray arrayWithArray:array];
-     __block int i = 0;
-     for (CommunityServiceStructure *CStructure in array) {
-          if (CStructure.hasImage == [NSNumber numberWithInt:1]) {
-               PFFile *file = CStructure.commImageFile;
+     CommunityServiceStructure *CSStructure;
+     for (int i = 0; i < array.count; i++) {
+          CSStructure = (CommunityServiceStructure *)[array objectAtIndex:i];
+          if (CSStructure.hasImage == [NSNumber numberWithInt:1]) {
+               PFFile *file = CSStructure.commImageFile;
                [file getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
-                    NSLog(@"%i", i);
+                    theError = error;
                     UIImage *image = [UIImage imageWithData:data];
                     image = [[AppManager getInstance] imageFromImage:image scaledToWidth:70];
                     [theReturnArray setObject:image atIndexedSubscript:[[NSNumber numberWithInt:i] integerValue]];
-                    BOOL go = true;
                     if (i == array.count - 1) {
                          dispatch_group_leave(theServiceGroup);
-                    }
-                    else {
-                         i++;
-                         for (NSObject *object in theReturnArray) {
-                              if (object.class == [CommunityServiceStructure class]) {
-                                   go = false;
-                                   break;
-                              }
-                         }
-                         if (go == true) {
-                              dispatch_group_leave(theServiceGroup);
-                         }
                     }
                }];
           } else {
                [theReturnArray setObject:[[NSObject alloc] init] atIndexedSubscript:[[NSNumber numberWithInt:i] integerValue]];
-               BOOL go = true;
                if (i == array.count - 1) {
-                    for (NSObject *object in theReturnArray) {
-                         if (object.class == [CommunityServiceStructure class]) {
-                              go = false;
-                              break;
-                         }
-                    }
-                    if (go == true) {
-                         dispatch_group_leave(theServiceGroup);
-                    }
+                    dispatch_group_leave(theServiceGroup);
                }
           }
      }
@@ -106,55 +85,30 @@
      });
 }
 
-     //- (BOOL)canContinue:(NSMutableArray *)array {
-     
-     //}
-
 - (void)oldImagesMethodWithCompletion:(void (^)(NSError *error, NSMutableArray *returnArray))completion withArray:(NSMutableArray *)array {
      __block NSError *theError = nil;
      __block BOOL lastNone = false;
      dispatch_group_t theServiceGroup = dispatch_group_create();
      dispatch_group_enter(theServiceGroup);
      NSMutableArray *theReturnArray = [NSMutableArray arrayWithArray:array];
-     CommunityServiceStructure *CStructure;
+     CommunityServiceStructure *CSStructure;
      for (int i = 0; i < array.count; i++) {
-          CStructure = (CommunityServiceStructure *)[array objectAtIndex:i];
-          if (CStructure.hasImage == [NSNumber numberWithInt:1]) {
-               PFFile *file = CStructure.commImageFile;
+          CSStructure = (CommunityServiceStructure *)[array objectAtIndex:i];
+          if (CSStructure.hasImage == [NSNumber numberWithInt:1]) {
+               PFFile *file = CSStructure.commImageFile;
                [file getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
-                    NSLog(@"%i", i);
+                    theError = error;
                     UIImage *image = [UIImage imageWithData:data];
                     image = [[AppManager getInstance] imageFromImage:image scaledToWidth:70];
                     [theReturnArray setObject:image atIndexedSubscript:[[NSNumber numberWithInt:i] integerValue]];
-                    BOOL go = true;
                     if (i == array.count - 1) {
                          dispatch_group_leave(theServiceGroup);
-                    }
-                    else {
-                         for (NSObject *object in theReturnArray) {
-                              if (object.class == [CommunityServiceStructure class]) {
-                                   go = false;
-                                   break;
-                              }
-                         }
-                         if (go == true) {
-                              dispatch_group_leave(theServiceGroup);
-                         }
                     }
                }];
           } else {
                [theReturnArray setObject:[[NSObject alloc] init] atIndexedSubscript:[[NSNumber numberWithInt:i] integerValue]];
-               BOOL go = true;
                if (i == array.count - 1) {
-                    for (NSObject *object in theReturnArray) {
-                         if (object.class == [CommunityServiceStructure class]) {
-                              go = false;
-                              break;
-                         }
-                    }
-                    if (go == true) {
-                         dispatch_group_leave(theServiceGroup);
-                    }
+                    dispatch_group_leave(theServiceGroup);
                }
           }
      }

@@ -212,15 +212,6 @@
 }
 
 - (void)testMethodTwoWithCompletion:(void (^)(NSError *error, NSMutableArray *returnArray))completion withArray:(NSMutableArray *)array {
-     /*NewsArticleStructure *newsArticleStructure;
-      for (int i = 0; i < newsArticles.count; i++) {
-      newsArticleStructure = (NewsArticleStructure *)[newsArticles objectAtIndex:i];
-      PFFile *file = newsArticleStructure.imageFile;
-      NSData *data = [file getData];
-      UIImage *image = [UIImage imageWithData:data];
-      image = [[AppManager getInstance] imageFromImage:image scaledToWidth:70];
-      [self.newsArticleImages addObject:image];
-      }*/
      __block NSError *theError = nil;
      __block BOOL lastNone = false;
      dispatch_group_t theServiceGroup = dispatch_group_create();
