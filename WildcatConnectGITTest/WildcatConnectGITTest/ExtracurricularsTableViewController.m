@@ -21,15 +21,23 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    
+    UIRefreshControl *refreshControl= [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
+    self.refreshControl= refreshControl;
+    
+    
+    
      if (self.loadNumber == [NSNumber numberWithInt:1] || ! self.loadNumber) {
           [self refreshData];
      } else {
           activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
           [activity setBackgroundColor:[UIColor clearColor]];
           [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-          UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:activity];
+        /*  UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:activity];
           self.navigationItem.rightBarButtonItem = barButton;
-          [activity startAnimating];
+          [activity startAnimating];*/
           [self getOldUpdatesWithCompletion:^(NSMutableArray *returnArray) {
                self.updatesArray = returnArray;
                [self getOldUpdatesTwoWithCompletion:^(NSMutableArray *returnArrayB) {
@@ -39,14 +47,19 @@
                          dispatch_async(dispatch_get_main_queue(), ^ {
                               [activity stopAnimating];
                               [self.tableView reloadData];
-                              UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshData)];
-                              self.navigationItem.rightBarButtonItem = barButtonItem;
+                           /*   UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshData)];
+                              self.navigationItem.rightBarButtonItem = barButtonItem;*/
                               [self refreshControl];
                          });
                     }];
                }];
           }];
      }
+}
+
+-(void)refresh {
+    [self refreshData];
+    [self.refreshControl endRefreshing];
 }
 
 - (void)refreshData {
@@ -93,8 +106,8 @@
                     dispatch_async(dispatch_get_main_queue(), ^ {
                          [activity stopAnimating];
                          [self.tableView reloadData];
-                         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshData)];
-                         self.navigationItem.rightBarButtonItem = barButtonItem;
+                  /*       UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshData)];
+                         self.navigationItem.rightBarButtonItem = barButtonItem;*/
                          [self refreshControl];
                     });;
                } withArray:returnArrayA];
