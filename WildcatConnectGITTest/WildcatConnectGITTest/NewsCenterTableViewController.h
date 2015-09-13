@@ -13,7 +13,7 @@
        
     
 
-     NSMutableArray *newsArticles;
+    NSMutableArray *newsArticles;
      NSMutableArray *newsArticleImages;
      NSNumber *loadNumber;
 }

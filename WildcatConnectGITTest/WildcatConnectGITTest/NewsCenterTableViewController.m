@@ -16,30 +16,46 @@
 
 - (void)viewDidLoad {
      [super viewDidLoad];
-          if (self.loadNumber == [NSNumber numberWithInt:1] || ! self.loadNumber) {
+    
+    
+    
+    //NSMutableArray *articles =[[NSMutableArray alloc] initWithObjects:@ "1" , @"2", nil];
+    //self.newsArticles = articles;
+    UIRefreshControl *refreshControl= [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
+    self.refreshControl= refreshControl;
+    
+    
+    
+    if (self.loadNumber == [NSNumber numberWithInt:1] || ! self.loadNumber) {
                [self refreshData];
           }
           else {
-               activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+             /*  activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
                [activity setBackgroundColor:[UIColor clearColor]];
                [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
                UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:activity];
                self.navigationItem.rightBarButtonItem = barButton;
-               [activity startAnimating];
+               [activity startAnimating];*/
                [self getOldDataWithCompletion:^(NSMutableArray *returnArray) {
                     self.newsArticles = returnArray;
                     [self getOldImagesWithCompletion:^(NSMutableArray *returnArrayB) {
                          self.newsArticleImages = returnArrayB;
                          dispatch_async(dispatch_get_main_queue(), ^ {
-                              [activity stopAnimating];
                               [self.tableView reloadData];
-                              UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshData)];
-                              self.navigationItem.rightBarButtonItem = barButtonItem;
+                              //UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshData)];
+                              //self.navigationItem.rightBarButtonItem = barButtonItem;
                               [self refreshControl];
                          });
                     }];
                }];
           }
+}
+
+- (void)refresh{
+    [self refreshData];
+    [self.refreshControl endRefreshing];
+    
 }
 
 - (void)getOldImagesWithCompletion:(void (^)(NSMutableArray *returnArray))completion {
@@ -102,12 +118,12 @@
 }
 
 - (void)refreshData {
-     activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+    /* activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
      [activity setBackgroundColor:[UIColor clearColor]];
      [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
      UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:activity];
      self.navigationItem.rightBarButtonItem = barButton;
-     [activity startAnimating];
+     [activity startAnimating];*/
      [self testMethodWithCompletion:^(NSError *error, NSMutableArray *returnArrayA) {
           self.newsArticles = returnArrayA;
           NSMutableArray *itemsToSave = [NSMutableArray array];
@@ -148,10 +164,10 @@
                [userDefaults setObject:moreItems forKey:@"newsArticleImages"];
                [userDefaults synchronize];
                dispatch_async(dispatch_get_main_queue(), ^ {
-                    [activity stopAnimating];
+                   // [activity stopAnimating];
                     [self.tableView reloadData];
-                    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshData)];
-                    self.navigationItem.rightBarButtonItem = barButtonItem;
+                   /* UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshData)];
+                    self.navigationItem.rightBarButtonItem = barButtonItem;*/
                     [self refreshControl];
                });
           } withArray:returnArrayA];
@@ -227,9 +243,16 @@
                     UIImage *image = [UIImage imageWithData:data];
                     image = [[AppManager getInstance] imageFromImage:image scaledToWidth:70];
                     [theReturnArray setObject:image atIndexedSubscript:[[NSNumber numberWithInt:i] integerValue]];
-                    if (i == array.count - 1) {
-                         dispatch_group_leave(theServiceGroup);
-                    }
+                        BOOL go = true;
+                        for (NSObject *object in theReturnArray) {
+                            if (object.class == [NewsArticleStructure class]) {
+                                go = false;
+                                break;
+                            }
+                        }
+                        if (go) {
+                            dispatch_group_leave(theServiceGroup);
+                        }
                }];
           } else {
                [theReturnArray setObject:[[NSObject alloc] init] atIndexedSubscript:[[NSNumber numberWithInt:i] integerValue]];
@@ -294,6 +317,14 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
      
 }
+
+
+
+#pragma mark Table View Data Sources Methods;
+
+/*-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section:return [self.newsArticles count];
+
+*/
 
 /*
  // Override to support conditional editing of the table view.
