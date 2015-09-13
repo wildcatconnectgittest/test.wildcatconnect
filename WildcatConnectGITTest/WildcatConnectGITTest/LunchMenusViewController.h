@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LunchMenusViewController : UIViewController{
+@interface LunchMenusViewController : UITableViewController{
     
     NSMutableArray *lunchArray;
     NSMutableArray *breakfastArray;
