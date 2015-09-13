@@ -7,7 +7,6 @@
 //
 
 #import "LunchMenusViewController.h"
-#import "LinkStructure.h"
 
 @interface LunchMenusViewController ()
 

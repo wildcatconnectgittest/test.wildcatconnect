@@ -12,6 +12,7 @@
 #import "CommunityServiceTableViewController.h"
 #import "ExtracurricularsTableViewController.h"
 #import "UsefulLinksTableViewController.h"
+#import "LunchMenusViewController.h"
 #import <Parse/Parse.h>
 #import "NewsArticleStructure.h"
 #import "ExtracurricularUpdateStructure.h"
@@ -259,6 +260,10 @@
                CommunityServiceTableViewController *controller = [[CommunityServiceTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
                [self.navigationController pushViewController:controller animated:YES];
           }
+          else if (indexPath.row == 5) {
+               LunchMenusViewController *controller = [[LunchMenusViewController alloc] init];
+               [self.navigationController pushViewController:controller animated:YES];
+          }
           else if (indexPath.row == 6) {
                UsefulLinksTableViewController *controller = [[UsefulLinksTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
                [self.navigationController pushViewController:controller animated:YES];
@@ -282,6 +287,10 @@
                     CommunityServiceTableViewController *controller = [[CommunityServiceTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:0]];
                     [self.navigationController pushViewController:controller animated:YES];
                }
+               else if (indexPath.row == 5) {
+                    LunchMenusViewController *controller = [[LunchMenusViewController alloc] init];
+                    [self.navigationController pushViewController:controller animated:YES];
+               }
                else if (indexPath.row == 6) {
                     UsefulLinksTableViewController *controller = [[UsefulLinksTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
                     [self.navigationController pushViewController:controller animated:YES];
@@ -303,6 +312,10 @@
                     [self.navigationController pushViewController:controller animated:YES];
                } else if (indexPath.row == 2) {
                     CommunityServiceTableViewController *controller = [[CommunityServiceTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
+                    [self.navigationController pushViewController:controller animated:YES];
+               }
+               else if (indexPath.row == 5) {
+                    LunchMenusViewController *controller = [[LunchMenusViewController alloc] init];
                     [self.navigationController pushViewController:controller animated:YES];
                }
                else if (indexPath.row == 6) {
