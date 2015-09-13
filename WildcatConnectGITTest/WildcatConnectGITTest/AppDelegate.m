@@ -12,6 +12,7 @@
 #import "ExtracurricularUpdateStructure.h"
 #import "CommunityServiceStructure.h"
 #import "NewsArticleStructure.h"
+#import "UsefulLinkArray.h"
 
 @implementation AppDelegate
 
@@ -126,6 +127,42 @@
           news.imageURLString = @"sjfsdlsjfsdf";
           [news saveInBackground];
      }*/
+     
+     /*UsefulLinkArray *districtPagesArray = [[UsefulLinkArray alloc] init];
+     NSMutableArray *arrayOne = [[NSMutableArray alloc] init];
+     districtPagesArray.headerTitle = @"DISTRICT PAGES";
+     arrayOne = [[NSMutableArray alloc] init];
+     NSDictionary *dictionary = [[NSMutableDictionary alloc] init];
+     [dictionary setValue:@"Weymouth Public Schools Website" forKey:@"titleString"];
+     [dictionary setValue:@"http://www.weymouthschools.org" forKey:@"URLString"];
+     [arrayOne addObject:dictionary];
+     dictionary = [[NSMutableDictionary alloc] init];
+     [dictionary setValue:@"Weymouth High School Website" forKey:@"titleString"];
+     [dictionary setValue:@"http://www.weymouthschools.org/weymouth-high-school" forKey:@"URLString"];
+     [arrayOne addObject:dictionary];
+     districtPagesArray.linksArray = [arrayOne copy];
+     [districtPagesArray saveInBackground];
+     
+     UsefulLinkArray *studentLoginsArray = [[UsefulLinkArray alloc] init];
+     NSMutableArray *arrayTwo = [[NSMutableArray alloc] init];
+     studentLoginsArray.headerTitle = @"STUDENT LOGINS";\
+     dictionary = [[NSMutableDictionary alloc] init];
+     [dictionary setValue:@"X2 Portal" forKey:@"titleString"];
+     [dictionary setValue:@"https://x2.weymouthschools.org/x2sis/logon.do" forKey:@"URLString"];
+     [arrayTwo addObject:dictionary];
+     dictionary = [[NSMutableDictionary alloc] init];
+     [dictionary setValue:@"Student Webmail (Grades 11-12)" forKey:@"titleString"];
+     [dictionary setValue:@"http://mail.weymouthstudents.org" forKey:@"URLString"];
+     [arrayTwo addObject:dictionary];
+     dictionary = [[NSMutableDictionary alloc] init];
+     [dictionary setValue:@"Student Webmail (Grades 9-10)" forKey:@"titleString"];
+     [dictionary setValue:@"https://accounts.google.com/Login" forKey:@"URLString"];
+     [arrayTwo addObject:dictionary];
+     dictionary = [[NSMutableDictionary alloc] init];
+     [dictionary setValue:@"Naviance" forKey:@"titleString"];
+     [dictionary setValue:@"https://connection.naviance.com/family-connection/auth/login/?hsid=weymouth" forKey:@"URLString"];
+     [arrayTwo addObject:dictionary];
+     [studentLoginsArray saveInBackground];*/
      
     return YES;
 }
