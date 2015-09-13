@@ -58,6 +58,22 @@
     
 }
 
+
+/*- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NewsCenterTableViewController *selectednewsArticles = (tableView == self.tableView) ?
+    self.newsArticles[indexPath.row] : self.resultsTableController.filteredProducts[indexPath.row];
+    
+    APLDetailViewController *detailViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"APLDetailViewController"];
+    detailViewController.product = selectedProduct; // hand off the current product to the detail view controller
+    
+    [self.navigationController pushViewController:detailViewController animated:YES];
+    
+    // note: should not be necessary but current iOS 8.0 bug (seed 4) requires it
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+}*/
+
+
+
 - (void)getOldImagesWithCompletion:(void (^)(NSMutableArray *returnArray))completion {
      dispatch_group_t serviceGroup = dispatch_group_create();
           //Start the first service

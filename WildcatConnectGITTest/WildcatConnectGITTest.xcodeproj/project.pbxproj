@@ -66,6 +66,7 @@
 		F768D0641B821A000064E296 /* CommunityServiceTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F768D0631B821A000064E296 /* CommunityServiceTableViewController.m */; };
 		F768D0821B85381B0064E296 /* LunchMenusStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = F768D0811B85381B0064E296 /* LunchMenusStructure.m */; };
 		F768D0861B854D4B0064E296 /* wildcat.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = F768D0851B854D4B0064E296 /* wildcat.jpeg */; };
+		F7956CB21BA5CAA70091EB5A /* NewsArticleDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7956CB11BA5CAA70091EB5A /* NewsArticleDetailViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -172,6 +173,8 @@
 		F768D0801B85381B0064E296 /* LunchMenusStructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LunchMenusStructure.h; sourceTree = "<group>"; };
 		F768D0811B85381B0064E296 /* LunchMenusStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LunchMenusStructure.m; sourceTree = "<group>"; };
 		F768D0851B854D4B0064E296 /* wildcat.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = wildcat.jpeg; sourceTree = "<group>"; };
+		F7956CB01BA5CAA70091EB5A /* NewsArticleDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsArticleDetailViewController.h; sourceTree = "<group>"; };
+		F7956CB11BA5CAA70091EB5A /* NewsArticleDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsArticleDetailViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -275,6 +278,8 @@
 				0A1FE3E21B7B7DA80062A30E /* SecondViewController.h */,
 				0A1FE3E31B7B7DA80062A30E /* SecondViewController.m */,
 				0A1FE3E51B7B7DA80062A30E /* Main.storyboard */,
+				F7956CB01BA5CAA70091EB5A /* NewsArticleDetailViewController.h */,
+				F7956CB11BA5CAA70091EB5A /* NewsArticleDetailViewController.m */,
 				0AD4B0BF1B81FA3C004E23E4 /* ExtracurricularStructure.h */,
 				0AD4B0C01B81FA3C004E23E4 /* ExtracurricularStructure.m */,
 				0A0A496A1B7E75A500304629 /* StaffDirectoryBaseTableViewController.h */,
@@ -481,6 +486,7 @@
 				0A0A496F1B7E76A100304629 /* StaffDirectoryMainTableViewController.m in Sources */,
 				0AB797D51B7DC74400113D94 /* StaffMemberStructure.m in Sources */,
 				0A0A497E1B7EFEC800304629 /* ApplicationManager.m in Sources */,
+				F7956CB21BA5CAA70091EB5A /* NewsArticleDetailViewController.m in Sources */,
 				0A4A37E91B7B90D100AF3E36 /* SectionsTableViewController.m in Sources */,
 				F768D0641B821A000064E296 /* CommunityServiceTableViewController.m in Sources */,
 				0AE74A2B1B7D7A2C0083EFF1 /* SplashScreenViewController.m in Sources */,

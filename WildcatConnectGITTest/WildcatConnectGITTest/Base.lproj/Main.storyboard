@@ -204,7 +204,7 @@ cmlvZCA3A
         <!--Extracurriculars-->
         <scene sceneID="M6Q-ke-4jV">
             <objects>
-                <tableViewController id="Rbn-vX-3Ly" sceneMemberID="viewController">
+                <tableViewController id="Rbn-vX-3Ly" customClass="ExtracurricularsTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="cm5-HH-epf">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -349,7 +349,7 @@ cmlvZCA3A
         <!--Lunch Menu-->
         <scene sceneID="HVM-pF-uAe">
             <objects>
-                <tableViewController id="ezL-L0-4Mr" sceneMemberID="viewController">
+                <tableViewController id="ezL-L0-4Mr" customClass="LunchMenusViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="cHL-Eh-RRt">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -433,6 +433,57 @@ cmlvZCA3A
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H4H-go-5UP" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1409" y="975"/>
+        </scene>
+        <!--News Article Detail View Controller-->
+        <scene sceneID="Lyn-U9-gad">
+            <objects>
+                <viewController storyboardIdentifier="NewsArticleDetailViewController" id="aYK-Ji-dnD" customClass="NewsArticleDetailViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="mou-Mi-hmL">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="0XP-My-BZr">
+                                <rect key="frame" x="0.0" y="-83" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="4Oq-zG-ykB">
+                                        <rect key="frame" x="0.0" y="49" width="320" height="223"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="oLx-mY-Ipx">
+                                        <rect key="frame" x="274" y="273" width="38" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Summary" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Owq-AJ-VMm">
+                                        <rect key="frame" x="8" y="273" width="74" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Text for News Article." id="uZr-Iq-I8o">
+                                        <rect key="frame" x="0.0" y="296" width="320" height="272"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
+                                </subviews>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="c8p-39-jcW"/>
+                    <connections>
+                        <outlet property="scrollerArticle" destination="0XP-My-BZr" id="B03-IU-QLP"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lTG-Y4-gfS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2536" y="724"/>
         </scene>
         <!--Sections-->
         <scene sceneID="4Ke-Dd-tzB">
