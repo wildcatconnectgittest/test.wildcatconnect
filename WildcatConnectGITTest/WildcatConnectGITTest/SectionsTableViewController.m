@@ -261,7 +261,7 @@
                [self.navigationController pushViewController:controller animated:YES];
           }
           else if (indexPath.row == 5) {
-               LunchMenusViewController *controller = [[LunchMenusViewController alloc] init];
+               LunchMenusViewController *controller = [[LunchMenusViewController alloc] initWithStyle:UITableViewStyleGrouped];
                [self.navigationController pushViewController:controller animated:YES];
           }
           else if (indexPath.row == 6) {
@@ -288,7 +288,7 @@
                     [self.navigationController pushViewController:controller animated:YES];
                }
                else if (indexPath.row == 5) {
-                    LunchMenusViewController *controller = [[LunchMenusViewController alloc] init];
+                    LunchMenusViewController *controller = [[LunchMenusViewController alloc] initWithStyle:UITableViewStyleGrouped];
                     [self.navigationController pushViewController:controller animated:YES];
                }
                else if (indexPath.row == 6) {
@@ -315,7 +315,7 @@
                     [self.navigationController pushViewController:controller animated:YES];
                }
                else if (indexPath.row == 5) {
-                    LunchMenusViewController *controller = [[LunchMenusViewController alloc] init];
+                    LunchMenusViewController *controller = [[LunchMenusViewController alloc] initWithStyle:UITableViewStyleGrouped];
                     [self.navigationController pushViewController:controller animated:YES];
                }
                else if (indexPath.row == 6) {
