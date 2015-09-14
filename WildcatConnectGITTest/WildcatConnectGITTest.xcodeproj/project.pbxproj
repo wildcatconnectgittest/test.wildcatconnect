@@ -39,6 +39,8 @@
 		0AB797D01B7DC35100113D94 /* usefulLinks@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AB797CF1B7DC35100113D94 /* usefulLinks@2x.png */; };
 		0AB797D21B7DC38900113D94 /* staffDirectory@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AB797D11B7DC38900113D94 /* staffDirectory@2x.png */; };
 		0AB797D51B7DC74400113D94 /* StaffMemberStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AB797D41B7DC74400113D94 /* StaffMemberStructure.m */; };
+		0ACF72D81BA69BC200006C29 /* email@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0ACF72D71BA69BC200006C29 /* email@2x.png */; };
+		0ACF72DB1BA69E2C00006C29 /* EmailButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ACF72DA1BA69E2C00006C29 /* EmailButton.m */; };
 		0AD4B0BE1B81F7F1004E23E4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AD4B0BD1B81F7F1004E23E4 /* AppDelegate.m */; };
 		0AD4B0C11B81FA3C004E23E4 /* ExtracurricularStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AD4B0C01B81FA3C004E23E4 /* ExtracurricularStructure.m */; };
 		0AD4B0C71B81FCA3004E23E4 /* ExtracurricularsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AD4B0C61B81FCA3004E23E4 /* ExtracurricularsTableViewController.m */; };
@@ -133,6 +135,9 @@
 		0AB797D11B7DC38900113D94 /* staffDirectory@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "staffDirectory@2x.png"; sourceTree = "<group>"; };
 		0AB797D31B7DC74400113D94 /* StaffMemberStructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaffMemberStructure.h; sourceTree = "<group>"; };
 		0AB797D41B7DC74400113D94 /* StaffMemberStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StaffMemberStructure.m; sourceTree = "<group>"; };
+		0ACF72D71BA69BC200006C29 /* email@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "email@2x.png"; sourceTree = "<group>"; };
+		0ACF72D91BA69E2C00006C29 /* EmailButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmailButton.h; sourceTree = "<group>"; };
+		0ACF72DA1BA69E2C00006C29 /* EmailButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmailButton.m; sourceTree = "<group>"; };
 		0AD4B0BD1B81F7F1004E23E4 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		0AD4B0BF1B81FA3C004E23E4 /* ExtracurricularStructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExtracurricularStructure.h; sourceTree = "<group>"; };
 		0AD4B0C01B81FA3C004E23E4 /* ExtracurricularStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExtracurricularStructure.m; sourceTree = "<group>"; };
@@ -243,6 +248,8 @@
 		0A1FE3D71B7B7DA80062A30E /* WildcatConnectGITTest */ = {
 			isa = PBXGroup;
 			children = (
+				0ACF72D91BA69E2C00006C29 /* EmailButton.h */,
+				0ACF72DA1BA69E2C00006C29 /* EmailButton.m */,
 				0A61185A1BA5ABDD00D632A6 /* UsefulLinksTableViewController.h */,
 				0A61185B1BA5ABDD00D632A6 /* UsefulLinksTableViewController.m */,
 				0AD4B0C51B81FCA3004E23E4 /* ExtracurricularsTableViewController.h */,
@@ -341,6 +348,7 @@
 		0AE74A311B7DAE7D0083EFF1 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				0ACF72D71BA69BC200006C29 /* email@2x.png */,
 				0A0A497A1B7EAE7100304629 /* about@2x.png */,
 				0A0A49781B7EAE4900304629 /* sections@2x.png */,
 				0A0A49761B7EAE2B00304629 /* home@2x.png */,
@@ -438,6 +446,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0AB797D01B7DC35100113D94 /* usefulLinks@2x.png in Resources */,
+				0ACF72D81BA69BC200006C29 /* email@2x.png in Resources */,
 				0AB797CE1B7DC2E300113D94 /* lunchMenus@2x.png in Resources */,
 				0A0A497B1B7EAE7100304629 /* about@2x.png in Resources */,
 				0AB797D21B7DC38900113D94 /* staffDirectory@2x.png in Resources */,
@@ -481,6 +490,7 @@
 				F768D0821B85381B0064E296 /* LunchMenusStructure.m in Sources */,
 				0AD4B0C71B81FCA3004E23E4 /* ExtracurricularsTableViewController.m in Sources */,
 				0A4A380C1B7BCAF100AF3E36 /* NewsCenterTableViewController.m in Sources */,
+				0ACF72DB1BA69E2C00006C29 /* EmailButton.m in Sources */,
 				0A0A49751B7EA02300304629 /* StaffDirectoryDetailViewController.m in Sources */,
 				0A0A496C1B7E75A500304629 /* StaffDirectoryBaseTableViewController.m in Sources */,
 				0A0A496F1B7E76A100304629 /* StaffDirectoryMainTableViewController.m in Sources */,

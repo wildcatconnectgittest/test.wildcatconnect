@@ -12,5 +12,7 @@
 
 @property NSString *breakfastString;
 @property NSString *lunchString;
+@property NSString *dateString;
+@property NSNumber *lunchStructureID;
 
 @end

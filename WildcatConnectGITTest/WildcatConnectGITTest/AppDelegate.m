@@ -12,6 +12,7 @@
 #import "ExtracurricularUpdateStructure.h"
 #import "CommunityServiceStructure.h"
 #import "NewsArticleStructure.h"
+#import "LunchMenusStructure.h"
 #import "UsefulLinkArray.h"
 
 @implementation AppDelegate
@@ -166,6 +167,16 @@
      [arrayTwo addObject:dictionary];
      studentLoginsArray.linksArray = [arrayTwo copy];
      [studentLoginsArray saveInBackground];*/
+     
+     /*LunchMenusStructure *lunch;
+     for (int i = 0; i < 5; i++) {
+          lunch = [[LunchMenusStructure alloc] init];
+          lunch.breakfastString = @"Breakfast!";
+          lunch.lunchString = @"Lunch!";
+          lunch.dateString = @"Monday, September 14th";
+          lunch.lunchStructureID = [NSNumber numberWithInt:i];
+          [lunch saveInBackground];
+     }*/
      
     return YES;
 }

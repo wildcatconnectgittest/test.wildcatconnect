@@ -351,14 +351,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-     NSArray *array = [[self.dictionaryArray objectAtIndex:[indexPath section]] objectForKey:@"rowValues"];
-     StaffMemberStructure *selectedStaffMemberStructure = (tableView == self.tableView) ? array[indexPath.row] : self.resultsTableController.filteredStaffMembers[indexPath.row];
-     
-     StaffDirectoryDetailViewController *detailViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"StaffDirectoryDetailViewController"];
-     detailViewController.staffMemberStructure = selectedStaffMemberStructure;
-     
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     [tableView deselectRowAtIndexPath:indexPath animated:NO];
+     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - UISearchResultsUpdating

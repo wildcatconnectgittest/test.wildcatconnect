@@ -31,6 +31,12 @@
      }];
 }
 
+- (instancetype)initWithStyle:(UITableViewStyle)style {
+     [super initWithStyle:style];
+     self.navigationItem.title = @"Useful Links";
+     return self;
+}
+
 - (void)loadLinksWithCompletion:(void (^)(NSMutableArray *returnArray))completion {
      dispatch_group_t serviceGroup = dispatch_group_create();
      dispatch_group_enter(serviceGroup);

@@ -7,6 +7,7 @@
 //
 
 #import "LunchMenusViewController.h"
+#import "LunchMenusStructure.h"
 
 @interface LunchMenusViewController ()
 
@@ -17,6 +18,32 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+     [self getStructuresWithCompletion:^(NSMutableArray *returnArray) {
+          self.theStructuresArray = returnArray;
+          [self.tableView reloadData];
+     }];
+}
+
+- (void)getStructuresWithCompletion:(void (^)(NSMutableArray *returnArray))completion {
+     dispatch_group_t serviceGroup = dispatch_group_create();
+     dispatch_group_enter(serviceGroup);
+     PFQuery *query = [LunchMenusStructure query];
+     [query orderByDescending:@"createdAt"];
+     query.limit = 5;
+     NSMutableArray *returnArray = [NSMutableArray array];
+     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+          [returnArray addObjectsFromArray:objects];
+          dispatch_group_leave(serviceGroup);
+     }];
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
+          completion(returnArray);
+     });
+}
+
+- (instancetype)initWithStyle:(UITableViewStyle)style {
+     [super initWithStyle:style];
+     self.navigationItem.title = @"Lunch Menus";
+     return self;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -36,16 +63,43 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"CellIdentifier"];
     
-    cell.textLabel.text = @"Testing for lunch";
+     if (! self.theStructuresArray) {
+          cell.detailTextLabel.text = @"No data to display.";
+     } else {
+          if (indexPath.row == 0) {
+               cell.textLabel.text = @"BREAKFAST";
+               cell.textLabel.font = [cell.textLabel.font fontWithSize:10];
+               [cell.textLabel sizeToFit];
+               cell.detailTextLabel.text = ( (LunchMenusStructure *) ([self.theStructuresArray objectAtIndex:indexPath.section]) ).breakfastString;
+          }
+          if (indexPath.row == 1) {
+               cell.textLabel.text = @"LUNCH";
+               cell.textLabel.font = [cell.textLabel.font fontWithSize:10];
+               [cell.textLabel sizeToFit];
+               cell.detailTextLabel.text = ( (LunchMenusStructure *) ([self.theStructuresArray objectAtIndex:indexPath.section]) ).lunchString;
+          }
+     }
     
     return cell;
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+     return 30;
+}
+
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return @"TEST LUNCH!!!";
+     if ( ! self.theStructuresArray) {
+         return @"No data to display.";
+     } else {
+          return ( (LunchMenusStructure *) ([self.theStructuresArray objectAtIndex:section]) ).dateString;
+     }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 

@@ -10,11 +10,9 @@
 
 @interface LunchMenusViewController : UITableViewController{
     
-    NSMutableArray *lunchArray;
-    NSMutableArray *breakfastArray;
+     NSMutableArray *theStructuresArray;
     
 }
-@property (nonatomic, retain) NSMutableArray *lunchArray;
-@property (nonatomic, retain) NSMutableArray *breakfastArray;
+@property (nonatomic, strong) NSMutableArray *theStructuresArray;
 
 @end
