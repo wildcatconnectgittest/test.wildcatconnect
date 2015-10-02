@@ -85,8 +85,9 @@
      for (int i = 0; i < theArrayToSearch.count; i++) {
           data = theArrayToSearch[i];
           image = [UIImage imageWithData:data];
-          if (image)
+          if (image) {
                [array addObject:image];
+          }
           else
                [array addObject:[[NSObject alloc] init]];
           if (i == theArrayToSearch.count - 1) {
@@ -252,7 +253,8 @@
      NewsArticleStructure *ECStructure;
      for (int i = 0; i < array.count; i++) {
           ECStructure = (NewsArticleStructure *)[array objectAtIndex:i];
-          if (ECStructure.hasImage == [NSNumber numberWithInt:1]) {
+          NSInteger imageInteger = [ECStructure.hasImage integerValue];
+          if (imageInteger == 1) {
                PFFile *file = ECStructure.imageFile;
                [file getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
                     theError = error;
@@ -272,8 +274,17 @@
                }];
           } else {
                [theReturnArray setObject:[[NSObject alloc] init] atIndexedSubscript:[[NSNumber numberWithInt:i] integerValue]];
+               BOOL go = true;
                if (i == array.count - 1) {
-                    dispatch_group_leave(theServiceGroup);
+                    for (NSObject *object in theReturnArray) {
+                         if (object.class == [NewsArticleStructure class]) {
+                              go = false;
+                              break;
+                         }
+                    }
+                    if (go) {
+                         dispatch_group_leave(theServiceGroup);
+                    }
                }
           }
      }
@@ -324,7 +335,8 @@
            cell.textLabel.text = newsArticleStructure.titleString;
            cell.detailTextLabel.text = newsArticleStructure.summaryString;
            cell.detailTextLabel.numberOfLines = 4;
-           if (newsArticleStructure.hasImage == [NSNumber numberWithInt:1])
+           NSInteger integerNumber = [newsArticleStructure.hasImage integerValue];
+     if (integerNumber == 1)
                 cell.imageView.image = (UIImage *)[self.newsArticleImages objectAtIndex:indexPath.row];
            return cell;
       }

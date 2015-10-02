@@ -223,7 +223,8 @@
      ExtracurricularStructure *ECStructure;
      for (int i = 0; i < array.count; i++) {
           ECStructure = (ExtracurricularStructure *)[array objectAtIndex:i];
-          if (ECStructure.hasImage == [NSNumber numberWithInt:1]) {
+          NSInteger imageNumber = [ECStructure.hasImage integerValue];
+          if (imageNumber == 1) {
                PFFile *file = ECStructure.imageFile;
                [file getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
                     UIImage *image = [UIImage imageWithData:data];
@@ -361,10 +362,10 @@
                cell.textLabel.text = EC.titleString;
                cell.detailTextLabel.text = extracurricularUpdateStructure.messageString;
                cell.detailTextLabel.numberOfLines = 4;
-               NSNumber *index = EC.extracurricularID;
-               NSUInteger *theIndex = [index integerValue];
-               if (EC.hasImage == [NSNumber numberWithInt:1])
-                    cell.imageView.image = (UIImage *)[self.ECImagesArray objectAtIndex:theIndex];
+               NSInteger index = [EC.extracurricularID integerValue];
+               NSInteger hasImageInteger = [EC.hasImage integerValue];
+               if (hasImageInteger == 1)
+                    cell.imageView.image = (UIImage *)[self.ECImagesArray objectAtIndex:index];
                return cell;
           }
      } else if (indexPath.section == 1) {
@@ -378,7 +379,8 @@
                cell.textLabel.text = extracurricularStructure.titleString;
                cell.detailTextLabel.text = extracurricularStructure.descriptionString;
                cell.detailTextLabel.numberOfLines = 4;
-               if (extracurricularStructure.hasImage == [NSNumber numberWithInt:1])
+               NSInteger imageInteger = [extracurricularStructure.hasImage integerValue];
+               if (imageInteger == 1)
                     cell.imageView.image = (UIImage *)[self.ECImagesArray objectAtIndex:indexPath.row];
                return cell;
           }
