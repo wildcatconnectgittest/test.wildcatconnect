@@ -191,7 +191,8 @@
           //cell.accessoryType = UITableViewCellAccessoryDetailButton;
      
      NSNumber *number = [self.sectionsNumbersArray objectAtIndex:indexPath.row];
-     if (number != [NSNumber numberWithInt:0]) {
+     NSInteger integer = [number integerValue];
+     if (integer != 0 && (indexPath.row == 0 ||indexPath.row == 1 || indexPath.row == 2)) {
           UIButton *downloadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
           [downloadButton setTitle:[number stringValue] forState:UIControlStateNormal];
           [downloadButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];

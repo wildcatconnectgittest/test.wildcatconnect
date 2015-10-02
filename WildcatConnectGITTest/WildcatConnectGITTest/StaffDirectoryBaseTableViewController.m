@@ -23,7 +23,7 @@ NSString *const kTableCellNibName = @"TableCell";
 - (UITableViewCell *)configureCell:(UITableViewCell *)cell forStaffMemberStructure:(StaffMemberStructure *)staffMemberStructure {
      cell.textLabel.text = [staffMemberStructure fullNameCommaString];
      NSString *string = staffMemberStructure.staffMemberTitle;
-     cell.detailTextLabel.text = string;
+     cell.detailTextLabel.text = [[string stringByAppendingString:@" - "] stringByAppendingString: staffMemberStructure.staffMemberLocation];
      EmailButton *emailButton = [EmailButton buttonWithType:UIButtonTypeRoundedRect];
      [emailButton setImage:[UIImage imageNamed:@"email@2x.png"] forState:UIControlStateNormal];
      [emailButton setEnabled:YES];

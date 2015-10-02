@@ -89,7 +89,7 @@
           staffMemberStructure.staffMemberEMail = [object objectForKey:@"staffMemberEMail"];
           staffMemberStructure.staffMemberFirstName = [object objectForKey:@"staffMemberFirstName"];
           staffMemberStructure.staffMemberLastName = [object objectForKey:@"staffMemberLastName"];
-          staffMemberStructure.staffMemberPhone = [object objectForKey:@"staffMemberPhone"];
+          staffMemberStructure.staffMemberLocation = [object objectForKey:@"staffMemberLocation"];
           staffMemberStructure.staffMemberTitle = [object objectForKey:@"staffMemberTitle"];
           [array addObject:staffMemberStructure];
           if (i == theArrayToSearch.count - 1)
@@ -115,7 +115,7 @@
                                          @"staffMemberFirstName"    : s.staffMemberFirstName,
                                          @"staffMemberLastName" : s.staffMemberLastName,
                                          
-                                         @"staffMemberPhone" : s.staffMemberPhone,
+                                         @"staffMemberLocation" : s.staffMemberLocation,
                                          
                                          @"staffMemberTitle" : s.staffMemberTitle
                                          

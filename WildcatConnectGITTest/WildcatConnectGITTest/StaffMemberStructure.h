@@ -17,7 +17,7 @@
 @property NSString *staffMemberFirstName;
 @property NSString *staffMemberTitle;
 @property NSString *staffMemberEMail;
-@property NSString *staffMemberPhone;
+@property NSString *staffMemberLocation;
 
 - (NSString *)fullNameCommaString;
 

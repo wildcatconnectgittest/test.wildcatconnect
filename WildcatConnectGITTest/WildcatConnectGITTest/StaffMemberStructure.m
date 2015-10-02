@@ -15,7 +15,7 @@
 @dynamic staffMemberFirstName;
 @dynamic staffMemberTitle;
 @dynamic staffMemberEMail;
-@dynamic staffMemberPhone;
+@dynamic staffMemberLocation;
 
 + (void)load {
      [self registerSubclass];

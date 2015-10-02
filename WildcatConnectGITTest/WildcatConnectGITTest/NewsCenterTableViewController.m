@@ -333,6 +333,8 @@
            NewsArticleStructure *newsArticleStructure = ((NewsArticleStructure *)[self.newsArticles objectAtIndex:indexPath.row]);
            UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
            cell.textLabel.text = newsArticleStructure.titleString;
+           cell.textLabel.numberOfLines = 0;
+           cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
            cell.detailTextLabel.text = newsArticleStructure.summaryString;
            cell.detailTextLabel.numberOfLines = 4;
            NSInteger integerNumber = [newsArticleStructure.hasImage integerValue];

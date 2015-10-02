@@ -24,7 +24,7 @@
     
     
     UIRefreshControl *refreshControl= [[UIRefreshControl alloc] init];
-    [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
+    [refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
     self.refreshControl= refreshControl;
     
     
@@ -59,7 +59,6 @@
 
 -(void)refresh {
     [self refreshData];
-    [self.refreshControl endRefreshing];
 }
 
 - (void)refreshData {
@@ -109,6 +108,7 @@
                   /*       UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshData)];
                          self.navigationItem.rightBarButtonItem = barButtonItem;*/
                          [self refreshControl];
+                         [self.refreshControl endRefreshing];
                     });;
                } withArray:returnArrayA];
           }];
@@ -230,14 +230,30 @@
                     UIImage *image = [UIImage imageWithData:data];
                     image = [[AppManager getInstance] imageFromImage:image scaledToWidth:70];
                     [theReturnArray setObject:image atIndexedSubscript:[[NSNumber numberWithInt:i] integerValue]];
-                    if (i == array.count - 1) {
-                         dispatch_group_leave(theServiceGroup);
-                    }
+                         BOOL go = true;
+                         for (NSObject *object in theReturnArray) {
+                              if (object.class == [ExtracurricularStructure class]) {
+                                   go = false;
+                                   break;
+                              }
+                         }
+                         if (go) {
+                              dispatch_group_leave(theServiceGroup);
+                         }
                }];
           } else {
                [theReturnArray setObject:[[NSObject alloc] init] atIndexedSubscript:[[NSNumber numberWithInt:i] integerValue]];
                if (i == array.count - 1) {
-                    dispatch_group_leave(theServiceGroup);
+                    BOOL go = true;
+                    for (NSObject *object in theReturnArray) {
+                         if (object.class == [ExtracurricularStructure class]) {
+                              go = false;
+                              break;
+                         }
+                    }
+                    if (go) {
+                         dispatch_group_leave(theServiceGroup);
+                    }
                }
           }
      }
