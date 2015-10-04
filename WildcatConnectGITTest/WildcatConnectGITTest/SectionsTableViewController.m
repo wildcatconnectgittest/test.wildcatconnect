@@ -36,8 +36,7 @@
     //self.navigationItem.rightBarButtonItem = self.editButtonItem;
     //self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 60, 0);
      
-     self.sectionsArray = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"News Center", @"Extracurriculars", @"Community Service", @"Student Center", @"Calendar", @"Lunch Menus", @"Useful Links", @"Staff Directory", nil]];
-     self.segueIDsArray = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"showNewsCenter", @"showExtracurriculars", @"showCommunityService", @"showStudentCenter", @"showCalendar", @"showLunchMenus", @"showUsefulLinks", @"showStaffDirectory", nil]];
+     self.sectionsArray = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"News Center", @"Extracurriculars", @"Community Service", @"Student Center", @"Calendar", @"Lunch Menus", @"Useful Links", @"Staff Directory", @"Administration", nil]];
      self.sectionsImagesArray = [[NSMutableArray alloc] init];
      [self.sectionsImagesArray addObject:@"theNews@2x.png"];
      [self.sectionsImagesArray addObject:@"extracurriculars@2x.png"];
@@ -47,6 +46,7 @@
      [self.sectionsImagesArray addObject:@"lunchMenus@2x.png"];
      [self.sectionsImagesArray addObject:@"usefulLinks@2x.png"];
      [self.sectionsImagesArray addObject:@"staffDirectory@2x.png"];
+     [self.sectionsImagesArray addObject:@"admin@2x.png"];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

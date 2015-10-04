@@ -28,7 +28,7 @@
      dispatch_group_t serviceGroup = dispatch_group_create();
      dispatch_group_enter(serviceGroup);
      PFQuery *query = [LunchMenusStructure query];
-     [query orderByDescending:@"createdAt"];
+     [query orderByAscending:@"lunchStructureID"];
      query.limit = 5;
      NSMutableArray *returnArray = [NSMutableArray array];
      [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {

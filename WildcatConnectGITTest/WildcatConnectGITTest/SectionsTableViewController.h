@@ -11,7 +11,6 @@
 @interface SectionsTableViewController : UITableViewController
 
 @property (nonatomic, strong) NSMutableArray *sectionsArray;
-@property (nonatomic, strong) NSMutableArray *segueIDsArray;
 @property (nonatomic, strong) NSMutableArray *sectionsImagesArray;
 @property (nonatomic, strong) NSMutableArray *sectionsNumbersArray;
 
