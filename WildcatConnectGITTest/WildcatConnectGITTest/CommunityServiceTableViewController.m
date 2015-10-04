@@ -20,6 +20,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    
+    UIRefreshControl *refreshControl= [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
+    self.refreshControl= refreshControl;
      
      if (self.loadNumber == [NSNumber numberWithInt:1] || ! self.loadNumber) {
           [self refreshData];
@@ -44,6 +49,10 @@
      }
 }
 
+-(void)refresh {
+    [self refreshData];
+    }
+
 - (void)refreshData {
      [self testMethodWithCompletion:^(NSError *error, NSMutableArray *returnArrayA) {
           self.allOpps = returnArrayA;
@@ -53,8 +62,7 @@
                NSMutableArray *itemsToSave = [NSMutableArray array];
                for (CommunityServiceStructure *c in returnArray2) {
                     [itemsToSave addObject:@{ @"commTitleString"     : c.commTitleString,
-                                              @"commPreviewString"    : c.commPreviewString,
-                                              @"commDateString" :c.commDateString , @"commSummaryString" : c.commSummaryString, @"IsNewNumber" : c.IsNewNumber, @"hasImage" : c.hasImage, @"communityServiceID"  : c.communityServiceID
+                                              @"commPreviewString"    : c.commPreviewString , @"commSummaryString" : c.commSummaryString, @"IsNewNumber" : c.IsNewNumber, @"hasImage" : c.hasImage, @"communityServiceID"  : c.communityServiceID
                                               }];
                }
                NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -62,8 +70,7 @@
                itemsToSave = [NSMutableArray array];
                for (CommunityServiceStructure *c in returnArrayB) {
                     [itemsToSave addObject:@{ @"commTitleString"     : c.commTitleString,
-                                              @"commPreviewString"    : c.commPreviewString,
-                                              @"commDateString" :c.commDateString , @"commSummaryString" : c.commSummaryString, @"IsNewNumber" : c.IsNewNumber, @"hasImage" : c.hasImage, @"communityServiceID"  : c.communityServiceID
+                                              @"commPreviewString"    : c.commPreviewString, @"commSummaryString" : c.commSummaryString, @"IsNewNumber" : c.IsNewNumber, @"hasImage" : c.hasImage, @"communityServiceID"  : c.communityServiceID
                                               }];
                }
                [userDefaults setObject:itemsToSave forKey:@"oldCommServiceItems"];
@@ -99,6 +106,10 @@
                          dispatch_async(dispatch_get_main_queue(), ^ {
                               [activity stopAnimating];
                               [self.tableView reloadData];
+                             [self refreshControl];
+                             [self.refreshControl endRefreshing];
+                             
+                             
                               UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(viewDidLoad)];
                               self.navigationItem.rightBarButtonItem = barButtonItem;
                          });
@@ -175,7 +186,6 @@
           CSStructure = [[CommunityServiceStructure alloc] init];
           CSStructure.commTitleString = [object objectForKey:@"commTitleString"];
           CSStructure.commPreviewString = [object objectForKey:@"commPreviewString"];
-          CSStructure.commDateString = [object objectForKey:@"commDateString"];
           CSStructure.commSummaryString = [object objectForKey:@"commSummaryString"];
           CSStructure.IsNewNumber = [object objectForKey:@"IsNewNumber"];
           CSStructure.hasImage = [object objectForKey:@"hasImage"];
@@ -202,7 +212,6 @@
           CSStructure = [[CommunityServiceStructure alloc] init];
           CSStructure.commTitleString = [object objectForKey:@"commTitleString"];
           CSStructure.commPreviewString = [object objectForKey:@"commPreviewString"];
-          CSStructure.commDateString = [object objectForKey:@"commDateString"];
           CSStructure.commSummaryString = [object objectForKey:@"commSummaryString"];
           CSStructure.IsNewNumber = [object objectForKey:@"IsNewNumber"];
           CSStructure.hasImage = [object objectForKey:@"hasImage"];
@@ -400,29 +409,21 @@
 }
 
 
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+/*
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return 2;
-}
+    return 2;}
+ 
+ */
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
-    if (self.allOpps.count == 0)
-        return 1;
-    else {
-        if (section == 0)
-             return (self.newOpps.count == 0) ? 1 : self.newOpps.count;
-        else if (section == 1)
-             return (self.oldOpps.count == 0) ? 1 : self.oldOpps.count;
-        return nil;
-    }
-    return nil;
-}
 
+
+
+/*
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 100;
 }
+ */
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -490,6 +491,53 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    // Return the number of sections.
+    return 2;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 100;
+}
+
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    // Return the number of rows in the section.
+    if (self.allOpps.count == 0)
+        return 1;
+    else {
+        if (section == 0)
+            return (self.newOpps.count == 0) ? 1 : self.newOpps.count;
+        else if (section == 1)
+            return (self.oldOpps.count == 0) ? 1 : self.oldOpps.count;
+        return nil;
+    }
+    return nil;
+}
+
+/*- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    // Return the number of rows in the section.
+    if (section == 0) {
+        if (self.updateOpps.count == 0) {
+            return 1;
+        } else
+            return self.updateOpps.count;
+    } else if (section == 1) {
+        if (self.allOpps.count == 0) {
+            return 1;
+        } else
+            return self.allOpps.count;
+    }
+    else return nil;
+}*/
+
+
+#pragma mark Table View Data Sources Methods;
 
 /*
  #pragma mark - Navigation

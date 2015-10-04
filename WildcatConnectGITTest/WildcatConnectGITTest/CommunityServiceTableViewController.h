@@ -10,6 +10,7 @@
 
 @interface CommunityServiceTableViewController : UITableViewController{
     NSMutableArray *allOpps;
+    NSMutableArray *updateOpps;
      NSMutableArray *oldImages;
      NSMutableArray *newImages;
     NSMutableArray *newOpps;
@@ -18,6 +19,7 @@
     
 }
 @property (nonatomic, retain) NSMutableArray *allOpps;
+@property ( nonatomic, retain) NSMutableArray *updateOpps;
 @property (nonatomic, retain) NSMutableArray *newOpps;
 @property (nonatomic, retain) NSMutableArray *oldOpps;
 @property (nonatomic, retain) NSMutableArray *oldImages;
