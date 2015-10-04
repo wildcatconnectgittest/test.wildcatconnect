@@ -14,6 +14,7 @@
 #import "UsefulLinksTableViewController.h"
 #import "LunchMenusViewController.h"
 #import "AdministrationLogInViewController.h"
+#import "AdministrationMainTableViewController.h"
 #import <Parse/Parse.h>
 #import "NewsArticleStructure.h"
 #import "ExtracurricularUpdateStructure.h"
@@ -250,7 +251,8 @@
                [self.navigationController pushViewController:controller animated:YES];
           }
           else if (indexPath.row == 1) {
-               ExtracurricularsTableViewController *controller = [[ExtracurricularsTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
+               ExtracurricularsTableViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"ExtracurricularsController"];
+               controller.loadNumber = [NSNumber numberWithInt:0];
                [self.navigationController pushViewController:controller animated:YES];
           }
           else if (indexPath.row == 2) {
@@ -270,7 +272,7 @@
                [self.navigationController pushViewController:controller animated:YES];
           }
           else if (indexPath.row == 8) {
-               AdministrationLogInViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"LogInID"];
+               AdministrationMainTableViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"MainID"];
                [self.navigationController pushViewController:controller animated:YES];
           }
      }
@@ -281,7 +283,8 @@
                     [self.navigationController pushViewController:controller animated:YES];
                }
                else if (indexPath.row == 1) {
-                    ExtracurricularsTableViewController *controller = [[ExtracurricularsTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:0]];
+                    ExtracurricularsTableViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"ExtracurricularsController"];
+                    controller.loadNumber = [NSNumber numberWithInt:0];
                     [self.navigationController pushViewController:controller animated:YES];
                }
                else if (indexPath.row == 2) {
@@ -301,7 +304,7 @@
                     [self.navigationController pushViewController:controller animated:YES];
                }
                else if (indexPath.row == 8) {
-                    AdministrationLogInViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"LogInID"];
+                    AdministrationMainTableViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"MainID"];
                     [self.navigationController pushViewController:controller animated:YES];
                }
           }
@@ -313,7 +316,8 @@
                     NewsCenterTableViewController *controller = [[NewsCenterTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
                     [self.navigationController pushViewController:controller animated:YES];
                }else if (indexPath.row == 1) {
-                    ExtracurricularsTableViewController *controller = [[ExtracurricularsTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
+                    ExtracurricularsTableViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"ExtracurricularsController"];
+                    controller.loadNumber = [NSNumber numberWithInt:0];
                     [self.navigationController pushViewController:controller animated:YES];
                } else if (indexPath.row == 2) {
                     CommunityServiceTableViewController *controller = [[CommunityServiceTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
@@ -332,7 +336,7 @@
                     [self.navigationController pushViewController:controller animated:YES];
                }
                else if (indexPath.row == 8) {
-                    AdministrationLogInViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"LogInID"];
+                    AdministrationMainTableViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"MainID"];
                     [self.navigationController pushViewController:controller animated:YES];
                }
           }

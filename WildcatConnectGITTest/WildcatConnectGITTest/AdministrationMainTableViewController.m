@@ -7,6 +7,8 @@
 //
 
 #import "AdministrationMainTableViewController.h"
+#import <Parse/Parse.h>
+#import "AdministrationLogInViewController.h"
 
 @interface AdministrationMainTableViewController ()
 
@@ -15,6 +17,9 @@
 @implementation AdministrationMainTableViewController
 
 - (void)viewDidLoad {
+     if (! [PFUser currentUser]) {
+          [self performSegueWithIdentifier:@"showLogIn" sender:self];
+     }
     [super viewDidLoad];
     
     // Uncomment the following line to preserve selection between presentations.

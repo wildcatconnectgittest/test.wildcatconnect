@@ -178,6 +178,8 @@
           [lunch saveInBackground];
      }*/
      
+     [PFUser logOutInBackground];
+     
     return YES;
 }
 

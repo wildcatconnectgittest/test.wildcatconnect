@@ -106,12 +106,7 @@
                          dispatch_async(dispatch_get_main_queue(), ^ {
                               [activity stopAnimating];
                               [self.tableView reloadData];
-                             [self refreshControl];
                              [self.refreshControl endRefreshing];
-                             
-                             
-                              UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(viewDidLoad)];
-                              self.navigationItem.rightBarButtonItem = barButtonItem;
                          });
                     } withArray:returnArrayB];
                } withArray:returnArray2];
@@ -189,7 +184,9 @@
           CSStructure.commSummaryString = [object objectForKey:@"commSummaryString"];
           CSStructure.IsNewNumber = [object objectForKey:@"IsNewNumber"];
           CSStructure.hasImage = [object objectForKey:@"hasImage"];
-          CSStructure.communityServiceID = [object objectForKey:@"communityServiceID"];if (i == theArrayToSearch.count - 1)
+          CSStructure.communityServiceID = [object objectForKey:@"communityServiceID"];
+          [array addObject:CSStructure];
+          if (i == theArrayToSearch.count - 1)
                dispatch_group_leave(serviceGroup);
      }
      if (theArrayToSearch.count == 0) {
@@ -215,7 +212,9 @@
           CSStructure.commSummaryString = [object objectForKey:@"commSummaryString"];
           CSStructure.IsNewNumber = [object objectForKey:@"IsNewNumber"];
           CSStructure.hasImage = [object objectForKey:@"hasImage"];
-          CSStructure.communityServiceID = [object objectForKey:@"communityServiceID"];if (i == theArrayToSearch.count - 1)
+          CSStructure.communityServiceID = [object objectForKey:@"communityServiceID"];
+          [array addObject:CSStructure];
+          if (i == theArrayToSearch.count - 1)
                dispatch_group_leave(serviceGroup);
      }
      if (theArrayToSearch.count == 0) {
@@ -235,21 +234,38 @@
      CommunityServiceStructure *CSStructure;
      for (int i = 0; i < array.count; i++) {
           CSStructure = (CommunityServiceStructure *)[array objectAtIndex:i];
-          if (CSStructure.hasImage == [NSNumber numberWithInt:1]) {
+          NSInteger *integer = [CSStructure.hasImage integerValue];
+          if (integer == 1) {
                PFFile *file = CSStructure.commImageFile;
                [file getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
                     theError = error;
                     UIImage *image = [UIImage imageWithData:data];
                     image = [[AppManager getInstance] imageFromImage:image scaledToWidth:70];
                     [theReturnArray setObject:image atIndexedSubscript:[[NSNumber numberWithInt:i] integerValue]];
-                    if (i == array.count - 1) {
+                    BOOL go = true;
+                    for (NSObject *object in theReturnArray) {
+                         if (object.class == [CommunityServiceStructure class]) {
+                              go = false;
+                              break;
+                         }
+                    }
+                    if (go) {
                          dispatch_group_leave(theServiceGroup);
                     }
                }];
           } else {
                [theReturnArray setObject:[[NSObject alloc] init] atIndexedSubscript:[[NSNumber numberWithInt:i] integerValue]];
                if (i == array.count - 1) {
-                    dispatch_group_leave(theServiceGroup);
+                    BOOL go = true;
+                    for (NSObject *object in theReturnArray) {
+                         if (object.class == [CommunityServiceStructure class]) {
+                              go = false;
+                              break;
+                         }
+                    }
+                    if (go) {
+                         dispatch_group_leave(theServiceGroup);
+                    }
                }
           }
      }
@@ -273,21 +289,38 @@
      CommunityServiceStructure *CSStructure;
      for (int i = 0; i < array.count; i++) {
           CSStructure = (CommunityServiceStructure *)[array objectAtIndex:i];
-          if (CSStructure.hasImage == [NSNumber numberWithInt:1]) {
+          NSInteger *integer = [CSStructure.hasImage integerValue];
+          if (integer == 1) {
                PFFile *file = CSStructure.commImageFile;
                [file getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
                     theError = error;
                     UIImage *image = [UIImage imageWithData:data];
                     image = [[AppManager getInstance] imageFromImage:image scaledToWidth:70];
                     [theReturnArray setObject:image atIndexedSubscript:[[NSNumber numberWithInt:i] integerValue]];
-                    if (i == array.count - 1) {
+                    BOOL go = true;
+                    for (NSObject *object in theReturnArray) {
+                         if (object.class == [CommunityServiceStructure class]) {
+                              go = false;
+                              break;
+                         }
+                    }
+                    if (go) {
                          dispatch_group_leave(theServiceGroup);
                     }
                }];
           } else {
                [theReturnArray setObject:[[NSObject alloc] init] atIndexedSubscript:[[NSNumber numberWithInt:i] integerValue]];
                if (i == array.count - 1) {
-                    dispatch_group_leave(theServiceGroup);
+                    BOOL go = true;
+                    for (NSObject *object in theReturnArray) {
+                         if (object.class == [CommunityServiceStructure class]) {
+                              go = false;
+                              break;
+                         }
+                    }
+                    if (go) {
+                         dispatch_group_leave(theServiceGroup);
+                    }
                }
           }
      }
@@ -380,21 +413,24 @@
 
 
 
-- (void)testMethodThreeWithCompletion:(void (^)(NSMutableArray *returnArray, NSMutableArray *returnArray2))completion withArray:(NSMutableArray *)array {
+- (void)testMethodThreeWithCompletion:(void (^)(NSMutableArray *returnArray, NSMutableArray *returnArray2))completion withArray:(NSMutableArray *)theArray {
     __block NSError *theError = nil;
     dispatch_group_t theServiceGroup = dispatch_group_create();
     dispatch_group_enter(theServiceGroup);
     CommunityServiceStructure *commServiceStructure;
     NSMutableArray *returnArray =[[NSMutableArray alloc]init];//old
     NSMutableArray *returnArray2 =[[NSMutableArray alloc]init];//new
+     NSMutableArray *array = [theArray mutableCopy];
     for(int a = 0; a < array.count; a++ )
     {
         commServiceStructure = (CommunityServiceStructure *)[array objectAtIndex:a];
-        if(commServiceStructure.IsNewNumber == [NSNumber numberWithInt:0])
+         NSLog(@"%@", commServiceStructure.IsNewNumber);
+         NSInteger *integer = [commServiceStructure.IsNewNumber integerValue];
+        if(integer == 0)
         {
             [returnArray addObject:commServiceStructure];
         }
-        else if (commServiceStructure.IsNewNumber == [NSNumber numberWithInt:1]) {
+        else if (integer == 1) {
             [returnArray2 addObject:commServiceStructure];
         }
         if (a == array.count -1)
@@ -444,7 +480,8 @@
                   cell.textLabel.text = commServiceStructure.commTitleString;
                   cell.detailTextLabel.text = commServiceStructure.commSummaryString;
                   cell.detailTextLabel.numberOfLines = 4;
-                  if (commServiceStructure.hasImage == [NSNumber numberWithInt:1]) {
+                  NSInteger integer = [commServiceStructure.hasImage integerValue];
+                  if (integer == 1) {
                        cell.imageView.image = (UIImage *)[self.newImages objectAtIndex:indexPath.row];
                   }
                   return cell;
@@ -460,7 +497,8 @@
                   cell.textLabel.text = commServiceStructure.commTitleString;
                   cell.detailTextLabel.text = commServiceStructure.commSummaryString;
                   cell.detailTextLabel.numberOfLines = 4;
-                  if (commServiceStructure.hasImage == [NSNumber numberWithInt:1])
+                  NSInteger integer = [commServiceStructure.hasImage integerValue];
+                  if (integer == 1)
                        cell.imageView.image = (UIImage *)[self.oldImages objectAtIndex:indexPath.row];
                   return cell;
              }
