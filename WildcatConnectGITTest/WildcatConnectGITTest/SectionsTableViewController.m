@@ -13,6 +13,7 @@
 #import "ExtracurricularsTableViewController.h"
 #import "UsefulLinksTableViewController.h"
 #import "LunchMenusViewController.h"
+#import "AdministrationLogInViewController.h"
 #import <Parse/Parse.h>
 #import "NewsArticleStructure.h"
 #import "ExtracurricularUpdateStructure.h"
@@ -54,7 +55,7 @@
           //Load the sectionsNumbersArray
      NSMutableArray *numbersArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"sectionsNumbersArray"];
      if (numbersArray) {
-          self.sectionsNumbersArray = numbersArray;
+               //self.sectionsNumbersArray = numbersArray;
      }
      else {
                //Create new array
@@ -185,11 +186,6 @@
      UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier" forIndexPath:indexPath];
      cell.textLabel.text = self.sectionsArray[indexPath.row];
      cell.imageView.image = [UIImage imageNamed:self.sectionsImagesArray[indexPath.row]];
-     /*UIButton *button = [[UIButton alloc] init];
-     button.titleLabel.text = @"Testing";
-     cell.accessoryView = button;*/
-          //cell.accessoryType = UITableViewCellAccessoryDetailButton;
-     
      NSNumber *number = [self.sectionsNumbersArray objectAtIndex:indexPath.row];
      NSInteger integer = [number integerValue];
      if (integer != 0 && (indexPath.row == 0 ||indexPath.row == 1 || indexPath.row == 2)) {
@@ -273,6 +269,10 @@
                StaffDirectoryMainTableViewController *controller = [[StaffDirectoryMainTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
                [self.navigationController pushViewController:controller animated:YES];
           }
+          else if (indexPath.row == 8) {
+               AdministrationLogInViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"LogInID"];
+               [self.navigationController pushViewController:controller animated:YES];
+          }
      }
      else {
           if ([visitedPagesArray containsObject:[NSString stringWithFormat:@"%lu", (long)indexPath.row]]) {
@@ -300,6 +300,10 @@
                     StaffDirectoryMainTableViewController *controller = [[StaffDirectoryMainTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:0]];
                     [self.navigationController pushViewController:controller animated:YES];
                }
+               else if (indexPath.row == 8) {
+                    AdministrationLogInViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"LogInID"];
+                    [self.navigationController pushViewController:controller animated:YES];
+               }
           }
           else {
                [visitedPagesArray addObject:[NSString stringWithFormat:@"%lu", (long)indexPath.row]];
@@ -325,6 +329,10 @@
                }
                else if (indexPath.row == 7) {
                     StaffDirectoryMainTableViewController *controller = [[StaffDirectoryMainTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
+                    [self.navigationController pushViewController:controller animated:YES];
+               }
+               else if (indexPath.row == 8) {
+                    AdministrationLogInViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"LogInID"];
                     [self.navigationController pushViewController:controller animated:YES];
                }
           }

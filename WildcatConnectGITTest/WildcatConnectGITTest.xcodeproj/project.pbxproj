@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0A037E551BC14B0B009A1DBB /* admin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A037E541BC14B0B009A1DBB /* admin@2x.png */; settings = {ASSET_TAGS = (); }; };
+		0A037E581BC14F78009A1DBB /* AdministrationLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A037E571BC14F78009A1DBB /* AdministrationLogInViewController.m */; settings = {ASSET_TAGS = (); }; };
+		0A037E5B1BC1543E009A1DBB /* AdministrationMainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A037E5A1BC1543E009A1DBB /* AdministrationMainTableViewController.m */; settings = {ASSET_TAGS = (); }; };
 		0A0A496C1B7E75A500304629 /* StaffDirectoryBaseTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0A496B1B7E75A500304629 /* StaffDirectoryBaseTableViewController.m */; };
 		0A0A496F1B7E76A100304629 /* StaffDirectoryMainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0A496E1B7E76A100304629 /* StaffDirectoryMainTableViewController.m */; };
 		0A0A49721B7E776500304629 /* StaffDirectoryResultsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0A49711B7E776500304629 /* StaffDirectoryResultsTableViewController.m */; };
@@ -84,6 +86,10 @@
 
 /* Begin PBXFileReference section */
 		0A037E541BC14B0B009A1DBB /* admin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "admin@2x.png"; sourceTree = "<group>"; };
+		0A037E561BC14F78009A1DBB /* AdministrationLogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdministrationLogInViewController.h; sourceTree = "<group>"; };
+		0A037E571BC14F78009A1DBB /* AdministrationLogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdministrationLogInViewController.m; sourceTree = "<group>"; };
+		0A037E591BC1543E009A1DBB /* AdministrationMainTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdministrationMainTableViewController.h; sourceTree = "<group>"; };
+		0A037E5A1BC1543E009A1DBB /* AdministrationMainTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdministrationMainTableViewController.m; sourceTree = "<group>"; };
 		0A0A496A1B7E75A500304629 /* StaffDirectoryBaseTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaffDirectoryBaseTableViewController.h; sourceTree = "<group>"; };
 		0A0A496B1B7E75A500304629 /* StaffDirectoryBaseTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StaffDirectoryBaseTableViewController.m; sourceTree = "<group>"; };
 		0A0A496D1B7E76A100304629 /* StaffDirectoryMainTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaffDirectoryMainTableViewController.h; sourceTree = "<group>"; };
@@ -287,6 +293,10 @@
 				0A1FE3E21B7B7DA80062A30E /* SecondViewController.h */,
 				0A1FE3E31B7B7DA80062A30E /* SecondViewController.m */,
 				0A1FE3E51B7B7DA80062A30E /* Main.storyboard */,
+				0A037E591BC1543E009A1DBB /* AdministrationMainTableViewController.h */,
+				0A037E5A1BC1543E009A1DBB /* AdministrationMainTableViewController.m */,
+				0A037E561BC14F78009A1DBB /* AdministrationLogInViewController.h */,
+				0A037E571BC14F78009A1DBB /* AdministrationLogInViewController.m */,
 				F7956CB01BA5CAA70091EB5A /* NewsArticleDetailViewController.h */,
 				F7956CB11BA5CAA70091EB5A /* NewsArticleDetailViewController.m */,
 				0AD4B0BF1B81FA3C004E23E4 /* ExtracurricularStructure.h */,
@@ -482,6 +492,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A037E5B1BC1543E009A1DBB /* AdministrationMainTableViewController.m in Sources */,
 				0A4A37F81B7BA41A00AF3E36 /* LunchMenusViewController.m in Sources */,
 				F768D0611B8208980064E296 /* CommunityServiceStructure.m in Sources */,
 				0AD4B0C11B81FA3C004E23E4 /* ExtracurricularStructure.m in Sources */,
@@ -502,6 +513,7 @@
 				0A0A497E1B7EFEC800304629 /* ApplicationManager.m in Sources */,
 				F7956CB21BA5CAA70091EB5A /* NewsArticleDetailViewController.m in Sources */,
 				0A4A37E91B7B90D100AF3E36 /* SectionsTableViewController.m in Sources */,
+				0A037E581BC14F78009A1DBB /* AdministrationLogInViewController.m in Sources */,
 				F768D0641B821A000064E296 /* CommunityServiceTableViewController.m in Sources */,
 				0AE74A2B1B7D7A2C0083EFF1 /* SplashScreenViewController.m in Sources */,
 				0AD4B0CA1B820252004E23E4 /* ExtracurricularUpdateStructure.m in Sources */,
