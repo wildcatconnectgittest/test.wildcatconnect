@@ -526,7 +526,7 @@ cmlvZCA3A
         <!--News Article Detail View Controller-->
         <scene sceneID="Lyn-U9-gad">
             <objects>
-                <viewController storyboardIdentifier="NewsArticleDetailViewController" id="aYK-Ji-dnD" customClass="NewsArticleDetailViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NADetail" useStoryboardIdentifierAsRestorationIdentifier="YES" id="aYK-Ji-dnD" customClass="NewsArticleDetailViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="mou-Mi-hmL">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -535,10 +535,6 @@ cmlvZCA3A
                                 <rect key="frame" x="0.0" y="-83" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="4Oq-zG-ykB">
-                                        <rect key="frame" x="0.0" y="49" width="320" height="223"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="oLx-mY-Ipx">
                                         <rect key="frame" x="274" y="273" width="38" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -560,6 +556,10 @@ cmlvZCA3A
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="4Oq-zG-ykB">
+                                        <rect key="frame" x="0.0" y="50" width="320" height="223"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    </imageView>
                                 </subviews>
                             </scrollView>
                         </subviews>
@@ -567,12 +567,16 @@ cmlvZCA3A
                     </view>
                     <navigationItem key="navigationItem" id="c8p-39-jcW"/>
                     <connections>
-                        <outlet property="scrollerArticle" destination="0XP-My-BZr" id="B03-IU-QLP"/>
+                        <outlet property="NADate" destination="oLx-mY-Ipx" id="VHI-ab-e2d"/>
+                        <outlet property="NASummary" destination="Owq-AJ-VMm" id="PA3-3a-ejJ"/>
+                        <outlet property="NAText" destination="uZr-Iq-I8o" id="Z7k-hY-YS9"/>
+                        <outlet property="image" destination="4Oq-zG-ykB" id="RiA-qZ-Jvq"/>
+                        <outlet property="scrollerArticle" destination="0XP-My-BZr" id="mGM-hM-dsy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lTG-Y4-gfS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2536" y="724"/>
+            <point key="canvasLocation" x="2114" y="428"/>
         </scene>
         <!--Sections-->
         <scene sceneID="4Ke-Dd-tzB">

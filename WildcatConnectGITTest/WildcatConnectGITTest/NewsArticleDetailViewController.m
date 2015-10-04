@@ -16,8 +16,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [scrollerArticle setScrollEnabled:YES];
-    [scrollerArticle setContentSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 1000)];
+    [_scrollerArticle setScrollEnabled:YES];
+    [_scrollerArticle setContentSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 1000)];
     CGSize ScreenSize = [[UIScreen mainScreen] bounds].size;
     self.view.frame = CGRectMake(0, 0, ScreenSize.width, ScreenSize.height);
 
@@ -39,4 +39,35 @@
 }
 */
 
+#pragma mark - UIStateRestoration
+
+NSString *const ViewControllerProductKey = @"ViewControllerProductKey";
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
+    [super encodeRestorableStateWithCoder:coder];
+    
+    // encode the product
+    [coder encodeObject:self.NA forKey:ViewControllerProductKey];
+}
+
+- (void)decodeRestorableStateWithCoder:(NSCoder *)coder {
+    [super decodeRestorableStateWithCoder:coder];
+    
+    // restore the product
+    self.NA = [coder decodeObjectForKey:ViewControllerProductKey];
+}
+
+
+
+- (void)dealloc {
+    [_NAText release];
+    [_image release];
+    [_image release];
+    [_NAText release];
+    [_NASummary release];
+    [_NADate release];
+    [_NAscroller release];
+    [_scrollerArticle release];
+    [super dealloc];
+}
 @end

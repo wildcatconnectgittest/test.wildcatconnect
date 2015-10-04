@@ -9,6 +9,7 @@
 #import "NewsCenterTableViewController.h"
 #import "AppManager.h"
 #import "NewsArticleStructure.h"
+#import "NewsArticleDetailViewController.h"
 
 @implementation NewsCenterTableViewController {
      UIActivityIndicatorView *activity;
@@ -345,7 +346,9 @@
  }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-     
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+    NewsArticleDetailViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"NADetail"];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 
