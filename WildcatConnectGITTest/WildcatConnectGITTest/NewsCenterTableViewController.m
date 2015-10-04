@@ -26,6 +26,7 @@
     [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
     self.refreshControl= refreshControl;
     
+     NSLog(@"%@", self.storyboard);
     
     
     if (self.loadNumber == [NSNumber numberWithInt:1] || ! self.loadNumber) {
@@ -346,9 +347,10 @@
  }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-    NewsArticleDetailViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"NADetail"];
-    [self.navigationController pushViewController:controller animated:YES];
+     self.newsArticleSelected = self.newsArticles[indexPath.row];
+     NewsArticleDetailViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"NADetail"];
+     controller.NA = self.newsArticleSelected;
+     [self.navigationController pushViewController:controller animated:YES];
 }
 
 
@@ -393,14 +395,15 @@
  }
  */
 
-/*
  #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
+     //In a storyboard-based application, you will often want to do a little preparation before navigation
  - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
  // Get the new view controller using [segue destinationViewController].
  // Pass the selected object to the new view controller.
+      if ([segue.identifier isEqualToString:@"showDetailView"]) {
+           NewsArticleDetailViewController *detailViewController = (NewsArticleDetailViewController *)[segue destinationViewController];
+           detailViewController.NA = self.newsArticleSelected;
+      }
  }
- */
 
 @end

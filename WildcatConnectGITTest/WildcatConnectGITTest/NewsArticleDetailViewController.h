@@ -24,4 +24,6 @@
 @property (retain, nonatomic) IBOutlet UIImageView *image;
 @property (nonatomic,strong) NewsArticleStructure *NA;
 
+- (instancetype)initWithNewsArticle:(NewsArticleStructure *)newsArticle;
+
 @end

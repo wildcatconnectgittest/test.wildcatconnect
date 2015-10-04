@@ -17,11 +17,26 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [_scrollerArticle setScrollEnabled:YES];
-    [_scrollerArticle setContentSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 1000)];
+          [_scrollerArticle setContentSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 2000)];
     CGSize ScreenSize = [[UIScreen mainScreen] bounds].size;
     self.view.frame = CGRectMake(0, 0, ScreenSize.width, ScreenSize.height);
 
     // Do any additional setup after loading the view.
+     
+     self.navigationItem.title = @"Article";
+     NSLog(@"%@", self.NA);
+     self.NADate.text = self.NA.dateString;
+     self.NAText.text = self.NA.summaryString;
+     [self.NAText sizeToFit];
+     [self.NADate sizeToFit];
+     [_scrollerArticle setContentSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, self.NAText.frame.size.height)];
+}
+
+- (instancetype)initWithNewsArticle:(NewsArticleStructure *)newsArticle {
+     [super init];
+     self.NA = newsArticle;
+     self.navigationItem.title = @"Article";
+     return self;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -55,19 +70,5 @@ NSString *const ViewControllerProductKey = @"ViewControllerProductKey";
     
     // restore the product
     self.NA = [coder decodeObjectForKey:ViewControllerProductKey];
-}
-
-
-
-- (void)dealloc {
-    [_NAText release];
-    [_image release];
-    [_image release];
-    [_NAText release];
-    [_NASummary release];
-    [_NADate release];
-    [_NAscroller release];
-    [_scrollerArticle release];
-    [super dealloc];
 }
 @end

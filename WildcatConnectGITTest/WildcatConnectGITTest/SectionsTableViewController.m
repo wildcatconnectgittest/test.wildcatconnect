@@ -247,12 +247,11 @@
           [userDefaults setObject:visitedPagesArray forKey:@"visitedPagesArray"];
           [userDefaults synchronize];
           if (indexPath.row == 0) {
-               NewsCenterTableViewController *controller = [[NewsCenterTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
-               [self.navigationController pushViewController:controller animated:YES];
+                    NewsCenterTableViewController *controller = [[NewsCenterTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
+                    [self.navigationController pushViewController:controller animated:YES];
           }
           else if (indexPath.row == 1) {
-               ExtracurricularsTableViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"ExtracurricularsController"];
-               controller.loadNumber = [NSNumber numberWithInt:0];
+               ExtracurricularsTableViewController *controller = [[ExtracurricularsTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
                [self.navigationController pushViewController:controller animated:YES];
           }
           else if (indexPath.row == 2) {
@@ -279,12 +278,11 @@
      else {
           if ([visitedPagesArray containsObject:[NSString stringWithFormat:@"%lu", (long)indexPath.row]]) {
                if (indexPath.row == 0) {
-                    NewsCenterTableViewController *controller = [[NewsCenterTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:0]];
-                    [self.navigationController pushViewController:controller animated:YES];
+                         NewsCenterTableViewController *controller = [[NewsCenterTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
+                         [self.navigationController pushViewController:controller animated:YES];
                }
                else if (indexPath.row == 1) {
-                    ExtracurricularsTableViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"ExtracurricularsController"];
-                    controller.loadNumber = [NSNumber numberWithInt:0];
+                    ExtracurricularsTableViewController *controller = [[ExtracurricularsTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:0]];
                     [self.navigationController pushViewController:controller animated:YES];
                }
                else if (indexPath.row == 2) {
@@ -313,11 +311,10 @@
                [userDefaults setObject:visitedPagesArray forKey:@"visitedPagesArray"];
                [userDefaults synchronize];
                if (indexPath.row == 0) {
-                    NewsCenterTableViewController *controller = [[NewsCenterTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
-                    [self.navigationController pushViewController:controller animated:YES];
+                         NewsCenterTableViewController *controller = [[NewsCenterTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
+                         [self.navigationController pushViewController:controller animated:YES];
                }else if (indexPath.row == 1) {
-                    ExtracurricularsTableViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"ExtracurricularsController"];
-                    controller.loadNumber = [NSNumber numberWithInt:0];
+                    ExtracurricularsTableViewController *controller = [[ExtracurricularsTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
                     [self.navigationController pushViewController:controller animated:YES];
                } else if (indexPath.row == 2) {
                     CommunityServiceTableViewController *controller = [[CommunityServiceTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
