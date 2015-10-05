@@ -350,6 +350,7 @@
      self.newsArticleSelected = self.newsArticles[indexPath.row];
      NewsArticleDetailViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"NADetail"];
      controller.NA = self.newsArticleSelected;
+     controller.image = self.newsArticleImages[indexPath.row];
      [self.navigationController pushViewController:controller animated:YES];
 }
 
