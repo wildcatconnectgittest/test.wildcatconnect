@@ -20,7 +20,7 @@
 @property PFFile *imageFile;
 @property NSString *imageURLString;
 @property NSString *meetingString;
-@property NSDictionary *contactInformationDictionary;
 @property NSNumber *extracurricularID;
+@property NSNumber *meetingIDs;
 
 @end

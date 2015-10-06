@@ -187,6 +187,7 @@
      NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
      [userDefaults removeObjectForKey:@"visitedPagesArray"];
      [userDefaults removeObjectForKey:@"readNewsArticles"];
+     [userDefaults removeObjectForKey:@"likedNewsArticles"];
      [userDefaults synchronize];
 }
 
@@ -194,6 +195,7 @@
      NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
      [userDefaults removeObjectForKey:@"visitedPagesArray"];
      [userDefaults removeObjectForKey:@"readNewsArticles"];
+     [userDefaults removeObjectForKey:@"likedNewsArticles"];
      [userDefaults synchronize];
 }
 

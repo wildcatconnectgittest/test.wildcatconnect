@@ -84,8 +84,8 @@
                                             @"hasImage" :e.hasImage,
                                             @"imageURLString": e.imageURLString,
                                             @"meetingString" : e.meetingString,
-                                            @"contactInformationDictionary" : e.contactInformationDictionary,
-                                            @"extracurricularID" : e.extracurricularID
+                                            @"extracurricularID" : e.extracurricularID,
+                                            @"meetingIDs" : e.meetingIDs
                                             }];
                }
                [userDefaults setObject:moreItems forKey:@"ECArray"];
@@ -117,6 +117,14 @@
      }];
 }
 
+- (void)sortExtracurricularsByDayMethodWithCompletion:(void (^)(NSMutableArray *returnArray))completion withArray:(NSMutableArray *)array {
+     dispatch_group_t serviceGroup = dispatch_group_create();
+     dispatch_group_enter(serviceGroup);
+     NSMutableArray *theReturnArray = [NSMutableArray array];
+     NSMutableArray *theArrayToSort = [array mutableCopy];
+          //Here!!!
+}
+
 - (void)getOldUpdatesTwoWithCompletion:(void (^)(NSMutableArray *returnArray))completion {
      dispatch_group_t serviceGroup = dispatch_group_create();
      dispatch_group_enter(serviceGroup);
@@ -132,8 +140,8 @@
           ECStructure.hasImage = [object objectForKey:@"hasImage"];
           ECStructure.imageURLString = [object objectForKey:@"imageURLString"];
           ECStructure.meetingString = [object objectForKey:@"meetingString"];
-          ECStructure.contactInformationDictionary = [object objectForKey:@"contactInformationDictionary"];
           ECStructure.extracurricularID = [object objectForKey:@"extracurricularID"];
+          ECStructure.meetingIDs = [object objectForKey:@"meetingIDs"];
           [array addObject:ECStructure];
           if (i == theArrayToSearch.count - 1)
                dispatch_group_leave(serviceGroup);

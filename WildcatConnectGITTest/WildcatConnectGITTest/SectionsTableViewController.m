@@ -55,12 +55,19 @@
      [super viewWillAppear:animated];
      NSMutableArray *returnArray = [NSMutableArray array];
      NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
+     activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+     [activity setBackgroundColor:[UIColor clearColor]];
+     [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+     UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:activity];
+      self.navigationItem.rightBarButtonItem = barButton;
+      [activity startAnimating];
      [self getCountMethodWithCompletion:^(NSInteger count) {
           NSMutableArray *array = [[NSUserDefaults standardUserDefaults] objectForKey:@"readNewsArticles"];
           NSInteger read = array.count;
           NSNumber *number = [NSNumber numberWithInt:(count - read)];
           [returnArray addObject:number];
           self.sectionsNumbersArray = returnArray;
+          [activity stopAnimating];
           [self.tableView reloadData];
      }];
 }
