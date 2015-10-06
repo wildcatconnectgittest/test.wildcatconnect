@@ -186,12 +186,14 @@
 - (void)applicationWillResignActive:(UIApplication *)application {
      NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
      [userDefaults removeObjectForKey:@"visitedPagesArray"];
+     [userDefaults removeObjectForKey:@"readNewsArticles"];
      [userDefaults synchronize];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
      NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
      [userDefaults removeObjectForKey:@"visitedPagesArray"];
+     [userDefaults removeObjectForKey:@"readNewsArticles"];
      [userDefaults synchronize];
 }
 

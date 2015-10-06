@@ -15,6 +15,7 @@
 @implementation NewsArticleDetailViewController {
      UILabel *likesLabel;
      UILabel *titleLabel;
+     UIButton *likesButton;
 }
 
 - (void)viewDidLoad {
@@ -62,21 +63,34 @@
                     likesLabel.text = [[self.NA.likes stringValue] stringByAppendingString:@" likes"];
                     [likesLabel setFont:[UIFont systemFontOfSize:16]];
                     [scrollView addSubview:likesLabel];
-                    
-                    UIButton *likesButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-                    [likesButton addTarget:self action:@selector(likeMethod) forControlEvents:UIControlEventTouchUpInside];
-                    [likesButton setTitle:@"Like this!" forState:UIControlStateNormal];
-     [likesButton sizeToFit];
-     CGFloat width = likesButton.frame.size.width;
-                    likesButton.frame = CGRectMake((self.view.frame.size.width - width - 10), likesLabel.frame.origin.y, likesButton.frame.size.width, 30);
-                         [scrollView addSubview:likesButton];
-                    
+     
+     NSMutableArray *liked = [[NSUserDefaults standardUserDefaults] objectForKey:@"likedNewsArticles"];
+     if (liked) {
+          if (! [liked containsObject:self.NA.articleID]) {
+               likesButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+               [likesButton addTarget:self action:@selector(likeMethod) forControlEvents:UIControlEventTouchUpInside];
+               [likesButton setTitle:@"Like this!" forState:UIControlStateNormal];
+               [likesButton sizeToFit];
+               CGFloat width = likesButton.frame.size.width;
+               likesButton.frame = CGRectMake((self.view.frame.size.width - width - 10), likesLabel.frame.origin.y, likesButton.frame.size.width, 30);
+               [scrollView addSubview:likesButton];
+          }
+     } else {
+          likesButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+          [likesButton addTarget:self action:@selector(likeMethod) forControlEvents:UIControlEventTouchUpInside];
+          [likesButton setTitle:@"Like this!" forState:UIControlStateNormal];
+          [likesButton sizeToFit];
+          CGFloat width = likesButton.frame.size.width;
+          likesButton.frame = CGRectMake((self.view.frame.size.width - width - 10), likesLabel.frame.origin.y, likesButton.frame.size.width, 30);
+          [scrollView addSubview:likesButton];
+     }
+     
                     UIView * separator = [[UIView alloc] initWithFrame:CGRectMake(10, likesLabel.frame.origin.y + likesLabel.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
                     separator.backgroundColor = [UIColor blackColor];
                     [scrollView addSubview:separator];
                     
                     UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(separator.frame.origin.x, separator.frame.origin.y + separator.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
-                    textView.text = @"This is a test of individual paragraphs within the text..\n\nTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTesting\n\nHere we go baby!!!\n\nhttp://www.kevinalyons.com\n\nhis is a test of individual paragraphs within the text..\n\nTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTesting\n\nHere we go";
+                    textView.text = @"This is a test of individual paragraphs within the text..\n\nTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTesting\n\nHere we go baby!!!\n\nhttp://www.kevinalyons.com\n\nhis is a test of individual paragraphs within the text..\n\nTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTesting\n\nHere we goTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTesting\n\nHere we goTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTesting\n\nHere we goTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTesting\n\nHere we goTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTesting\n\nHere we goTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTesting\n\nHere we goTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTesting\n\nHere we goTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTesting\n\nHere we go";
                     [textView sizeToFit];
                     textView.editable = false;
                     textView.scrollEnabled = false;
@@ -116,12 +130,24 @@
 
 - (void)likeMethod {
      NSInteger likes = [self.NA.likes integerValue];
-     self.NA.likes = [NSNumber numberWithInt:likes + 1];
-     [self.NA saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
-          if (! error) {
-               likesLabel.text = [[self.NA.likes stringValue] stringByAppendingString:@" likes"];
-          }
+     NSNumber *newLikes = [NSNumber numberWithInt:likes + 1];
+     self.NA.likes = newLikes;
+     likesLabel.text = [[self.NA.likes stringValue] stringByAppendingString:@" likes"];
+     PFQuery *query = [NewsArticleStructure query];
+     [query getObjectInBackgroundWithId:self.NA.objectId block:^(PFObject *pfObject, NSError *error) {
+          [pfObject setObject:newLikes forKey:@"likes"];
+          [pfObject saveInBackground];
      }];
+     NSMutableArray *theLikedNews = [[[NSUserDefaults standardUserDefaults] objectForKey:@"likedNewsArticles"] mutableCopy];
+     if (! theLikedNews) {
+          theLikedNews = [[NSMutableArray alloc] init];
+     }
+     if (! [theLikedNews containsObject:self.NA.articleID]) {
+          [theLikedNews addObject:self.NA.articleID];
+          [[NSUserDefaults standardUserDefaults] setObject:theLikedNews forKey:@"likedNewsArticles"];
+          [[NSUserDefaults standardUserDefaults] synchronize];
+     }
+     [likesButton removeFromSuperview];
 }
 
 - (instancetype)initWithNewsArticle:(NewsArticleStructure *)newsArticle {

@@ -25,6 +25,7 @@
     UIRefreshControl *refreshControl= [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
     self.refreshControl= refreshControl;
+          //self.navigationController.navigationBar setBackgroundColor:[UIColor colorWithRed:231 green:32 blue:<#(CGFloat)#> alpha:<#(CGFloat)#>]
     
      NSLog(@"%@", self.storyboard);
     
@@ -33,18 +34,19 @@
                [self refreshData];
           }
           else {
-             /*  activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+               activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
                [activity setBackgroundColor:[UIColor clearColor]];
                [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
                UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:activity];
                self.navigationItem.rightBarButtonItem = barButton;
-               [activity startAnimating];*/
+               [activity startAnimating];
                [self getOldDataWithCompletion:^(NSMutableArray *returnArray) {
                     self.newsArticles = returnArray;
                     [self getOldImagesWithCompletion:^(NSMutableArray *returnArrayB) {
                          self.newsArticleImages = returnArrayB;
                          dispatch_async(dispatch_get_main_queue(), ^ {
                               [self.tableView reloadData];
+                              [activity stopAnimating];
                               //UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshData)];
                               //self.navigationItem.rightBarButtonItem = barButtonItem;
                               [self refreshControl];
@@ -204,6 +206,16 @@
      
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+     [super viewWillAppear:animated];
+     NSMutableArray *readArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"readNewsArticles"];
+     if (! readArray) {
+          self.readNewsArticles = [NSMutableArray array];
+     } else
+          self.readNewsArticles = [readArray mutableCopy];
+     [self.tableView reloadData];
+}
+
 - (void)encodeWithCoder:(NSCoder *)coder;
 {
      [coder encodeObject:self.newsArticles forKey:@"newsArticles"];
@@ -340,7 +352,15 @@
            cell.detailTextLabel.text = newsArticleStructure.summaryString;
            cell.detailTextLabel.numberOfLines = 4;
            NSInteger integerNumber = [newsArticleStructure.hasImage integerValue];
-     if (integerNumber == 1)
+                if (! [self.readNewsArticles containsObject:newsArticleStructure.articleID]) {
+                     UIButton *unreadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                     [unreadButton setImage:[UIImage imageNamed:@"unread@2x.png"] forState:UIControlStateNormal];
+                     [unreadButton setEnabled:NO];
+                     [unreadButton sizeToFit];
+                     cell.accessoryView = unreadButton;
+                     [cell setNeedsLayout];
+                }
+           if (integerNumber == 1)
                 cell.imageView.image = (UIImage *)[self.newsArticleImages objectAtIndex:indexPath.row];
            return cell;
       }
@@ -352,6 +372,15 @@
      controller.NA = self.newsArticleSelected;
      controller.image = self.newsArticleImages[indexPath.row];
      [self.navigationController pushViewController:controller animated:YES];
+     NSMutableArray *theReadNews = [[[NSUserDefaults standardUserDefaults] objectForKey:@"readNewsArticles"] mutableCopy];
+     if (! theReadNews) {
+          theReadNews = [[NSMutableArray alloc] init];
+     }
+     if (! [theReadNews containsObject:self.newsArticleSelected.articleID]) {
+          [theReadNews addObject:self.newsArticleSelected.articleID];
+          [[NSUserDefaults standardUserDefaults] setObject:theReadNews forKey:@"readNewsArticles"];
+          [[NSUserDefaults standardUserDefaults] synchronize];
+     }
 }
 
 

@@ -10,20 +10,18 @@
 #import "NewsArticleStructure.h"
 
 @interface NewsCenterTableViewController : UITableViewController {
- 
-       
-    
-
-    NSMutableArray *newsArticles;
+     NSMutableArray *newsArticles;
      NSMutableArray *newsArticleImages;
      NSNumber *loadNumber;
      NewsArticleStructure *newsArticleSelected;
+     NSMutableArray *readNewsArticles;
 }
 
 @property (nonatomic, retain) NSMutableArray *newsArticles;
 @property (nonatomic, retain) NSMutableArray *newsArticleImages;
 @property (nonatomic, retain) NSNumber *loadNumber;
 @property (nonatomic, retain) NewsArticleStructure *newsArticleSelected;
+@property (nonatomic, retain) NSMutableArray *readNewsArticles;
 
 - (instancetype)initWithLoadNumber:(NSNumber *)theLoadNumber;
 
