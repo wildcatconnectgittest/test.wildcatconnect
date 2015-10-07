@@ -18,7 +18,6 @@
 @dynamic hasImage;
 @dynamic imageFile;
 @dynamic imageURLString;
-@dynamic meetingString;
 @dynamic extracurricularID;
 @dynamic meetingIDs;
 

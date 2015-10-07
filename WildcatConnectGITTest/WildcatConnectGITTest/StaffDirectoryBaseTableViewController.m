@@ -24,6 +24,8 @@ NSString *const kTableCellNibName = @"TableCell";
      cell.textLabel.text = [staffMemberStructure fullNameCommaString];
      NSString *string = staffMemberStructure.staffMemberTitle;
      cell.detailTextLabel.text = [[string stringByAppendingString:@" - "] stringByAppendingString: staffMemberStructure.staffMemberLocation];
+     cell.detailTextLabel.numberOfLines = 0;
+     cell.detailTextLabel.lineBreakMode = NSLineBreakByWordWrapping;
      EmailButton *emailButton = [EmailButton buttonWithType:UIButtonTypeRoundedRect];
      [emailButton setImage:[UIImage imageNamed:@"email@2x.png"] forState:UIControlStateNormal];
      [emailButton setEnabled:YES];

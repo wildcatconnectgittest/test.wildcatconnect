@@ -76,53 +76,91 @@
           NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
           [userDefaults setObject:itemsToSave forKey:@"ECUpdates"];
           [self testMethodTwoWithCompletion:^(NSError *error, NSMutableArray *returnArrayA) {
-               self.extracurricularsArray = returnArrayA;
-               NSMutableArray *moreItems = [NSMutableArray array];
-               for (ExtracurricularStructure *e in returnArrayA) {
-                    [moreItems addObject:@{ @"titleString"     : e.titleString,
-                                            @"descriptionString"    : e.descriptionString,
-                                            @"hasImage" :e.hasImage,
-                                            @"imageURLString": e.imageURLString,
-                                            @"meetingString" : e.meetingString,
-                                            @"extracurricularID" : e.extracurricularID,
-                                            @"meetingIDs" : e.meetingIDs
-                                            }];
-               }
-               [userDefaults setObject:moreItems forKey:@"ECArray"];
-               [self testMethodThreeWithCompletion:^(NSError *error, NSMutableArray *returnArrayB) {
-                    self.ECImagesArray = returnArrayB;
+               [self resortToBottomMethod:^(NSMutableArray *returnArrayNew) {
+                    self.extracurricularsArray = returnArrayNew;
                     NSMutableArray *moreItems = [NSMutableArray array];
-                    NSData *data;
-                    for (int i = 0; i < returnArrayB.count; i++) {
-                         if ([returnArrayB[i] isKindOfClass:[UIImage class]]) {
-                              data = [[NSData alloc] init];
-                              data = UIImagePNGRepresentation(returnArrayB[i]);
-                              [moreItems addObject:data];
-                         } else {
-                              [moreItems addObject:[[NSData alloc] init]];
-                         }
+                    for (ExtracurricularStructure *e in returnArrayNew) {
+                         [moreItems addObject:@{ @"titleString"     : e.titleString,
+                                                 @"descriptionString"    : e.descriptionString,
+                                                 @"hasImage" :e.hasImage,
+                                                 @"imageURLString": e.imageURLString,
+                                                 @"extracurricularID" : e.extracurricularID,
+                                                 @"meetingIDs" : e.meetingIDs
+                                                 }];
                     }
-                    [userDefaults setObject:moreItems forKey:@"ECImagesArray"];
-                    [userDefaults synchronize];
-                    dispatch_async(dispatch_get_main_queue(), ^ {
-                         [activity stopAnimating];
-                         [self.tableView reloadData];
-                  /*       UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshData)];
-                         self.navigationItem.rightBarButtonItem = barButtonItem;*/
-                         [self refreshControl];
-                         [self.refreshControl endRefreshing];
-                    });;
+                    [userDefaults setObject:moreItems forKey:@"ECArray"];
+                    [self testMethodThreeWithCompletion:^(NSError *error, NSMutableArray *returnArrayB) {
+                         self.ECImagesArray = returnArrayB;
+                         NSMutableArray *moreItems = [NSMutableArray array];
+                         NSData *data;
+                         for (int i = 0; i < returnArrayB.count; i++) {
+                              if ([returnArrayB[i] isKindOfClass:[UIImage class]]) {
+                                   data = [[NSData alloc] init];
+                                   data = UIImagePNGRepresentation(returnArrayB[i]);
+                                   [moreItems addObject:data];
+                              } else {
+                                   [moreItems addObject:[[NSData alloc] init]];
+                              }
+                         }
+                         [userDefaults setObject:moreItems forKey:@"ECImagesArray"];
+                         [userDefaults synchronize];
+                         dispatch_async(dispatch_get_main_queue(), ^ {
+                              [activity stopAnimating];
+                              [self.tableView reloadData];
+                              /*       UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshData)];
+                               self.navigationItem.rightBarButtonItem = barButtonItem;*/
+                              [self refreshControl];
+                              [self.refreshControl endRefreshing];
+                         });
+                    } withArray:returnArrayNew];
                } withArray:returnArrayA];
           }];
      }];
 }
 
-- (void)sortExtracurricularsByDayMethodWithCompletion:(void (^)(NSMutableArray *returnArray))completion withArray:(NSMutableArray *)array {
+- (void)resortToBottomMethod:(void (^)(NSMutableArray *returnArray))completion withArray:(NSMutableArray *)array {
      dispatch_group_t serviceGroup = dispatch_group_create();
      dispatch_group_enter(serviceGroup);
-     NSMutableArray *theReturnArray = [NSMutableArray array];
      NSMutableArray *theArrayToSort = [array mutableCopy];
-          //Here!!!
+     __block ExtracurricularStructure *EC;
+     __block NSMutableArray *addArray;
+          NSDate *today = [NSDate date];
+          NSDateFormatter *myFormatter = [[NSDateFormatter alloc] init];
+               //[myFormatter setDateFormat:@"EEEE"]; // day, like "Saturday"
+          [myFormatter setDateFormat:@"c"]; // day number, like 7 for saturday
+          NSString *dayOfWeek = [myFormatter stringFromDate:today];
+          NSInteger currentDay = [dayOfWeek integerValue] - 2;
+          addArray = [[NSMutableArray alloc] init];
+          for (int i = 0; i < theArrayToSort.count; i++) {
+               EC = (ExtracurricularStructure *)theArrayToSort[i];
+               if (EC.meetingIDs.length > 1) {
+                    BOOL remove = true;
+                    for (int k = 0; k < EC.meetingIDs.length; k++) {
+                         if ([[EC.meetingIDs substringWithRange:NSMakeRange(k, 1)] integerValue] >= currentDay) {
+                              remove = false;
+                         }
+                    }
+                    if (remove) {
+                         [theArrayToSort removeObject:EC];
+                         i--;
+                         [addArray addObject:EC];
+                         
+                    }
+               } else {
+                    if ([EC.meetingIDs integerValue] < currentDay) {
+                         [theArrayToSort removeObject:EC];
+                         i--;
+                         [addArray addObject:EC];
+                    }
+               }
+               if (i == theArrayToSort.count - 1) {
+                    dispatch_group_leave(serviceGroup);
+               }
+          }
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
+          NSMutableArray *finalArray = [theArrayToSort arrayByAddingObjectsFromArray:addArray];
+          completion(finalArray);
+     });
 }
 
 - (void)getOldUpdatesTwoWithCompletion:(void (^)(NSMutableArray *returnArray))completion {
@@ -139,7 +177,6 @@
           ECStructure.descriptionString = [object objectForKey:@"descriptionString"];
           ECStructure.hasImage = [object objectForKey:@"hasImage"];
           ECStructure.imageURLString = [object objectForKey:@"imageURLString"];
-          ECStructure.meetingString = [object objectForKey:@"meetingString"];
           ECStructure.extracurricularID = [object objectForKey:@"extracurricularID"];
           ECStructure.meetingIDs = [object objectForKey:@"meetingIDs"];
           [array addObject:ECStructure];
@@ -284,7 +321,7 @@
      dispatch_group_enter(theServiceGroup);
      NSMutableArray *theReturnArray = [[NSMutableArray alloc] init];
      PFQuery *query = [ExtracurricularStructure query];
-     [query orderByAscending:@"extracurricularID"];
+     [query orderByAscending:@"meetingIDs"];
      [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
           [theReturnArray addObjectsFromArray:objects];
           theError = error;
