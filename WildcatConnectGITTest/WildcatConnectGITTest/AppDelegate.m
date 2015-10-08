@@ -14,6 +14,7 @@
 #import "NewsArticleStructure.h"
 #import "LunchMenusStructure.h"
 #import "UsefulLinkArray.h"
+#import "AlertStructure.h"
 
 @implementation AppDelegate
 
@@ -178,7 +179,18 @@
           [lunch saveInBackground];
      }*/
      
-     [PFUser logOutInBackground];
+          //[PFUser logOutInBackground];
+     
+     AlertStructure *alertStructure = [[AlertStructure alloc] init];
+     alertStructure.titleString = @"Test Alert";
+     alertStructure.authorString = @"Kevin Lyons";
+     alertStructure.dateString = @"Thursday, October 8th, 2015";
+     alertStructure.contentString = @"This is a test content string for this alert!";
+     [alertStructure saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+          if (! error) {
+               NSLog(@"Here!!! Saved successfully without error.");
+          }
+     }];
      
     return YES;
 }

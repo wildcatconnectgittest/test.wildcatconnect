@@ -24,6 +24,8 @@
 		0A1FE3E71B7B7DA80062A30E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A1FE3E51B7B7DA80062A30E /* Main.storyboard */; };
 		0A1FE3EC1B7B7DA80062A30E /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A1FE3EA1B7B7DA80062A30E /* LaunchScreen.xib */; };
 		0A1FE3F81B7B7DA80062A30E /* WildcatConnectGITTestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1FE3F71B7B7DA80062A30E /* WildcatConnectGITTestTests.m */; };
+		0A49BD0F1BC6DB7000E84E4C /* AlertStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A49BD0E1BC6DB7000E84E4C /* AlertStructure.m */; settings = {ASSET_TAGS = (); }; };
+		0A49BD121BC6DCBE00E84E4C /* AlertsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A49BD111BC6DCBE00E84E4C /* AlertsTableViewController.m */; settings = {ASSET_TAGS = (); }; };
 		0A4A37E91B7B90D100AF3E36 /* SectionsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37E81B7B90D100AF3E36 /* SectionsTableViewController.m */; };
 		0A4A37F21B7BA34600AF3E36 /* StudentCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37F11B7BA34600AF3E36 /* StudentCenterViewController.m */; };
 		0A4A37F51B7BA41100AF3E36 /* CalendarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37F41B7BA41100AF3E36 /* CalendarViewController.m */; };
@@ -118,6 +120,10 @@
 		0A1FE3F11B7B7DA80062A30E /* WildcatConnectGITTestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WildcatConnectGITTestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A1FE3F61B7B7DA80062A30E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A1FE3F71B7B7DA80062A30E /* WildcatConnectGITTestTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WildcatConnectGITTestTests.m; sourceTree = "<group>"; };
+		0A49BD0D1BC6DB7000E84E4C /* AlertStructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertStructure.h; sourceTree = "<group>"; };
+		0A49BD0E1BC6DB7000E84E4C /* AlertStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertStructure.m; sourceTree = "<group>"; };
+		0A49BD101BC6DCBE00E84E4C /* AlertsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlertsTableViewController.h; path = ../AlertsTableViewController.h; sourceTree = "<group>"; };
+		0A49BD111BC6DCBE00E84E4C /* AlertsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AlertsTableViewController.m; path = ../AlertsTableViewController.m; sourceTree = "<group>"; };
 		0A4A37E71B7B90D100AF3E36 /* SectionsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SectionsTableViewController.h; sourceTree = "<group>"; };
 		0A4A37E81B7B90D100AF3E36 /* SectionsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SectionsTableViewController.m; sourceTree = "<group>"; };
 		0A4A37F01B7BA34600AF3E36 /* StudentCenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentCenterViewController.h; sourceTree = "<group>"; };
@@ -295,6 +301,10 @@
 				0A1FE3E21B7B7DA80062A30E /* SecondViewController.h */,
 				0A1FE3E31B7B7DA80062A30E /* SecondViewController.m */,
 				0A1FE3E51B7B7DA80062A30E /* Main.storyboard */,
+				0A49BD101BC6DCBE00E84E4C /* AlertsTableViewController.h */,
+				0A49BD111BC6DCBE00E84E4C /* AlertsTableViewController.m */,
+				0A49BD0D1BC6DB7000E84E4C /* AlertStructure.h */,
+				0A49BD0E1BC6DB7000E84E4C /* AlertStructure.m */,
 				0A037E591BC1543E009A1DBB /* AdministrationMainTableViewController.h */,
 				0A037E5A1BC1543E009A1DBB /* AdministrationMainTableViewController.m */,
 				0A037E561BC14F78009A1DBB /* AdministrationLogInViewController.h */,
@@ -524,7 +534,9 @@
 				0AE74A2E1B7D84180083EFF1 /* MainTabBarController.m in Sources */,
 				0A1FE3E11B7B7DA80062A30E /* FirstViewController.m in Sources */,
 				0A4A37F21B7BA34600AF3E36 /* StudentCenterViewController.m in Sources */,
+				0A49BD121BC6DCBE00E84E4C /* AlertsTableViewController.m in Sources */,
 				0AD4B0BE1B81F7F1004E23E4 /* AppDelegate.m in Sources */,
+				0A49BD0F1BC6DB7000E84E4C /* AlertStructure.m in Sources */,
 				0A0A49721B7E776500304629 /* StaffDirectoryResultsTableViewController.m in Sources */,
 				0AF4BC641B7D1610001149A5 /* TestStructure.m in Sources */,
 				0A4A37F51B7BA41100AF3E36 /* CalendarViewController.m in Sources */,
