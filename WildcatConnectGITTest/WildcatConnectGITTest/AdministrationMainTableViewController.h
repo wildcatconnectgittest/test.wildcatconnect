@@ -10,4 +10,8 @@
 
 @interface AdministrationMainTableViewController : UITableViewController
 
+@property (retain, nonatomic) IBOutlet UINavigationBar *topBar;
+@property (nonatomic, strong) NSMutableArray *sectionsArray;
+@property (nonatomic, strong) NSMutableArray *sectionsImagesArray;
+
 @end

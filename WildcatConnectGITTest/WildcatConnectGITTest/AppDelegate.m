@@ -181,7 +181,7 @@
      
           //[PFUser logOutInBackground];
      
-     AlertStructure *alertStructure = [[AlertStructure alloc] init];
+     /*AlertStructure *alertStructure = [[AlertStructure alloc] init];
      alertStructure.titleString = @"Test Alert";
      alertStructure.authorString = @"Kevin Lyons";
      alertStructure.dateString = @"Thursday, October 8th, 2015";
@@ -190,7 +190,9 @@
           if (! error) {
                NSLog(@"Here!!! Saved successfully without error.");
           }
-     }];
+     }];*/
+     
+          //[PFUser logOutInBackground];
      
     return YES;
 }

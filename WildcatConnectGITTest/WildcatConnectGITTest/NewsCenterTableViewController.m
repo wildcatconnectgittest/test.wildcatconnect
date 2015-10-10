@@ -203,7 +203,41 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-     
+     NSMutableArray *itemsToSave = [NSMutableArray array];
+     for (NewsArticleStructure *n in self.newsArticles) {
+          [itemsToSave addObject:@{ @"hasImage"     : n.hasImage,
+                                    @"imageURLString"    : n.imageURLString,
+                                    @"titleString" : n.titleString,
+                                    
+                                    @"summaryString" : n.summaryString,
+                                    
+                                    @"authorString" : n.authorString,
+                                    
+                                    @"dateString" : n.dateString,
+                                    
+                                    @"contentURLString" : n.contentURLString,
+                                    
+                                    @"articleID" : n.articleID,
+                                    
+                                    @"likes" : n.likes
+                                    
+                                    }];
+     }
+     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+     [userDefaults setObject:itemsToSave forKey:@"newsArticles"];
+     NSMutableArray *moreItems = [NSMutableArray array];
+     NSData *data;
+     for (int i = 0; i < self.newsArticleImages.count; i++) {
+          if ([self.newsArticleImages[i] isKindOfClass:[UIImage class]]) {
+               data = [[NSData alloc] init];
+               data = UIImagePNGRepresentation(self.newsArticleImages[i]);
+               [moreItems addObject:data];
+          }
+          else
+               [moreItems addObject:[[NSData alloc] init]];
+     }
+     [userDefaults setObject:moreItems forKey:@"newsArticleImages"];
+     [userDefaults synchronize];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -435,5 +469,19 @@
            detailViewController.NA = self.newsArticleSelected;
       }
  }
+
+#pragma mark - Helper Methods
+
+- (void)replaceNewsArticleStructure:(NewsArticleStructure *)newsArticleStructure {
+     NSNumber *index = newsArticleStructure.articleID;
+     NewsArticleStructure *structure;
+     for (int i = 0; i < self.newsArticles.count; i++) {
+          structure = (NewsArticleStructure *)self.newsArticles[i];
+          if (structure.articleID == index) {
+               self.newsArticles[i] = newsArticleStructure;
+          }
+     }
+     [self.tableView reloadData];
+}
 
 @end

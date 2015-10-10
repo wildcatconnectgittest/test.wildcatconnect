@@ -24,5 +24,6 @@
 @property (nonatomic, retain) NSMutableArray *readNewsArticles;
 
 - (instancetype)initWithLoadNumber:(NSNumber *)theLoadNumber;
+- (void)replaceNewsArticleStructure:(NewsArticleStructure *)newsArticleStructure;
 
 @end

@@ -36,11 +36,6 @@
 }
 */
 
-- (void)dealloc {
-    [_usernameField release];
-    [_passwordField release];
-    [super dealloc];
-}
 - (IBAction)logInButton:(id)sender {
      NSString *username = self.usernameField.text;
      NSString *password = self.passwordField.text;
@@ -50,10 +45,19 @@
      } else {
           [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser * _Nullable user, NSError * _Nullable error) {
                if (! error) {
-                    AdministrationMainTableViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"MainID"];
-                    [self.navigationController popToRootViewControllerAnimated:NO];
+                    [self performSegueWithIdentifier:@"showAdministrationView" sender:self];
                }
           }];
      }
 }
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+     UIViewController *sourceViewController = segue.sourceViewController;
+     UIViewController *destinationController = segue.destinationViewController;
+     UINavigationController *navigationController = sourceViewController.navigationController;
+          // Pop to root view controller (not animated) before pushing
+     [navigationController popToRootViewControllerAnimated:NO];
+     [navigationController pushViewController:destinationController animated:YES];
+}
+
 @end

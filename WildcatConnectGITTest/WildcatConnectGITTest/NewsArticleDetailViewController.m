@@ -7,6 +7,7 @@
 //
 
 #import "NewsArticleDetailViewController.h"
+#import "NewsCenterTableViewController.h"
 
 @interface NewsArticleDetailViewController ()
 
@@ -106,8 +107,11 @@
                     [self.view addSubview:scrollView];
 }
 
-- (void)applyFormattingAtStart:(CGFloat)startingY {
-     
+- (void)viewWillDisappear:(BOOL)animated {
+     [super viewWillDisappear:animated];
+          //Run method to pass current structure back to the tableView...
+     NewsCenterTableViewController *viewController = (NewsCenterTableViewController *)[self.navigationController.viewControllers objectAtIndex:1];
+     [viewController replaceNewsArticleStructure:self.NA];
 }
 
 - (void)getImageWithCompletion:(void (^)(NSError *error, UIImage *image))completion {
@@ -134,20 +138,22 @@
      self.NA.likes = newLikes;
      likesLabel.text = [[self.NA.likes stringValue] stringByAppendingString:@" likes"];
      PFQuery *query = [NewsArticleStructure query];
+     NSLog(@"%@", self.NA.objectId);
      [query getObjectInBackgroundWithId:self.NA.objectId block:^(PFObject *pfObject, NSError *error) {
           [pfObject setObject:newLikes forKey:@"likes"];
-          [pfObject saveInBackground];
+          [pfObject saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+               NSMutableArray *theLikedNews = [[[NSUserDefaults standardUserDefaults] objectForKey:@"likedNewsArticles"] mutableCopy];
+               if (! theLikedNews) {
+                    theLikedNews = [[NSMutableArray alloc] init];
+               }
+               if (! [theLikedNews containsObject:self.NA.articleID]) {
+                    [theLikedNews addObject:self.NA.articleID];
+                    [[NSUserDefaults standardUserDefaults] setObject:theLikedNews forKey:@"likedNewsArticles"];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+               }
+          }];
+          [likesButton removeFromSuperview];
      }];
-     NSMutableArray *theLikedNews = [[[NSUserDefaults standardUserDefaults] objectForKey:@"likedNewsArticles"] mutableCopy];
-     if (! theLikedNews) {
-          theLikedNews = [[NSMutableArray alloc] init];
-     }
-     if (! [theLikedNews containsObject:self.NA.articleID]) {
-          [theLikedNews addObject:self.NA.articleID];
-          [[NSUserDefaults standardUserDefaults] setObject:theLikedNews forKey:@"likedNewsArticles"];
-          [[NSUserDefaults standardUserDefaults] synchronize];
-     }
-     [likesButton removeFromSuperview];
 }
 
 - (instancetype)initWithNewsArticle:(NewsArticleStructure *)newsArticle {
