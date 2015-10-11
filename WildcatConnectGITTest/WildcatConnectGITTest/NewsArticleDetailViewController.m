@@ -24,50 +24,61 @@
      
      self.navigationItem.title = @"Article";
      
+     UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+     [activity setBackgroundColor:[UIColor clearColor]];
+     [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+     UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:activity];
+     self.navigationItem.rightBarButtonItem = barButton;
+     [activity startAnimating];
+     
      UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
      
-     if ([self.NA.hasImage integerValue] == 1) {
-          UIImageView *imageView =[[UIImageView alloc] initWithFrame:CGRectMake(self.view.frame.size.width / 2 - self.image.size.width / 2,10,self.view.frame.size.width - 20, 100)];
-          imageView.image = self.image;
-          [imageView sizeToFit];
-          [scrollView addSubview:imageView];
-          
-          titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, imageView.frame.origin.y + imageView.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
-     } else {
+     if ([self.NA.hasImage integerValue] == 0) {
           titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, 100)];
-     }
-                    titleLabel.text = self.NA.titleString;
-                    [titleLabel setFont:[UIFont systemFontOfSize:24]];
-                    titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                    titleLabel.numberOfLines = 0;
-                    [titleLabel sizeToFit];
-                    [scrollView addSubview:titleLabel];
-                    
-                    UILabel *summaryLabel = [[UILabel alloc] initWithFrame:CGRectMake(titleLabel.frame.origin.x, titleLabel.frame.origin.y + titleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
-                    summaryLabel.text = self.NA.summaryString;
-                    UIFont *font = [UIFont fontWithName:@"Helvetica Neue" size:16];
-                    [summaryLabel setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
-                    summaryLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                    summaryLabel.numberOfLines = 0;
-                    [summaryLabel sizeToFit];
-                    [scrollView addSubview:summaryLabel];
-                    
-                    UILabel *authorDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(summaryLabel.frame.origin.x, summaryLabel.frame.origin.y + summaryLabel.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
-                    authorDateLabel.text = [[self.NA.authorString stringByAppendingString:@" | "] stringByAppendingString:self.NA.dateString];
-                    [authorDateLabel setFont:[UIFont systemFontOfSize:12]];
-                    authorDateLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                    authorDateLabel.numberOfLines = 0;
-                    [authorDateLabel sizeToFit];
-                    [scrollView addSubview:authorDateLabel];
-                    
-                    likesLabel = [[UILabel alloc] initWithFrame:CGRectMake(authorDateLabel.frame.origin.x, authorDateLabel.frame.origin.y + authorDateLabel.frame.size.height + 10, self.view.frame.size.width - 20, 30)];
-                    likesLabel.text = [[self.NA.likes stringValue] stringByAppendingString:@" likes"];
-                    [likesLabel setFont:[UIFont systemFontOfSize:16]];
-                    [scrollView addSubview:likesLabel];
-     
-     NSMutableArray *liked = [[NSUserDefaults standardUserDefaults] objectForKey:@"likedNewsArticles"];
-     if (liked) {
-          if (! [liked containsObject:self.NA.articleID]) {
+          titleLabel.text = self.NA.titleString;
+          [titleLabel setFont:[UIFont systemFontOfSize:24]];
+          titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+          titleLabel.numberOfLines = 0;
+          [titleLabel sizeToFit];
+          [scrollView addSubview:titleLabel];
+          
+          UILabel *summaryLabel = [[UILabel alloc] initWithFrame:CGRectMake(titleLabel.frame.origin.x, titleLabel.frame.origin.y + titleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
+          summaryLabel.text = self.NA.summaryString;
+          UIFont *font = [UIFont fontWithName:@"Helvetica Neue" size:16];
+          [summaryLabel setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
+          summaryLabel.lineBreakMode = NSLineBreakByWordWrapping;
+          summaryLabel.numberOfLines = 0;
+          [summaryLabel sizeToFit];
+          [scrollView addSubview:summaryLabel];
+          
+          UILabel *authorDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(summaryLabel.frame.origin.x, summaryLabel.frame.origin.y + summaryLabel.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
+          authorDateLabel.text = [[self.NA.authorString stringByAppendingString:@" | "] stringByAppendingString:self.NA.dateString];
+          [authorDateLabel setFont:[UIFont systemFontOfSize:12]];
+          authorDateLabel.lineBreakMode = NSLineBreakByWordWrapping;
+          authorDateLabel.numberOfLines = 0;
+          [authorDateLabel sizeToFit];
+          [scrollView addSubview:authorDateLabel];
+          
+          likesLabel = [[UILabel alloc] initWithFrame:CGRectMake(authorDateLabel.frame.origin.x, authorDateLabel.frame.origin.y + authorDateLabel.frame.size.height + 10, self.view.frame.size.width - 20, 30)];
+          if ([self.NA.likes integerValue] == 1) {
+               likesLabel.text = [[self.NA.likes stringValue] stringByAppendingString:@" like"];
+          } else
+               likesLabel.text = [[self.NA.likes stringValue] stringByAppendingString:@" likes"];
+          [likesLabel setFont:[UIFont systemFontOfSize:16]];
+          [scrollView addSubview:likesLabel];
+          
+          NSMutableArray *liked = [[NSUserDefaults standardUserDefaults] objectForKey:@"likedNewsArticles"];
+          if (liked) {
+               if (! [liked containsObject:self.NA.articleID]) {
+                    likesButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                    [likesButton addTarget:self action:@selector(likeMethod) forControlEvents:UIControlEventTouchUpInside];
+                    [likesButton setTitle:@"Like this!" forState:UIControlStateNormal];
+                    [likesButton sizeToFit];
+                    CGFloat width = likesButton.frame.size.width;
+                    likesButton.frame = CGRectMake((self.view.frame.size.width - width - 10), likesLabel.frame.origin.y, likesButton.frame.size.width, 30);
+                    [scrollView addSubview:likesButton];
+               }
+          } else {
                likesButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
                [likesButton addTarget:self action:@selector(likeMethod) forControlEvents:UIControlEventTouchUpInside];
                [likesButton setTitle:@"Like this!" forState:UIControlStateNormal];
@@ -76,35 +87,110 @@
                likesButton.frame = CGRectMake((self.view.frame.size.width - width - 10), likesLabel.frame.origin.y, likesButton.frame.size.width, 30);
                [scrollView addSubview:likesButton];
           }
+          
+          UIView * separator = [[UIView alloc] initWithFrame:CGRectMake(10, likesLabel.frame.origin.y + likesLabel.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+          separator.backgroundColor = [UIColor blackColor];
+          [scrollView addSubview:separator];
+          
+          UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(separator.frame.origin.x, separator.frame.origin.y + separator.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
+          textView.text = self.NA.contentURLString;
+          [textView sizeToFit];
+          textView.editable = false;
+          textView.scrollEnabled = false;
+          textView.dataDetectorTypes = UIDataDetectorTypeLink;
+          [scrollView addSubview:textView];
+          
+               //Takes care of all resizing needs based on sizes.
+          CGRect contentRect = CGRectZero;
+          for (UIView *view in scrollView.subviews) {
+               contentRect = CGRectUnion(contentRect, view.frame);
+          }
+          scrollView.contentSize = contentRect.size;
+          [self.view addSubview:scrollView];
+          
      } else {
-          likesButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-          [likesButton addTarget:self action:@selector(likeMethod) forControlEvents:UIControlEventTouchUpInside];
-          [likesButton setTitle:@"Like this!" forState:UIControlStateNormal];
-          [likesButton sizeToFit];
-          CGFloat width = likesButton.frame.size.width;
-          likesButton.frame = CGRectMake((self.view.frame.size.width - width - 10), likesLabel.frame.origin.y, likesButton.frame.size.width, 30);
-          [scrollView addSubview:likesButton];
-     }
-     
-                    UIView * separator = [[UIView alloc] initWithFrame:CGRectMake(10, likesLabel.frame.origin.y + likesLabel.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
-                    separator.backgroundColor = [UIColor blackColor];
-                    [scrollView addSubview:separator];
-                    
-                    UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(separator.frame.origin.x, separator.frame.origin.y + separator.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
-                    textView.text = @"This is a test of individual paragraphs within the text..\n\nTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTesting\n\nHere we go baby!!!\n\nhttp://www.kevinalyons.com\n\nhis is a test of individual paragraphs within the text..\n\nTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTesting\n\nHere we goTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTesting\n\nHere we goTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTesting\n\nHere we goTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTesting\n\nHere we goTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTesting\n\nHere we goTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTesting\n\nHere we goTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTesting\n\nHere we goTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTestingTesting\n\nHere we go";
-                    [textView sizeToFit];
-                    textView.editable = false;
-                    textView.scrollEnabled = false;
-                    textView.dataDetectorTypes = UIDataDetectorTypeLink;
-                    [scrollView addSubview:textView];
-                    
-                         //Takes care of all resizing needs based on sizes.
-                    CGRect contentRect = CGRectZero;
-                    for (UIView *view in scrollView.subviews) {
-                         contentRect = CGRectUnion(contentRect, view.frame);
+          [self getImageWithCompletion:^(NSError *error, UIImage *image) {
+               [activity stopAnimating];
+               UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, 100)];
+               imageView.image = image;
+               [imageView sizeToFit];
+               [scrollView addSubview:imageView];
+               
+               titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, imageView.frame.origin.y + imageView.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
+               titleLabel.text = self.NA.titleString;
+               [titleLabel setFont:[UIFont systemFontOfSize:24]];
+               titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+               titleLabel.numberOfLines = 0;
+               [titleLabel sizeToFit];
+               [scrollView addSubview:titleLabel];
+               
+               UILabel *summaryLabel = [[UILabel alloc] initWithFrame:CGRectMake(titleLabel.frame.origin.x, titleLabel.frame.origin.y + titleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
+               summaryLabel.text = self.NA.summaryString;
+               UIFont *font = [UIFont fontWithName:@"Helvetica Neue" size:16];
+               [summaryLabel setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
+               summaryLabel.lineBreakMode = NSLineBreakByWordWrapping;
+               summaryLabel.numberOfLines = 0;
+               [summaryLabel sizeToFit];
+               [scrollView addSubview:summaryLabel];
+               
+               UILabel *authorDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(summaryLabel.frame.origin.x, summaryLabel.frame.origin.y + summaryLabel.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
+               authorDateLabel.text = [[self.NA.authorString stringByAppendingString:@" | "] stringByAppendingString:self.NA.dateString];
+               [authorDateLabel setFont:[UIFont systemFontOfSize:12]];
+               authorDateLabel.lineBreakMode = NSLineBreakByWordWrapping;
+               authorDateLabel.numberOfLines = 0;
+               [authorDateLabel sizeToFit];
+               [scrollView addSubview:authorDateLabel];
+               
+               likesLabel = [[UILabel alloc] initWithFrame:CGRectMake(authorDateLabel.frame.origin.x, authorDateLabel.frame.origin.y + authorDateLabel.frame.size.height + 10, self.view.frame.size.width - 20, 30)];
+               if ([self.NA.likes integerValue] == 1) {
+                    likesLabel.text = [[self.NA.likes stringValue] stringByAppendingString:@" like"];
+               } else
+                    likesLabel.text = [[self.NA.likes stringValue] stringByAppendingString:@" likes"];
+               [likesLabel setFont:[UIFont systemFontOfSize:16]];
+               [scrollView addSubview:likesLabel];
+               
+               NSMutableArray *liked = [[NSUserDefaults standardUserDefaults] objectForKey:@"likedNewsArticles"];
+               if (liked) {
+                    if (! [liked containsObject:self.NA.articleID]) {
+                         likesButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                         [likesButton addTarget:self action:@selector(likeMethod) forControlEvents:UIControlEventTouchUpInside];
+                         [likesButton setTitle:@"Like this!" forState:UIControlStateNormal];
+                         [likesButton sizeToFit];
+                         CGFloat width = likesButton.frame.size.width;
+                         likesButton.frame = CGRectMake((self.view.frame.size.width - width - 10), likesLabel.frame.origin.y, likesButton.frame.size.width, 30);
+                         [scrollView addSubview:likesButton];
                     }
-                    scrollView.contentSize = contentRect.size;
-                    [self.view addSubview:scrollView];
+               } else {
+                    likesButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                    [likesButton addTarget:self action:@selector(likeMethod) forControlEvents:UIControlEventTouchUpInside];
+                    [likesButton setTitle:@"Like this!" forState:UIControlStateNormal];
+                    [likesButton sizeToFit];
+                    CGFloat width = likesButton.frame.size.width;
+                    likesButton.frame = CGRectMake((self.view.frame.size.width - width - 10), likesLabel.frame.origin.y, likesButton.frame.size.width, 30);
+                    [scrollView addSubview:likesButton];
+               }
+               
+               UIView * separator = [[UIView alloc] initWithFrame:CGRectMake(10, likesLabel.frame.origin.y + likesLabel.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+               separator.backgroundColor = [UIColor blackColor];
+               [scrollView addSubview:separator];
+               
+               UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(separator.frame.origin.x, separator.frame.origin.y + separator.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
+               textView.text = self.NA.contentURLString;
+               [textView sizeToFit];
+               textView.editable = false;
+               textView.scrollEnabled = false;
+               textView.dataDetectorTypes = UIDataDetectorTypeLink;
+               [scrollView addSubview:textView];
+               
+                    //Takes care of all resizing needs based on sizes.
+               CGRect contentRect = CGRectZero;
+               for (UIView *view in scrollView.subviews) {
+                    contentRect = CGRectUnion(contentRect, view.frame);
+               }
+               scrollView.contentSize = contentRect.size;
+               [self.view addSubview:scrollView];
+          }];
+     }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -133,12 +219,15 @@
 }
 
 - (void)likeMethod {
+     [likesButton removeFromSuperview];
      NSInteger likes = [self.NA.likes integerValue];
      NSNumber *newLikes = [NSNumber numberWithInt:likes + 1];
      self.NA.likes = newLikes;
-     likesLabel.text = [[self.NA.likes stringValue] stringByAppendingString:@" likes"];
+     if ([newLikes integerValue] == 1) {
+          likesLabel.text = [[self.NA.likes stringValue] stringByAppendingString:@" like"];
+     } else
+          likesLabel.text = [[self.NA.likes stringValue] stringByAppendingString:@" likes"];
      PFQuery *query = [NewsArticleStructure query];
-     NSLog(@"%@", self.NA.objectId);
      [query getObjectInBackgroundWithId:self.NA.objectId block:^(PFObject *pfObject, NSError *error) {
           [pfObject setObject:newLikes forKey:@"likes"];
           [pfObject saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
@@ -152,7 +241,6 @@
                     [[NSUserDefaults standardUserDefaults] synchronize];
                }
           }];
-          [likesButton removeFromSuperview];
      }];
 }
 

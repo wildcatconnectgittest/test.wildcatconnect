@@ -424,7 +424,6 @@
     for(int a = 0; a < array.count; a++ )
     {
         commServiceStructure = (CommunityServiceStructure *)[array objectAtIndex:a];
-         NSLog(@"%@", commServiceStructure.IsNewNumber);
          NSInteger *integer = [commServiceStructure.IsNewNumber integerValue];
         if(integer == 0)
         {

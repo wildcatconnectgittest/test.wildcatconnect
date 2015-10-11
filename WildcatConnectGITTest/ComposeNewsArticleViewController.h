@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ComposeNewsArticleViewController : UIViewController <UITextViewDelegate, UIAlertViewDelegate>
+@interface ComposeNewsArticleViewController : UIViewController <UITextViewDelegate, UIAlertViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @end

@@ -12,7 +12,6 @@
 @interface NewsArticleDetailViewController : UIViewController
 
 @property (nonatomic, strong) NewsArticleStructure *NA;
-@property (nonatomic, strong) UIImage *image;
 
 - (instancetype)initWithNewsArticle:(NewsArticleStructure *)newsArticle;
 

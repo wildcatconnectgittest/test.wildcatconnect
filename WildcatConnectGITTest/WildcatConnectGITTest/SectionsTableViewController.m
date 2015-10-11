@@ -76,7 +76,6 @@
      dispatch_group_t serviceGroup = dispatch_group_create();
      dispatch_group_enter(serviceGroup);
      PFQuery *query = [NewsArticleStructure query];
-     query.limit = 15;
      __block int count;
      [query countObjectsInBackgroundWithBlock:^(int number, NSError * _Nullable error) {
           count = number;
@@ -107,7 +106,7 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier" forIndexPath:indexPath];
+     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
      cell.textLabel.text = self.sectionsArray[indexPath.row];
      cell.imageView.image = [UIImage imageNamed:self.sectionsImagesArray[indexPath.row]];
      if (indexPath.row == 0) {
@@ -124,6 +123,12 @@
           }
           else if (integer == 0) {
                cell.accessoryView = nil;
+          }
+     } else if (indexPath.row == 8) {
+          if ([PFUser currentUser]) {
+               NSString *firstName = [[PFUser currentUser] objectForKey:@"firstName"];
+               NSString *lastName = [[PFUser currentUser] objectForKey:@"lastName"];
+               cell.detailTextLabel.text = [@"Logged in as " stringByAppendingString:[[firstName stringByAppendingString:@" "] stringByAppendingString:lastName]];
           }
      }
      return cell;
