@@ -8,6 +8,7 @@
 
 #import "NewsArticleDetailViewController.h"
 #import "NewsCenterTableViewController.h"
+#import "AppManager.h"
 
 @interface NewsArticleDetailViewController ()
 
@@ -23,13 +24,6 @@
     [super viewDidLoad];
      
      self.navigationItem.title = @"Article";
-     
-     UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-     [activity setBackgroundColor:[UIColor clearColor]];
-     [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-     UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:activity];
-     self.navigationItem.rightBarButtonItem = barButton;
-     [activity startAnimating];
      
      UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
      
@@ -109,11 +103,14 @@
           [self.view addSubview:scrollView];
           
      } else {
-          [self getImageWithCompletion:^(NSError *error, UIImage *image) {
-               [activity stopAnimating];
                UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, 100)];
+               UIImage *image = [UIImage imageWithData:self.imageData];
+          if (image.size.width > self.view.frame.size.width - 20) {
+               image = [[AppManager getInstance] imageFromImage:image scaledToWidth:self.view.frame.size.width - 20];
+          }
                imageView.image = image;
                [imageView sizeToFit];
+          imageView.frame = CGRectMake(self.view.frame.size.width / 2 - imageView.frame.size.width / 2, 10, imageView.frame.size.width, imageView.frame.size.height);
                [scrollView addSubview:imageView];
                
                titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, imageView.frame.origin.y + imageView.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
@@ -189,7 +186,6 @@
                }
                scrollView.contentSize = contentRect.size;
                [self.view addSubview:scrollView];
-          }];
      }
 }
 
@@ -227,10 +223,28 @@
           likesLabel.text = [[self.NA.likes stringValue] stringByAppendingString:@" like"];
      } else
           likesLabel.text = [[self.NA.likes stringValue] stringByAppendingString:@" likes"];
+     UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+     [activity setBackgroundColor:[UIColor clearColor]];
+     [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
+     self.navigationItem.rightBarButtonItem = barButtonItem;
+     [activity startAnimating];
+     [barButtonItem release];
+     [self likeImageWithCompletion:^(NSUInteger integer) {
+          [activity stopAnimating];
+     } forID:self.NA.objectId];
+}
+
+- (void)likeImageWithCompletion:(void (^)(NSUInteger integer))completion forID:(NSString *)objectID {
+     dispatch_group_t serviceGroup = dispatch_group_create();
+     dispatch_group_enter(serviceGroup);
+     NSNumber *newLikes = self.NA.likes;
      PFQuery *query = [NewsArticleStructure query];
-     [query getObjectInBackgroundWithId:self.NA.objectId block:^(PFObject *pfObject, NSError *error) {
-          [pfObject setObject:newLikes forKey:@"likes"];
-          [pfObject saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+     [query whereKey:@"articleID" equalTo:self.NA.articleID];
+     [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+          PFObject *object = (PFObject *)[objects firstObject];
+          [object setObject:newLikes forKey:@"likes"];
+          [object saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
                NSMutableArray *theLikedNews = [[[NSUserDefaults standardUserDefaults] objectForKey:@"likedNewsArticles"] mutableCopy];
                if (! theLikedNews) {
                     theLikedNews = [[NSMutableArray alloc] init];
@@ -239,9 +253,13 @@
                     [theLikedNews addObject:self.NA.articleID];
                     [[NSUserDefaults standardUserDefaults] setObject:theLikedNews forKey:@"likedNewsArticles"];
                     [[NSUserDefaults standardUserDefaults] synchronize];
+                    dispatch_group_leave(serviceGroup);
                }
           }];
      }];
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
+          completion(0);
+     });
 }
 
 - (instancetype)initWithNewsArticle:(NewsArticleStructure *)newsArticle {

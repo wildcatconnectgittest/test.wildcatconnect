@@ -38,7 +38,7 @@
     //self.navigationItem.rightBarButtonItem = self.editButtonItem;
     //self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 60, 0);
      
-     self.sectionsArray = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"News Center", @"Extracurriculars", @"Community Service", @"Student Center", @"Calendar", @"Lunch Menus", @"Useful Links", @"Staff Directory", @"Administration", nil]];
+     self.sectionsArray = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"News Center", @"Extracurriculars", @"Community Service", @"Student Center", @"Calendar", @"Lunch Menus", @"Useful Links", @"Staff Directory", @"Administration Only", nil]];
      self.sectionsImagesArray = [[NSMutableArray alloc] init];
      [self.sectionsImagesArray addObject:@"theNews@2x.png"];
      [self.sectionsImagesArray addObject:@"extracurriculars@2x.png"];
@@ -54,7 +54,6 @@
 - (void)viewWillAppear:(BOOL)animated {
      [super viewWillAppear:animated];
      NSMutableArray *returnArray = [NSMutableArray array];
-     NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
      activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
      [activity setBackgroundColor:[UIColor clearColor]];
      [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
@@ -69,6 +68,11 @@
           self.sectionsNumbersArray = returnArray;
           [activity stopAnimating];
           [self.tableView reloadData];
+          if ([number integerValue] > 0) {
+               [[self.tabBarController.viewControllers objectAtIndex:1] tabBarItem].badgeValue = [number stringValue];
+          }
+          else
+               [[self.tabBarController.viewControllers objectAtIndex:1] tabBarItem].badgeValue = nil;
      }];
 }
 

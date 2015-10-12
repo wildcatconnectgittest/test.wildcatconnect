@@ -23,41 +23,30 @@
     [scrollerhome setContentSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 1000)];
     CGSize ScreenSize = [[UIScreen mainScreen] bounds].size;
     self.view.frame = CGRectMake(0, 0, ScreenSize.width, ScreenSize.height);
-	// Do any additional setup after loading the view, typically from a nib.
-     //Saving object
-     /*PFObject *testObject = [PFObject objectWithClassName:@"TestObject"];
-     testObject[@"foo"] = @"bar";
-      [testObject saveInBackground];*/
-          //Saving custom subclass of PF Object.
-     /*TestStructure *testStructure = [[TestStructure alloc] init];
-     testStructure.isSelected = 1;
-     testStructure.testStructureIndex = 5;
-     testStructure.testStructureName = @"Testing...";
-     [testStructure saveInBackground];*/
-          //Querying objects...
-     /*PFQuery *query = [TestStructure query];
-     [query whereKey:@"isSelected" equalTo:[NSNumber numberWithInt:1]];
-     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-          if (! error) {
-               TestStructure *testStructure = [objects firstObject];
-               NSString *name = testStructure.testStructureName;
-               NSLog(@"%@", name);
+     [self getCountMethodWithCompletion:^(NSInteger count) {
+          NSMutableArray *array = [[NSUserDefaults standardUserDefaults] objectForKey:@"readNewsArticles"];
+          NSInteger read = array.count;
+          NSNumber *number = [NSNumber numberWithInt:(count - read)];
+          if ([number integerValue] > 0) {
+               [[self.tabBarController.viewControllers objectAtIndex:1] tabBarItem].badgeValue = [number stringValue];
           }
-     }];*/
-     /*PFQuery *query = [NewsArticleStructure query];
-     [query whereKey:@"likes" greaterThan:[NSNumber numberWithInt:50]];
-     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-          if (! error) {
-               NewsArticleStructure *structure = [objects firstObject];
-          }
-     }];*/
-          //App wide manager init...
-     AppManager *appManager = [AppManager getInstance];
-          //Reading text files from internet...
-     /*NSURL *URL = [NSURL URLWithString:@"http://kevinalyons.com/assets/testFile.txt"];
-     NSError *error;
-     NSString *content = [NSString stringWithContentsOfURL:URL encoding:NSASCIIStringEncoding error:&error];
-     NSLog(@"%@", content);*/
+          else
+               [[self.tabBarController.viewControllers objectAtIndex:1] tabBarItem].badgeValue = nil;
+     }];
+}
+
+- (void)getCountMethodWithCompletion:(void (^)(NSInteger count))completion {
+     dispatch_group_t serviceGroup = dispatch_group_create();
+     dispatch_group_enter(serviceGroup);
+     PFQuery *query = [NewsArticleStructure query];
+     __block int count;
+     [query countObjectsInBackgroundWithBlock:^(int number, NSError * _Nullable error) {
+          count = number;
+          dispatch_group_leave(serviceGroup);
+     }];
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
+          completion(count);
+     });
 }
 
 - (void)didReceiveMemoryWarning {

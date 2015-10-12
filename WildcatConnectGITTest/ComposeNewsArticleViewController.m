@@ -71,6 +71,8 @@
      [titleTextView setFont:[UIFont systemFontOfSize:16]];
      titleTextView.layer.borderWidth = 1.0f;
      titleTextView.layer.borderColor = [[UIColor grayColor] CGColor];
+     titleTextView.scrollEnabled = false;
+     titleTextView.tag = 0;
      [scrollView addSubview:titleTextView];
      
      UILabel *authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, titleTextView.frame.origin.y + titleTextView.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
@@ -87,6 +89,7 @@
      authorTextView.layer.borderWidth = 1.0f;
      authorTextView.layer.borderColor = [[UIColor grayColor] CGColor];
      authorTextView.scrollEnabled = false;
+     authorTextView.tag = 1;
      [scrollView addSubview:authorTextView];
      
      UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, authorTextView.frame.origin.y + authorTextView.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
@@ -107,6 +110,7 @@
      NSDate *today = [NSDate date];
      dateTextView.text = [dateFormatter stringFromDate:today];
      dateTextView.scrollEnabled = false;
+     dateTextView.tag = 2;
      [scrollView addSubview:dateTextView];
      
      UILabel *summaryLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, dateTextView.frame.origin.y + dateTextView.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
@@ -129,6 +133,8 @@
      [summaryTextView setFont:[UIFont systemFontOfSize:16]];
      summaryTextView.layer.borderWidth = 1.0f;
      summaryTextView.layer.borderColor = [[UIColor grayColor] CGColor];
+     summaryTextView.scrollEnabled = false;
+     summaryTextView.tag = 3;
      [scrollView addSubview:summaryTextView];
      
      UILabel *articleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, summaryTextView.frame.origin.y + summaryTextView.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
@@ -145,6 +151,7 @@
      articleTextView.layer.borderWidth = 1.0f;
      articleTextView.layer.borderColor = [[UIColor grayColor] CGColor];
      articleTextView.dataDetectorTypes = UIDataDetectorTypeLink;
+     articleTextView.tag = 4;
      [scrollView addSubview:articleTextView];
      
      imageLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, articleTextView.frame.origin.y + articleTextView.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
@@ -293,17 +300,19 @@
 - (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
           // the user clicked one of the OK/Cancel buttons
      if (actionSheet == postAlertView) {
-          UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(10, postButton.frame.origin.y, 30, 30)];
-          [activity setBackgroundColor:[UIColor clearColor]];
-          [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-          [scrollView addSubview:activity];
-          [activity startAnimating];
-          [self postArticleMethodWithCompletion:^(NSError *error) {
-               dispatch_async(dispatch_get_main_queue(), ^{
-                    [activity stopAnimating];
-                    [self.navigationController popViewControllerAnimated:YES];
-               });
-          }];
+          if (buttonIndex == 1) {
+               UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(10, postButton.frame.origin.y, 30, 30)];
+               [activity setBackgroundColor:[UIColor clearColor]];
+               [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+               [scrollView addSubview:activity];
+               [activity startAnimating];
+               [self postArticleMethodWithCompletion:^(NSError *error) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                         [activity stopAnimating];
+                         [self.navigationController popViewControllerAnimated:YES];
+                    });
+               }];
+          }
           
      } else {
           if (buttonIndex == 1) {

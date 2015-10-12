@@ -34,13 +34,12 @@
                [activity startAnimating];
                [self getOldDataWithCompletion:^(NSMutableArray *returnArray) {
                     self.newsArticles = returnArray;
-                    [self getOldImagesWithCompletion:^(NSMutableArray *returnArrayB) {
+                    [self getOldImagesWithCompletion:^(NSMutableArray *returnArrayB, NSMutableArray *dataReturnArray) {
                          self.newsArticleImages = returnArrayB;
+                         self.dataArray = dataReturnArray;
                          dispatch_async(dispatch_get_main_queue(), ^ {
                               [self.tableView reloadData];
                               [activity stopAnimating];
-                              //UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshData)];
-                              //self.navigationItem.rightBarButtonItem = barButtonItem;
                               [self refreshControl];
                          });
                     }];
@@ -48,10 +47,9 @@
           }
 }
 
-- (void)refresh{
+- (void)refresh {
     [self refreshData];
     [self.refreshControl endRefreshing];
-    
 }
 
 
@@ -70,18 +68,23 @@
 
 
 
-- (void)getOldImagesWithCompletion:(void (^)(NSMutableArray *returnArray))completion {
+- (void)getOldImagesWithCompletion:(void (^)(NSMutableArray *returnArray, NSMutableArray *dataArray))completion {
      dispatch_group_t serviceGroup = dispatch_group_create();
           //Start the first service
      dispatch_group_enter(serviceGroup);
      NSMutableArray *array = [[NSMutableArray alloc] init];
+     NSMutableArray *theDataArray = [[NSMutableArray alloc] init];
      NSMutableArray *theArrayToSearch = [[NSUserDefaults standardUserDefaults] objectForKey:@"newsArticleImages"];
      NSData *data;
      UIImage *image;
      for (int i = 0; i < theArrayToSearch.count; i++) {
           data = theArrayToSearch[i];
           image = [UIImage imageWithData:data];
+          [theDataArray addObject:data];
           if (image) {
+               if (image.size.width > 70) {
+                    image = [[AppManager getInstance] imageFromImage:image scaledToWidth:70];
+               }
                [array addObject:image];
           }
           else
@@ -94,7 +97,7 @@
           dispatch_group_leave(serviceGroup);
      }
      dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^{
-          completion(array);
+          completion(array, theDataArray);
      });
 }
 
@@ -159,37 +162,22 @@
           }
           NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
           [userDefaults setObject:itemsToSave forKey:@"newsArticles"];
-          [self testMethodTwoWithCompletion:^(NSError *error, NSMutableArray *returnArray) {
+          [self testMethodTwoWithCompletion:^(NSError *error, NSMutableArray *returnArray, NSMutableArray *theReturnDataArray) {
                self.newsArticleImages = returnArray;
+               self.dataArray = theReturnDataArray;
                NSMutableArray *moreItems = [NSMutableArray array];
-               NSData *data;
-               for (int i = 0; i < returnArray.count; i++) {
-                    if ([returnArray[i] isKindOfClass:[UIImage class]]) {
-                         data = [[NSData alloc] init];
-                         data = UIImagePNGRepresentation(returnArray[i]);
-                         [moreItems addObject:data];
-                    }
-                    else
-                         [moreItems addObject:[[NSData alloc] init]];
-                    }
+               for (int i = 0; i < theReturnDataArray.count; i++) {
+                    [moreItems addObject:theReturnDataArray[i]];
+               }
                [userDefaults setObject:moreItems forKey:@"newsArticleImages"];
                [userDefaults synchronize];
                dispatch_async(dispatch_get_main_queue(), ^ {
                    // [activity stopAnimating];
                     [self.tableView reloadData];
-                   /* UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshData)];
-                    self.navigationItem.rightBarButtonItem = barButtonItem;*/
                     [self refreshControl];
                });
           } withArray:returnArrayA];
      }];
-}
-
-- (instancetype)initWithLoadNumber:(NSNumber *)theLoadNumber {
-     [super init];
-     self.loadNumber = theLoadNumber;
-     self.navigationItem.title = @"News Center";
-     return self;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -215,18 +203,18 @@
      NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
      [userDefaults setObject:itemsToSave forKey:@"newsArticles"];
      NSMutableArray *moreItems = [NSMutableArray array];
-     NSData *data;
-     for (int i = 0; i < self.newsArticleImages.count; i++) {
-          if ([self.newsArticleImages[i] isKindOfClass:[UIImage class]]) {
-               data = [[NSData alloc] init];
-               data = UIImagePNGRepresentation(self.newsArticleImages[i]);
-               [moreItems addObject:data];
-          }
-          else
-               [moreItems addObject:[[NSData alloc] init]];
+     for (int i = 0; i < self.dataArray.count; i++) {
+          [moreItems addObject:self.dataArray[i]];
      }
      [userDefaults setObject:moreItems forKey:@"newsArticleImages"];
      [userDefaults synchronize];
+}
+
+- (instancetype)initWithLoadNumber:(NSNumber *)theLoadNumber {
+     [super init];
+     self.loadNumber = theLoadNumber;
+     self.navigationItem.title = @"News Center";
+     return self;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -281,12 +269,13 @@
      });
 }
 
-- (void)testMethodTwoWithCompletion:(void (^)(NSError *error, NSMutableArray *returnArray))completion withArray:(NSMutableArray *)array {
+- (void)testMethodTwoWithCompletion:(void (^)(NSError *error, NSMutableArray *returnArray, NSMutableArray *returnDataArray))completion withArray:(NSMutableArray *)array {
      __block NSError *theError = nil;
      __block BOOL lastNone = false;
      dispatch_group_t theServiceGroup = dispatch_group_create();
      dispatch_group_enter(theServiceGroup);
      NSMutableArray *theReturnArray = [NSMutableArray arrayWithArray:array];
+     NSMutableArray *theReturnDataArray = [NSMutableArray arrayWithArray:array];
      NewsArticleStructure *ECStructure;
      for (int i = 0; i < array.count; i++) {
           ECStructure = (NewsArticleStructure *)[array objectAtIndex:i];
@@ -298,6 +287,7 @@
                     UIImage *image = [UIImage imageWithData:data];
                     image = [[AppManager getInstance] imageFromImage:image scaledToWidth:70];
                     [theReturnArray setObject:image atIndexedSubscript:[[NSNumber numberWithInt:i] integerValue]];
+                    [theReturnDataArray setObject:data atIndexedSubscript:i];
                         BOOL go = true;
                         for (NSObject *object in theReturnArray) {
                             if (object.class == [NewsArticleStructure class]) {
@@ -311,6 +301,7 @@
                }];
           } else {
                [theReturnArray setObject:[[NSObject alloc] init] atIndexedSubscript:[[NSNumber numberWithInt:i] integerValue]];
+               [theReturnDataArray setObject:[[NSData alloc] init] atIndexedSubscript:i];
                BOOL go = true;
                if (i == array.count - 1) {
                     for (NSObject *object in theReturnArray) {
@@ -332,7 +323,7 @@
           NSError *overallError = nil;
           if (theError)
                overallError = theError;
-          completion(overallError, theReturnArray);
+          completion(overallError, theReturnArray, theReturnDataArray);
      });
 }
 
@@ -393,6 +384,7 @@
      self.newsArticleSelected = self.newsArticles[indexPath.row];
      NewsArticleDetailViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"NADetail"];
      controller.NA = self.newsArticleSelected;
+     controller.imageData = self.dataArray[indexPath.row];
      [self.navigationController pushViewController:controller animated:YES];
      NSMutableArray *theReadNews = [[[NSUserDefaults standardUserDefaults] objectForKey:@"readNewsArticles"] mutableCopy];
      if (! theReadNews) {

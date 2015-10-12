@@ -12,6 +12,7 @@
 @interface NewsArticleDetailViewController : UIViewController
 
 @property (nonatomic, strong) NewsArticleStructure *NA;
+@property (nonatomic, strong) NSData *imageData;
 
 - (instancetype)initWithNewsArticle:(NewsArticleStructure *)newsArticle;
 
