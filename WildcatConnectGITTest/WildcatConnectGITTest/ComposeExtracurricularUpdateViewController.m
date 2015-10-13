@@ -17,9 +17,7 @@
 
 @implementation ComposeExtracurricularUpdateViewController {
      UIPickerView *extracurricularPickerView;
-     UITextView *authorTextView;
-     UITextView *dateTextView;
-     UILabel *summaryRemainingLabel;
+     UILabel *messageRemainingLabel;
      UITextView *summaryTextView;
      UITextView *articleTextView;
      UILabel *imageLabel;
@@ -69,10 +67,25 @@
                [titleLabel sizeToFit];
                [self.view addSubview:titleLabel];
                
-               extracurricularPickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(10, titleLabel.frame.origin.y + titleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 200)];
+               extracurricularPickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(10, titleLabel.frame.origin.y + titleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
                extracurricularPickerView.delegate = self;
                extracurricularPickerView.showsSelectionIndicator = YES;
                [self.view addSubview:extracurricularPickerView];
+               
+               UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, extracurricularPickerView.frame.origin.y + extracurricularPickerView.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
+               messageLabel.text = @"Message";
+               [messageLabel setFont:[UIFont systemFontOfSize:16]];
+               messageLabel.lineBreakMode = NSLineBreakByWordWrapping;
+               messageLabel.numberOfLines = 0;
+               [messageLabel sizeToFit];
+               [self.view addSubview:messageLabel];
+               
+               messageRemainingLabel = [[UILabel alloc] init];
+               messageRemainingLabel.text = @"60 characters remaining";
+               [messageRemainingLabel setFont:[UIFont systemFontOfSize:10]];
+               [messageRemainingLabel sizeToFit];
+               messageRemainingLabel.frame = CGRectMake((self.view.frame.size.width - messageRemainingLabel.frame.size.width - 10), messageLabel.frame.origin.y, messageRemainingLabel.frame.size.width, 20);
+               [self.view addSubview:messageRemainingLabel];
           });
      }];
      
@@ -80,12 +93,18 @@
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow: (NSInteger)row inComponent:(NSInteger)component {
           // Handle the selection
+     if (row == 0) {
+               //Do nothing, top one selected...
+     } else {
+          self.EC = (ExtracurricularStructure *)self.ECarray[row - 1];
+     }
 }
 
      // tell the picker how many rows are available for a given component
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
      
-     return self.ECarray.count;
+     return self.ECarray.count + 1;
+     
 }
 
      // tell the picker how many components it will have
@@ -96,9 +115,13 @@
      // tell the picker the title for a given component
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
      
-     ExtracurricularStructure *EC = (ExtracurricularStructure *)self.ECarray[row];
-     
-     return EC.titleString;
+     if (row == 0) {
+          return @"SELECT";
+     } else {
+          ExtracurricularStructure *EC = (ExtracurricularStructure *)self.ECarray[row - 1];
+          
+          return EC.titleString;
+     }
 }
 
      // tell the picker the width of each row for a given component

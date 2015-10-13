@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ExtracurricularStructure.h"
 
 @interface ComposeExtracurricularUpdateViewController : UIViewController <UIPickerViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray *ECarray;
+@property (nonatomic, strong) ExtracurricularStructure *EC;
 
 @end
