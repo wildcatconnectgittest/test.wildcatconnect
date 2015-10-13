@@ -466,6 +466,10 @@
     if (self.allOpps.count == 0) {
         UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
         cell.textLabel.text = @"No data to display.";
+         UISwipeGestureRecognizer* gestureR;
+         gestureR = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeFrom)] autorelease];
+         gestureR.direction = UISwipeGestureRecognizerDirectionLeft;
+         [cell addGestureRecognizer:gestureR];
         return  cell;
     } else {
         if (indexPath.section == 0) {

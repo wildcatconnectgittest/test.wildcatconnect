@@ -10,6 +10,7 @@
 #import <Parse/Parse.h>
 #import "AdministrationLogInViewController.h"
 #import "ComposeNewsArticleViewController.h"
+#import "ComposeExtracurricularUpdateViewController.h"
 
 @interface AdministrationMainTableViewController ()
 
@@ -79,6 +80,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
      if (indexPath.row == 0) {
           ComposeNewsArticleViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"ComposeNewsArticle"];
+          [self.navigationController pushViewController:controller animated:YES];
+     } else if (indexPath.row == 1) {
+          ComposeExtracurricularUpdateViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"ComposeExtracurricular"];
           [self.navigationController pushViewController:controller animated:YES];
      }
      [self.tableView deselectRowAtIndexPath:indexPath animated:YES];

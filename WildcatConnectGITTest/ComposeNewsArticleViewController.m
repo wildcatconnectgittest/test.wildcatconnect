@@ -309,6 +309,13 @@
                [self postArticleMethodWithCompletion:^(NSError *error) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                          [activity stopAnimating];
+                         NSMutableArray *array = [[NSUserDefaults standardUserDefaults] objectForKey:@"visitedPagesArray"];
+                         if ([array containsObject:[NSString stringWithFormat:@"%lu", (long)0]]) {
+                              NSMutableArray *newArray = [array mutableCopy];
+                              [newArray removeObject:[NSString stringWithFormat:@"%lu", (long)0]];
+                              [[NSUserDefaults standardUserDefaults] setObject:newArray forKey:@"visitedPagesArray"];
+                              [[NSUserDefaults standardUserDefaults] synchronize];
+                         }
                          [self.navigationController popViewControllerAnimated:YES];
                     });
                }];
@@ -332,8 +339,11 @@
      newsArticleStructure.summaryString = summaryTextView.text;
      newsArticleStructure.contentURLString = articleTextView.text;
      newsArticleStructure.likes = [NSNumber numberWithInt:0];
-     [self getCountMethodWithCompletion:^(NSInteger count) {
-          newsArticleStructure.articleID = [NSNumber numberWithInt:count + 1];
+     PFQuery *query = [NewsArticleStructure query];
+     [query orderByDescending:@"articleID"];
+     [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+          NewsArticleStructure *structure = (NewsArticleStructure *)object;
+          newsArticleStructure.articleID = [NSNumber numberWithInt:[structure.articleID integerValue] + 1];
           if (imageView.image) {
                newsArticleStructure.hasImage = [NSNumber numberWithInt:1];
                NSData *data = UIImagePNGRepresentation(imageView.image);
@@ -343,10 +353,10 @@
                newsArticleStructure.hasImage = [NSNumber numberWithInt:0];
           }
           [newsArticleStructure saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
-               dispatch_group_leave(serviceGroup);
                if (error) {
                     theError = error;
                }
+               dispatch_group_leave(serviceGroup);
           }];
      }];
      dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^{

@@ -66,7 +66,56 @@
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
 }*/
 
-
+- (void)removeOldArrayObjectsWithCompletion:(void (^)(NSUInteger integer))completion withArray:(NSMutableArray *)array {
+     dispatch_group_t serviceGroup = dispatch_group_create();
+     dispatch_group_enter(serviceGroup);
+     NSMutableArray *theArray = [array mutableCopy];
+     NSMutableArray *dictionaryArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"readNewsArticles"];
+     NSMutableArray *searchDictionaryArray = [dictionaryArray mutableCopy];
+     NSMutableArray *likedArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"likedNewsArticles"];
+     NSMutableArray *likesDictionaryArray = [likedArray mutableCopy];
+     if (searchDictionaryArray.count > theArray.count) {
+               //Have some objects to remove...
+          for (int i = 0; i < searchDictionaryArray.count; i++) {
+               NSNumber *number = (NSNumber *)[searchDictionaryArray objectAtIndex:i];
+               BOOL contained = false;
+               for (NewsArticleStructure *structure in theArray) {
+                    if (structure.articleID == number) {
+                         contained = true;
+                         break;
+                    }
+               }
+               if (! contained) {
+                    [searchDictionaryArray removeObjectAtIndex:i];
+               }
+          }
+          [[NSUserDefaults standardUserDefaults] setObject:searchDictionaryArray forKey:@"readNewsArticles"];
+          [[NSUserDefaults standardUserDefaults] synchronize];
+          dispatch_group_leave(serviceGroup);
+     }
+     else {
+               //Have some objects to remove...
+          for (int i = 0; i < likesDictionaryArray.count; i++) {
+               NSNumber *number = (NSNumber *)[likesDictionaryArray objectAtIndex:i];
+               BOOL contained = false;
+               for (NewsArticleStructure *structure in theArray) {
+                    if (structure.articleID == number) {
+                         contained = true;
+                         break;
+                    }
+               }
+               if (! contained) {
+                    [likesDictionaryArray removeObjectAtIndex:i];
+               }
+          }
+          [[NSUserDefaults standardUserDefaults] setObject:likesDictionaryArray forKey:@"likedNewsArticles"];
+          [[NSUserDefaults standardUserDefaults] synchronize];
+          dispatch_group_leave(serviceGroup);
+     }
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
+          completion(0);
+     });
+}
 
 - (void)getOldImagesWithCompletion:(void (^)(NSMutableArray *returnArray, NSMutableArray *dataArray))completion {
      dispatch_group_t serviceGroup = dispatch_group_create();
@@ -141,41 +190,43 @@
      [activity startAnimating];*/
      [self testMethodWithCompletion:^(NSError *error, NSMutableArray *returnArrayA) {
           self.newsArticles = returnArrayA;
-          NSMutableArray *itemsToSave = [NSMutableArray array];
-          for (NewsArticleStructure *n in returnArrayA) {
-               [itemsToSave addObject:@{ @"hasImage"     : n.hasImage,
-                                         @"titleString" : n.titleString,
-                                         
-                                         @"summaryString" : n.summaryString,
-                                         
-                                         @"authorString" : n.authorString,
-                                         
-                                         @"dateString" : n.dateString,
-                                         
-                                         @"contentURLString" : n.contentURLString,
-                                         
-                                         @"articleID" : n.articleID,
-                                         
-                                         @"likes" : n.likes
-                                         
-                                         }];
-          }
-          NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-          [userDefaults setObject:itemsToSave forKey:@"newsArticles"];
-          [self testMethodTwoWithCompletion:^(NSError *error, NSMutableArray *returnArray, NSMutableArray *theReturnDataArray) {
-               self.newsArticleImages = returnArray;
-               self.dataArray = theReturnDataArray;
-               NSMutableArray *moreItems = [NSMutableArray array];
-               for (int i = 0; i < theReturnDataArray.count; i++) {
-                    [moreItems addObject:theReturnDataArray[i]];
+          [self removeOldArrayObjectsWithCompletion:^(NSUInteger integer) {
+               NSMutableArray *itemsToSave = [NSMutableArray array];
+               for (NewsArticleStructure *n in returnArrayA) {
+                    [itemsToSave addObject:@{ @"hasImage"     : n.hasImage,
+                                              @"titleString" : n.titleString,
+                                              
+                                              @"summaryString" : n.summaryString,
+                                              
+                                              @"authorString" : n.authorString,
+                                              
+                                              @"dateString" : n.dateString,
+                                              
+                                              @"contentURLString" : n.contentURLString,
+                                              
+                                              @"articleID" : n.articleID,
+                                              
+                                              @"likes" : n.likes
+                                              
+                                              }];
                }
-               [userDefaults setObject:moreItems forKey:@"newsArticleImages"];
-               [userDefaults synchronize];
-               dispatch_async(dispatch_get_main_queue(), ^ {
-                   // [activity stopAnimating];
-                    [self.tableView reloadData];
-                    [self refreshControl];
-               });
+               NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+               [userDefaults setObject:itemsToSave forKey:@"newsArticles"];
+               [self testMethodTwoWithCompletion:^(NSError *error, NSMutableArray *returnArray, NSMutableArray *theReturnDataArray) {
+                    self.newsArticleImages = returnArray;
+                    self.dataArray = theReturnDataArray;
+                    NSMutableArray *moreItems = [NSMutableArray array];
+                    for (int i = 0; i < theReturnDataArray.count; i++) {
+                         [moreItems addObject:theReturnDataArray[i]];
+                    }
+                    [userDefaults setObject:moreItems forKey:@"newsArticleImages"];
+                    [userDefaults synchronize];
+                    dispatch_async(dispatch_get_main_queue(), ^ {
+                              // [activity stopAnimating];
+                         [self.tableView reloadData];
+                         [self refreshControl];
+                    });
+               } withArray:returnArrayA];
           } withArray:returnArrayA];
      }];
 }
