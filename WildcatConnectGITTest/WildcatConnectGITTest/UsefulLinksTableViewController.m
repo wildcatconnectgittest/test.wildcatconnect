@@ -25,7 +25,16 @@
     
           //Load the linksDictionary...
      
+     UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+     [activity setBackgroundColor:[UIColor clearColor]];
+     [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
+     self.navigationItem.rightBarButtonItem = barButtonItem;
+     [activity startAnimating];
+     [barButtonItem release];
+     
      [self loadLinksWithCompletion:^(NSMutableArray *returnArray) {
+          [activity stopAnimating];
           self.linksArray = returnArray;
           [self.tableView reloadData];
      }];

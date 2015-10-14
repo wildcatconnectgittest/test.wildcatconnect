@@ -29,8 +29,10 @@
                activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
                [activity setBackgroundColor:[UIColor clearColor]];
                [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-               UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:activity];
-               self.navigationItem.rightBarButtonItem = barButton;
+               UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
+               self.navigationItem.rightBarButtonItem = barButtonItem;
+               [activity startAnimating];
+               [barButtonItem release];
                [activity startAnimating];
                [self getOldDataWithCompletion:^(NSMutableArray *returnArray) {
                     self.newsArticles = returnArray;
@@ -182,12 +184,13 @@
 }
 
 - (void)refreshData {
-    /* activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+     activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
      [activity setBackgroundColor:[UIColor clearColor]];
      [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-     UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:activity];
-     self.navigationItem.rightBarButtonItem = barButton;
-     [activity startAnimating];*/
+     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
+     self.navigationItem.rightBarButtonItem = barButtonItem;
+     [activity startAnimating];
+     [barButtonItem release];
      [self testMethodWithCompletion:^(NSError *error, NSMutableArray *returnArrayA) {
           self.newsArticles = returnArrayA;
           [self removeOldArrayObjectsWithCompletion:^(NSUInteger integer) {
@@ -222,7 +225,7 @@
                     [userDefaults setObject:moreItems forKey:@"newsArticleImages"];
                     [userDefaults synchronize];
                     dispatch_async(dispatch_get_main_queue(), ^ {
-                              // [activity stopAnimating];
+                         [activity stopAnimating];
                          [self.tableView reloadData];
                          [self refreshControl];
                     });

@@ -65,14 +65,20 @@
           NSInteger read = array.count;
           NSNumber *number = [NSNumber numberWithInt:(count - read)];
           [returnArray addObject:number];
-          self.sectionsNumbersArray = returnArray;
-          [activity stopAnimating];
-          [self.tableView reloadData];
-          if ([number integerValue] > 0) {
-               [[self.tabBarController.viewControllers objectAtIndex:1] tabBarItem].badgeValue = [number stringValue];
-          }
-          else
-               [[self.tabBarController.viewControllers objectAtIndex:1] tabBarItem].badgeValue = nil;
+          [self getCountTwoMethodWithCompletion:^(NSInteger count2) {
+               NSNumber *updates = [NSNumber numberWithInt:count2];
+               [returnArray addObject:updates];
+               self.sectionsNumbersArray = returnArray;
+               [activity stopAnimating];
+               [self.tableView reloadData];
+               NSInteger final = [number integerValue] + [updates integerValue];
+               if (final > 0) {
+                    [[self.tabBarController.viewControllers objectAtIndex:1] tabBarItem].badgeValue = [[NSNumber numberWithInt:final] stringValue];
+               }
+               else
+                    [[self.tabBarController.viewControllers objectAtIndex:1] tabBarItem].badgeValue = nil;
+          }];
+          
      }];
 }
 
@@ -80,6 +86,20 @@
      dispatch_group_t serviceGroup = dispatch_group_create();
      dispatch_group_enter(serviceGroup);
      PFQuery *query = [NewsArticleStructure query];
+     __block int count;
+     [query countObjectsInBackgroundWithBlock:^(int number, NSError * _Nullable error) {
+          count = number;
+          dispatch_group_leave(serviceGroup);
+     }];
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
+          completion(count);
+     });
+}
+
+- (void)getCountTwoMethodWithCompletion:(void (^)(NSInteger count))completion {
+     dispatch_group_t serviceGroup = dispatch_group_create();
+     dispatch_group_enter(serviceGroup);
+     PFQuery *query = [ExtracurricularUpdateStructure query];
      __block int count;
      [query countObjectsInBackgroundWithBlock:^(int number, NSError * _Nullable error) {
           count = number;
@@ -116,7 +136,22 @@
      if (indexPath.row == 0) {
           NSNumber *number = [self.sectionsNumbersArray objectAtIndex:indexPath.row];
           NSInteger integer = [number integerValue];
-          if (integer != 0) {
+          if (integer > 0) {
+               UIButton *downloadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+               [downloadButton setTitle:[number stringValue] forState:UIControlStateNormal];
+               [downloadButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+               downloadButton.enabled = false;
+               [downloadButton sizeToFit];
+               [downloadButton setFrame:CGRectMake(0, 0, downloadButton.frame.size.width, downloadButton.frame.size.height)];
+               cell.accessoryView = downloadButton;
+          }
+          else if (integer == 0) {
+               cell.accessoryView = nil;
+          }
+     } else if (indexPath.row == 1) {
+          NSNumber *number = [self.sectionsNumbersArray objectAtIndex:indexPath.row];
+          NSInteger integer = [number integerValue];
+          if (integer > 0) {
                UIButton *downloadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
                [downloadButton setTitle:[number stringValue] forState:UIControlStateNormal];
                [downloadButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];

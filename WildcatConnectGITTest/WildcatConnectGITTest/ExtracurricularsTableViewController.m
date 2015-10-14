@@ -37,9 +37,10 @@
           activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
           [activity setBackgroundColor:[UIColor clearColor]];
           [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-        /*  UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:activity];
-          self.navigationItem.rightBarButtonItem = barButton;
-          [activity startAnimating];*/
+          UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
+          self.navigationItem.rightBarButtonItem = barButtonItem;
+          [activity startAnimating];
+          [barButtonItem release];
           [self getOldUpdatesWithCompletion:^(NSMutableArray *returnArray) {
                self.updatesArray = returnArray;
                [self getOldUpdatesTwoWithCompletion:^(NSMutableArray *returnArrayB) {
@@ -49,8 +50,6 @@
                          dispatch_async(dispatch_get_main_queue(), ^ {
                               [activity stopAnimating];
                               [self.tableView reloadData];
-                           /*   UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshData)];
-                              self.navigationItem.rightBarButtonItem = barButtonItem;*/
                               [self refreshControl];
                          });
                     }];
@@ -64,6 +63,13 @@
 }
 
 - (void)refreshData {
+     activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+     [activity setBackgroundColor:[UIColor clearColor]];
+     [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
+     self.navigationItem.rightBarButtonItem = barButtonItem;
+     [activity startAnimating];
+     [barButtonItem release];
      [self testMethodWithCompletion:^(NSError *error, NSMutableArray *returnArray) {
           self.updatesArray = returnArray;
           NSMutableArray *itemsToSave = [NSMutableArray array];
@@ -107,8 +113,6 @@
                          dispatch_async(dispatch_get_main_queue(), ^ {
                               [activity stopAnimating];
                               [self.tableView reloadData];
-                              /*       UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshData)];
-                               self.navigationItem.rightBarButtonItem = barButtonItem;*/
                               [self refreshControl];
                               [self.refreshControl endRefreshing];
                          });

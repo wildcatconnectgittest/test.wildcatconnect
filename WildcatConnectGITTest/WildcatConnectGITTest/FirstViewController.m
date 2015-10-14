@@ -9,6 +9,7 @@
 #import "FirstViewController.h"
 #import <Parse/Parse.h>
 #import "NewsArticleStructure.h"
+#import "ExtracurricularUpdateStructure.h"
 #import "AppManager.h"
 
 @interface FirstViewController ()
@@ -27,12 +28,31 @@
           NSMutableArray *array = [[NSUserDefaults standardUserDefaults] objectForKey:@"readNewsArticles"];
           NSInteger read = array.count;
           NSNumber *number = [NSNumber numberWithInt:(count - read)];
-          if ([number integerValue] > 0) {
-               [[self.tabBarController.viewControllers objectAtIndex:1] tabBarItem].badgeValue = [number stringValue];
-          }
-          else
-               [[self.tabBarController.viewControllers objectAtIndex:1] tabBarItem].badgeValue = nil;
+          [self getCountTwoMethodWithCompletion:^(NSInteger count2) {
+               NSNumber *updates = [NSNumber numberWithInt:count2];;
+               NSInteger final = [number integerValue] + [updates integerValue];
+               if (final > 0) {
+                    [[self.tabBarController.viewControllers objectAtIndex:1] tabBarItem].badgeValue = [[NSNumber numberWithInt:final] stringValue];
+               }
+               else
+                    [[self.tabBarController.viewControllers objectAtIndex:1] tabBarItem].badgeValue = nil;
+          }];
+          
      }];
+}
+
+- (void)getCountTwoMethodWithCompletion:(void (^)(NSInteger count))completion {
+     dispatch_group_t serviceGroup = dispatch_group_create();
+     dispatch_group_enter(serviceGroup);
+     PFQuery *query = [ExtracurricularUpdateStructure query];
+     __block int count;
+     [query countObjectsInBackgroundWithBlock:^(int number, NSError * _Nullable error) {
+          count = number;
+          dispatch_group_leave(serviceGroup);
+     }];
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
+          completion(count);
+     });
 }
 
 - (void)getCountMethodWithCompletion:(void (^)(NSInteger count))completion {

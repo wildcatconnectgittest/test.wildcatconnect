@@ -194,7 +194,8 @@
      [scrollView addSubview:postButton];
      
           //Takes care of all resizing needs based on sizes.
-     UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 10, 0);
+     self.automaticallyAdjustsScrollViewInsets = YES;
+     UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 1, 0);
      scrollView.contentInset = adjustForTabbarInsets;
      scrollView.scrollIndicatorInsets = adjustForTabbarInsets;
      CGRect contentRect = CGRectZero;

@@ -19,6 +19,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+     
+     self.usernameField.frame = CGRectMake(10, self.usernameField.frame.origin.y, self.view.frame.size.width - 20, self.usernameField.frame.size.height);
+     self.passwordField.frame = CGRectMake(10, self.passwordField.frame.origin.y, self.view.frame.size.width - 20, self.passwordField.frame.size.height);
+     
+     [self.logInButton sizeToFit];
+     self.logInButton.frame = CGRectMake(self.view.frame.size.width / 2 - self.logInButton.frame.size.width / 2, self.logInButton.frame.origin.y, self.logInButton.frame.size.width, self.logInButton.frame.size.height);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -60,4 +66,8 @@
      [navigationController pushViewController:destinationController animated:YES];
 }
 
+- (void)dealloc {
+     [_logInButton release];
+     [super dealloc];
+}
 @end
