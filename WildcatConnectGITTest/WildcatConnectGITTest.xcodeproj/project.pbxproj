@@ -25,6 +25,7 @@
 		0A1FE3E71B7B7DA80062A30E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A1FE3E51B7B7DA80062A30E /* Main.storyboard */; };
 		0A1FE3EC1B7B7DA80062A30E /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A1FE3EA1B7B7DA80062A30E /* LaunchScreen.xib */; };
 		0A1FE3F81B7B7DA80062A30E /* WildcatConnectGITTestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1FE3F71B7B7DA80062A30E /* WildcatConnectGITTestTests.m */; };
+		0A21F6421BD1667E00BED46F /* ComposeCommunityServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A21F6411BD1667E00BED46F /* ComposeCommunityServiceViewController.m */; settings = {ASSET_TAGS = (); }; };
 		0A49BD0F1BC6DB7000E84E4C /* AlertStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A49BD0E1BC6DB7000E84E4C /* AlertStructure.m */; settings = {ASSET_TAGS = (); }; };
 		0A49BD121BC6DCBE00E84E4C /* AlertsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A49BD111BC6DCBE00E84E4C /* AlertsTableViewController.m */; settings = {ASSET_TAGS = (); }; };
 		0A4A37E91B7B90D100AF3E36 /* SectionsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37E81B7B90D100AF3E36 /* SectionsTableViewController.m */; };
@@ -126,6 +127,8 @@
 		0A1FE3F11B7B7DA80062A30E /* WildcatConnectGITTestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WildcatConnectGITTestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A1FE3F61B7B7DA80062A30E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A1FE3F71B7B7DA80062A30E /* WildcatConnectGITTestTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WildcatConnectGITTestTests.m; sourceTree = "<group>"; };
+		0A21F6401BD1667E00BED46F /* ComposeCommunityServiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComposeCommunityServiceViewController.h; sourceTree = "<group>"; };
+		0A21F6411BD1667E00BED46F /* ComposeCommunityServiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComposeCommunityServiceViewController.m; sourceTree = "<group>"; };
 		0A49BD0D1BC6DB7000E84E4C /* AlertStructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertStructure.h; sourceTree = "<group>"; };
 		0A49BD0E1BC6DB7000E84E4C /* AlertStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertStructure.m; sourceTree = "<group>"; };
 		0A49BD101BC6DCBE00E84E4C /* AlertsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlertsTableViewController.h; path = ../AlertsTableViewController.h; sourceTree = "<group>"; };
@@ -279,6 +282,8 @@
 				0ACF72DA1BA69E2C00006C29 /* EmailButton.m */,
 				0A61185A1BA5ABDD00D632A6 /* UsefulLinksTableViewController.h */,
 				0A61185B1BA5ABDD00D632A6 /* UsefulLinksTableViewController.m */,
+				0A21F6401BD1667E00BED46F /* ComposeCommunityServiceViewController.h */,
+				0A21F6411BD1667E00BED46F /* ComposeCommunityServiceViewController.m */,
 				0AD4B0C51B81FCA3004E23E4 /* ExtracurricularsTableViewController.h */,
 				0AD4B0C61B81FCA3004E23E4 /* ExtracurricularsTableViewController.m */,
 				0AD4B0C81B820252004E23E4 /* ExtracurricularUpdateStructure.h */,
@@ -554,6 +559,7 @@
 				0A1EAA8A1BCCC46200D4240F /* ComposeExtracurricularUpdateViewController.m in Sources */,
 				0AD4B0CA1B820252004E23E4 /* ExtracurricularUpdateStructure.m in Sources */,
 				0AE74A2E1B7D84180083EFF1 /* MainTabBarController.m in Sources */,
+				0A21F6421BD1667E00BED46F /* ComposeCommunityServiceViewController.m in Sources */,
 				0A1FE3E11B7B7DA80062A30E /* FirstViewController.m in Sources */,
 				0A4A37F21B7BA34600AF3E36 /* StudentCenterViewController.m in Sources */,
 				0A49BD121BC6DCBE00E84E4C /* AlertsTableViewController.m in Sources */,

@@ -11,6 +11,7 @@
 #import "AdministrationLogInViewController.h"
 #import "ComposeNewsArticleViewController.h"
 #import "ComposeExtracurricularUpdateViewController.h"
+#import "ComposeCommunityServiceViewController.h"
 
 @interface AdministrationMainTableViewController ()
 
@@ -83,6 +84,9 @@
           [self.navigationController pushViewController:controller animated:YES];
      } else if (indexPath.row == 1) {
           ComposeExtracurricularUpdateViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"ComposeExtracurricular"];
+          [self.navigationController pushViewController:controller animated:YES];
+     } else if (indexPath.row == 2) {
+          ComposeCommunityServiceViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"ComposeCommunity"];
           [self.navigationController pushViewController:controller animated:YES];
      }
      [self.tableView deselectRowAtIndexPath:indexPath animated:YES];

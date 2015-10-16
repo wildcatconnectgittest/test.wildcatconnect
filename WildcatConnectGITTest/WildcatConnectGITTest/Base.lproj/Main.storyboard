@@ -306,7 +306,7 @@ cmlvZCA3A
                         </navigationBar>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="CellIdentifier" selectionStyle="default" indentationWidth="10" reuseIdentifier="CellIdentifier" id="6U0-Dq-Axa">
-                                <rect key="frame" x="0.0" y="93.5" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="157.5" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6U0-Dq-Axa" id="ahF-cF-BtX">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
@@ -326,6 +326,7 @@ cmlvZCA3A
                         <outlet property="topBar" destination="WUi-El-Lhb" id="BuA-0W-cGu"/>
                         <segue destination="nZO-e8-w4t" kind="push" id="O5R-U0-euX"/>
                         <segue destination="nDG-dQ-ep7" kind="push" id="Om4-ZA-5Uw"/>
+                        <segue destination="Rnu-pc-0lj" kind="push" id="12x-Ua-cMR"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i8U-RW-G92" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -346,6 +347,21 @@ cmlvZCA3A
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fmh-Zj-qAQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2630" y="-1551"/>
+        </scene>
+        <!--Compose Community Service View Controller-->
+        <scene sceneID="1cO-mu-lxw">
+            <objects>
+                <viewController storyboardIdentifier="ComposeCommunity" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Rnu-pc-0lj" customClass="ComposeCommunityServiceViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="nfR-Od-JX0">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="5Qe-Oi-HKM"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="G0L-f4-coA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2621" y="-1047"/>
         </scene>
         <!--Compose Extracurricular Update View Controller-->
         <scene sceneID="1Kf-Yn-orC">
