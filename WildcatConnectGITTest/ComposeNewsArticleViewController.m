@@ -31,6 +31,7 @@
      UIView *separator;
      UIButton *postButton;
      UIAlertView *postAlertView;
+     BOOL keyboardIsShown;
 }
 
 - (void)viewDidLoad {
@@ -49,7 +50,19 @@
      
      self.navigationItem.title = @"News Article";
      
+//     [[NSNotificationCenter defaultCenter] addObserver:self
+//                                              selector:@selector(keyboardWillShow:)
+//                                                  name:UIKeyboardWillShowNotification
+//                                                object:self.view.window];
+//          // register for keyboard notifications
+//     [[NSNotificationCenter defaultCenter] addObserver:self
+//                                              selector:@selector(keyboardWillHide:)
+//                                                  name:UIKeyboardWillHideNotification
+//                                                object:self.view.window];
+//     keyboardIsShown = NO;
+     
      scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+     scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
      
      UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, 50)];
      titleLabel.text = @"Title";
@@ -195,7 +208,7 @@
      
           //Takes care of all resizing needs based on sizes.
      self.automaticallyAdjustsScrollViewInsets = YES;
-     UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 2, 0);
+     UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 70, 0);
      scrollView.contentInset = adjustForTabbarInsets;
      scrollView.scrollIndicatorInsets = adjustForTabbarInsets;
      CGRect contentRect = CGRectZero;
@@ -230,6 +243,60 @@
           [self.navigationController popViewControllerAnimated:YES];
      }
 }
+
+//- (void)keyboardWillHide:(NSNotification *)n
+//{
+//     
+//     scrollView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+//     
+//     keyboardIsShown = NO;
+//     
+//     self.automaticallyAdjustsScrollViewInsets = YES;
+//     UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 10, 0);
+//     scrollView.contentInset = adjustForTabbarInsets;
+//     scrollView.scrollIndicatorInsets = adjustForTabbarInsets;
+//     CGRect contentRect = CGRectZero;
+//     for (UIView *view in scrollView.subviews) {
+//          contentRect = CGRectUnion(contentRect, view.frame);
+//     }
+//     scrollView.contentSize = contentRect.size;
+//     [self.view addSubview:scrollView];
+//}
+//
+//- (void)keyboardWillShow:(NSNotification *)n
+//{
+//          // This is an ivar I'm using to ensure that we do not do the frame size adjustment on the `UIScrollView` if the keyboard is already shown.  This can happen if the user, after fixing editing a `UITextField`, scrolls the resized `UIScrollView` to another `UITextField` and attempts to edit the next `UITextField`.  If we were to resize the `UIScrollView` again, it would be disastrous.  NOTE: The keyboard notification will fire even when the keyboard is already shown.
+//     if (keyboardIsShown) {
+//          return;
+//     }
+//     
+//     NSDictionary* userInfo = [n userInfo];
+//     
+//          // get the size of the keyboard
+//     CGSize keyboardSize = [[userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+//     
+//          // resize the noteView
+//     CGRect viewFrame = scrollView.frame;
+//          // I'm also subtracting a constant kTabBarHeight because my UIScrollView was offset by the UITabBar so really only the portion of the keyboard that is leftover pass the UITabBar is obscuring my UIScrollView.
+//     viewFrame.size.height -= (keyboardSize.height - 1);
+//     
+//     [UIView beginAnimations:nil context:NULL];
+//     [UIView setAnimationBeginsFromCurrentState:YES];
+//     [scrollView setFrame:viewFrame];
+//     [UIView commitAnimations];
+//     keyboardIsShown = YES;
+//     
+//     self.automaticallyAdjustsScrollViewInsets = YES;
+//     UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 10, 0);
+//     scrollView.contentInset = adjustForTabbarInsets;
+//     scrollView.scrollIndicatorInsets = adjustForTabbarInsets;
+//     CGRect contentRect = CGRectZero;
+//     for (UIView *view in scrollView.subviews) {
+//          contentRect = CGRectUnion(contentRect, view.frame);
+//     }
+//     scrollView.contentSize = contentRect.size;
+//     [self.view addSubview:scrollView];
+//}
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
      
@@ -441,18 +508,42 @@
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)string {
      if (textView == titleTextView) {
+          if([string isEqualToString:@"\n"])
+          {
+               [textView resignFirstResponder];
+               
+               return NO;
+          } else
           return [self isAcceptableTextLength:textView.text.length + string.length - range.length forMaximum:50 existsMaximum:YES];
      }
      else if (textView == authorTextView) {
-          return [self isAcceptableTextLength:textView.text.length + string.length - range.length forMaximum:30 existsMaximum:YES];
+          if([string isEqualToString:@"\n"])
+          {
+               [textView resignFirstResponder];
+               
+               return NO;
+          } else
+               return [self isAcceptableTextLength:textView.text.length + string.length - range.length forMaximum:30 existsMaximum:YES];
      }
      else if (textView == dateTextView) {
-          return [self isAcceptableTextLength:textView.text.length + string.length - range.length forMaximum:10 existsMaximum:YES];
+          if([string isEqualToString:@"\n"])
+          {
+               [textView resignFirstResponder];
+               
+               return NO;
+          } else
+               return [self isAcceptableTextLength:textView.text.length + string.length - range.length forMaximum:10 existsMaximum:YES];
      }
      else if (textView == summaryTextView) {
-          return [self isAcceptableTextLength:textView.text.length + string.length - range.length forMaximum:60 existsMaximum:YES];
+          if([string isEqualToString:@"\n"])
+          {
+               [textView resignFirstResponder];
+               
+               return NO;
+          } else
+               return [self isAcceptableTextLength:textView.text.length + string.length - range.length forMaximum:60 existsMaximum:YES];
      } else if (textView == articleTextView) {
-          return [self isAcceptableTextLength:textView.text.length + string.length - range.length forMaximum:0 existsMaximum:NO];
+               return [self isAcceptableTextLength:textView.text.length + string.length - range.length forMaximum:0 existsMaximum:NO];
      }
      else return nil;
 }

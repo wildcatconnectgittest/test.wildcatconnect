@@ -25,6 +25,7 @@
      UIView *separator;
      UIButton *postButton;
      UIAlertView *postAlertView;
+     BOOL keyboardIsShown;
 }
 
 - (void)viewDidLoad {
@@ -40,7 +41,19 @@
      self.navigationItem.leftBarButtonItem = bbtnBack;
      [bbtnBack release];
      
+     [[NSNotificationCenter defaultCenter] addObserver:self
+                                              selector:@selector(keyboardWillShow:)
+                                                  name:UIKeyboardWillShowNotification
+                                                object:self.view.window];
+          // register for keyboard notifications
+     [[NSNotificationCenter defaultCenter] addObserver:self
+                                              selector:@selector(keyboardWillHide:)
+                                                  name:UIKeyboardWillHideNotification
+                                                object:self.view.window];
+     keyboardIsShown = NO;
+     
      scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+     scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
      
      self.navigationItem.title = @"Community Service";
      self.navigationController.navigationBar.translucent = NO;
@@ -78,9 +91,21 @@
      [scrollView addSubview:dateLabel];
      
      startDatePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(10, dateLabel.frame.origin.y + dateLabel.frame.size.height + 10, self.view.frame.size.width - 10, 120)];
+     [startDatePicker addTarget:self action:@selector(dateIsChanged:) forControlEvents:UIControlEventValueChanged];
      [scrollView addSubview:startDatePicker];
      
-     UILabel *authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, startDatePicker.frame.origin.y + startDatePicker.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
+     UILabel *endDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, startDatePicker.frame.origin.y + startDatePicker.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
+     endDateLabel.text = @"End Date";
+     [endDateLabel setFont:[UIFont systemFontOfSize:16]];
+     endDateLabel.lineBreakMode = NSLineBreakByWordWrapping;
+     endDateLabel.numberOfLines = 0;
+     [endDateLabel sizeToFit];
+     [scrollView addSubview:endDateLabel];
+     
+     endDatePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(10, endDateLabel.frame.origin.y + endDateLabel.frame.size.height + 10, self.view.frame.size.width - 10, 120)];
+     [scrollView addSubview:endDatePicker];
+     
+     UILabel *authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, endDatePicker.frame.origin.y + endDatePicker.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
      authorLabel.text = @"Message";
      [authorLabel setFont:[UIFont systemFontOfSize:16]];
      authorLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -115,21 +140,68 @@
      postButton.frame = CGRectMake((self.view.frame.size.width - postButton.frame.size.width - 10), separator.frame.origin.y + separator.frame.size.height + 10, postButton.frame.size.width, postButton.frame.size.height);
      [scrollView addSubview:postButton];
      
-     self.automaticallyAdjustsScrollViewInsets = YES;
-     UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, self.tabBarController.tabBar.frame.size.height, 0);
-     scrollView.contentInset = adjustForTabbarInsets;
-     scrollView.scrollIndicatorInsets = adjustForTabbarInsets;
      CGRect contentRect = CGRectZero;
      for (UIView *view in scrollView.subviews) {
           contentRect = CGRectUnion(contentRect, view.frame);
      }
      scrollView.contentSize = contentRect.size;
+     self.automaticallyAdjustsScrollViewInsets = YES;
+     UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 70, 0);
+     scrollView.contentInset = adjustForTabbarInsets;
+     scrollView.scrollIndicatorInsets = adjustForTabbarInsets;
      [self.view addSubview:scrollView];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)dateIsChanged:(id)sender {
+     
+}
+
+- (void)keyboardWillHide:(NSNotification *)n
+{
+     
+     scrollView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+     
+     keyboardIsShown = NO;
+     
+     CGRect contentRect = CGRectZero;
+     for (UIView *view in scrollView.subviews) {
+          contentRect = CGRectUnion(contentRect, view.frame);
+     }
+     scrollView.contentSize = contentRect.size;
+     self.automaticallyAdjustsScrollViewInsets = YES;
+     UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 70, 0);
+     scrollView.contentInset = adjustForTabbarInsets;
+     scrollView.scrollIndicatorInsets = adjustForTabbarInsets;
+     [self.view addSubview:scrollView];
+}
+
+- (void)keyboardWillShow:(NSNotification *)n
+{
+          // This is an ivar I'm using to ensure that we do not do the frame size adjustment on the `UIScrollView` if the keyboard is already shown.  This can happen if the user, after fixing editing a `UITextField`, scrolls the resized `UIScrollView` to another `UITextField` and attempts to edit the next `UITextField`.  If we were to resize the `UIScrollView` again, it would be disastrous.  NOTE: The keyboard notification will fire even when the keyboard is already shown.
+     if (keyboardIsShown) {
+          return;
+     }
+     
+     NSDictionary* userInfo = [n userInfo];
+     
+          // get the size of the keyboard
+     CGSize keyboardSize = [[userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+     
+          // resize the noteView
+     CGRect viewFrame = scrollView.frame;
+          // I'm also subtracting a constant kTabBarHeight because my UIScrollView was offset by the UITabBar so really only the portion of the keyboard that is leftover pass the UITabBar is obscuring my UIScrollView.
+     viewFrame.size.height -= (keyboardSize.height - 1);
+     
+     [UIView beginAnimations:nil context:NULL];
+     [UIView setAnimationBeginsFromCurrentState:YES];
+     [scrollView setFrame:viewFrame];
+     [UIView commitAnimations];
+     keyboardIsShown = YES;
 }
 
 - (void)postUpdate {
@@ -142,23 +214,22 @@
      }
 }
 
-/*- (void)postUpdateMethodWithCompletion:(void (^)(NSError *error))completion {
+- (void)postUpdateMethodWithCompletion:(void (^)(NSError *error))completion {
      dispatch_group_t serviceGroup = dispatch_group_create();
      dispatch_group_enter(serviceGroup);
      __block NSError *theError;
      CommunityServiceStructure *communityServiceStructure = [[CommunityServiceStructure alloc] init];
      communityServiceStructure.commTitleString = titleTextView.text;
      communityServiceStructure.commSummaryString = authorTextView.text;
-     communityServiceStructure.commDateString =
-     ExtracurricularUpdateStructure *extracurricularUpdateStructure = [[ExtracurricularUpdateStructure alloc] init];
-     extracurricularUpdateStructure.extracurricularID = self.EC.extracurricularID;
-     extracurricularUpdateStructure.messageString = messageTextView.text;
-     PFQuery *query = [ExtracurricularUpdateStructure query];
-     [query orderByDescending:@"extracurricularUpdateID"];
+     communityServiceStructure.startDate = startDatePicker.date;
+     communityServiceStructure.endDate = endDatePicker.date;
+     communityServiceStructure.IsNewNumber = [NSNumber numberWithInt:1];
+     PFQuery *query = [CommunityServiceStructure query];
+     [query orderByDescending:@"communityServiceID"];
      [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
-          ExtracurricularUpdateStructure *structure = (ExtracurricularUpdateStructure *)object;
-          extracurricularUpdateStructure.extracurricularUpdateID = [NSNumber numberWithInt:[structure.extracurricularUpdateID integerValue] + 1];
-          [extracurricularUpdateStructure saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+          CommunityServiceStructure *structure = (CommunityServiceStructure *)object;
+          communityServiceStructure.communityServiceID = [NSNumber numberWithInt:[structure.communityServiceID integerValue] + 1];
+          [communityServiceStructure saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
                if (error) {
                     theError = error;
                }
@@ -168,7 +239,7 @@
      dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^{
           completion(theError);
      });
-}*/
+}
 
 - (BOOL)validateAllFields {
      return (titleTextView.text.length > 0 && authorTextView.text.length > 0);
@@ -207,9 +278,9 @@
                UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(10, postButton.frame.origin.y, 30, 30)];
                [activity setBackgroundColor:[UIColor clearColor]];
                [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-               [self.view addSubview:activity];
+               [scrollView addSubview:activity];
                [activity startAnimating];
-                    /*[self postArticleMethodWithCompletion:^(NSError *error) {
+                    [self postUpdateMethodWithCompletion:^(NSError *error) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                          [activity stopAnimating];
                          NSMutableArray *array = [[NSUserDefaults standardUserDefaults] objectForKey:@"visitedPagesArray"];
@@ -221,7 +292,7 @@
                          }
                          [self.navigationController popViewControllerAnimated:YES];
                     });
-               }];*/
+               }];
           }
           
      } else {
@@ -282,9 +353,21 @@
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)string {
      if (textView == titleTextView) {
+          if([string isEqualToString:@"\n"])
+          {
+               [textView resignFirstResponder];
+               
+               return NO;
+          } else
           return [self isAcceptableTextLength:textView.text.length + string.length - range.length forMaximum:60 existsMaximum:YES];
      }
      else if (textView == authorTextView) {
+          if([string isEqualToString:@"\n"])
+          {
+               [textView resignFirstResponder];
+               
+               return NO;
+          } else
           return [self isAcceptableTextLength:textView.text.length + string.length - range.length forMaximum:140 existsMaximum:YES];
      }
      else return nil;

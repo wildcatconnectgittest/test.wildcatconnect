@@ -11,9 +11,8 @@
 
 @implementation CommunityServiceStructure
 
-@dynamic commStartDateString;
-@dynamic commEndDateString;
-@dynamic commPreviewString;
+@dynamic startDate;
+@dynamic endDate;
 @dynamic commSummaryString;
 @dynamic commTitleString;
 @dynamic IsNewNumber;

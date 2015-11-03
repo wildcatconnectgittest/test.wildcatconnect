@@ -31,12 +31,11 @@
      
      self.topBar.topItem.title = [[lastName stringByAppendingString:@", "] stringByAppendingString:firstName];
      
-     self.sectionsArray = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"News Article", @"Extracurricular Update", @"Community Service Update", @"Calendar Event", @"Alert", nil]];
+     self.sectionsArray = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"News Article", @"Extracurricular Update", @"Community Service Update", @"Alert", nil]];
      self.sectionsImagesArray = [[NSMutableArray alloc] init];
      [self.sectionsImagesArray addObject:@"theNews@2x.png"];
      [self.sectionsImagesArray addObject:@"extracurriculars@2x.png"];
      [self.sectionsImagesArray addObject:@"communityService@2x.png"];
-     [self.sectionsImagesArray addObject:@"calendar@2x.png"];
      [self.sectionsImagesArray addObject:@"alerts@2x.png"];
     
     // Uncomment the following line to preserve selection between presentations.

@@ -15,9 +15,8 @@
 + (NSString *)parseClassName;
 
 @property NSString *commTitleString;
-@property NSString *commPreviewString;
-@property NSString *commStartDateString;
-@property NSString *commEndDateString;
+@property NSDate *startDate;
+@property NSDate *endDate;
 @property NSString *commSummaryString;
 @property NSNumber *IsNewNumber;
 @property NSNumber *communityServiceID;

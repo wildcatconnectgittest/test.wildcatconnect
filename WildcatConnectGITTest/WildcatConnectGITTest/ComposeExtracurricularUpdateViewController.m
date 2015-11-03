@@ -11,11 +11,14 @@
 #import "ExtracurricularStructure.h"
 #import "ExtracurricularUpdateStructure.h"
 
+#define kTabBarHeight 1
+
 @interface ComposeExtracurricularUpdateViewController ()
 
 @end
 
 @implementation ComposeExtracurricularUpdateViewController {
+     UIScrollView *scrollView;
      UILabel *titleLabel;
      UIPickerView *extracurricularPickerView;
      UILabel *messageRemainingLabel;
@@ -24,6 +27,7 @@
      UIView *separator;
      UIButton *postButton;
      UIAlertView *postAlertView;
+     BOOL keyboardIsShown;
 }
 
 - (void)viewDidLoad {
@@ -53,6 +57,22 @@
      self.navigationItem.leftBarButtonItem = bbtnBack;
      [bbtnBack release];
      
+     [super viewDidLoad];
+     
+     [[NSNotificationCenter defaultCenter] addObserver:self
+                                              selector:@selector(keyboardWillShow:)
+                                                  name:UIKeyboardWillShowNotification
+                                                object:self.view.window];
+          // register for keyboard notifications
+     [[NSNotificationCenter defaultCenter] addObserver:self
+                                              selector:@selector(keyboardWillHide:)
+                                                  name:UIKeyboardWillHideNotification
+                                                object:self.view.window];
+     keyboardIsShown = NO;
+     
+     scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+     scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
+     
      UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
      [activity setBackgroundColor:[UIColor clearColor]];
      [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
@@ -67,7 +87,7 @@
      titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
      titleLabel.numberOfLines = 0;
      [titleLabel sizeToFit];
-     [self.view addSubview:titleLabel];
+     [scrollView addSubview:titleLabel];
      
      [self getExtracurricularsMethodWithCompletion:^(NSMutableArray *returnArray, NSError *error) {
           self.ECarray = returnArray;
@@ -76,10 +96,10 @@
                titleLabel.text = @"Select Extracurricular";
                [titleLabel sizeToFit];
                
-               extracurricularPickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(10, titleLabel.frame.origin.y + titleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
+               extracurricularPickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(10, titleLabel.frame.origin.y + titleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 150)];
                extracurricularPickerView.delegate = self;
                extracurricularPickerView.showsSelectionIndicator = YES;
-               [self.view addSubview:extracurricularPickerView];
+               [scrollView addSubview:extracurricularPickerView];
                
                UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, extracurricularPickerView.frame.origin.y + extracurricularPickerView.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
                messageLabel.text = @"Message";
@@ -87,14 +107,14 @@
                messageLabel.lineBreakMode = NSLineBreakByWordWrapping;
                messageLabel.numberOfLines = 0;
                [messageLabel sizeToFit];
-               [self.view addSubview:messageLabel];
+               [scrollView addSubview:messageLabel];
                
                messageRemainingLabel = [[UILabel alloc] init];
                messageRemainingLabel.text = @"140 characters remaining";
                [messageRemainingLabel setFont:[UIFont systemFontOfSize:10]];
                [messageRemainingLabel sizeToFit];
                messageRemainingLabel.frame = CGRectMake((self.view.frame.size.width - messageRemainingLabel.frame.size.width - 10), messageLabel.frame.origin.y, messageRemainingLabel.frame.size.width, 20);
-               [self.view addSubview:messageRemainingLabel];
+               [scrollView addSubview:messageRemainingLabel];
                
                messageTextView = [[UITextView alloc] initWithFrame:CGRectMake(messageLabel.frame.origin.x, messageLabel.frame.origin.y + messageLabel.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
                [messageTextView setDelegate:self];
@@ -103,21 +123,75 @@
                messageTextView.layer.borderColor = [[UIColor grayColor] CGColor];
                messageTextView.scrollEnabled = false;
                messageTextView.tag = 3;
-               [self.view addSubview:messageTextView];
+               [scrollView addSubview:messageTextView];
                
                separator = [[UIView alloc] initWithFrame:CGRectMake(10, messageTextView.frame.origin.y + messageTextView.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
                separator.backgroundColor = [UIColor blackColor];
-               [self.view addSubview:separator];
+               [scrollView addSubview:separator];
                
                postButton = [UIButton buttonWithType:UIButtonTypeSystem];
                [postButton setTitle:@"POST UPDATE" forState:UIControlStateNormal];
                [postButton sizeToFit];
                [postButton addTarget:self action:@selector(postUpdate) forControlEvents:UIControlEventTouchUpInside];
                postButton.frame = CGRectMake((self.view.frame.size.width - postButton.frame.size.width - 10), separator.frame.origin.y + separator.frame.size.height + 10, postButton.frame.size.width, postButton.frame.size.height);
-               [self.view addSubview:postButton];
+               [scrollView addSubview:postButton];
+               
+               self.automaticallyAdjustsScrollViewInsets = YES;
+               UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 10, 0);
+               scrollView.contentInset = adjustForTabbarInsets;
+               scrollView.scrollIndicatorInsets = adjustForTabbarInsets;
+               CGRect contentRect = CGRectZero;
+               for (UIView *view in scrollView.subviews) {
+                    contentRect = CGRectUnion(contentRect, view.frame);
+               }
+               scrollView.contentSize = contentRect.size;
+               [self.view addSubview:scrollView];
           });
      }];
      
+}
+
+- (void)keyboardWillHide:(NSNotification *)n
+{
+     
+     scrollView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+     
+     keyboardIsShown = NO;
+     
+     self.automaticallyAdjustsScrollViewInsets = YES;
+     UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 10, 0);
+     scrollView.contentInset = adjustForTabbarInsets;
+     scrollView.scrollIndicatorInsets = adjustForTabbarInsets;
+     CGRect contentRect = CGRectZero;
+     for (UIView *view in scrollView.subviews) {
+          contentRect = CGRectUnion(contentRect, view.frame);
+     }
+     scrollView.contentSize = contentRect.size;
+     [self.view addSubview:scrollView];
+}
+
+- (void)keyboardWillShow:(NSNotification *)n
+{
+          // This is an ivar I'm using to ensure that we do not do the frame size adjustment on the `UIScrollView` if the keyboard is already shown.  This can happen if the user, after fixing editing a `UITextField`, scrolls the resized `UIScrollView` to another `UITextField` and attempts to edit the next `UITextField`.  If we were to resize the `UIScrollView` again, it would be disastrous.  NOTE: The keyboard notification will fire even when the keyboard is already shown.
+     if (keyboardIsShown) {
+          return;
+     }
+     
+     NSDictionary* userInfo = [n userInfo];
+     
+          // get the size of the keyboard
+     CGSize keyboardSize = [[userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+     
+          // resize the noteView
+     CGRect viewFrame = scrollView.frame;
+          // I'm also subtracting a constant kTabBarHeight because my UIScrollView was offset by the UITabBar so really only the portion of the keyboard that is leftover pass the UITabBar is obscuring my UIScrollView.
+     viewFrame.size.height -= (keyboardSize.height - 1);
+     
+     [UIView beginAnimations:nil context:NULL];
+     [UIView setAnimationBeginsFromCurrentState:YES];
+     [scrollView setFrame:viewFrame];
+     [UIView commitAnimations];
+     keyboardIsShown = YES;
 }
 
 - (void)postUpdateMethodWithCompletion:(void (^)(NSError *error))completion {
@@ -176,7 +250,7 @@
                UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(10, postButton.frame.origin.y, 30, 30)];
                [activity setBackgroundColor:[UIColor clearColor]];
                [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-               [self.view addSubview:activity];
+               [scrollView addSubview:activity];
                [activity startAnimating];
                [self postUpdateMethodWithCompletion:^(NSError *error) {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -248,7 +322,13 @@
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)string {
      if (textView == messageTextView) {
-          return [self isAcceptableTextLength:textView.text.length + string.length - range.length forMaximum:140 existsMaximum:YES];
+          if([string isEqualToString:@"\n"])
+          {
+               [textView resignFirstResponder];
+               
+               return NO;
+          } else
+               return [self isAcceptableTextLength:textView.text.length + string.length - range.length forMaximum:140 existsMaximum:YES];
      }
      else return nil;
 }
