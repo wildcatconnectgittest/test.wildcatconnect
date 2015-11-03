@@ -2,7 +2,7 @@
 //  StudentCenterTableViewController.m
 //  WildcatConnectGITTest
 //
-//  Created by Rohith Parvathaneni on 11/3/15.
+//  Created by Kevin Lyons on 11/3/15.
 //  Copyright © 2015 WildcatConnect. All rights reserved.
 //
 
@@ -12,76 +12,28 @@
 
 @end
 
-@implementation StudentCenterTableViewController{
-    UIActivityIndicatorView *activity;
-}
+@implementation StudentCenterTableViewController
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
     
-    
-    - (void)viewDidLoad {
-        [super viewDidLoad];
-        UIRefreshControl *refreshControl= [[UIRefreshControl alloc] init];
-        [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
-        self.refreshControl= refreshControl;
-        
-        
-        /*if (self.loadPollNumber == [NSNumber numberWithInt:1] || ! self.loadPollNumber) {
-            [self refreshData];
-        }
-        else {
-            activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-            [activity setBackgroundColor:[UIColor clearColor]];
-            [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-            UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
-            self.navigationItem.rightBarButtonItem = barButtonItem;
-            [activity startAnimating];
-            [barButtonItem release];
-            [activity startAnimating];
-            [self getOldDataWithCompletion:^(NSMutableArray *returnArray) {
-                self.polls = returnArray;
-                [self getOldImagesWithCompletion:^(NSMutableArray *returnArrayB, NSMutableArray *dataReturnArray) {
-                    self.pollImages = returnArrayB;
-                    self.pollDataArray = dataReturnArray;
-                    dispatch_async(dispatch_get_main_queue(), ^ {
-                        [self.tableView reloadData];
-                        [activity stopAnimating];
-                        [self refreshControl];
-                    });
-                }];
-            }];
-        }*/
-    }
-    
-    - (void)refresh {
-        [self refreshData];
-        [self.refreshControl endRefreshing];
-    }
-
-
-
-
-
-
-
-
-
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
-
+    
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
 
+- (instancetype)initWithLoadNumber:(NSNumber *)theLoadNumber {
+     [super init];
+     self.loadNumber = theLoadNumber;
+     self.navigationItem.title = @"Student Center";
+     return self;
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (instancetype)initWithLoadNumber:(NSNumber *)theLoadNumber {
-    [super init];
-    self.loadPollNumber = theLoadNumber;
-    self.navigationItem.title = @"Student Center";
-    return self;
 }
 
 #pragma mark - Table view data source
