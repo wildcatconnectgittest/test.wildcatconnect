@@ -164,7 +164,7 @@
           else if (integer == 0) {
                cell.accessoryView = nil;
           }
-     } else if (indexPath.row == 8) {
+     } else if (indexPath.row == 7) {
           if ([PFUser currentUser]) {
                NSString *firstName = [[PFUser currentUser] objectForKey:@"firstName"];
                NSString *lastName = [[PFUser currentUser] objectForKey:@"lastName"];
@@ -200,19 +200,19 @@
               StudentCenterTableViewController *controller = [[StudentCenterTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
               [self.navigationController pushViewController:controller animated:YES];
           }
-          else if (indexPath.row == 5) {
+          else if (indexPath.row == 4) {
                LunchMenusViewController *controller = [[LunchMenusViewController alloc] initWithStyle:UITableViewStyleGrouped];
                [self.navigationController pushViewController:controller animated:YES];
           }
-          else if (indexPath.row == 6) {
+          else if (indexPath.row == 5) {
                UsefulLinksTableViewController *controller = [[UsefulLinksTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
                [self.navigationController pushViewController:controller animated:YES];
           }
-          else if (indexPath.row == 7) {
+          else if (indexPath.row == 6) {
                StaffDirectoryMainTableViewController *controller = [[StaffDirectoryMainTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
                [self.navigationController pushViewController:controller animated:YES];
           }
-          else if (indexPath.row == 8) {
+          else if (indexPath.row == 7) {
                if ([PFUser currentUser]) {
                     AdministrationMainTableViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"MainID"];
                     [self.navigationController pushViewController:controller animated:YES];
@@ -240,19 +240,19 @@
                    StudentCenterTableViewController *controller = [[StudentCenterTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:0]];
                    [self.navigationController pushViewController:controller animated:YES];
                }
-               else if (indexPath.row == 5) {
+               else if (indexPath.row == 4) {
                     LunchMenusViewController *controller = [[LunchMenusViewController alloc] initWithStyle:UITableViewStyleGrouped];
                     [self.navigationController pushViewController:controller animated:YES];
                }
-               else if (indexPath.row == 6) {
+               else if (indexPath.row == 5) {
                     UsefulLinksTableViewController *controller = [[UsefulLinksTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
                     [self.navigationController pushViewController:controller animated:YES];
                }
-               else if (indexPath.row == 7) {
+               else if (indexPath.row == 6) {
                     StaffDirectoryMainTableViewController *controller = [[StaffDirectoryMainTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:0]];
                     [self.navigationController pushViewController:controller animated:YES];
                }
-               else if (indexPath.row == 8) {
+               else if (indexPath.row == 7) {
                     if ([PFUser currentUser]) {
                          AdministrationMainTableViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"MainID"];
                          [self.navigationController pushViewController:controller animated:YES];
@@ -280,19 +280,19 @@
                    StudentCenterTableViewController *controller = [[StudentCenterTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
                    [self.navigationController pushViewController:controller animated:YES];
                }
-               else if (indexPath.row == 5) {
+               else if (indexPath.row == 4) {
                     LunchMenusViewController *controller = [[LunchMenusViewController alloc] initWithStyle:UITableViewStyleGrouped];
                     [self.navigationController pushViewController:controller animated:YES];
                }
-               else if (indexPath.row == 6) {
+               else if (indexPath.row == 5) {
                     UsefulLinksTableViewController *controller = [[UsefulLinksTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
                     [self.navigationController pushViewController:controller animated:YES];
                }
-               else if (indexPath.row == 7) {
+               else if (indexPath.row == 6) {
                     StaffDirectoryMainTableViewController *controller = [[StaffDirectoryMainTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
                     [self.navigationController pushViewController:controller animated:YES];
                }
-               else if (indexPath.row == 8) {
+               else if (indexPath.row == 7) {
                     if ([PFUser currentUser]) {
                          AdministrationMainTableViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"MainID"];
                          [self.navigationController pushViewController:controller animated:YES];

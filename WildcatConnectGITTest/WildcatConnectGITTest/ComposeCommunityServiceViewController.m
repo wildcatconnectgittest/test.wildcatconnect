@@ -103,6 +103,7 @@
      [scrollView addSubview:endDateLabel];
      
      endDatePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(10, endDateLabel.frame.origin.y + endDateLabel.frame.size.height + 10, self.view.frame.size.width - 10, 120)];
+     [endDatePicker addTarget:self action:@selector(dateIsChanged:) forControlEvents:UIControlEventValueChanged];
      [scrollView addSubview:endDatePicker];
      
      UILabel *authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, endDatePicker.frame.origin.y + endDatePicker.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
@@ -158,7 +159,15 @@
 }
 
 - (void)dateIsChanged:(id)sender {
-     
+     if ((UIDatePicker *)(sender) == startDatePicker) {
+          if ([startDatePicker.date laterDate:endDatePicker.date] == startDatePicker.date) {
+               endDatePicker.date = startDatePicker.date;
+          }
+     } else if ((UIDatePicker *)(sender) == endDatePicker) {
+          if ([startDatePicker.date laterDate:endDatePicker.date] == startDatePicker.date) {
+               endDatePicker.date = startDatePicker.date;
+          }
+     }
 }
 
 - (void)keyboardWillHide:(NSNotification *)n
