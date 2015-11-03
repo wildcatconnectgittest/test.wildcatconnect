@@ -11,6 +11,7 @@
 #import "StaffDirectoryMainTableViewController.h"
 #import "CommunityServiceTableViewController.h"
 #import "ExtracurricularsTableViewController.h"
+#import "StudentCenterTableViewController.h"
 #import "UsefulLinksTableViewController.h"
 #import "LunchMenusViewController.h"
 #import "AdministrationLogInViewController.h"
@@ -38,13 +39,13 @@
     //self.navigationItem.rightBarButtonItem = self.editButtonItem;
     //self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 60, 0);
      
-     self.sectionsArray = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"News Center", @"Extracurriculars", @"Community Service", @"Student Center", @"Calendar", @"Lunch Menus", @"Useful Links", @"Staff Directory", @"Administration Only", nil]];
+     self.sectionsArray = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"News Center", @"Extracurriculars", @"Community Service", @"Student Center",  @"Lunch Menus", @"Useful Links", @"Staff Directory", @"Administration Only", nil]];
      self.sectionsImagesArray = [[NSMutableArray alloc] init];
      [self.sectionsImagesArray addObject:@"theNews@2x.png"];
      [self.sectionsImagesArray addObject:@"extracurriculars@2x.png"];
      [self.sectionsImagesArray addObject:@"communityService@2x.png"];
      [self.sectionsImagesArray addObject:@"studentCenter@2x.png"];
-     [self.sectionsImagesArray addObject:@"calendar@2x.png"];
+     //[self.sectionsImagesArray addObject:@"calendar@2x.png"];
      [self.sectionsImagesArray addObject:@"lunchMenus@2x.png"];
      [self.sectionsImagesArray addObject:@"usefulLinks@2x.png"];
      [self.sectionsImagesArray addObject:@"staffDirectory@2x.png"];
@@ -195,6 +196,10 @@
                CommunityServiceTableViewController *controller = [[CommunityServiceTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
                [self.navigationController pushViewController:controller animated:YES];
           }
+          else if (indexPath.row == 3) {
+              StudentCenterTableViewController *controller = [[StudentCenterTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
+              [self.navigationController pushViewController:controller animated:YES];
+          }
           else if (indexPath.row == 5) {
                LunchMenusViewController *controller = [[LunchMenusViewController alloc] initWithStyle:UITableViewStyleGrouped];
                [self.navigationController pushViewController:controller animated:YES];
@@ -231,6 +236,10 @@
                     CommunityServiceTableViewController *controller = [[CommunityServiceTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:0]];
                     [self.navigationController pushViewController:controller animated:YES];
                }
+               else if (indexPath.row == 3) {
+                   StudentCenterTableViewController *controller = [[StudentCenterTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:0]];
+                   [self.navigationController pushViewController:controller animated:YES];
+               }
                else if (indexPath.row == 5) {
                     LunchMenusViewController *controller = [[LunchMenusViewController alloc] initWithStyle:UITableViewStyleGrouped];
                     [self.navigationController pushViewController:controller animated:YES];
@@ -266,6 +275,10 @@
                } else if (indexPath.row == 2) {
                     CommunityServiceTableViewController *controller = [[CommunityServiceTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
                     [self.navigationController pushViewController:controller animated:YES];
+               }
+               else if (indexPath.row == 3) {
+                   StudentCenterTableViewController *controller = [[StudentCenterTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
+                   [self.navigationController pushViewController:controller animated:YES];
                }
                else if (indexPath.row == 5) {
                     LunchMenusViewController *controller = [[LunchMenusViewController alloc] initWithStyle:UITableViewStyleGrouped];
