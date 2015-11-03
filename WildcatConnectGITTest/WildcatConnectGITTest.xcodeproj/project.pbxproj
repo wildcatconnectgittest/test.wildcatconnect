@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0A037E551BC14B0B009A1DBB /* admin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A037E541BC14B0B009A1DBB /* admin@2x.png */; settings = {ASSET_TAGS = (); }; };
-		0A037E581BC14F78009A1DBB /* AdministrationLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A037E571BC14F78009A1DBB /* AdministrationLogInViewController.m */; settings = {ASSET_TAGS = (); }; };
-		0A037E5B1BC1543E009A1DBB /* AdministrationMainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A037E5A1BC1543E009A1DBB /* AdministrationMainTableViewController.m */; settings = {ASSET_TAGS = (); }; };
+		0A037E551BC14B0B009A1DBB /* admin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A037E541BC14B0B009A1DBB /* admin@2x.png */; };
+		0A037E581BC14F78009A1DBB /* AdministrationLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A037E571BC14F78009A1DBB /* AdministrationLogInViewController.m */; };
+		0A037E5B1BC1543E009A1DBB /* AdministrationMainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A037E5A1BC1543E009A1DBB /* AdministrationMainTableViewController.m */; };
 		0A0A496C1B7E75A500304629 /* StaffDirectoryBaseTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0A496B1B7E75A500304629 /* StaffDirectoryBaseTableViewController.m */; };
 		0A0A496F1B7E76A100304629 /* StaffDirectoryMainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0A496E1B7E76A100304629 /* StaffDirectoryMainTableViewController.m */; };
 		0A0A49721B7E776500304629 /* StaffDirectoryResultsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0A49711B7E776500304629 /* StaffDirectoryResultsTableViewController.m */; };
@@ -18,16 +18,16 @@
 		0A0A49791B7EAE4900304629 /* sections@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A0A49781B7EAE4900304629 /* sections@2x.png */; };
 		0A0A497B1B7EAE7100304629 /* about@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A0A497A1B7EAE7100304629 /* about@2x.png */; };
 		0A0A497E1B7EFEC800304629 /* ApplicationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0A497D1B7EFEC800304629 /* ApplicationManager.m */; };
-		0A1EAA8A1BCCC46200D4240F /* ComposeExtracurricularUpdateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1EAA891BCCC46200D4240F /* ComposeExtracurricularUpdateViewController.m */; settings = {ASSET_TAGS = (); }; };
+		0A1EAA8A1BCCC46200D4240F /* ComposeExtracurricularUpdateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1EAA891BCCC46200D4240F /* ComposeExtracurricularUpdateViewController.m */; };
 		0A1FE3DB1B7B7DA80062A30E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1FE3DA1B7B7DA80062A30E /* main.m */; };
 		0A1FE3E11B7B7DA80062A30E /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1FE3E01B7B7DA80062A30E /* FirstViewController.m */; };
 		0A1FE3E41B7B7DA80062A30E /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1FE3E31B7B7DA80062A30E /* SecondViewController.m */; };
 		0A1FE3E71B7B7DA80062A30E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A1FE3E51B7B7DA80062A30E /* Main.storyboard */; };
 		0A1FE3EC1B7B7DA80062A30E /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A1FE3EA1B7B7DA80062A30E /* LaunchScreen.xib */; };
 		0A1FE3F81B7B7DA80062A30E /* WildcatConnectGITTestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1FE3F71B7B7DA80062A30E /* WildcatConnectGITTestTests.m */; };
-		0A21F6421BD1667E00BED46F /* ComposeCommunityServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A21F6411BD1667E00BED46F /* ComposeCommunityServiceViewController.m */; settings = {ASSET_TAGS = (); }; };
-		0A49BD0F1BC6DB7000E84E4C /* AlertStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A49BD0E1BC6DB7000E84E4C /* AlertStructure.m */; settings = {ASSET_TAGS = (); }; };
-		0A49BD121BC6DCBE00E84E4C /* AlertsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A49BD111BC6DCBE00E84E4C /* AlertsTableViewController.m */; settings = {ASSET_TAGS = (); }; };
+		0A21F6421BD1667E00BED46F /* ComposeCommunityServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A21F6411BD1667E00BED46F /* ComposeCommunityServiceViewController.m */; };
+		0A49BD0F1BC6DB7000E84E4C /* AlertStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A49BD0E1BC6DB7000E84E4C /* AlertStructure.m */; };
+		0A49BD121BC6DCBE00E84E4C /* AlertsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A49BD111BC6DCBE00E84E4C /* AlertsTableViewController.m */; };
 		0A4A37E91B7B90D100AF3E36 /* SectionsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37E81B7B90D100AF3E36 /* SectionsTableViewController.m */; };
 		0A4A37F21B7BA34600AF3E36 /* StudentCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37F11B7BA34600AF3E36 /* StudentCenterViewController.m */; };
 		0A4A37F51B7BA41100AF3E36 /* CalendarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37F41B7BA41100AF3E36 /* CalendarViewController.m */; };
@@ -36,10 +36,10 @@
 		0A4A380C1B7BCAF100AF3E36 /* NewsCenterTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A380B1B7BCAF100AF3E36 /* NewsCenterTableViewController.m */; };
 		0A61185C1BA5ABDD00D632A6 /* UsefulLinksTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A61185B1BA5ABDD00D632A6 /* UsefulLinksTableViewController.m */; };
 		0A6118621BA5B1A100D632A6 /* UsefulLinkArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6118611BA5B1A100D632A6 /* UsefulLinkArray.m */; };
-		0A7401411BC2E17A00461CC6 /* unread@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A7401401BC2E17A00461CC6 /* unread@2x.png */; settings = {ASSET_TAGS = (); }; };
-		0AB343BF1BC9A5DC006318FB /* CustomLoginSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AB343BE1BC9A5DC006318FB /* CustomLoginSegue.m */; settings = {ASSET_TAGS = (); }; };
-		0AB343C11BC9AC14006318FB /* alerts@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AB343C01BC9AC14006318FB /* alerts@2x.png */; settings = {ASSET_TAGS = (); }; };
-		0AB343C41BC9AF7C006318FB /* ComposeNewsArticleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AB343C31BC9AF7C006318FB /* ComposeNewsArticleViewController.m */; settings = {ASSET_TAGS = (); }; };
+		0A7401411BC2E17A00461CC6 /* unread@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A7401401BC2E17A00461CC6 /* unread@2x.png */; };
+		0AB343BF1BC9A5DC006318FB /* CustomLoginSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AB343BE1BC9A5DC006318FB /* CustomLoginSegue.m */; };
+		0AB343C11BC9AC14006318FB /* alerts@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AB343C01BC9AC14006318FB /* alerts@2x.png */; };
+		0AB343C41BC9AF7C006318FB /* ComposeNewsArticleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AB343C31BC9AF7C006318FB /* ComposeNewsArticleViewController.m */; };
 		0AB797C21B7DBDBA00113D94 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A1FE3E81B7B7DA80062A30E /* Images.xcassets */; };
 		0AB797C41B7DBF0B00113D94 /* theNews@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AB797C31B7DBF0B00113D94 /* theNews@2x.png */; };
 		0AB797C61B7DC08400113D94 /* extracurriculars@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AB797C51B7DC08400113D94 /* extracurriculars@2x.png */; };
@@ -463,6 +463,7 @@
 				TargetAttributes = {
 					0A1FE3D41B7B7DA80062A30E = {
 						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = FVC8766NJ2;
 					};
 					0A1FE3F01B7B7DA80062A30E = {
 						CreatedOnToolsVersion = 6.4;
@@ -696,6 +697,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_ARC = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/WildcatConnectGITTest",
@@ -704,6 +708,7 @@
 				INFOPLIST_FILE = WildcatConnectGITTest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -712,6 +717,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_ARC = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/WildcatConnectGITTest",
@@ -720,6 +728,7 @@
 				INFOPLIST_FILE = WildcatConnectGITTest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

@@ -34,16 +34,10 @@
                [self getPreviousOldCommunityServiceStructuresWithCompletion:^(NSMutableArray *returnArrayB) {
                     self.oldOpps = returnArrayB;
                     self.allOpps = [[self.newOpps arrayByAddingObjectsFromArray:self.oldOpps] mutableCopy];
-                    [self getPreviousNewImagesWithCompletion:^(NSMutableArray *returnArrayC) {
-                         self.newImages = returnArrayC;
-                         [self getPreviousOldImagesWithCompletion:^(NSMutableArray *returnArrayD) {
-                              self.oldImages = returnArrayD;
-                              dispatch_async(dispatch_get_main_queue(), ^ {
-                                   [self.tableView reloadData];
-                                   [self refreshControl];
-                              });
-                         }];
-                    }];
+                    dispatch_async(dispatch_get_main_queue(), ^ {
+                         [self.tableView reloadData];
+                         [self refreshControl];
+                    });
                 }];
           }];
      }
@@ -62,7 +56,7 @@
                NSMutableArray *itemsToSave = [NSMutableArray array];
                for (CommunityServiceStructure *c in returnArray2) {
                     [itemsToSave addObject:@{ @"commTitleString"     : c.commTitleString,
-                                              @"commPreviewString"    : c.commPreviewString , @"commSummaryString" : c.commSummaryString, @"IsNewNumber" : c.IsNewNumber, @"hasImage" : c.hasImage, @"communityServiceID"  : c.communityServiceID
+                                              @"commPreviewString"    : c.commPreviewString , @"commSummaryString" : c.commSummaryString, @"IsNewNumber" : c.IsNewNumber, @"communityServiceID"  : c.communityServiceID
                                               }];
                }
                NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -70,7 +64,7 @@
                itemsToSave = [NSMutableArray array];
                for (CommunityServiceStructure *c in returnArrayB) {
                     [itemsToSave addObject:@{ @"commTitleString"     : c.commTitleString,
-                                              @"commPreviewString"    : c.commPreviewString, @"commSummaryString" : c.commSummaryString, @"IsNewNumber" : c.IsNewNumber, @"hasImage" : c.hasImage, @"communityServiceID"  : c.communityServiceID
+                                              @"commPreviewString"    : c.commPreviewString, @"commSummaryString" : c.commSummaryString, @"IsNewNumber" : c.IsNewNumber, @"communityServiceID"  : c.communityServiceID
                                               }];
                }
                [userDefaults setObject:itemsToSave forKey:@"oldCommServiceItems"];
@@ -183,7 +177,6 @@
           CSStructure.commPreviewString = [object objectForKey:@"commPreviewString"];
           CSStructure.commSummaryString = [object objectForKey:@"commSummaryString"];
           CSStructure.IsNewNumber = [object objectForKey:@"IsNewNumber"];
-          CSStructure.hasImage = [object objectForKey:@"hasImage"];
           CSStructure.communityServiceID = [object objectForKey:@"communityServiceID"];
           [array addObject:CSStructure];
           if (i == theArrayToSearch.count - 1)
@@ -211,7 +204,6 @@
           CSStructure.commPreviewString = [object objectForKey:@"commPreviewString"];
           CSStructure.commSummaryString = [object objectForKey:@"commSummaryString"];
           CSStructure.IsNewNumber = [object objectForKey:@"IsNewNumber"];
-          CSStructure.hasImage = [object objectForKey:@"hasImage"];
           CSStructure.communityServiceID = [object objectForKey:@"communityServiceID"];
           [array addObject:CSStructure];
           if (i == theArrayToSearch.count - 1)
@@ -222,116 +214,6 @@
      }
      dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
           completion(array);
-     });
-}
-
-- (void)newImagesMethodWithCompletion:(void (^)(NSError *error, NSMutableArray *returnArray))completion withArray:(NSMutableArray *)array {
-     __block NSError *theError = nil;
-     __block BOOL lastNone = false;
-     dispatch_group_t theServiceGroup = dispatch_group_create();
-     dispatch_group_enter(theServiceGroup);
-     NSMutableArray *theReturnArray = [NSMutableArray arrayWithArray:array];
-     CommunityServiceStructure *CSStructure;
-     for (int i = 0; i < array.count; i++) {
-          CSStructure = (CommunityServiceStructure *)[array objectAtIndex:i];
-          NSInteger *integer = [CSStructure.hasImage integerValue];
-          if (integer == 1) {
-               PFFile *file = CSStructure.commImageFile;
-               [file getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
-                    theError = error;
-                    UIImage *image = [UIImage imageWithData:data];
-                    image = [[AppManager getInstance] imageFromImage:image scaledToWidth:70];
-                    [theReturnArray setObject:image atIndexedSubscript:[[NSNumber numberWithInt:i] integerValue]];
-                    BOOL go = true;
-                    for (NSObject *object in theReturnArray) {
-                         if (object.class == [CommunityServiceStructure class]) {
-                              go = false;
-                              break;
-                         }
-                    }
-                    if (go) {
-                         dispatch_group_leave(theServiceGroup);
-                    }
-               }];
-          } else {
-               [theReturnArray setObject:[[NSObject alloc] init] atIndexedSubscript:[[NSNumber numberWithInt:i] integerValue]];
-               if (i == array.count - 1) {
-                    BOOL go = true;
-                    for (NSObject *object in theReturnArray) {
-                         if (object.class == [CommunityServiceStructure class]) {
-                              go = false;
-                              break;
-                         }
-                    }
-                    if (go) {
-                         dispatch_group_leave(theServiceGroup);
-                    }
-               }
-          }
-     }
-     if (array.count == 0) {
-          dispatch_group_leave(theServiceGroup);
-     }
-     dispatch_group_notify(theServiceGroup, dispatch_get_main_queue(), ^{
-          NSError *overallError = nil;
-          if (theError)
-               overallError = theError;
-          completion(overallError, theReturnArray);
-     });
-}
-
-- (void)oldImagesMethodWithCompletion:(void (^)(NSError *error, NSMutableArray *returnArray))completion withArray:(NSMutableArray *)array {
-     __block NSError *theError = nil;
-     __block BOOL lastNone = false;
-     dispatch_group_t theServiceGroup = dispatch_group_create();
-     dispatch_group_enter(theServiceGroup);
-     NSMutableArray *theReturnArray = [NSMutableArray arrayWithArray:array];
-     CommunityServiceStructure *CSStructure;
-     for (int i = 0; i < array.count; i++) {
-          CSStructure = (CommunityServiceStructure *)[array objectAtIndex:i];
-          NSInteger *integer = [CSStructure.hasImage integerValue];
-          if (integer == 1) {
-               PFFile *file = CSStructure.commImageFile;
-               [file getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
-                    theError = error;
-                    UIImage *image = [UIImage imageWithData:data];
-                    image = [[AppManager getInstance] imageFromImage:image scaledToWidth:70];
-                    [theReturnArray setObject:image atIndexedSubscript:[[NSNumber numberWithInt:i] integerValue]];
-                    BOOL go = true;
-                    for (NSObject *object in theReturnArray) {
-                         if (object.class == [CommunityServiceStructure class]) {
-                              go = false;
-                              break;
-                         }
-                    }
-                    if (go) {
-                         dispatch_group_leave(theServiceGroup);
-                    }
-               }];
-          } else {
-               [theReturnArray setObject:[[NSObject alloc] init] atIndexedSubscript:[[NSNumber numberWithInt:i] integerValue]];
-               if (i == array.count - 1) {
-                    BOOL go = true;
-                    for (NSObject *object in theReturnArray) {
-                         if (object.class == [CommunityServiceStructure class]) {
-                              go = false;
-                              break;
-                         }
-                    }
-                    if (go) {
-                         dispatch_group_leave(theServiceGroup);
-                    }
-               }
-          }
-     }
-     if (array.count == 0) {
-          dispatch_group_leave(theServiceGroup);
-     }
-     dispatch_group_notify(theServiceGroup, dispatch_get_main_queue(), ^{
-          NSError *overallError = nil;
-          if (theError)
-               overallError = theError;
-          completion(overallError, theReturnArray);
      });
 }
 
@@ -483,10 +365,6 @@
                   cell.textLabel.text = commServiceStructure.commTitleString;
                   cell.detailTextLabel.text = commServiceStructure.commSummaryString;
                   cell.detailTextLabel.numberOfLines = 4;
-                  NSInteger integer = [commServiceStructure.hasImage integerValue];
-                  if (integer == 1) {
-                       cell.imageView.image = (UIImage *)[self.newImages objectAtIndex:indexPath.row];
-                  }
                   return cell;
              }
         } else if (indexPath.section == 1) {
@@ -500,9 +378,6 @@
                   cell.textLabel.text = commServiceStructure.commTitleString;
                   cell.detailTextLabel.text = commServiceStructure.commSummaryString;
                   cell.detailTextLabel.numberOfLines = 4;
-                  NSInteger integer = [commServiceStructure.hasImage integerValue];
-                  if (integer == 1)
-                       cell.imageView.image = (UIImage *)[self.oldImages objectAtIndex:indexPath.row];
                   return cell;
              }
         }

@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ComposeCommunityServiceViewController : UIViewController <UITextViewDelegate>
+@interface ComposeCommunityServiceViewController : UIViewController <UITextViewDelegate, UITabBarControllerDelegate, UIAlertViewDelegate>
 
 @end

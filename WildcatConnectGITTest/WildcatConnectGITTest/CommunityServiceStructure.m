@@ -11,14 +11,12 @@
 
 @implementation CommunityServiceStructure
 
-@dynamic commDateString;
+@dynamic commStartDateString;
+@dynamic commEndDateString;
 @dynamic commPreviewString;
 @dynamic commSummaryString;
 @dynamic commTitleString;
 @dynamic IsNewNumber;
-@dynamic commImageFile;
-@dynamic hasImage;
-
 + (void)load {
     [self registerSubclass];
 }

@@ -90,13 +90,13 @@
                [self.view addSubview:messageLabel];
                
                messageRemainingLabel = [[UILabel alloc] init];
-               messageRemainingLabel.text = @"60 characters remaining";
+               messageRemainingLabel.text = @"140 characters remaining";
                [messageRemainingLabel setFont:[UIFont systemFontOfSize:10]];
                [messageRemainingLabel sizeToFit];
                messageRemainingLabel.frame = CGRectMake((self.view.frame.size.width - messageRemainingLabel.frame.size.width - 10), messageLabel.frame.origin.y, messageRemainingLabel.frame.size.width, 20);
                [self.view addSubview:messageRemainingLabel];
                
-               messageTextView = [[UITextView alloc] initWithFrame:CGRectMake(messageLabel.frame.origin.x, messageLabel.frame.origin.y + messageLabel.frame.size.height + 10, self.view.frame.size.width - 20, 70)];
+               messageTextView = [[UITextView alloc] initWithFrame:CGRectMake(messageLabel.frame.origin.x, messageLabel.frame.origin.y + messageLabel.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
                [messageTextView setDelegate:self];
                [messageTextView setFont:[UIFont systemFontOfSize:16]];
                messageTextView.layer.borderWidth = 1.0f;
@@ -149,8 +149,19 @@
           UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please ensure you have correctly filled out all fields!" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
           [alertView show];
      } else {
-          postAlertView = [[UIAlertView alloc] initWithTitle:@"Confirmation" message:@"Are you sure you want to post this article? It will be live to all app users." delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+          postAlertView = [[UIAlertView alloc] initWithTitle:@"Confirmation" message:@"Are you sure you want to post this extracurricular update? It will be live to all app users." delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
           [postAlertView show];
+     }
+}
+
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
+     if (hasChanged) {
+          UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Confirmation"
+                                                          message:@"Are you sure you want to go back? Any changes to this community service update will be lost."
+                                                         delegate:self
+                                                cancelButtonTitle:@"No"
+                                                otherButtonTitles:@"Yes", nil];
+          [alert show];
      }
 }
 
@@ -209,18 +220,18 @@
      hasChanged = true;
      if (textView == messageTextView) {
           int len = textView.text.length;
-          if (50 - len <= 10) {
-               if (50 - len == 1) {
-                    messageRemainingLabel.text= [[NSString stringWithFormat:@"%i",50-len] stringByAppendingString:@" character remaining"];
+          if (140 - len <= 10) {
+               if (140 - len == 1) {
+                    messageRemainingLabel.text= [[NSString stringWithFormat:@"%i",140-len] stringByAppendingString:@" character remaining"];
                } else {
                     
-                    messageRemainingLabel.text= [[NSString stringWithFormat:@"%i",50-len] stringByAppendingString:@" characters remaining"];
+                    messageRemainingLabel.text= [[NSString stringWithFormat:@"%i",140-len] stringByAppendingString:@" characters remaining"];
                }
                messageRemainingLabel.textColor = [UIColor redColor];
                [messageRemainingLabel sizeToFit];
                messageRemainingLabel.frame = CGRectMake((self.view.frame.size.width - messageRemainingLabel.frame.size.width - 10), messageRemainingLabel.frame.origin.y, messageRemainingLabel.frame.size.width, 20);
           } else {
-               messageRemainingLabel.text= [[NSString stringWithFormat:@"%i",50-len] stringByAppendingString:@" characters remaining"];
+               messageRemainingLabel.text= [[NSString stringWithFormat:@"%i",140-len] stringByAppendingString:@" characters remaining"];
                messageRemainingLabel.textColor = [UIColor blackColor];
                [messageRemainingLabel sizeToFit];
                messageRemainingLabel.frame = CGRectMake((self.view.frame.size.width - messageRemainingLabel.frame.size.width - 10), messageRemainingLabel.frame.origin.y, messageRemainingLabel.frame.size.width, 20);
@@ -237,7 +248,7 @@
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)string {
      if (textView == messageTextView) {
-          return [self isAcceptableTextLength:textView.text.length + string.length - range.length forMaximum:70 existsMaximum:YES];
+          return [self isAcceptableTextLength:textView.text.length + string.length - range.length forMaximum:140 existsMaximum:YES];
      }
      else return nil;
 }

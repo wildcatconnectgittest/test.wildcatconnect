@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ExtracurricularStructure.h"
 
-@interface ComposeExtracurricularUpdateViewController : UIViewController <UIPickerViewDelegate, UITextViewDelegate>
+@interface ComposeExtracurricularUpdateViewController : UIViewController <UIPickerViewDelegate, UITextViewDelegate, UITabBarControllerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *ECarray;
 @property (nonatomic, strong) ExtracurricularStructure *EC;

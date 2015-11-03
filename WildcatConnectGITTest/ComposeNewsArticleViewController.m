@@ -195,7 +195,7 @@
      
           //Takes care of all resizing needs based on sizes.
      self.automaticallyAdjustsScrollViewInsets = YES;
-     UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 1, 0);
+     UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 2, 0);
      scrollView.contentInset = adjustForTabbarInsets;
      scrollView.scrollIndicatorInsets = adjustForTabbarInsets;
      CGRect contentRect = CGRectZero;
@@ -418,6 +418,17 @@
                [summaryRemainingLabel sizeToFit];
                summaryRemainingLabel.frame = CGRectMake((self.view.frame.size.width - summaryRemainingLabel.frame.size.width - 10), summaryRemainingLabel.frame.origin.y, summaryRemainingLabel.frame.size.width, 20);
           }
+     }
+}
+
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
+     if (hasChanged) {
+          UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Confirmation"
+                                                          message:@"Are you sure you want to go back? Any changes to this community service update will be lost."
+                                                         delegate:self
+                                                cancelButtonTitle:@"No"
+                                                otherButtonTitles:@"Yes", nil];
+          [alert show];
      }
 }
 

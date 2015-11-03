@@ -16,11 +16,10 @@
 
 @property NSString *commTitleString;
 @property NSString *commPreviewString;
-@property NSString *commDateString;
+@property NSString *commStartDateString;
+@property NSString *commEndDateString;
 @property NSString *commSummaryString;
 @property NSNumber *IsNewNumber;
-@property PFFile *commImageFile;
-@property NSNumber *hasImage;
 @property NSNumber *communityServiceID;
 //0=no, old 1 = yes, new
 @end
