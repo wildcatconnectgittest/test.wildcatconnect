@@ -49,9 +49,21 @@
           UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"You must enter a valid username and password." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
           [alertView show];
      } else {
+          UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+          [activity setBackgroundColor:[UIColor clearColor]];
+          [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+          UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
+          self.navigationItem.rightBarButtonItem = barButtonItem;
+          [activity startAnimating];
+          [barButtonItem release];
           [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser * _Nullable user, NSError * _Nullable error) {
                if (! error) {
                     [self performSegueWithIdentifier:@"showAdministrationView" sender:self];
+                    [activity stopAnimating];
+               } else if (error) {
+                    [activity stopAnimating];
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"Error logging in. Please try again." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                    [alertView show];
                }
           }];
      }

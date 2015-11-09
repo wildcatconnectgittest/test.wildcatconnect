@@ -2,7 +2,7 @@
 //  AboutTableViewController.m
 //  WildcatConnectGITTest
 //
-//  Created by Rohith Parvathaneni on 11/3/15.
+//  Created by Kevin Lyons on 11/5/15.
 //  Copyright © 2015 WildcatConnect. All rights reserved.
 //
 
@@ -17,27 +17,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [scrollerabout setScrollEnabled:YES];
-    [scrollerabout setContentSize:CGSizeMake(320, 1000)];
-    UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-    [activity setBackgroundColor:[UIColor clearColor]];
-    [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
-    self.navigationItem.rightBarButtonItem = barButtonItem;
-    [activity startAnimating];
-    [barButtonItem release];
-    
-    [self loadLinksWithCompletion:^(NSMutableArray *returnArray) {
-        [activity stopAnimating];
-        self.linksArray = returnArray;
-        [self.tableView reloadData];
-    }];
-    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+     
+     self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -48,24 +34,77 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Incomplete implementation, return the number of sections
-    return 0;
+     return 2;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+     if (section == 0) {
+          return @"APP SUPPORT";
+     } else if (section == 1) {
+          return @"DEVELOPMENT";
+     } else return nil;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete implementation, return the number of rows
-    return 0;
+     if (section == 0) {
+          return 1;
+     } else return 2;
 }
 
-/*
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
-    
-    // Configure the cell...
-    
-    return cell;
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+     if (indexPath.section == 0) {
+          return 50;
+     } else if (indexPath.section == 1) {
+          if (indexPath.row == 0) {
+               return 100;
+          }
+          else return 50;
+     }
+     else return 0;
 }
-*/
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
+     if (indexPath.section == 0) {
+          cell.textLabel.text = @"Report a problem";
+          return cell;
+     } else if (indexPath.section == 1) {
+          if (indexPath.row == 0) {
+                    //List out developers...
+               cell.textLabel.numberOfLines = 6;
+               cell.textLabel.text = @"lsadlfjlsdjflsadjflsajdlfjasljflsdjlfjsadlfjlksadjflksjadfjsladjflasflsfjssjflasjdlfjlasdjflsadjflajsdlfjasdlajflasdjflsdjfljsdlfjsdlakjflksdjfljsljfsad";
+               return cell;
+          } else if (indexPath.row == 1) {
+                    //Get involved!!!
+               cell.textLabel.text = @"Join the development team";
+               return cell;
+          }
+          return cell;
+     }
+     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+          //Handle selection
+     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+     if (indexPath.section == 0) {
+
+          NSString *URLEMail = @"mailto:wildcatconnectgittest@gmail.com?subject=WildcatConnect App Issue&body=";
+          
+          UIDevice *device  = [UIDevice currentDevice];
+          NSString *name    = [device name];
+          NSString *model   = [device model];
+          NSString *systemVersion = device.systemVersion;
+          
+          URLEMail = [[[[[[[[URLEMail stringByAppendingString:@"Device Name = "] stringByAppendingString:name] stringByAppendingString:@"\n"] stringByAppendingString:@"System Version = "] stringByAppendingString:systemVersion] stringByAppendingString:@"\n"] stringByAppendingString:@"Device Model = "] stringByAppendingString:model];
+          
+          NSString *url = [URLEMail stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding ];
+          [[UIApplication sharedApplication]  openURL: [NSURL URLWithString: url]];
+     } else if (indexPath.section == 0 && indexPath.row == 1) {
+               //
+     }
+}
 
 /*
 // Override to support conditional editing of the table view.

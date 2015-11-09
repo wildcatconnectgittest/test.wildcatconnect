@@ -175,6 +175,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
      NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
      NSMutableArray *theVisitedPagesArray = [userDefaults objectForKey:@"visitedPagesArray"];
      NSMutableArray *visitedPagesArray = [[NSMutableArray alloc] init];

@@ -26,14 +26,16 @@
 		0A1FE3EC1B7B7DA80062A30E /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A1FE3EA1B7B7DA80062A30E /* LaunchScreen.xib */; };
 		0A1FE3F81B7B7DA80062A30E /* WildcatConnectGITTestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1FE3F71B7B7DA80062A30E /* WildcatConnectGITTestTests.m */; };
 		0A21F6421BD1667E00BED46F /* ComposeCommunityServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A21F6411BD1667E00BED46F /* ComposeCommunityServiceViewController.m */; };
+		0A28CE4A1BF0350500B15427 /* PollStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A28CE491BF0350500B15427 /* PollStructure.m */; };
+		0A28CE4D1BF0446400B15427 /* PollDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A28CE4C1BF0446400B15427 /* PollDetailViewController.m */; };
 		0A49BD0F1BC6DB7000E84E4C /* AlertStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A49BD0E1BC6DB7000E84E4C /* AlertStructure.m */; };
 		0A49BD121BC6DCBE00E84E4C /* AlertsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A49BD111BC6DCBE00E84E4C /* AlertsTableViewController.m */; };
 		0A4A37E91B7B90D100AF3E36 /* SectionsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37E81B7B90D100AF3E36 /* SectionsTableViewController.m */; };
 		0A4A37F21B7BA34600AF3E36 /* StudentCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37F11B7BA34600AF3E36 /* StudentCenterViewController.m */; };
-		0A4A37F51B7BA41100AF3E36 /* CalendarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37F41B7BA41100AF3E36 /* CalendarViewController.m */; };
 		0A4A37F81B7BA41A00AF3E36 /* LunchMenusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37F71B7BA41A00AF3E36 /* LunchMenusViewController.m */; };
 		0A4A37FE1B7BA43900AF3E36 /* Staff DirectoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37FD1B7BA43900AF3E36 /* Staff DirectoryTableViewController.m */; };
 		0A4A380C1B7BCAF100AF3E36 /* NewsCenterTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A380B1B7BCAF100AF3E36 /* NewsCenterTableViewController.m */; };
+		0A4CBAC21BE91375009E9831 /* StudentCenterTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4CBAC11BE91375009E9831 /* StudentCenterTableViewController.m */; };
 		0A61185C1BA5ABDD00D632A6 /* UsefulLinksTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A61185B1BA5ABDD00D632A6 /* UsefulLinksTableViewController.m */; };
 		0A6118621BA5B1A100D632A6 /* UsefulLinkArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6118611BA5B1A100D632A6 /* UsefulLinkArray.m */; };
 		0A7401411BC2E17A00461CC6 /* unread@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A7401401BC2E17A00461CC6 /* unread@2x.png */; };
@@ -74,7 +76,7 @@
 		0AF4BC641B7D1610001149A5 /* TestStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF4BC631B7D1610001149A5 /* TestStructure.m */; };
 		0AF4BC671B7D1BA2001149A5 /* AppManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF4BC661B7D1BA2001149A5 /* AppManager.m */; };
 		0AF4BC6A1B7D278B001149A5 /* NewsArticleStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF4BC691B7D278B001149A5 /* NewsArticleStructure.m */; };
-		F75C21971B7B99D00052BC87 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F75C21961B7B99D00052BC87 /* AboutViewController.m */; };
+		0AFCD2451BEBC7BB0001FCFC /* AboutTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AFCD2441BEBC7BB0001FCFC /* AboutTableViewController.m */; };
 		F768D0611B8208980064E296 /* CommunityServiceStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = F768D0601B8208980064E296 /* CommunityServiceStructure.m */; };
 		F768D0641B821A000064E296 /* CommunityServiceTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F768D0631B821A000064E296 /* CommunityServiceTableViewController.m */; };
 		F768D0821B85381B0064E296 /* LunchMenusStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = F768D0811B85381B0064E296 /* LunchMenusStructure.m */; };
@@ -129,6 +131,10 @@
 		0A1FE3F71B7B7DA80062A30E /* WildcatConnectGITTestTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WildcatConnectGITTestTests.m; sourceTree = "<group>"; };
 		0A21F6401BD1667E00BED46F /* ComposeCommunityServiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComposeCommunityServiceViewController.h; sourceTree = "<group>"; };
 		0A21F6411BD1667E00BED46F /* ComposeCommunityServiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComposeCommunityServiceViewController.m; sourceTree = "<group>"; };
+		0A28CE481BF0350500B15427 /* PollStructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PollStructure.h; sourceTree = "<group>"; };
+		0A28CE491BF0350500B15427 /* PollStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PollStructure.m; sourceTree = "<group>"; };
+		0A28CE4B1BF0446400B15427 /* PollDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PollDetailViewController.h; sourceTree = "<group>"; };
+		0A28CE4C1BF0446400B15427 /* PollDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PollDetailViewController.m; sourceTree = "<group>"; };
 		0A49BD0D1BC6DB7000E84E4C /* AlertStructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertStructure.h; sourceTree = "<group>"; };
 		0A49BD0E1BC6DB7000E84E4C /* AlertStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertStructure.m; sourceTree = "<group>"; };
 		0A49BD101BC6DCBE00E84E4C /* AlertsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlertsTableViewController.h; path = ../AlertsTableViewController.h; sourceTree = "<group>"; };
@@ -137,14 +143,14 @@
 		0A4A37E81B7B90D100AF3E36 /* SectionsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SectionsTableViewController.m; sourceTree = "<group>"; };
 		0A4A37F01B7BA34600AF3E36 /* StudentCenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentCenterViewController.h; sourceTree = "<group>"; };
 		0A4A37F11B7BA34600AF3E36 /* StudentCenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StudentCenterViewController.m; sourceTree = "<group>"; };
-		0A4A37F31B7BA41100AF3E36 /* CalendarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarViewController.h; sourceTree = "<group>"; };
-		0A4A37F41B7BA41100AF3E36 /* CalendarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarViewController.m; sourceTree = "<group>"; };
 		0A4A37F61B7BA41A00AF3E36 /* LunchMenusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LunchMenusViewController.h; sourceTree = "<group>"; };
 		0A4A37F71B7BA41A00AF3E36 /* LunchMenusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LunchMenusViewController.m; sourceTree = "<group>"; };
 		0A4A37FC1B7BA43900AF3E36 /* Staff DirectoryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Staff DirectoryTableViewController.h"; sourceTree = "<group>"; };
 		0A4A37FD1B7BA43900AF3E36 /* Staff DirectoryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Staff DirectoryTableViewController.m"; sourceTree = "<group>"; };
 		0A4A380A1B7BCAF100AF3E36 /* NewsCenterTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsCenterTableViewController.h; sourceTree = "<group>"; };
 		0A4A380B1B7BCAF100AF3E36 /* NewsCenterTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsCenterTableViewController.m; sourceTree = "<group>"; };
+		0A4CBAC01BE91375009E9831 /* StudentCenterTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentCenterTableViewController.h; sourceTree = "<group>"; };
+		0A4CBAC11BE91375009E9831 /* StudentCenterTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StudentCenterTableViewController.m; sourceTree = "<group>"; };
 		0A61185A1BA5ABDD00D632A6 /* UsefulLinksTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsefulLinksTableViewController.h; sourceTree = "<group>"; };
 		0A61185B1BA5ABDD00D632A6 /* UsefulLinksTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsefulLinksTableViewController.m; sourceTree = "<group>"; };
 		0A6118601BA5B1A100D632A6 /* UsefulLinkArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsefulLinkArray.h; sourceTree = "<group>"; };
@@ -199,8 +205,8 @@
 		0AF4BC661B7D1BA2001149A5 /* AppManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppManager.m; sourceTree = "<group>"; };
 		0AF4BC681B7D278B001149A5 /* NewsArticleStructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsArticleStructure.h; sourceTree = "<group>"; };
 		0AF4BC691B7D278B001149A5 /* NewsArticleStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsArticleStructure.m; sourceTree = "<group>"; };
-		F75C21951B7B99D00052BC87 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
-		F75C21961B7B99D00052BC87 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
+		0AFCD2431BEBC7BB0001FCFC /* AboutTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutTableViewController.h; sourceTree = "<group>"; };
+		0AFCD2441BEBC7BB0001FCFC /* AboutTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutTableViewController.m; sourceTree = "<group>"; };
 		F768D05F1B8208980064E296 /* CommunityServiceStructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommunityServiceStructure.h; sourceTree = "<group>"; };
 		F768D0601B8208980064E296 /* CommunityServiceStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommunityServiceStructure.m; sourceTree = "<group>"; };
 		F768D0621B821A000064E296 /* CommunityServiceTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommunityServiceTableViewController.h; sourceTree = "<group>"; };
@@ -278,6 +284,14 @@
 		0A1FE3D71B7B7DA80062A30E /* WildcatConnectGITTest */ = {
 			isa = PBXGroup;
 			children = (
+				0A28CE481BF0350500B15427 /* PollStructure.h */,
+				0A28CE491BF0350500B15427 /* PollStructure.m */,
+				0AFCD2431BEBC7BB0001FCFC /* AboutTableViewController.h */,
+				0AFCD2441BEBC7BB0001FCFC /* AboutTableViewController.m */,
+				0A4CBAC01BE91375009E9831 /* StudentCenterTableViewController.h */,
+				0A4CBAC11BE91375009E9831 /* StudentCenterTableViewController.m */,
+				0A28CE4B1BF0446400B15427 /* PollDetailViewController.h */,
+				0A28CE4C1BF0446400B15427 /* PollDetailViewController.m */,
 				0ACF72D91BA69E2C00006C29 /* EmailButton.h */,
 				0ACF72DA1BA69E2C00006C29 /* EmailButton.m */,
 				0A61185A1BA5ABDD00D632A6 /* UsefulLinksTableViewController.h */,
@@ -349,12 +363,8 @@
 				0AE74A2A1B7D7A2C0083EFF1 /* SplashScreenViewController.m */,
 				0A4A37F01B7BA34600AF3E36 /* StudentCenterViewController.h */,
 				0A4A37F11B7BA34600AF3E36 /* StudentCenterViewController.m */,
-				0A4A37F31B7BA41100AF3E36 /* CalendarViewController.h */,
-				0A4A37F41B7BA41100AF3E36 /* CalendarViewController.m */,
 				0A4A37FC1B7BA43900AF3E36 /* Staff DirectoryTableViewController.h */,
 				0A4A37FD1B7BA43900AF3E36 /* Staff DirectoryTableViewController.m */,
-				F75C21951B7B99D00052BC87 /* AboutViewController.h */,
-				F75C21961B7B99D00052BC87 /* AboutViewController.m */,
 				0A4A37E71B7B90D100AF3E36 /* SectionsTableViewController.h */,
 				0A4A37E81B7B90D100AF3E36 /* SectionsTableViewController.m */,
 				0A1FE3E81B7B7DA80062A30E /* Images.xcassets */,
@@ -534,11 +544,12 @@
 				0A037E5B1BC1543E009A1DBB /* AdministrationMainTableViewController.m in Sources */,
 				0A4A37F81B7BA41A00AF3E36 /* LunchMenusViewController.m in Sources */,
 				F768D0611B8208980064E296 /* CommunityServiceStructure.m in Sources */,
+				0A28CE4A1BF0350500B15427 /* PollStructure.m in Sources */,
 				0AD4B0C11B81FA3C004E23E4 /* ExtracurricularStructure.m in Sources */,
 				0A61185C1BA5ABDD00D632A6 /* UsefulLinksTableViewController.m in Sources */,
 				0AF4BC671B7D1BA2001149A5 /* AppManager.m in Sources */,
 				0A6118621BA5B1A100D632A6 /* UsefulLinkArray.m in Sources */,
-				F75C21971B7B99D00052BC87 /* AboutViewController.m in Sources */,
+				0AFCD2451BEBC7BB0001FCFC /* AboutTableViewController.m in Sources */,
 				0AF4BC6A1B7D278B001149A5 /* NewsArticleStructure.m in Sources */,
 				0A1FE3E41B7B7DA80062A30E /* SecondViewController.m in Sources */,
 				F768D0821B85381B0064E296 /* LunchMenusStructure.m in Sources */,
@@ -553,6 +564,7 @@
 				0A0A497E1B7EFEC800304629 /* ApplicationManager.m in Sources */,
 				F7956CB21BA5CAA70091EB5A /* NewsArticleDetailViewController.m in Sources */,
 				0A4A37E91B7B90D100AF3E36 /* SectionsTableViewController.m in Sources */,
+				0A4CBAC21BE91375009E9831 /* StudentCenterTableViewController.m in Sources */,
 				0A037E581BC14F78009A1DBB /* AdministrationLogInViewController.m in Sources */,
 				F768D0641B821A000064E296 /* CommunityServiceTableViewController.m in Sources */,
 				0AE74A2B1B7D7A2C0083EFF1 /* SplashScreenViewController.m in Sources */,
@@ -565,10 +577,10 @@
 				0A4A37F21B7BA34600AF3E36 /* StudentCenterViewController.m in Sources */,
 				0A49BD121BC6DCBE00E84E4C /* AlertsTableViewController.m in Sources */,
 				0AD4B0BE1B81F7F1004E23E4 /* AppDelegate.m in Sources */,
+				0A28CE4D1BF0446400B15427 /* PollDetailViewController.m in Sources */,
 				0A49BD0F1BC6DB7000E84E4C /* AlertStructure.m in Sources */,
 				0A0A49721B7E776500304629 /* StaffDirectoryResultsTableViewController.m in Sources */,
 				0AF4BC641B7D1610001149A5 /* TestStructure.m in Sources */,
-				0A4A37F51B7BA41100AF3E36 /* CalendarViewController.m in Sources */,
 				0A1FE3DB1B7B7DA80062A30E /* main.m in Sources */,
 				0A4A37FE1B7BA43900AF3E36 /* Staff DirectoryTableViewController.m in Sources */,
 			);
@@ -708,6 +720,7 @@
 				INFOPLIST_FILE = WildcatConnectGITTest/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = WildcatConnect.KEVIN;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -729,6 +742,7 @@
 				INFOPLIST_FILE = WildcatConnectGITTest/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = WildcatConnect.KEVIN;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};

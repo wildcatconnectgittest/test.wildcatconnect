@@ -2,7 +2,7 @@
 //  PollStructure.m
 //  WildcatConnectGITTest
 //
-//  Created by Rohith Parvathaneni on 11/3/15.
+//  Created by Kevin Lyons on 11/8/15.
 //  Copyright © 2015 WildcatConnect. All rights reserved.
 //
 
@@ -11,20 +11,17 @@
 
 @implementation PollStructure
 
-@dynamic choice;
-@dynamic pollTitleString;
-@dynamic pollDate;
-@dynamic infoString;
-
+@dynamic pollTitle;
+@dynamic pollQuestion;
+@dynamic pollType;
+@dynamic pollMultipleChoices;
 
 + (void)load {
-    [self registerSubclass];
+     [self registerSubclass];
 }
 
 + (NSString *)parseClassName {
-    return @"pollStructure";
+     return @"PollStructure";
 }
-
-
 
 @end

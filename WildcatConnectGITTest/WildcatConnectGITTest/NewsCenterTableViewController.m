@@ -21,7 +21,6 @@
     [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
     self.refreshControl= refreshControl;
     
-    
     if (self.loadNumber == [NSNumber numberWithInt:1] || ! self.loadNumber) {
                [self refreshData];
           }
@@ -33,7 +32,6 @@
                self.navigationItem.rightBarButtonItem = barButtonItem;
                [activity startAnimating];
                [barButtonItem release];
-               [activity startAnimating];
                [self getOldDataWithCompletion:^(NSMutableArray *returnArray) {
                     self.newsArticles = returnArray;
                     [self getOldImagesWithCompletion:^(NSMutableArray *returnArrayB, NSMutableArray *dataReturnArray) {

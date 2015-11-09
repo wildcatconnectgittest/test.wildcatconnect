@@ -159,6 +159,7 @@
 }
 
 - (void)dateIsChanged:(id)sender {
+     hasChanged = true;
      if ((UIDatePicker *)(sender) == startDatePicker) {
           if ([startDatePicker.date laterDate:endDatePicker.date] == startDatePicker.date) {
                endDatePicker.date = startDatePicker.date;

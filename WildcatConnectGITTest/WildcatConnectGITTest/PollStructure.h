@@ -2,7 +2,7 @@
 //  PollStructure.h
 //  WildcatConnectGITTest
 //
-//  Created by Rohith Parvathaneni on 11/3/15.
+//  Created by Kevin Lyons on 11/8/15.
 //  Copyright © 2015 WildcatConnect. All rights reserved.
 //
 
@@ -10,13 +10,12 @@
 
 @interface PollStructure : PFObject<PFSubclassing>
 
-
 + (NSString *)parseClassName;
 
-@property NSNumber *choice; // 0= yes/no 1 = mc 2 = response
-@property NSString *pollTitleString;
-@property NSString *pollDate;
-@property NSString *infoString;
-
+@property NSString *pollTitle;
+@property NSString *pollQuestion;
+@property NSNumber *pollType; // 0 = Y/N, 1 = MULTIPLE CHOICE
+@property NSArray *pollMultipleChoices; // Array of strings...
+@property NSNumber *pollID;
 
 @end

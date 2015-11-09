@@ -15,6 +15,7 @@
 #import "LunchMenusStructure.h"
 #import "UsefulLinkArray.h"
 #import "AlertStructure.h"
+#import "PollStructure.h"
 
 @implementation AppDelegate
 
@@ -194,6 +195,14 @@
      
           //[PFUser logOutInBackground];
      
+     /*PollStructure *pollStructure = [[PollStructure alloc] init];
+     pollStructure.pollTitle = @"Cell Phone Policy";
+     pollStructure.pollQuestion = @"Do you think that students should be able to use cell phones in class all the time?";
+     pollStructure.pollType = [NSNumber numberWithInt:0];
+     pollStructure.pollMultipleChoices = [NSArray array];
+     pollStructure.pollID = [NSNumber numberWithInt:0];
+     [pollStructure saveInBackground];*/
+     
     return YES;
 }
 
@@ -202,6 +211,7 @@
      [userDefaults removeObjectForKey:@"visitedPagesArray"];
      [userDefaults removeObjectForKey:@"readNewsArticles"];
      [userDefaults removeObjectForKey:@"likedNewsArticles"];
+     [userDefaults removeObjectForKey:@"answeredPolls"];
      [userDefaults synchronize];
 }
 
@@ -210,6 +220,7 @@
      [userDefaults removeObjectForKey:@"visitedPagesArray"];
      [userDefaults removeObjectForKey:@"readNewsArticles"];
      [userDefaults removeObjectForKey:@"likedNewsArticles"];
+     [userDefaults removeObjectForKey:@"answeredPolls"];
      [userDefaults synchronize];
 }
 

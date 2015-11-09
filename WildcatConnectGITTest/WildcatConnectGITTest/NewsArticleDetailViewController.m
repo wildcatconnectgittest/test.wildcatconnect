@@ -95,6 +95,9 @@
           [scrollView addSubview:textView];
           
                //Takes care of all resizing needs based on sizes.
+          UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 70, 0);
+          scrollView.contentInset = adjustForTabbarInsets;
+          scrollView.scrollIndicatorInsets = adjustForTabbarInsets;
           CGRect contentRect = CGRectZero;
           for (UIView *view in scrollView.subviews) {
                contentRect = CGRectUnion(contentRect, view.frame);
