@@ -13,9 +13,9 @@
 + (NSString *)parseClassName;
 
 @property NSString *pollTitle;
-@property NSString *pollQuestion;
-@property NSNumber *pollType; // 0 = Y/N, 1 = MULTIPLE CHOICE
-@property NSArray *pollMultipleChoices; // Array of strings...
-@property NSNumber *pollID;
+@property NSString *pollQuestion; // 0 = Y/N, 1 = MULTIPLE CHOICE
+@property NSDictionary *pollMultipleChoices; // Dictionary of strings w/ NSNumbers...
+@property NSString *pollID;
+@property NSString *totalResponses;
 
 @end

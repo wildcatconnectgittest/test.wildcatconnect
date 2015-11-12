@@ -10,6 +10,7 @@
 #import <Parse/Parse.h>
 #import "NewsArticleStructure.h"
 #import "ExtracurricularUpdateStructure.h"
+#import "PollStructure.h"
 #import "AppManager.h"
 
 @interface FirstViewController ()
@@ -30,15 +31,34 @@
           NSNumber *number = [NSNumber numberWithInt:(count - read)];
           [self getCountTwoMethodWithCompletion:^(NSInteger count2) {
                NSNumber *updates = [NSNumber numberWithInt:count2];;
-               NSInteger final = [number integerValue] + [updates integerValue];
-               if (final > 0) {
-                    [[self.tabBarController.viewControllers objectAtIndex:1] tabBarItem].badgeValue = [[NSNumber numberWithInt:final] stringValue];
-               }
-               else
-                    [[self.tabBarController.viewControllers objectAtIndex:1] tabBarItem].badgeValue = nil;
+               [self getCountThreeMethodWithCompletion:^(NSInteger count3) {
+                    NSMutableArray *SCarray = [[NSUserDefaults standardUserDefaults] objectForKey:@"answeredPolls"];
+                    NSInteger answered = SCarray.count;
+                    NSNumber *secondNumber = [NSNumber numberWithInt:(count3 - answered)];
+                    NSInteger final = [number integerValue] + [updates integerValue] + [secondNumber integerValue];
+                    if (final > 0) {
+                         [[self.tabBarController.viewControllers objectAtIndex:1] tabBarItem].badgeValue = [[NSNumber numberWithInt:final] stringValue];
+                    }
+                    else
+                         [[self.tabBarController.viewControllers objectAtIndex:1] tabBarItem].badgeValue = nil;
+               }];
           }];
           
      }];
+}
+
+- (void)getCountThreeMethodWithCompletion:(void (^)(NSInteger count))completion {
+     dispatch_group_t serviceGroup = dispatch_group_create();
+     dispatch_group_enter(serviceGroup);
+     PFQuery *query = [PollStructure query];
+     __block int count;
+     [query countObjectsInBackgroundWithBlock:^(int number, NSError * _Nullable error) {
+          count = number;
+          dispatch_group_leave(serviceGroup);
+     }];
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
+          completion(count);
+     });
 }
 
 - (void)getCountTwoMethodWithCompletion:(void (^)(NSInteger count))completion {

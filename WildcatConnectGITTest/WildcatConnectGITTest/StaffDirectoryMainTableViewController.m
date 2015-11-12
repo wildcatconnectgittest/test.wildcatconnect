@@ -48,7 +48,7 @@
           // hierarchy until it finds the root view controller or one that defines a presentation context.
           //
      
-     self.definesPresentationContext = YES;
+          //self.definesPresentationContext = YES;
      if (self.loadNumber == [NSNumber numberWithInt:1]) {
           [self refreshData];
      } else {

@@ -68,16 +68,18 @@
           self.pollArray = returnArray;
           NSMutableArray *itemsToSave = [NSMutableArray array];
           for (PollStructure *p in returnArray) {
-               [itemsToSave addObject:@{ @"pollTitle" : p.pollTitle, @"pollQuestion" : p.pollQuestion, @"pollType" : p.pollType, @"pollMultipleChoices" : p.pollMultipleChoices, @"pollID" : p.pollID }];
+               [itemsToSave addObject:@{ @"pollTitle" : p.pollTitle, @"pollQuestion" : p.pollQuestion, @"pollMultipleChoices" : p.pollMultipleChoices, @"pollID" : p.pollID, @"totalResponses" : p.totalResponses, @"objectId" : p.objectId }];
           }
           [[NSUserDefaults standardUserDefaults] setObject:itemsToSave forKey:@"pollStructures"];
           [[NSUserDefaults standardUserDefaults] synchronize];
-          dispatch_async(dispatch_get_main_queue(), ^ {
-               [activity stopAnimating];
-               [self.tableView reloadData];
-               [self refreshControl];
-               [self.refreshControl endRefreshing];
-          });
+          [self removeOldArrayObjectsWithCompletion:^(NSUInteger integer) {
+               dispatch_async(dispatch_get_main_queue(), ^ {
+                    [activity stopAnimating];
+                    [self.tableView reloadData];
+                    [self refreshControl];
+                    [self.refreshControl endRefreshing];
+               });
+          } withArray:returnArray];
      }];
 }
 
@@ -85,27 +87,25 @@
      [super viewDidDisappear:animated];
      NSMutableArray *itemsToSave = [NSMutableArray array];
      for (PollStructure *p in self.pollArray) {
-          [itemsToSave addObject:@{ @"pollTitle" : p.pollTitle, @"pollQuestion" : p.pollQuestion, @"pollType" : p.pollType, @"pollMultipleChoices" : p.pollMultipleChoices, @"pollID" : p.pollID }];
+          [itemsToSave addObject:@{ @"pollTitle" : p.pollTitle, @"pollQuestion" : p.pollQuestion, @"pollMultipleChoices" : p.pollMultipleChoices, @"pollID" : p.pollID, @"totalResponses" : p.totalResponses, @"objectId" : p.objectId }];
      }
      [[NSUserDefaults standardUserDefaults] setObject:itemsToSave forKey:@"pollStructures"];
      [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-/*- (void)removeOldArrayObjectsWithCompletion:(void (^)(NSUInteger integer))completion withArray:(NSMutableArray *)array {
+- (void)removeOldArrayObjectsWithCompletion:(void (^)(NSUInteger integer))completion withArray:(NSMutableArray *)array {
      dispatch_group_t serviceGroup = dispatch_group_create();
      dispatch_group_enter(serviceGroup);
      NSMutableArray *theArray = [array mutableCopy];
-     NSMutableArray *dictionaryArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"readNewsArticles"];
+     NSMutableArray *dictionaryArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"answeredPolls"];
      NSMutableArray *searchDictionaryArray = [dictionaryArray mutableCopy];
-     NSMutableArray *likedArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"likedNewsArticles"];
-     NSMutableArray *likesDictionaryArray = [likedArray mutableCopy];
      if (searchDictionaryArray.count > theArray.count) {
                //Have some objects to remove...
           for (int i = 0; i < searchDictionaryArray.count; i++) {
-               NSNumber *number = (NSNumber *)[searchDictionaryArray objectAtIndex:i];
+               NSString *string = (NSString *)[searchDictionaryArray objectAtIndex:i];
                BOOL contained = false;
-               for (NewsArticleStructure *structure in theArray) {
-                    if (structure.articleID == number) {
+               for (PollStructure *structure in theArray) {
+                    if (structure.pollID == string) {
                          contained = true;
                          break;
                     }
@@ -119,28 +119,12 @@
           dispatch_group_leave(serviceGroup);
      }
      else {
-               //Have some objects to remove...
-          for (int i = 0; i < likesDictionaryArray.count; i++) {
-               NSNumber *number = (NSNumber *)[likesDictionaryArray objectAtIndex:i];
-               BOOL contained = false;
-               for (NewsArticleStructure *structure in theArray) {
-                    if (structure.articleID == number) {
-                         contained = true;
-                         break;
-                    }
-               }
-               if (! contained) {
-                    [likesDictionaryArray removeObjectAtIndex:i];
-               }
-          }
-          [[NSUserDefaults standardUserDefaults] setObject:likesDictionaryArray forKey:@"likedNewsArticles"];
-          [[NSUserDefaults standardUserDefaults] synchronize];
           dispatch_group_leave(serviceGroup);
      }
      dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
           completion(0);
      });
-}*/
+}
 
 - (void)getOldPollsMethodWithCompletion:(void (^)(NSMutableArray *returnArray))completion {
      dispatch_group_t serviceGroup = dispatch_group_create();
@@ -155,9 +139,10 @@
           pollStructure = [[PollStructure alloc] init];
           pollStructure.pollTitle = [object objectForKey:@"pollTitle"];
           pollStructure.pollQuestion = [object objectForKey:@"pollQuestion"];
-          pollStructure.pollType = [object objectForKey:@"pollType"];
           pollStructure.pollMultipleChoices = [object objectForKey:@"pollMultipleChoices"];
           pollStructure.pollID = [object objectForKey:@"pollID"];
+          pollStructure.totalResponses = [object objectForKey:@"totalResponses"];
+          pollStructure.objectId = [object objectForKey:@"objectId"];
           [array addObject:pollStructure];
           if (i == theArrayToSearch.count - 1) {
                dispatch_group_leave(serviceGroup);
@@ -246,6 +231,10 @@
     return cell;
 }
 
+- (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+     
+}
+
 - (void)viewWillAppear:(BOOL)animated {
      [super viewWillAppear:animated];
      NSMutableArray *readArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"answeredPolls"];
@@ -261,15 +250,6 @@
      PollDetailViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"PollDetail"];
      controller.pollStructure = self.selectedPollStructure;
      [self.navigationController pushViewController:controller animated:YES];
-     NSMutableArray *theAnsweredPolls = [[NSUserDefaults standardUserDefaults] objectForKey:@"answeredPolls"];
-     if (! theAnsweredPolls) {
-          theAnsweredPolls = [[NSMutableArray alloc] init];
-     }
-     if (! [theAnsweredPolls containsObject:self.selectedPollStructure.pollID]) {
-          [theAnsweredPolls addObject:self.selectedPollStructure.pollID];
-          [[NSUserDefaults standardUserDefaults] setObject:theAnsweredPolls forKey:@"answeredPolls"];
-          [[NSUserDefaults standardUserDefaults] synchronize];
-     }
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {

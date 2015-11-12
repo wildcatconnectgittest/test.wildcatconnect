@@ -198,9 +198,9 @@
      /*PollStructure *pollStructure = [[PollStructure alloc] init];
      pollStructure.pollTitle = @"Cell Phone Policy";
      pollStructure.pollQuestion = @"Do you think that students should be able to use cell phones in class all the time?";
-     pollStructure.pollType = [NSNumber numberWithInt:0];
-     pollStructure.pollMultipleChoices = [NSArray array];
-     pollStructure.pollID = [NSNumber numberWithInt:0];
+     pollStructure.pollMultipleChoices = [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"0", @"0", nil] forKeys:[NSArray arrayWithObjects:@"YES", @"NO", nil]];
+     pollStructure.pollID = @"0";
+     pollStructure.totalResponses = @"0";
      [pollStructure saveInBackground];*/
      
     return YES;

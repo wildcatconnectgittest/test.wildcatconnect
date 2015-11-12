@@ -12,6 +12,7 @@
 #import "ComposeNewsArticleViewController.h"
 #import "ComposeExtracurricularUpdateViewController.h"
 #import "ComposeCommunityServiceViewController.h"
+#import "ComposePollViewController.h"
 
 @interface AdministrationMainTableViewController ()
 
@@ -31,11 +32,12 @@
      
      self.topBar.topItem.title = [[lastName stringByAppendingString:@", "] stringByAppendingString:firstName];
      
-     self.sectionsArray = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"News Article", @"Extracurricular Update", @"Community Service Update", @"Alert", nil]];
+     self.sectionsArray = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"News Article", @"Extracurricular Update", @"Community Service Update", @"User Poll", @"Alert", nil]];
      self.sectionsImagesArray = [[NSMutableArray alloc] init];
      [self.sectionsImagesArray addObject:@"theNews@2x.png"];
      [self.sectionsImagesArray addObject:@"extracurriculars@2x.png"];
      [self.sectionsImagesArray addObject:@"communityService@2x.png"];
+     [self.sectionsImagesArray addObject:@"studentCenter@2x.png"];
      [self.sectionsImagesArray addObject:@"alerts@2x.png"];
     
     // Uncomment the following line to preserve selection between presentations.
@@ -86,6 +88,9 @@
           [self.navigationController pushViewController:controller animated:YES];
      } else if (indexPath.row == 2) {
           ComposeCommunityServiceViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"ComposeCommunity"];
+          [self.navigationController pushViewController:controller animated:YES];
+     } else if (indexPath.row == 3) {
+          ComposePollViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"ComposePoll"];
           [self.navigationController pushViewController:controller animated:YES];
      }
      [self.tableView deselectRowAtIndexPath:indexPath animated:YES];

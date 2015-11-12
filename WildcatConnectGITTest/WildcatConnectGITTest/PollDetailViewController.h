@@ -9,8 +9,17 @@
 #import <UIKit/UIKit.h>
 #import "PollStructure.h"
 
-@interface PollDetailViewController : UIViewController
+@interface PollDetailViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate> {
+     NSIndexPath *checkedIndexPath;
+     NSMutableArray *choicesArray;
+     NSMutableArray *valuesArray;
+     BOOL hasAnswered;
+}
 
-@property (nonatomic, strong) PollStructure *pollStructure;
+@property (nonatomic, retain) PollStructure *pollStructure;
+@property (nonatomic, strong) NSIndexPath *checkedIndexPath;
+@property (nonatomic, strong) NSMutableArray *choicesArray;
+@property (nonatomic, strong) NSMutableArray *valuesArray;
+@property (nonatomic) BOOL hasAnswered;
 
 @end

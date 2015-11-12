@@ -13,8 +13,9 @@
 
 @dynamic pollTitle;
 @dynamic pollQuestion;
-@dynamic pollType;
 @dynamic pollMultipleChoices;
+@dynamic pollID;
+@dynamic totalResponses;
 
 + (void)load {
      [self registerSubclass];
