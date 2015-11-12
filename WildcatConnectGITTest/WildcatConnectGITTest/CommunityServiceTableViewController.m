@@ -48,32 +48,49 @@
     }
 
 - (void)refreshData {
+     activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+     [activity setBackgroundColor:[UIColor clearColor]];
+     [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
+     self.navigationItem.rightBarButtonItem = barButtonItem;
+     [activity startAnimating];
+     [barButtonItem release];
      [self testMethodWithCompletion:^(NSError *error, NSMutableArray *returnArrayA) {
-          self.allOpps = returnArrayA;
-          [self testMethodThreeWithCompletion:^(NSMutableArray *returnArrayB, NSMutableArray *returnArray2) {
-               self.newOpps = returnArray2;
-               self.oldOpps = returnArrayB;
-               NSMutableArray *itemsToSave = [NSMutableArray array];
-               for (CommunityServiceStructure *c in returnArray2) {
-                    [itemsToSave addObject:@{ @"commTitleString"     : c.commTitleString, @"commSummaryString" : c.commSummaryString, @"IsNewNumber" : c.IsNewNumber, @"communityServiceID"  : c.communityServiceID, @"startDate" : c.startDate , @"endDate" : c.endDate
-                                              }];
-               }
-               NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-               [userDefaults setObject:itemsToSave forKey:@"newCommServiceItems"];
-               itemsToSave = [NSMutableArray array];
-               for (CommunityServiceStructure *c in returnArrayB) {
-                    [itemsToSave addObject:@{ @"commTitleString"     : c.commTitleString, @"commSummaryString" : c.commSummaryString, @"IsNewNumber" : c.IsNewNumber, @"communityServiceID"  : c.communityServiceID, @"startDate" : c.startDate , @"endDate" : c.endDate
-                                              }];
-               }
-               [userDefaults setObject:itemsToSave forKey:@"oldCommServiceItems"];
+          if (error) {
+               UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"Error fetching data from server. Please try again." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+               [alertView show];
                dispatch_async(dispatch_get_main_queue(), ^ {
                     [activity stopAnimating];
                     [self.tableView reloadData];
+                    [self refreshControl];
                     [self.refreshControl endRefreshing];
                });
-          } withArray:returnArrayA];
+          } else {
+               self.allOpps = returnArrayA;
+               [self testMethodThreeWithCompletion:^(NSMutableArray *returnArrayB, NSMutableArray *returnArray2) {
+                    self.newOpps = returnArray2;
+                    self.oldOpps = returnArrayB;
+                    NSMutableArray *itemsToSave = [NSMutableArray array];
+                    for (CommunityServiceStructure *c in returnArray2) {
+                         [itemsToSave addObject:@{ @"commTitleString"     : c.commTitleString, @"commSummaryString" : c.commSummaryString, @"IsNewNumber" : c.IsNewNumber, @"communityServiceID"  : c.communityServiceID, @"startDate" : c.startDate , @"endDate" : c.endDate
+                                                   }];
+                    }
+                    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                    [userDefaults setObject:itemsToSave forKey:@"newCommServiceItems"];
+                    itemsToSave = [NSMutableArray array];
+                    for (CommunityServiceStructure *c in returnArrayB) {
+                         [itemsToSave addObject:@{ @"commTitleString"     : c.commTitleString, @"commSummaryString" : c.commSummaryString, @"IsNewNumber" : c.IsNewNumber, @"communityServiceID"  : c.communityServiceID, @"startDate" : c.startDate , @"endDate" : c.endDate
+                                                   }];
+                    }
+                    [userDefaults setObject:itemsToSave forKey:@"oldCommServiceItems"];
+                    dispatch_async(dispatch_get_main_queue(), ^ {
+                         [activity stopAnimating];
+                         [self.tableView reloadData];
+                         [self.refreshControl endRefreshing];
+                    });
+               } withArray:returnArrayA];
+          }
      }];
-
 }
 
 - (void)getPreviousOldCommunityServiceStructuresWithCompletion:(void (^)(NSMutableArray *returnArray))completion {

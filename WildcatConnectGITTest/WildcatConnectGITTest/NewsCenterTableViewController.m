@@ -190,45 +190,65 @@
      [activity startAnimating];
      [barButtonItem release];
      [self testMethodWithCompletion:^(NSError *error, NSMutableArray *returnArrayA) {
-          self.newsArticles = returnArrayA;
-          [self removeOldArrayObjectsWithCompletion:^(NSUInteger integer) {
-               NSMutableArray *itemsToSave = [NSMutableArray array];
-               for (NewsArticleStructure *n in returnArrayA) {
-                    [itemsToSave addObject:@{ @"hasImage"     : n.hasImage,
-                                              @"titleString" : n.titleString,
-                                              
-                                              @"summaryString" : n.summaryString,
-                                              
-                                              @"authorString" : n.authorString,
-                                              
-                                              @"dateString" : n.dateString,
-                                              
-                                              @"contentURLString" : n.contentURLString,
-                                              
-                                              @"articleID" : n.articleID,
-                                              
-                                              @"likes" : n.likes
-                                              
-                                              }];
-               }
-               NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-               [userDefaults setObject:itemsToSave forKey:@"newsArticles"];
-               [self testMethodTwoWithCompletion:^(NSError *error, NSMutableArray *returnArray, NSMutableArray *theReturnDataArray) {
-                    self.newsArticleImages = returnArray;
-                    self.dataArray = theReturnDataArray;
-                    NSMutableArray *moreItems = [NSMutableArray array];
-                    for (int i = 0; i < theReturnDataArray.count; i++) {
-                         [moreItems addObject:theReturnDataArray[i]];
+          if (error) {
+               UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"Error fetching data from server. Please try again." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+               [alertView show];
+               dispatch_async(dispatch_get_main_queue(), ^ {
+                    [activity stopAnimating];
+                    [self.tableView reloadData];
+                    [self refreshControl];
+               });
+          } else {
+               self.newsArticles = returnArrayA;
+               [self removeOldArrayObjectsWithCompletion:^(NSUInteger integer) {
+                    NSMutableArray *itemsToSave = [NSMutableArray array];
+                    for (NewsArticleStructure *n in returnArrayA) {
+                         [itemsToSave addObject:@{ @"hasImage"     : n.hasImage,
+                                                   @"titleString" : n.titleString,
+                                                   
+                                                   @"summaryString" : n.summaryString,
+                                                   
+                                                   @"authorString" : n.authorString,
+                                                   
+                                                   @"dateString" : n.dateString,
+                                                   
+                                                   @"contentURLString" : n.contentURLString,
+                                                   
+                                                   @"articleID" : n.articleID,
+                                                   
+                                                   @"likes" : n.likes
+                                                   
+                                                   }];
                     }
-                    [userDefaults setObject:moreItems forKey:@"newsArticleImages"];
-                    [userDefaults synchronize];
-                    dispatch_async(dispatch_get_main_queue(), ^ {
-                         [activity stopAnimating];
-                         [self.tableView reloadData];
-                         [self refreshControl];
-                    });
+                    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                    [userDefaults setObject:itemsToSave forKey:@"newsArticles"];
+                    [self testMethodTwoWithCompletion:^(NSError *error, NSMutableArray *returnArray, NSMutableArray *theReturnDataArray) {
+                         if (error) {
+                              UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"Error fetching data from server. Please try again." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+                              [alertView show];
+                              dispatch_async(dispatch_get_main_queue(), ^ {
+                                   [activity stopAnimating];
+                                   [self.tableView reloadData];
+                                   [self refreshControl];
+                              });
+                         } else {
+                              self.newsArticleImages = returnArray;
+                              self.dataArray = theReturnDataArray;
+                              NSMutableArray *moreItems = [NSMutableArray array];
+                              for (int i = 0; i < theReturnDataArray.count; i++) {
+                                   [moreItems addObject:theReturnDataArray[i]];
+                              }
+                              [userDefaults setObject:moreItems forKey:@"newsArticleImages"];
+                              [userDefaults synchronize];
+                              dispatch_async(dispatch_get_main_queue(), ^ {
+                                   [activity stopAnimating];
+                                   [self.tableView reloadData];
+                                   [self refreshControl];
+                              });
+                         }
+                    } withArray:returnArrayA];
                } withArray:returnArrayA];
-          } withArray:returnArrayA];
+          }
      }];
 }
 

@@ -71,54 +71,76 @@
      [activity startAnimating];
      [barButtonItem release];
      [self testMethodWithCompletion:^(NSError *error, NSMutableArray *returnArray) {
-          self.updatesArray = returnArray;
-          NSMutableArray *itemsToSave = [NSMutableArray array];
-          for (ExtracurricularUpdateStructure *e in returnArray) {
-               [itemsToSave addObject:@{ @"extracurricularID"     : e.extracurricularID,
-                                         @"messageString"    : e.messageString,
-                                         @"extracurricularUpdateID" :e.extracurricularUpdateID
-                                         }];
-          }
-          NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-          [userDefaults setObject:itemsToSave forKey:@"ECUpdates"];
-          [self testMethodTwoWithCompletion:^(NSError *error, NSMutableArray *returnArrayA) {
-               [self resortToBottomMethod:^(NSMutableArray *returnArrayNew) {
-                    self.extracurricularsArray = returnArrayNew;
-                    NSMutableArray *moreItems = [NSMutableArray array];
-                    for (ExtracurricularStructure *e in returnArrayNew) {
-                         [moreItems addObject:@{ @"titleString"     : e.titleString,
-                                                 @"descriptionString"    : e.descriptionString,
-                                                 @"hasImage" :e.hasImage,
-                                                 @"imageURLString": e.imageURLString,
-                                                 @"extracurricularID" : e.extracurricularID,
-                                                 @"meetingIDs" : e.meetingIDs
-                                                 }];
-                    }
-                    [userDefaults setObject:moreItems forKey:@"ECArray"];
-                    [self testMethodThreeWithCompletion:^(NSError *error, NSMutableArray *returnArrayB) {
-                         self.ECImagesArray = returnArrayB;
+          if (error) {
+               UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"Error fetching data from server. Please try again." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+               [alertView show];
+               dispatch_async(dispatch_get_main_queue(), ^ {
+                    [activity stopAnimating];
+                    [self.tableView reloadData];
+                    [self refreshControl];
+                    [self.refreshControl endRefreshing];
+               });
+          } else {
+               self.updatesArray = returnArray;
+               NSMutableArray *itemsToSave = [NSMutableArray array];
+               for (ExtracurricularUpdateStructure *e in returnArray) {
+                    [itemsToSave addObject:@{ @"extracurricularID"     : e.extracurricularID,
+                                              @"messageString"    : e.messageString,
+                                              @"extracurricularUpdateID" :e.extracurricularUpdateID
+                                              }];
+               }
+               NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+               [userDefaults setObject:itemsToSave forKey:@"ECUpdates"];
+               [self testMethodTwoWithCompletion:^(NSError *error, NSMutableArray *returnArrayA) {
+                    [self resortToBottomMethod:^(NSMutableArray *returnArrayNew) {
+                         self.extracurricularsArray = returnArrayNew;
                          NSMutableArray *moreItems = [NSMutableArray array];
-                         NSData *data;
-                         for (int i = 0; i < returnArrayB.count; i++) {
-                              if ([returnArrayB[i] isKindOfClass:[UIImage class]]) {
-                                   data = [[NSData alloc] init];
-                                   data = UIImagePNGRepresentation(returnArrayB[i]);
-                                   [moreItems addObject:data];
-                              } else {
-                                   [moreItems addObject:[[NSData alloc] init]];
-                              }
+                         for (ExtracurricularStructure *e in returnArrayNew) {
+                              [moreItems addObject:@{ @"titleString"     : e.titleString,
+                                                      @"descriptionString"    : e.descriptionString,
+                                                      @"hasImage" :e.hasImage,
+                                                      @"imageURLString": e.imageURLString,
+                                                      @"extracurricularID" : e.extracurricularID,
+                                                      @"meetingIDs" : e.meetingIDs
+                                                      }];
                          }
-                         [userDefaults setObject:moreItems forKey:@"ECImagesArray"];
-                         [userDefaults synchronize];
-                         dispatch_async(dispatch_get_main_queue(), ^ {
-                              [activity stopAnimating];
-                              [self.tableView reloadData];
-                              [self refreshControl];
-                              [self.refreshControl endRefreshing];
-                         });
-                    } withArray:returnArrayNew];
-               } withArray:returnArrayA];
-          }];
+                         [userDefaults setObject:moreItems forKey:@"ECArray"];
+                         [self testMethodThreeWithCompletion:^(NSError *error, NSMutableArray *returnArrayB) {
+                              if (error) {
+                                   UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"Error fetching data from server. Please try again." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+                                   [alertView show];
+                                   dispatch_async(dispatch_get_main_queue(), ^ {
+                                        [activity stopAnimating];
+                                        [self.tableView reloadData];
+                                        [self refreshControl];
+                                        [self.refreshControl endRefreshing];
+                                   });
+                              } else {
+                                   self.ECImagesArray = returnArrayB;
+                                   NSMutableArray *moreItems = [NSMutableArray array];
+                                   NSData *data;
+                                   for (int i = 0; i < returnArrayB.count; i++) {
+                                        if ([returnArrayB[i] isKindOfClass:[UIImage class]]) {
+                                             data = [[NSData alloc] init];
+                                             data = UIImagePNGRepresentation(returnArrayB[i]);
+                                             [moreItems addObject:data];
+                                        } else {
+                                             [moreItems addObject:[[NSData alloc] init]];
+                                        }
+                                   }
+                                   [userDefaults setObject:moreItems forKey:@"ECImagesArray"];
+                                   [userDefaults synchronize];
+                                   dispatch_async(dispatch_get_main_queue(), ^ {
+                                        [activity stopAnimating];
+                                        [self.tableView reloadData];
+                                        [self refreshControl];
+                                        [self.refreshControl endRefreshing];
+                                   });
+                              }
+                         } withArray:returnArrayNew];
+                    } withArray:returnArrayA];
+               }];
+          }
      }];
 }
 

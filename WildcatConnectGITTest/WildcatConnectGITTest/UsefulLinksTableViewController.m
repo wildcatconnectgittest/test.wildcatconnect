@@ -33,10 +33,21 @@
      [activity startAnimating];
      [barButtonItem release];
      
-     [self loadLinksWithCompletion:^(NSMutableArray *returnArray) {
-          [activity stopAnimating];
-          self.linksArray = returnArray;
-          [self.tableView reloadData];
+     [self loadLinksWithCompletion:^(NSError *error, NSMutableArray *returnArray) {
+          if (error != nil) {
+               UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"Error fetching data from server. Please try again." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+               [alertView show];
+               dispatch_async(dispatch_get_main_queue(), ^ {
+                    [activity stopAnimating];
+                    [self.tableView reloadData];
+                    [self refreshControl];
+                    [self.refreshControl endRefreshing];
+               });
+          } else {
+               [activity stopAnimating];
+               self.linksArray = returnArray;
+               [self.tableView reloadData];
+          }
      }];
 }
 
@@ -46,14 +57,16 @@
      return self;
 }
 
-- (void)loadLinksWithCompletion:(void (^)(NSMutableArray *returnArray))completion {
+- (void)loadLinksWithCompletion:(void (^)(NSError *error, NSMutableArray *returnArray))completion {
      dispatch_group_t serviceGroup = dispatch_group_create();
      dispatch_group_enter(serviceGroup);
+     __block NSError *theError;
      PFQuery *query = [UsefulLinkArray query];
      [query orderByAscending:@"index"];
      __block NSMutableDictionary *dictionary;
      NSMutableArray *array = [[NSMutableArray alloc] init];
      [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+          theError = error;
           for (UsefulLinkArray *object in objects) {
                dictionary = [[NSMutableDictionary alloc] init];
                [dictionary setObject:object.headerTitle forKey:@"headerTitle"];
@@ -63,7 +76,11 @@
           dispatch_group_leave(serviceGroup);
      }];
      dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
-          completion(array);
+          NSError *overallError = nil;
+          if (theError) {
+               overallError = theError;
+          }
+          completion(overallError, array);
      });
 }
 

@@ -65,21 +65,32 @@
      [activity startAnimating];
      [barButtonItem release];
      [self getNewPollsMethodWithCompletion:^(NSError *error, NSMutableArray *returnArray) {
-          self.pollArray = returnArray;
-          NSMutableArray *itemsToSave = [NSMutableArray array];
-          for (PollStructure *p in returnArray) {
-               [itemsToSave addObject:@{ @"pollTitle" : p.pollTitle, @"pollQuestion" : p.pollQuestion, @"pollMultipleChoices" : p.pollMultipleChoices, @"pollID" : p.pollID, @"totalResponses" : p.totalResponses, @"objectId" : p.objectId }];
-          }
-          [[NSUserDefaults standardUserDefaults] setObject:itemsToSave forKey:@"pollStructures"];
-          [[NSUserDefaults standardUserDefaults] synchronize];
-          [self removeOldArrayObjectsWithCompletion:^(NSUInteger integer) {
+          if (error) {
+               UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"Error fetching data from server. Please try again." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+               [alertView show];
                dispatch_async(dispatch_get_main_queue(), ^ {
                     [activity stopAnimating];
                     [self.tableView reloadData];
                     [self refreshControl];
                     [self.refreshControl endRefreshing];
                });
-          } withArray:returnArray];
+          } else {
+               self.pollArray = returnArray;
+               NSMutableArray *itemsToSave = [NSMutableArray array];
+               for (PollStructure *p in returnArray) {
+                    [itemsToSave addObject:@{ @"pollTitle" : p.pollTitle, @"pollQuestion" : p.pollQuestion, @"pollMultipleChoices" : p.pollMultipleChoices, @"pollID" : p.pollID, @"totalResponses" : p.totalResponses, @"objectId" : p.objectId }];
+               }
+               [[NSUserDefaults standardUserDefaults] setObject:itemsToSave forKey:@"pollStructures"];
+               [[NSUserDefaults standardUserDefaults] synchronize];
+               [self removeOldArrayObjectsWithCompletion:^(NSUInteger integer) {
+                    dispatch_async(dispatch_get_main_queue(), ^ {
+                         [activity stopAnimating];
+                         [self.tableView reloadData];
+                         [self refreshControl];
+                         [self.refreshControl endRefreshing];
+                    });
+               } withArray:returnArray];
+          }
      }];
 }
 

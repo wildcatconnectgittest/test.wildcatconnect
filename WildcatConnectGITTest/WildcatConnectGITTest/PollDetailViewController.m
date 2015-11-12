@@ -18,6 +18,7 @@
      UITableView *thetableView;
      UIButton *postButton;
      UIView *separatorTwo;
+     UILabel *thank;
 }
 
 @synthesize hasAnswered;
@@ -109,6 +110,14 @@
           self.navigationItem.rightBarButtonItem = barButtonItem;
           [activity startAnimating];
           [barButtonItem release];
+          [postButton removeFromSuperview];
+          thank = [[UILabel alloc] init];
+          thank.text = @"SUBMITTING VOTE...";
+          UIFont *font = [UIFont fontWithName:@"Helvetica Neue" size:16];
+          [thank setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
+          [thank sizeToFit];
+          thank.frame = CGRectMake((self.view.frame.size.width / 2) - (thank.frame.size.width / 2), separatorTwo.frame.origin.y + separatorTwo.frame.size.height + 10, thank.frame.size.width, thank.frame.size.height);
+          [scrollView addSubview:thank];
           [self postVoteMethodWithCompletion:^(NSDictionary *dictionary) {
                [self.pollStructure fetchInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
                     self.pollStructure = (PollStructure *)object;
@@ -125,17 +134,9 @@
                     }
                     dispatch_async(dispatch_get_main_queue(), ^ {
                          [activity stopAnimating];
-                         [postButton removeFromSuperview];
-                         [separatorTwo removeFromSuperview];
-                         UILabel *thank = [[UILabel alloc] init];
-                         thank.text = @"THANK YOU FOR VOTING!";
-                         UIFont *font = [UIFont fontWithName:@"Helvetica Neue" size:16];
-                         [thank setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
-                         thank.lineBreakMode = NSLineBreakByWordWrapping;
-                         thank.numberOfLines = 0;
+                         [thank setText:@"THANK YOU FOR VOTING!"];
                          [thank sizeToFit];
-                         thank.frame = CGRectMake((self.view.frame.size.width / 2) - (thank.frame.size.width / 2), thetableView.frame.origin.y + thetableView.frame.size.height + 10, thank.frame.size.width, thank.frame.size.height);
-                         [scrollView addSubview:thank];
+                         thank.frame = CGRectMake((self.view.frame.size.width / 2) - (thank.frame.size.width / 2), separatorTwo.frame.origin.y + separatorTwo.frame.size.height + 10, thank.frame.size.width, thank.frame.size.height);
                          [thetableView reloadData];
                     });
                }];
@@ -179,12 +180,13 @@
                float thisF = [thisOne floatValue];
                NSString *total = self.pollStructure.totalResponses;
                float thisT = [total floatValue];
-               float percent = floorf(100 * (thisF / thisT));
+               float percent = 100 * (thisF / thisT);
+               NSString *theString = [NSString stringWithFormat:@"%.1f", percent];
                if (isnan(percent)) {
                     percent = 0;
                }
                UIButton *downloadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-               [downloadButton setTitle:[[[NSNumber numberWithFloat:percent] stringValue] stringByAppendingString:@"%"] forState:UIControlStateNormal];
+               [downloadButton setTitle:[theString stringByAppendingString:@"%"] forState:UIControlStateNormal];
                [downloadButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
                downloadButton.enabled = false;
                [downloadButton sizeToFit];

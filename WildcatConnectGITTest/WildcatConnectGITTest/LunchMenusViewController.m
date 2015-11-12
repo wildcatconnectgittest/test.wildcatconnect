@@ -25,26 +25,43 @@
      self.navigationItem.rightBarButtonItem = barButtonItem;
      [activity startAnimating];
      [barButtonItem release];
-     [self getStructuresWithCompletion:^(NSMutableArray *returnArray) {
-          [activity stopAnimating];
-          self.theStructuresArray = returnArray;
-          [self.tableView reloadData];
+     [self getStructuresWithCompletion:^(NSError *error, NSMutableArray *returnArray) {
+          if (error != nil) {
+               UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"Error fetching data from server. Please try again." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+               [alertView show];
+               dispatch_async(dispatch_get_main_queue(), ^ {
+                    [activity stopAnimating];
+                    [self.tableView reloadData];
+                    [self refreshControl];
+                    [self.refreshControl endRefreshing];
+               });
+          } else {
+               [activity stopAnimating];
+               self.theStructuresArray = returnArray;
+               [self.tableView reloadData];
+          }
      }];
 }
 
-- (void)getStructuresWithCompletion:(void (^)(NSMutableArray *returnArray))completion {
+- (void)getStructuresWithCompletion:(void (^)(NSError *error, NSMutableArray *returnArray))completion {
      dispatch_group_t serviceGroup = dispatch_group_create();
      dispatch_group_enter(serviceGroup);
+     __block NSError *theError;
      PFQuery *query = [LunchMenusStructure query];
      [query orderByAscending:@"lunchStructureID"];
      query.limit = 5;
      NSMutableArray *returnArray = [NSMutableArray array];
      [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+          theError = error;
           [returnArray addObjectsFromArray:objects];
           dispatch_group_leave(serviceGroup);
      }];
      dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
-          completion(returnArray);
+          NSError *overallError = nil;
+          if (theError) {
+               overallError = theError;
+          }
+          completion(overallError, returnArray);
      });
 }
 
