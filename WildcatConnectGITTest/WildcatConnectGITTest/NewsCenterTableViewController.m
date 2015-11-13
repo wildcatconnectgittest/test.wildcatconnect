@@ -18,7 +18,8 @@
 - (void)viewDidLoad {
      [super viewDidLoad];
     UIRefreshControl *refreshControl= [[UIRefreshControl alloc] init];
-    [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
+    [refreshControl addTarget:self action:@selector(refreshView:) forControlEvents:UIControlEventValueChanged];
+     refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"PULL TO REFRESH"];
     self.refreshControl= refreshControl;
     
     if (self.loadNumber == [NSNumber numberWithInt:1] || ! self.loadNumber) {
@@ -45,11 +46,6 @@
                     }];
                }];
           }
-}
-
-- (void)refresh {
-    [self refreshData];
-    [self.refreshControl endRefreshing];
 }
 
 
@@ -252,34 +248,51 @@
      }];
 }
 
+-(void)refreshView:(UIRefreshControl *)refresh {
+     refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Refreshing data..."];
+
+     // custom refresh logic would be placed here...
+     
+     [self refreshData];
+
+     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+     [formatter setDateFormat:@"MMMM dd, h:mm a"];
+     NSString *lastUpdated = [NSString stringWithFormat:@"Last updated on %@",
+                                                                 [formatter stringFromDate:[NSDate date]]];
+     refresh.attributedTitle = [[NSAttributedString alloc] initWithString:lastUpdated];
+     [refresh endRefreshing];
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
-     NSMutableArray *itemsToSave = [NSMutableArray array];
-     for (NewsArticleStructure *n in self.newsArticles) {
-          [itemsToSave addObject:@{ @"hasImage"     : n.hasImage,
-                                    @"titleString" : n.titleString,
-                                    
-                                    @"summaryString" : n.summaryString,
-                                    
-                                    @"authorString" : n.authorString,
-                                    
-                                    @"dateString" : n.dateString,
-                                    
-                                    @"contentURLString" : n.contentURLString,
-                                    
-                                    @"articleID" : n.articleID,
-                                    
-                                    @"likes" : n.likes
-                                    
-                                    }];
+     if (self.newsArticles.count > 0) {
+          NSMutableArray *itemsToSave = [NSMutableArray array];
+          for (NewsArticleStructure *n in self.newsArticles) {
+               [itemsToSave addObject:@{ @"hasImage"     : n.hasImage,
+                                         @"titleString" : n.titleString,
+                                         
+                                         @"summaryString" : n.summaryString,
+                                         
+                                         @"authorString" : n.authorString,
+                                         
+                                         @"dateString" : n.dateString,
+                                         
+                                         @"contentURLString" : n.contentURLString,
+                                         
+                                         @"articleID" : n.articleID,
+                                         
+                                         @"likes" : n.likes
+                                         
+                                         }];
+          }
+          NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+          [userDefaults setObject:itemsToSave forKey:@"newsArticles"];
+          NSMutableArray *moreItems = [NSMutableArray array];
+          for (int i = 0; i < self.dataArray.count; i++) {
+               [moreItems addObject:self.dataArray[i]];
+          }
+          [userDefaults setObject:moreItems forKey:@"newsArticleImages"];
+          [userDefaults synchronize];
      }
-     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-     [userDefaults setObject:itemsToSave forKey:@"newsArticles"];
-     NSMutableArray *moreItems = [NSMutableArray array];
-     for (int i = 0; i < self.dataArray.count; i++) {
-          [moreItems addObject:self.dataArray[i]];
-     }
-     [userDefaults setObject:moreItems forKey:@"newsArticleImages"];
-     [userDefaults synchronize];
 }
 
 - (instancetype)initWithLoadNumber:(NSNumber *)theLoadNumber {

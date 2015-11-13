@@ -29,7 +29,8 @@
                                                                             alpha:0.5f];
     
     UIRefreshControl *refreshControl= [[UIRefreshControl alloc] init];
-    [refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
+    [refreshControl addTarget:self action:@selector(refreshView:) forControlEvents:UIControlEventValueChanged];
+     refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"PULL TO REFRESH"];
     self.refreshControl= refreshControl;
     
     
@@ -61,8 +62,19 @@
      }
 }
 
--(void)refresh {
-    [self refreshData];
+-(void)refreshView:(UIRefreshControl *)refresh {
+     refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Refreshing data..."];
+     
+          // custom refresh logic would be placed here...
+     
+     [self refreshData];
+     
+     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+     [formatter setDateFormat:@"MMMM dd, h:mm a"];
+     NSString *lastUpdated = [NSString stringWithFormat:@"Last updated on %@",
+                              [formatter stringFromDate:[NSDate date]]];
+     refresh.attributedTitle = [[NSAttributedString alloc] initWithString:lastUpdated];
+     [refresh endRefreshing];
 }
 
 - (void)refreshData {

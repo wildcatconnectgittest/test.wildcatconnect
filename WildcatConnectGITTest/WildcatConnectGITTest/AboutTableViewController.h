@@ -10,4 +10,7 @@
 
 @interface AboutTableViewController : UITableViewController
 
+@property (nonatomic, retain) NSMutableArray *developerArray;
+@property CGFloat cellHeight;
+
 @end
