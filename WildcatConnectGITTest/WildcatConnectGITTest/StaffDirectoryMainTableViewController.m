@@ -26,10 +26,18 @@
 
 @implementation StaffDirectoryMainTableViewController {
      UIActivityIndicatorView *activity;
+     BOOL isActive;
 }
 
 - (void)viewDidLoad {
      [super viewDidLoad];
+     
+     isActive = false;
+     
+     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:248.0f/255.0f
+                                                                            green:183.0f/255.0f
+                                                                             blue:23.0f/255.0f
+                                                                            alpha:0.5f];
      _resultsTableController = [[StaffDirectoryResultsTableViewController alloc] init];
      _searchController = [[UISearchController alloc] initWithSearchResultsController:self.resultsTableController];
      self.searchController.searchResultsUpdater = self;
@@ -263,7 +271,8 @@
      // Implement this method if the default presentation is not adequate for your purposes.
      //
 - (void)presentSearchController:(UISearchController *)searchController {
-     
+     isActive = true;
+     [self.tableView reloadData];
 }
 
 - (void)willPresentSearchController:(UISearchController *)searchController {
@@ -280,6 +289,8 @@
 
 - (void)didDismissSearchController:(UISearchController *)searchController {
           // do something after the search controller is dismissed
+     isActive = false;
+     [self.tableView reloadData];
 }
 
 #pragma mark - UITableViewDelegate
@@ -327,7 +338,7 @@
 }
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
-     if (self.tableView != tableView) {
+     if (isActive) {
           return nil;
      } else {
           
@@ -341,11 +352,16 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
-     return index;
+     if (self.tableView != tableView) {
+          CGRect searchBarFrame = self.searchController.searchBar.frame;
+          [self.tableView scrollRectToVisible:searchBarFrame animated:NO];
+          return NSNotFound;
+     }
+     else return index;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-     if (tableView == self.tableView)
+     if (! isActive)
           return [[self.dictionaryArray objectAtIndex:section] objectForKey:@"headerTitle"];
      else
           return nil;

@@ -23,7 +23,14 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
      
+     self.navigationController.navigationItem.title = @"About";
+     
      self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];
+     
+     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:248.0f/255.0f
+                                                                            green:183.0f/255.0f
+                                                                             blue:23.0f/255.0f
+                                                                            alpha:0.5f];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -90,7 +97,7 @@
      [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
      if (indexPath.section == 0) {
 
-          NSString *URLEMail = @"mailto:wildcatconnectgittest@gmail.com?subject=WildcatConnect App Issue&body=";
+          NSString *URLEMail = @"mailto:support@wildcatconnect.org?subject=WildcatConnect App Issue&body=";
           
           UIDevice *device  = [UIDevice currentDevice];
           NSString *name    = [device name];
@@ -101,8 +108,11 @@
           
           NSString *url = [URLEMail stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding ];
           [[UIApplication sharedApplication]  openURL: [NSURL URLWithString: url]];
-     } else if (indexPath.section == 0 && indexPath.row == 1) {
-               //
+     } else if (indexPath.section == 1 && indexPath.row == 1) {
+          NSString *URLEMail = @"mailto:team@wildcatconnect.org?subject=WildcatConnect App Team";
+          
+          NSString *url = [URLEMail stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding ];
+          [[UIApplication sharedApplication]  openURL: [NSURL URLWithString: url]];
      }
 }
 

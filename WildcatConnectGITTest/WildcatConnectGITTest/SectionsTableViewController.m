@@ -40,6 +40,13 @@
     //self.navigationItem.rightBarButtonItem = self.editButtonItem;
     //self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 60, 0);
      
+     self.navigationController.navigationItem.title = @"Sections";
+     
+     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:248.0f/255.0f
+                                                                            green:183.0f/255.0f
+                                                                             blue:23.0f/255.0f
+                                                                            alpha:0.5f];
+     
      self.sectionsArray = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"News Center", @"Extracurriculars", @"Community Service", @"Student Center",  @"Lunch Menus", @"Useful Links", @"Staff Directory", @"Administration Only", nil]];
      self.sectionsImagesArray = [[NSMutableArray alloc] init];
      [self.sectionsImagesArray addObject:@"theNews@2x.png"];

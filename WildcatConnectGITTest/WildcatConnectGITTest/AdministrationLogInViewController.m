@@ -20,6 +20,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
      
+     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:248.0f/255.0f
+                                                                            green:183.0f/255.0f
+                                                                             blue:23.0f/255.0f
+                                                                            alpha:0.5f];
+     
      self.usernameField.frame = CGRectMake(10, self.usernameField.frame.origin.y, self.view.frame.size.width - 20, self.usernameField.frame.size.height);
      self.passwordField.frame = CGRectMake(10, self.passwordField.frame.origin.y, self.view.frame.size.width - 20, self.passwordField.frame.size.height);
      

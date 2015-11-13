@@ -17,14 +17,66 @@
 
 @end
 
-@implementation FirstViewController
+@implementation FirstViewController {
+     UIScrollView *scrollView;
+     UILabel *titleLabelA;
+     UILabel *titleLabelB;
+     UILabel *titleLabelC;
+}
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-    [scrollerhome setScrollEnabled:YES];
-    [scrollerhome setContentSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 1000)];
-    CGSize ScreenSize = [[UIScreen mainScreen] bounds].size;
-    self.view.frame = CGRectMake(0, 0, ScreenSize.width, ScreenSize.height);
+     
+     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:248.0f/255.0f
+                                                                            green:183.0f/255.0f
+                                                                             blue:23.0f/255.0f
+                                                                            alpha:0.5f];
+     
+     self.navigationController.navigationItem.title = @"Home";
+     
+     scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+     
+     titleLabelA = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 0, 0)];
+     titleLabelA.text = @"Today is...";
+     [titleLabelA setFont:[UIFont systemFontOfSize:12]];
+     titleLabelA.lineBreakMode = NSLineBreakByWordWrapping;
+     titleLabelA.numberOfLines = 0;
+     [titleLabelA sizeToFit];
+     [scrollView addSubview:titleLabelA];
+     
+     titleLabelB = [[UILabel alloc] initWithFrame:CGRectMake(10, titleLabelA.frame.origin.y + titleLabelA.frame.size.height + 5, 0, 0)];
+     NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+     [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
+     [dateFormatter setDateFormat:@"EEEE"];
+     NSString *currentDate = [dateFormatter stringFromDate:[NSDate date]];
+     titleLabelB.text = [currentDate stringByAppendingString:@","];
+     [titleLabelB setFont:[UIFont systemFontOfSize:32]];
+     titleLabelB.lineBreakMode = NSLineBreakByWordWrapping;
+     titleLabelB.numberOfLines = 0;
+     [titleLabelB sizeToFit];
+     [scrollView addSubview:titleLabelB];
+     
+     titleLabelC = [[UILabel alloc] initWithFrame:CGRectMake(10, titleLabelB.frame.origin.y + titleLabelB.frame.size.height, 0, 0)];
+     [dateFormatter setDateFormat:@"MMMM dd, yyyy"];
+     currentDate = [dateFormatter stringFromDate:[NSDate date]];
+     titleLabelC.text = currentDate;
+     [titleLabelC setFont:[UIFont systemFontOfSize:32]];
+     titleLabelC.lineBreakMode = NSLineBreakByWordWrapping;
+     titleLabelC.numberOfLines = 0;
+     [titleLabelC sizeToFit];
+     [scrollView addSubview:titleLabelC];
+     
+     CGRect contentRect = CGRectZero;
+     for (UIView *view in scrollView.subviews) {
+          contentRect = CGRectUnion(contentRect, view.frame);
+     }
+     scrollView.contentSize = contentRect.size;
+     self.automaticallyAdjustsScrollViewInsets = YES;
+     UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 70, 0);
+     scrollView.contentInset = adjustForTabbarInsets;
+     scrollView.scrollIndicatorInsets = adjustForTabbarInsets;
+     [self.view addSubview:scrollView];
+     
      [self getCountMethodWithCompletion:^(NSInteger count) {
           NSMutableArray *array = [[NSUserDefaults standardUserDefaults] objectForKey:@"readNewsArticles"];
           NSInteger read = array.count;

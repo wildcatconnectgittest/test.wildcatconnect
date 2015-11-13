@@ -27,6 +27,7 @@
      UIView *separator;
      UIButton *postButton;
      UIAlertView *postAlertView;
+     UIAlertView *errorAlertView;
      BOOL keyboardIsShown;
 }
 
@@ -43,6 +44,11 @@
      
           //self.navigationItem.leftBarButtonItem = bbtnBack;
           //[bbtnBack release];
+     
+     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:248.0f/255.0f
+                                                                            green:183.0f/255.0f
+                                                                             blue:23.0f/255.0f
+                                                                            alpha:0.5f];
      
      self.navigationItem.title = @"Extracurricular Update";
      self.navigationController.navigationBar.translucent = NO;
@@ -89,64 +95,79 @@
      [titleLabel sizeToFit];
      [scrollView addSubview:titleLabel];
      
+     self.automaticallyAdjustsScrollViewInsets = YES;
+     UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 10, 0);
+     scrollView.contentInset = adjustForTabbarInsets;
+     scrollView.scrollIndicatorInsets = adjustForTabbarInsets;
+     CGRect contentRect = CGRectZero;
+     for (UIView *view in scrollView.subviews) {
+          contentRect = CGRectUnion(contentRect, view.frame);
+     }
+     scrollView.contentSize = contentRect.size;
+     [self.view addSubview:scrollView];
+     
      [self getExtracurricularsMethodWithCompletion:^(NSMutableArray *returnArray, NSError *error) {
-          self.ECarray = returnArray;
-          dispatch_async(dispatch_get_main_queue(), ^ {
-               [activity stopAnimating];
-               titleLabel.text = @"Select Extracurricular";
-               [titleLabel sizeToFit];
-               
-               extracurricularPickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(10, titleLabel.frame.origin.y + titleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 150)];
-               extracurricularPickerView.delegate = self;
-               extracurricularPickerView.showsSelectionIndicator = YES;
-               [scrollView addSubview:extracurricularPickerView];
-               
-               UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, extracurricularPickerView.frame.origin.y + extracurricularPickerView.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
-               messageLabel.text = @"Message";
-               [messageLabel setFont:[UIFont systemFontOfSize:16]];
-               messageLabel.lineBreakMode = NSLineBreakByWordWrapping;
-               messageLabel.numberOfLines = 0;
-               [messageLabel sizeToFit];
-               [scrollView addSubview:messageLabel];
-               
-               messageRemainingLabel = [[UILabel alloc] init];
-               messageRemainingLabel.text = @"140 characters remaining";
-               [messageRemainingLabel setFont:[UIFont systemFontOfSize:10]];
-               [messageRemainingLabel sizeToFit];
-               messageRemainingLabel.frame = CGRectMake((self.view.frame.size.width - messageRemainingLabel.frame.size.width - 10), messageLabel.frame.origin.y, messageRemainingLabel.frame.size.width, 20);
-               [scrollView addSubview:messageRemainingLabel];
-               
-               messageTextView = [[UITextView alloc] initWithFrame:CGRectMake(messageLabel.frame.origin.x, messageLabel.frame.origin.y + messageLabel.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
-               [messageTextView setDelegate:self];
-               [messageTextView setFont:[UIFont systemFontOfSize:16]];
-               messageTextView.layer.borderWidth = 1.0f;
-               messageTextView.layer.borderColor = [[UIColor grayColor] CGColor];
-               messageTextView.scrollEnabled = false;
-               messageTextView.tag = 3;
-               [scrollView addSubview:messageTextView];
-               
-               separator = [[UIView alloc] initWithFrame:CGRectMake(10, messageTextView.frame.origin.y + messageTextView.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
-               separator.backgroundColor = [UIColor blackColor];
-               [scrollView addSubview:separator];
-               
-               postButton = [UIButton buttonWithType:UIButtonTypeSystem];
-               [postButton setTitle:@"POST UPDATE" forState:UIControlStateNormal];
-               [postButton sizeToFit];
-               [postButton addTarget:self action:@selector(postUpdate) forControlEvents:UIControlEventTouchUpInside];
-               postButton.frame = CGRectMake((self.view.frame.size.width - postButton.frame.size.width - 10), separator.frame.origin.y + separator.frame.size.height + 10, postButton.frame.size.width, postButton.frame.size.height);
-               [scrollView addSubview:postButton];
-               
-               self.automaticallyAdjustsScrollViewInsets = YES;
-               UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 10, 0);
-               scrollView.contentInset = adjustForTabbarInsets;
-               scrollView.scrollIndicatorInsets = adjustForTabbarInsets;
-               CGRect contentRect = CGRectZero;
-               for (UIView *view in scrollView.subviews) {
-                    contentRect = CGRectUnion(contentRect, view.frame);
-               }
-               scrollView.contentSize = contentRect.size;
-               [self.view addSubview:scrollView];
-          });
+          if (error != nil) {
+               errorAlertView = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"Error fetching data from server. Please try again." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+               [errorAlertView show];
+          } else {
+               self.ECarray = returnArray;
+               dispatch_async(dispatch_get_main_queue(), ^ {
+                    [activity stopAnimating];
+                    titleLabel.text = @"Select Extracurricular";
+                    [titleLabel sizeToFit];
+                    
+                    extracurricularPickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(10, titleLabel.frame.origin.y + titleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 150)];
+                    extracurricularPickerView.delegate = self;
+                    extracurricularPickerView.showsSelectionIndicator = YES;
+                    [scrollView addSubview:extracurricularPickerView];
+                    
+                    UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, extracurricularPickerView.frame.origin.y + extracurricularPickerView.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
+                    messageLabel.text = @"Message";
+                    [messageLabel setFont:[UIFont systemFontOfSize:16]];
+                    messageLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                    messageLabel.numberOfLines = 0;
+                    [messageLabel sizeToFit];
+                    [scrollView addSubview:messageLabel];
+                    
+                    messageRemainingLabel = [[UILabel alloc] init];
+                    messageRemainingLabel.text = @"140 characters remaining";
+                    [messageRemainingLabel setFont:[UIFont systemFontOfSize:10]];
+                    [messageRemainingLabel sizeToFit];
+                    messageRemainingLabel.frame = CGRectMake((self.view.frame.size.width - messageRemainingLabel.frame.size.width - 10), messageLabel.frame.origin.y, messageRemainingLabel.frame.size.width, 20);
+                    [scrollView addSubview:messageRemainingLabel];
+                    
+                    messageTextView = [[UITextView alloc] initWithFrame:CGRectMake(messageLabel.frame.origin.x, messageLabel.frame.origin.y + messageLabel.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
+                    [messageTextView setDelegate:self];
+                    [messageTextView setFont:[UIFont systemFontOfSize:16]];
+                    messageTextView.layer.borderWidth = 1.0f;
+                    messageTextView.layer.borderColor = [[UIColor grayColor] CGColor];
+                    messageTextView.scrollEnabled = false;
+                    messageTextView.tag = 3;
+                    [scrollView addSubview:messageTextView];
+                    
+                    separator = [[UIView alloc] initWithFrame:CGRectMake(10, messageTextView.frame.origin.y + messageTextView.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+                    separator.backgroundColor = [UIColor blackColor];
+                    [scrollView addSubview:separator];
+                    
+                    postButton = [UIButton buttonWithType:UIButtonTypeSystem];
+                    [postButton setTitle:@"POST UPDATE" forState:UIControlStateNormal];
+                    [postButton sizeToFit];
+                    [postButton addTarget:self action:@selector(postUpdate) forControlEvents:UIControlEventTouchUpInside];
+                    postButton.frame = CGRectMake((self.view.frame.size.width - postButton.frame.size.width - 10), separator.frame.origin.y + separator.frame.size.height + 10, postButton.frame.size.width, postButton.frame.size.height);
+                    [scrollView addSubview:postButton];
+                    
+                    self.automaticallyAdjustsScrollViewInsets = YES;
+                    UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 10, 0);
+                    scrollView.contentInset = adjustForTabbarInsets;
+                    scrollView.scrollIndicatorInsets = adjustForTabbarInsets;
+                    CGRect contentRect = CGRectZero;
+                    for (UIView *view in scrollView.subviews) {
+                         contentRect = CGRectUnion(contentRect, view.frame);
+                    }
+                    scrollView.contentSize = contentRect.size;
+               });   
+          }
      }];
      
 }
@@ -267,7 +288,12 @@
                }];
           }
           
-     } else {
+     } else if (actionSheet == errorAlertView) {
+          if (buttonIndex == 0) {
+               [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2] animated:YES];
+          }
+     }
+     else {
           if (buttonIndex == 1) {
                [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2] animated:YES];
           }
@@ -388,7 +414,11 @@
           dispatch_group_leave(serviceGroup);
      }];
      dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
-          completion(returnArray, theError);
+          NSError *overallError = nil;
+          if (theError) {
+               overallError = theError;
+          }
+          completion(returnArray, overallError);
      });
 }
 

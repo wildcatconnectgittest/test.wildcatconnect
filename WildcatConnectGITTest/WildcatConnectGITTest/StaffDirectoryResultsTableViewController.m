@@ -19,6 +19,10 @@
      return self.filteredStaffMembers.count;
 }
 
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
+     return nil;
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
           // Return the number of sections.
      return 1;

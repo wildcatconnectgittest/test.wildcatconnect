@@ -7,6 +7,7 @@
 //
 
 #import "ComposePollViewController.h"
+#import "PollStructure.h"
 
 @interface ComposePollViewController ()
 
@@ -24,11 +25,17 @@
      UIView *separator;
      UIButton *postButton;
      UIAlertView *av;
+     UIAlertView *postAlertView;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+     
+     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:248.0f/255.0f
+                                                                            green:183.0f/255.0f
+                                                                             blue:23.0f/255.0f
+                                                                            alpha:0.5f];
      
      self.choicesArray = [[NSMutableArray alloc] init];
      
@@ -154,7 +161,17 @@
 }
 
 - (void)postPoll {
-     
+     if (! [self validateAllFields]) {
+          UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please ensure you have correctly filled out all fields!" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+          [alertView show];
+     } else {
+          postAlertView = [[UIAlertView alloc] initWithTitle:@"Confirmation" message:@"Are you sure you want to post this extracurricular update? It will be live to all app users." delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+          [postAlertView show];
+     }
+}
+
+- (BOOL)validateAllFields {
+     return (titleTextView.text.length > 0 && summaryTextView.text.length > 0);
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -194,6 +211,8 @@
      UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
      if (indexPath.row < self.choicesArray.count) {
           cell.textLabel.text = [self.choicesArray objectAtIndex:indexPath.row];
+          cell.textLabel.numberOfLines = 0;
+          cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
      }
      else
           cell.textLabel.text = @"New Choice";
@@ -291,11 +310,64 @@
                }
           }
           [self.view endEditing:YES];
-     } else {
+     } else if (actionSheet == postAlertView) {
+          if (buttonIndex == 1) {
+               UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(10, postButton.frame.origin.y, 30, 30)];
+               [activity setBackgroundColor:[UIColor clearColor]];
+               [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+               [scrollView addSubview:activity];
+               [activity startAnimating];
+               [self postPollMethodWithCompletion:^(NSError *error) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                         [activity stopAnimating];
+                         NSMutableArray *array = [[NSUserDefaults standardUserDefaults] objectForKey:@"visitedPagesArray"];
+                         if ([array containsObject:[NSString stringWithFormat:@"%lu", (long)3]]) {
+                              NSMutableArray *newArray = [array mutableCopy];
+                              [newArray removeObject:[NSString stringWithFormat:@"%lu", (long)3]];
+                              [[NSUserDefaults standardUserDefaults] setObject:newArray forKey:@"visitedPagesArray"];
+                              [[NSUserDefaults standardUserDefaults] synchronize];
+                         }
+                         [self.navigationController popViewControllerAnimated:YES];
+                    });
+               }];
+          }
+          
+     }
+     else {
           if (buttonIndex == 1) {
                [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2] animated:YES];
           }
      }
+}
+
+- (void)postPollMethodWithCompletion:(void (^)(NSError *error))completion {
+     dispatch_group_t serviceGroup = dispatch_group_create();
+     dispatch_group_enter(serviceGroup);
+     __block NSError *theError;
+     PollStructure *pollStructure = [[PollStructure alloc] init];
+     pollStructure.pollTitle = titleTextView.text;
+     pollStructure.pollQuestion = summaryTextView.text;
+     pollStructure.totalResponses = @"0";
+     NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
+     for (NSString *choice in self.choicesArray) {
+          [dictionary setObject:@"0" forKey:choice];
+     }
+     pollStructure.pollMultipleChoices = dictionary;
+     PFQuery *query = [PollStructure query];
+     [query orderByDescending:@"pollID"];
+     [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+          PollStructure *structure = (PollStructure *)object;
+          pollStructure.pollID = [[NSNumber numberWithInt:([structure.pollID integerValue] + 1)] stringValue];
+          [pollStructure saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+               if (error) {
+                    theError = error;
+               }
+               dispatch_group_leave(serviceGroup);
+          }];
+     }];
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^{
+          completion(theError);
+     });
 }
 
 - (BOOL)isAcceptableTextLength:(NSUInteger)length forMaximum:(NSUInteger)maximum existsMaximum:(BOOL)exists {

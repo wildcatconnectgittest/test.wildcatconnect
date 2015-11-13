@@ -70,10 +70,11 @@
      [scrollView addSubview:thetableView];
      [thetableView reloadData];
      
+     separatorTwo = [[UIView alloc] initWithFrame:CGRectMake(10, thetableView.frame.origin.y + thetableView.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+     separatorTwo.backgroundColor = [UIColor blackColor];
+     [scrollView addSubview:separatorTwo];
+     
      if (self.hasAnswered == NO) {
-          separatorTwo = [[UIView alloc] initWithFrame:CGRectMake(10, thetableView.frame.origin.y + thetableView.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
-          separatorTwo.backgroundColor = [UIColor blackColor];
-          [scrollView addSubview:separatorTwo];
           
           postButton = [UIButton buttonWithType:UIButtonTypeSystem];
           [postButton setTitle:@"POST YOUR VOTE" forState:UIControlStateNormal];
@@ -82,14 +83,14 @@
           postButton.frame = CGRectMake((self.view.frame.size.width / 2) - (postButton.frame.size.width / 2), separatorTwo.frame.origin.y + separatorTwo.frame.size.height + 10, postButton.frame.size.width, postButton.frame.size.height);
           [scrollView addSubview:postButton];
      } else {
-          UILabel *thank = [[UILabel alloc] init];
+          thank = [[UILabel alloc] init];
           thank.text = @"THANK YOU FOR VOTING!";
           UIFont *font = [UIFont fontWithName:@"Helvetica Neue" size:16];
           [thank setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
           thank.lineBreakMode = NSLineBreakByWordWrapping;
           thank.numberOfLines = 0;
           [thank sizeToFit];
-          thank.frame = CGRectMake((self.view.frame.size.width / 2) - (thank.frame.size.width / 2), thetableView.frame.origin.y + thetableView.frame.size.height + 10, thank.frame.size.width, thank.frame.size.height);
+          thank.frame = CGRectMake((self.view.frame.size.width / 2) - (thank.frame.size.width / 2), separatorTwo.frame.origin.y + separatorTwo.frame.size.height + 10, thank.frame.size.width, thank.frame.size.height);
           [scrollView addSubview:thank];
      }
      
@@ -175,6 +176,8 @@
      UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
      if (indexPath.row < self.choicesArray.count) {
           cell.textLabel.text = [self.choicesArray objectAtIndex:indexPath.row];
+          cell.textLabel.numberOfLines = 0;
+          cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
           if (self.hasAnswered == true) {
                NSString *thisOne = [self.valuesArray objectAtIndex:indexPath.row];
                float thisF = [thisOne floatValue];
