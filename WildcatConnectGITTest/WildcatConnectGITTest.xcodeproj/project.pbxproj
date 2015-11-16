@@ -53,6 +53,8 @@
 		0AB797D01B7DC35100113D94 /* usefulLinks@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AB797CF1B7DC35100113D94 /* usefulLinks@2x.png */; };
 		0AB797D21B7DC38900113D94 /* staffDirectory@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AB797D11B7DC38900113D94 /* staffDirectory@2x.png */; };
 		0AB797D51B7DC74400113D94 /* StaffMemberStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AB797D41B7DC74400113D94 /* StaffMemberStructure.m */; };
+		0ABDBCAE1BF7C05B008D0C76 /* SchoolDayStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ABDBCAD1BF7C05B008D0C76 /* SchoolDayStructure.m */; };
+		0ABDBCB11BF981AB008D0C76 /* ScheduleType.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ABDBCB01BF981AB008D0C76 /* ScheduleType.m */; };
 		0ACF72D81BA69BC200006C29 /* email@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0ACF72D71BA69BC200006C29 /* email@2x.png */; };
 		0ACF72DB1BA69E2C00006C29 /* EmailButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ACF72DA1BA69E2C00006C29 /* EmailButton.m */; };
 		0AD4B0BE1B81F7F1004E23E4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AD4B0BD1B81F7F1004E23E4 /* AppDelegate.m */; };
@@ -174,6 +176,10 @@
 		0AB797D11B7DC38900113D94 /* staffDirectory@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "staffDirectory@2x.png"; sourceTree = "<group>"; };
 		0AB797D31B7DC74400113D94 /* StaffMemberStructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaffMemberStructure.h; sourceTree = "<group>"; };
 		0AB797D41B7DC74400113D94 /* StaffMemberStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StaffMemberStructure.m; sourceTree = "<group>"; };
+		0ABDBCAC1BF7C05B008D0C76 /* SchoolDayStructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SchoolDayStructure.h; sourceTree = "<group>"; };
+		0ABDBCAD1BF7C05B008D0C76 /* SchoolDayStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SchoolDayStructure.m; sourceTree = "<group>"; };
+		0ABDBCAF1BF981AB008D0C76 /* ScheduleType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleType.h; sourceTree = "<group>"; };
+		0ABDBCB01BF981AB008D0C76 /* ScheduleType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleType.m; sourceTree = "<group>"; };
 		0ACF72D71BA69BC200006C29 /* email@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "email@2x.png"; sourceTree = "<group>"; };
 		0ACF72D91BA69E2C00006C29 /* EmailButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmailButton.h; sourceTree = "<group>"; };
 		0ACF72DA1BA69E2C00006C29 /* EmailButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmailButton.m; sourceTree = "<group>"; };
@@ -291,6 +297,10 @@
 				0A28CE491BF0350500B15427 /* PollStructure.m */,
 				0AFCD2431BEBC7BB0001FCFC /* AboutTableViewController.h */,
 				0AFCD2441BEBC7BB0001FCFC /* AboutTableViewController.m */,
+				0ABDBCAC1BF7C05B008D0C76 /* SchoolDayStructure.h */,
+				0ABDBCAD1BF7C05B008D0C76 /* SchoolDayStructure.m */,
+				0ABDBCAF1BF981AB008D0C76 /* ScheduleType.h */,
+				0ABDBCB01BF981AB008D0C76 /* ScheduleType.m */,
 				0A4CBAC01BE91375009E9831 /* StudentCenterTableViewController.h */,
 				0A4CBAC11BE91375009E9831 /* StudentCenterTableViewController.m */,
 				0A28CE4B1BF0446400B15427 /* PollDetailViewController.h */,
@@ -588,6 +598,8 @@
 				0A0A49721B7E776500304629 /* StaffDirectoryResultsTableViewController.m in Sources */,
 				0AF4BC641B7D1610001149A5 /* TestStructure.m in Sources */,
 				0A1FE3DB1B7B7DA80062A30E /* main.m in Sources */,
+				0ABDBCAE1BF7C05B008D0C76 /* SchoolDayStructure.m in Sources */,
+				0ABDBCB11BF981AB008D0C76 /* ScheduleType.m in Sources */,
 				0A4A37FE1B7BA43900AF3E36 /* Staff DirectoryTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -77,6 +77,13 @@
      [refresh endRefreshing];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+     [super viewWillDisappear:animated];
+     NSNumber *count = [NSNumber numberWithInteger:self.updatesArray.count];
+     [[NSUserDefaults standardUserDefaults] setObject:count forKey:@"ECviewed"];
+     [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 - (void)refreshData {
      activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
      [activity setBackgroundColor:[UIColor clearColor]];

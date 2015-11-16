@@ -76,6 +76,16 @@
           [returnArray addObject:number];
           [self getCountTwoMethodWithCompletion:^(NSInteger count2) {
                NSNumber *updates = [NSNumber numberWithInt:count2];
+               NSNumber *updatesSeen = [[NSUserDefaults standardUserDefaults] objectForKey:@"ECviewed"];
+               if (updatesSeen) {
+                    if ([updatesSeen integerValue] >= [updates integerValue]) {
+                         updates = [NSNumber numberWithInt:0];
+                    } else {
+                         updates = [NSNumber numberWithInt:[updates integerValue] - [updatesSeen integerValue]];
+                    }
+               } else {
+                    updates = [NSNumber numberWithInt:[updates integerValue] - [updatesSeen integerValue]];
+               }
                [returnArray addObject:updates];
                [self getCountThreeMethodWithCompletion:^(NSInteger count3) {
                     NSMutableArray *arrayTwo = [[NSUserDefaults standardUserDefaults] objectForKey:@"answeredPolls"];

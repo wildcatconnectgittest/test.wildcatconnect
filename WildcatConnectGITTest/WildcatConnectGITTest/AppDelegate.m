@@ -16,6 +16,8 @@
 #import "UsefulLinkArray.h"
 #import "AlertStructure.h"
 #import "PollStructure.h"
+#import "SchoolDayStructure.h"
+#import "ScheduleType.h"
 
 @implementation AppDelegate
 
@@ -202,6 +204,25 @@
      pollStructure.pollID = @"0";
      pollStructure.totalResponses = @"0";
      [pollStructure saveInBackground];*/
+     
+     /*SchoolDayStructure *schoolDayStructure = [[SchoolDayStructure alloc] init];
+     schoolDayStructure.schoolDayID = @"0";
+     schoolDayStructure.schoolDate = @"11-16-2015";
+     schoolDayStructure.scheduleType = @"F1";
+     schoolDayStructure.messageString = @"No major events today.";
+     schoolDayStructure.hasImage = YES;
+     UIImage *image = [UIImage imageNamed:@"studentCenter@2x.png"];
+     NSData *data = UIImagePNGRepresentation(image);
+     schoolDayStructure.imageFile = [PFFile fileWithData:data];
+     schoolDayStructure.imageString = @"None.";
+     [schoolDayStructure saveInBackground];*/
+     
+     
+     /*ScheduleType *scheduleType = [[ScheduleType alloc] init];
+     scheduleType.typeID = @"F1";
+     scheduleType.scheduleString = @"To be copied.";
+     scheduleType.alertNeeded = YES;
+     [scheduleType saveInBackground];*/
      
     return YES;
 }
