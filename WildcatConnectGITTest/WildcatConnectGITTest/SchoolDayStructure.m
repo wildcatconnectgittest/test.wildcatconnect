@@ -18,6 +18,8 @@
 @dynamic hasImage;
 @dynamic imageFile;
 @dynamic imageString;
+@dynamic imageUser;
+@dynamic customSchedule;
 
 + (void)load {
      [self registerSubclass];

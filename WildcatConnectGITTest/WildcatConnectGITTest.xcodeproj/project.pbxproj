@@ -61,6 +61,9 @@
 		0AD4B0C11B81FA3C004E23E4 /* ExtracurricularStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AD4B0C01B81FA3C004E23E4 /* ExtracurricularStructure.m */; };
 		0AD4B0C71B81FCA3004E23E4 /* ExtracurricularsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AD4B0C61B81FCA3004E23E4 /* ExtracurricularsTableViewController.m */; };
 		0AD4B0CA1B820252004E23E4 /* ExtracurricularUpdateStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AD4B0C91B820252004E23E4 /* ExtracurricularUpdateStructure.m */; };
+		0ADB88561BFB9DAA00F69E05 /* message@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0ADB88551BFB9DA900F69E05 /* message@2x.png */; };
+		0ADB88581BFB9EF000F69E05 /* picture@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0ADB88571BFB9EF000F69E05 /* picture@2x.png */; };
+		0ADB885B1BFBA17100F69E05 /* EditMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ADB885A1BFBA17100F69E05 /* EditMessagesViewController.m */; };
 		0AE74A2B1B7D7A2C0083EFF1 /* SplashScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE74A2A1B7D7A2C0083EFF1 /* SplashScreenViewController.m */; };
 		0AE74A2E1B7D84180083EFF1 /* MainTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE74A2D1B7D84180083EFF1 /* MainTabBarController.m */; };
 		0AF4BC4A1B7D14D3001149A5 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AF4BC481B7D14D3001149A5 /* Bolts.framework */; };
@@ -190,6 +193,10 @@
 		0AD4B0C61B81FCA3004E23E4 /* ExtracurricularsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExtracurricularsTableViewController.m; sourceTree = "<group>"; };
 		0AD4B0C81B820252004E23E4 /* ExtracurricularUpdateStructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExtracurricularUpdateStructure.h; sourceTree = "<group>"; };
 		0AD4B0C91B820252004E23E4 /* ExtracurricularUpdateStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExtracurricularUpdateStructure.m; sourceTree = "<group>"; };
+		0ADB88551BFB9DA900F69E05 /* message@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "message@2x.png"; sourceTree = "<group>"; };
+		0ADB88571BFB9EF000F69E05 /* picture@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "picture@2x.png"; sourceTree = "<group>"; };
+		0ADB88591BFBA17100F69E05 /* EditMessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditMessagesViewController.h; sourceTree = "<group>"; };
+		0ADB885A1BFBA17100F69E05 /* EditMessagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditMessagesViewController.m; sourceTree = "<group>"; };
 		0AE74A291B7D7A2C0083EFF1 /* SplashScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashScreenViewController.h; sourceTree = "<group>"; };
 		0AE74A2A1B7D7A2C0083EFF1 /* SplashScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplashScreenViewController.m; sourceTree = "<group>"; };
 		0AE74A2C1B7D84180083EFF1 /* MainTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainTabBarController.h; sourceTree = "<group>"; };
@@ -299,6 +306,8 @@
 				0AFCD2441BEBC7BB0001FCFC /* AboutTableViewController.m */,
 				0ABDBCAC1BF7C05B008D0C76 /* SchoolDayStructure.h */,
 				0ABDBCAD1BF7C05B008D0C76 /* SchoolDayStructure.m */,
+				0ADB88591BFBA17100F69E05 /* EditMessagesViewController.h */,
+				0ADB885A1BFBA17100F69E05 /* EditMessagesViewController.m */,
 				0ABDBCAF1BF981AB008D0C76 /* ScheduleType.h */,
 				0ABDBCB01BF981AB008D0C76 /* ScheduleType.m */,
 				0A4CBAC01BE91375009E9831 /* StudentCenterTableViewController.h */,
@@ -419,6 +428,8 @@
 		0AE74A311B7DAE7D0083EFF1 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				0ADB88571BFB9EF000F69E05 /* picture@2x.png */,
+				0ADB88551BFB9DA900F69E05 /* message@2x.png */,
 				0AB343C01BC9AC14006318FB /* alerts@2x.png */,
 				0A7401401BC2E17A00461CC6 /* unread@2x.png */,
 				0A037E541BC14B0B009A1DBB /* admin@2x.png */,
@@ -528,6 +539,7 @@
 				0AB797D21B7DC38900113D94 /* staffDirectory@2x.png in Resources */,
 				0AB343C11BC9AC14006318FB /* alerts@2x.png in Resources */,
 				0AB797C81B7DC1D100113D94 /* communityService@2x.png in Resources */,
+				0ADB88561BFB9DAA00F69E05 /* message@2x.png in Resources */,
 				0A0A49791B7EAE4900304629 /* sections@2x.png in Resources */,
 				0AB797C21B7DBDBA00113D94 /* Images.xcassets in Resources */,
 				0A0A49771B7EAE2B00304629 /* home@2x.png in Resources */,
@@ -536,6 +548,7 @@
 				0AB797C41B7DBF0B00113D94 /* theNews@2x.png in Resources */,
 				0AB797CA1B7DC27200113D94 /* studentCenter@2x.png in Resources */,
 				0AB797C61B7DC08400113D94 /* extracurriculars@2x.png in Resources */,
+				0ADB88581BFB9EF000F69E05 /* picture@2x.png in Resources */,
 				0A1FE3E71B7B7DA80062A30E /* Main.storyboard in Resources */,
 				0AB797CC1B7DC29900113D94 /* calendar@2x.png in Resources */,
 				0A1FE3EC1B7B7DA80062A30E /* LaunchScreen.xib in Resources */,
@@ -562,6 +575,7 @@
 				0A28CE4A1BF0350500B15427 /* PollStructure.m in Sources */,
 				0AD4B0C11B81FA3C004E23E4 /* ExtracurricularStructure.m in Sources */,
 				0A61185C1BA5ABDD00D632A6 /* UsefulLinksTableViewController.m in Sources */,
+				0ADB885B1BFBA17100F69E05 /* EditMessagesViewController.m in Sources */,
 				0AF4BC671B7D1BA2001149A5 /* AppManager.m in Sources */,
 				0A6118621BA5B1A100D632A6 /* UsefulLinkArray.m in Sources */,
 				0AFCD2451BEBC7BB0001FCFC /* AboutTableViewController.m in Sources */,

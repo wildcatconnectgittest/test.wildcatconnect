@@ -19,5 +19,7 @@
 @property BOOL hasImage;
 @property PFFile *imageFile;
 @property NSString *imageString;
+@property NSString *imageUser;
+@property NSString *customSchedule;
 
 @end

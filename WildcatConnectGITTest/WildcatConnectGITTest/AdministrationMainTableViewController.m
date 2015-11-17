@@ -13,6 +13,7 @@
 #import "ComposeExtracurricularUpdateViewController.h"
 #import "ComposeCommunityServiceViewController.h"
 #import "ComposePollViewController.h"
+#import "EditMessagesViewController.h"
 
 @interface AdministrationMainTableViewController ()
 
@@ -66,37 +67,68 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.sectionsArray.count;
+     if (section == 0) {
+          return 2;
+     } else
+          return self.sectionsArray.count;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-     return @"COMPOSE NEW...";
+     if (section == 0) {
+          return @"DAILY UPDATES";
+     } else
+          return @"COMPOSE NEW";
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+     return 40;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+     return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
      UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier" forIndexPath:indexPath];
-     cell.textLabel.text = self.sectionsArray[indexPath.row];
-     cell.imageView.image = [UIImage imageNamed:self.sectionsImagesArray[indexPath.row]];
+     if (indexPath.section == 0) {
+          if (indexPath.row == 0) {
+               cell.textLabel.text = @"Messages";
+               cell.imageView.image = [UIImage imageNamed:@"message@2x.png"];
+          } else if (indexPath.row == 1) {
+               cell.textLabel.text = @"Picture of the Day";
+               cell.imageView.image = [UIImage imageNamed:@"picture@2x.png"];
+          }
+     } else {
+          cell.textLabel.text = self.sectionsArray[indexPath.row];
+          cell.imageView.image = [UIImage imageNamed:self.sectionsImagesArray[indexPath.row]];
+     }
      return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-     if (indexPath.row == 0) {
-          ComposeNewsArticleViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"ComposeNewsArticle"];
-          [self.navigationController pushViewController:controller animated:YES];
-     } else if (indexPath.row == 1) {
-          ComposeExtracurricularUpdateViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"ComposeExtracurricular"];
-          [self.navigationController pushViewController:controller animated:YES];
-     } else if (indexPath.row == 2) {
-          ComposeCommunityServiceViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"ComposeCommunity"];
-          [self.navigationController pushViewController:controller animated:YES];
-     } else if (indexPath.row == 3) {
-          ComposePollViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"ComposePoll"];
-          [self.navigationController pushViewController:controller animated:YES];
+     if (indexPath.section == 0) {
+          if (indexPath.row == 0) {
+               EditMessagesViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"EditMessages"];
+               [self.navigationController pushViewController:controller animated:YES];
+          }
+     } else if (indexPath.section == 1) {
+          if (indexPath.row == 0) {
+               ComposeNewsArticleViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"ComposeNewsArticle"];
+               [self.navigationController pushViewController:controller animated:YES];
+          } else if (indexPath.row == 1) {
+               ComposeExtracurricularUpdateViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"ComposeExtracurricular"];
+               [self.navigationController pushViewController:controller animated:YES];
+          } else if (indexPath.row == 2) {
+               ComposeCommunityServiceViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"ComposeCommunity"];
+               [self.navigationController pushViewController:controller animated:YES];
+          } else if (indexPath.row == 3) {
+               ComposePollViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"ComposePoll"];
+               [self.navigationController pushViewController:controller animated:YES];
+          }
      }
      [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
