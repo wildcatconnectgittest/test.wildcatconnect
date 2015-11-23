@@ -1,0 +1,10 @@
+{
+  "applications": {
+    "WildcatConnectGITTest": {
+      "applicationId": "cLBOvwh6ZTQYex37DSwxL1Cvg34MMiRWYAB4vqs0"
+    },
+    "_default": {
+      "link": "WildcatConnectGITTest"
+    }
+  }
+}

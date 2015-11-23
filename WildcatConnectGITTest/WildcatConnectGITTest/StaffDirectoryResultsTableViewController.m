@@ -13,6 +13,10 @@
 
 @synthesize filteredStaffMembers;
 
+- (void)viewDidLoad {
+     
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
      if (self.filteredStaffMembers.count == 0)
           return 1;

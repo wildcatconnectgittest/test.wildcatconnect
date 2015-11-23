@@ -15,4 +15,6 @@
 }
 @property (nonatomic, strong) NSMutableArray *theStructuresArray;
 
+@property CGFloat cellHeight;
+
 @end

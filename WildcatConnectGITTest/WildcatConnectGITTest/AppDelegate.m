@@ -23,8 +23,14 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+     
      [Parse setApplicationId:@"cLBOvwh6ZTQYex37DSwxL1Cvg34MMiRWYAB4vqs0"
                    clientKey:@"jGjp3WuCzf4ZetH8kpTLGNnj1h3DgtHlCuK1QbTi"];
+     
+     
+     
+     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+     
     /*CommunityServiceStructure *TestOne = [[CommunityServiceStructure alloc] init];
     TestOne.commDateString = @"SampleDate";
     CommunityServiceStructure *TestTwo = [[CommunityServiceStructure alloc] init];
@@ -207,8 +213,8 @@
      
      /*SchoolDayStructure *schoolDayStructure = [[SchoolDayStructure alloc] init];
      schoolDayStructure.schoolDayID = @"0";
-     schoolDayStructure.schoolDate = @"11-16-2015";
-     schoolDayStructure.scheduleType = @"F1";
+     schoolDayStructure.schoolDate = @"11-23-2015";
+     schoolDayStructure.scheduleType = @"D";
      schoolDayStructure.messageString = @"No major events today.";
      schoolDayStructure.hasImage = YES;
      UIImage *image = [UIImage imageNamed:@"studentCenter@2x.png"];

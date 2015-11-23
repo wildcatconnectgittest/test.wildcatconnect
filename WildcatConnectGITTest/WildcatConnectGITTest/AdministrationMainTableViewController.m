@@ -14,6 +14,7 @@
 #import "ComposeCommunityServiceViewController.h"
 #import "ComposePollViewController.h"
 #import "EditMessagesViewController.h"
+#import "EditPictureDayViewController.h"
 
 @interface AdministrationMainTableViewController ()
 
@@ -113,6 +114,9 @@
      if (indexPath.section == 0) {
           if (indexPath.row == 0) {
                EditMessagesViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"EditMessages"];
+               [self.navigationController pushViewController:controller animated:YES];
+          } else if (indexPath.row == 1) {
+               EditPictureDayViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"EditPicture"];
                [self.navigationController pushViewController:controller animated:YES];
           }
      } else if (indexPath.section == 1) {

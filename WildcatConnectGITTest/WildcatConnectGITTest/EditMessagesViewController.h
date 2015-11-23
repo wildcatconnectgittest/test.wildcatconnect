@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface EditMessagesViewController : UIViewController
+@interface EditMessagesViewController : UIViewController <UITextViewDelegate>
 
 @end

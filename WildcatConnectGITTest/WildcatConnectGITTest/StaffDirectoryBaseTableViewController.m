@@ -18,6 +18,11 @@ NSString *const kTableCellNibName = @"TableCell";
 - (void)viewDidLoad {
      [super viewDidLoad];
      [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cellID"];
+     CGFloat bottom =  self.tabBarController.tabBar.frame.size.height;
+     NSLog(@"%f",bottom);
+     [self.tableView setScrollIndicatorInsets:UIEdgeInsetsMake(0, 0, bottom, 0)];
+     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, bottom, 0);
+     self.extendedLayoutIncludesOpaqueBars = YES;
 }
 
 - (UITableViewCell *)configureCell:(UITableViewCell *)cell forStaffMemberStructure:(StaffMemberStructure *)staffMemberStructure {

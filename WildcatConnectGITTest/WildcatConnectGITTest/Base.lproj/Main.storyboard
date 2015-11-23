@@ -228,6 +228,7 @@
                         <segue destination="Rnu-pc-0lj" kind="push" id="12x-Ua-cMR"/>
                         <segue destination="rNh-a1-Nrq" kind="push" id="Glg-MX-sCp"/>
                         <segue destination="day-3g-Wnw" kind="push" id="g6v-W1-TWI"/>
+                        <segue destination="34U-7Z-jaT" kind="push" id="E2S-4T-ELu"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i8U-RW-G92" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -248,7 +249,23 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MpJ-kN-4WR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2464" y="-2068"/>
+            <point key="canvasLocation" x="2256" y="-2164"/>
+        </scene>
+        <!--Edit Picture Day View Controller-->
+        <scene sceneID="hdB-hb-bMV">
+            <objects>
+                <viewController storyboardIdentifier="EditPicture" useStoryboardIdentifierAsRestorationIdentifier="YES" id="34U-7Z-jaT" customClass="EditPictureDayViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="AuB-TJ-jlS">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="se8-HL-V3K"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BVS-IW-IIo" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2644" y="-2234"/>
         </scene>
         <!--Compose Poll View Controller-->
         <scene sceneID="I8q-Bl-BIW">
@@ -499,13 +516,14 @@
         <!--Staff Directory-->
         <scene sceneID="4T1-ra-mSs">
             <objects>
-                <viewController id="8IZ-F7-mqa" customClass="StaffDirectoryMainTableViewController" sceneMemberID="viewController">
+                <viewController extendedLayoutIncludesOpaqueBars="YES" id="8IZ-F7-mqa" customClass="StaffDirectoryMainTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="p5g-uY-7bc">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="455"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </tableView>
+                    <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" title="Staff Directory" id="jj2-fe-G8n"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1mW-6f-MuQ" userLabel="First Responder" sceneMemberID="firstResponder"/>

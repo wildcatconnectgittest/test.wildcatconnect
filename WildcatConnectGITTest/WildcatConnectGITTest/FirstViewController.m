@@ -99,6 +99,8 @@
                               scheduleType = [returnSchedule objectAtIndex:0];
                               scheduleType.scheduleString = [[returnSchedule objectAtIndex:0] objectForKey:@"scheduleString"];
                               
+                              [scrollView removeFromSuperview];
+                              
                               scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
                               
                               titleLabelB = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 0, 0)];
@@ -149,7 +151,7 @@
                               if (scheduleType.alertNeeded == YES) {
                                    dayLabel.textColor = [UIColor redColor];
                               }
-                              [dayLabel setFont:[UIFont systemFontOfSize:18]];
+                              [dayLabel setFont:[UIFont systemFontOfSize:22]];
                               dayLabel.lineBreakMode = NSLineBreakByWordWrapping;
                               dayLabel.numberOfLines = 0;
                               [dayLabel sizeToFit];
@@ -261,6 +263,34 @@
                }
           }];
      }
+     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+          [NSException raise:NSGenericException format:@"Everything is ok. This is just a test crash."];
+     });
+}
+
+- (void)getImageDataMethodWithCompletion:(void (^)(NSError *error, NSMutableArray *returnData))completion {
+     dispatch_group_t serviceGroup = dispatch_group_create();
+     dispatch_group_enter(serviceGroup);
+     __block NSError *theError;
+     NSMutableArray *array = [NSMutableArray array];
+     PFQuery *query = [SchoolDayStructure query];
+     [query whereKey:@"schoolDayID" equalTo:schoolDay.schoolDayID];
+     [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+          SchoolDayStructure *structure = (SchoolDayStructure *)object;
+          PFFile *imageFile = structure.imageFile;
+          [imageFile getDataInBackgroundWithBlock:^(NSData * _Nullable data, NSError * _Nullable error) {
+               theError = error;
+               [array addObject:data];
+               dispatch_group_leave(serviceGroup);
+          }];
+     }];
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
+          NSError *overallError = nil;
+          if (theError) {
+               overallError = theError;
+          }
+          completion(overallError, array);
+     });
 }
 
 - (void)viewDidLoad {
@@ -372,7 +402,7 @@
                          if (scheduleType.alertNeeded == YES) {
                               dayLabel.textColor = [UIColor redColor];
                          }
-                         [dayLabel setFont:[UIFont systemFontOfSize:18]];
+                         [dayLabel setFont:[UIFont systemFontOfSize:22]];
                          dayLabel.lineBreakMode = NSLineBreakByWordWrapping;
                          dayLabel.numberOfLines = 0;
                          [dayLabel sizeToFit];
@@ -520,31 +550,6 @@
      
 }
 
-- (void)getImageDataMethodWithCompletion:(void (^)(NSError *error, NSMutableArray *returnData))completion {
-     dispatch_group_t serviceGroup = dispatch_group_create();
-     dispatch_group_enter(serviceGroup);
-     __block NSError *theError;
-     NSMutableArray *array = [NSMutableArray array];
-     PFQuery *query = [SchoolDayStructure query];
-     [query whereKey:@"schoolDayID" equalTo:schoolDay.schoolDayID];
-     [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
-          SchoolDayStructure *structure = (SchoolDayStructure *)object;
-          PFFile *imageFile = structure.imageFile;
-          [imageFile getDataInBackgroundWithBlock:^(NSData * _Nullable data, NSError * _Nullable error) {
-               theError = error;
-               [array addObject:data];
-               dispatch_group_leave(serviceGroup);
-          }];
-     }];
-     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
-               NSError *overallError = nil;
-               if (theError) {
-                    overallError = theError;
-               }
-               completion(overallError, array);
-     });
-}
-
 - (NSString *)getDayFromInteger:(int)day {
      switch (day) {
           case 1:
@@ -601,7 +606,7 @@
      __block SchoolDayStructure *theDay;
      NSMutableArray *array = [NSMutableArray array];
      PFQuery *query = [SchoolDayStructure query];
-     [query orderByAscending:@"schoolDayID"];
+     [query orderByDescending:@"schoolDayID"];
      [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
           theError = error;
           [array addObjectsFromArray:objects];

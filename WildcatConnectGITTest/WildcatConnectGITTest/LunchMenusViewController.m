@@ -13,10 +13,14 @@
 
 @end
 
-@implementation LunchMenusViewController
+@implementation LunchMenusViewController {
+     BOOL reloading;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+     
+     reloading = true;
      
      self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:248.0f/255.0f
                                                                             green:183.0f/255.0f
@@ -30,6 +34,10 @@
      self.navigationItem.rightBarButtonItem = barButtonItem;
      [activity startAnimating];
      [barButtonItem release];
+     
+     self.tableView.rowHeight = UITableViewAutomaticDimension;
+     self.tableView.estimatedRowHeight = 40;
+     
      [self getStructuresWithCompletion:^(NSError *error, NSMutableArray *returnArray) {
           if (error != nil) {
                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"Error fetching data from server. Please try again." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
@@ -100,19 +108,28 @@
      } else {
           if (indexPath.row == 0) {
                cell.textLabel.text = @"BREAKFAST";
+               cell.detailTextLabel.numberOfLines = 0;
+               cell.detailTextLabel.lineBreakMode = UILineBreakModeWordWrap;
                cell.textLabel.font = [cell.textLabel.font fontWithSize:10];
-               [cell.textLabel sizeToFit];
                cell.detailTextLabel.text = ( (LunchMenusStructure *) ([self.theStructuresArray objectAtIndex:indexPath.section]) ).breakfastString;
+               [cell updateConstraintsIfNeeded];
           }
           if (indexPath.row == 1) {
                cell.textLabel.text = @"LUNCH";
                cell.textLabel.font = [cell.textLabel.font fontWithSize:10];
                [cell.textLabel sizeToFit];
+               cell.detailTextLabel.numberOfLines = 0;
+               cell.detailTextLabel.lineBreakMode = UILineBreakModeWordWrap;
                cell.detailTextLabel.text = ( (LunchMenusStructure *) ([self.theStructuresArray objectAtIndex:indexPath.section]) ).lunchString;
+               [cell updateConstraintsIfNeeded];
           }
      }
     
     return cell;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+     return 80;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {

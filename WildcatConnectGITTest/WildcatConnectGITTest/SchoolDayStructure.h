@@ -21,5 +21,6 @@
 @property NSString *imageString;
 @property NSString *imageUser;
 @property NSString *customSchedule;
+@property NSString *imageUserFullString;
 
 @end
