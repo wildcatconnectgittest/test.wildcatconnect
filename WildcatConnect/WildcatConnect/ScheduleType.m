@@ -23,15 +23,17 @@
 }
 
 - (NSString *)getFullScheduleString {
-     if ([self.typeID  isEqual: @"F1"]) {
-          return @"Day F, HR after 1st Period";
-     } else if ([self.typeID isEqual:@"D"]) {
+     if ([self.typeID isEqual:@"D"]) {
           return @"Day D";
      } else if ([self.typeID isEqual:@"E"]) {
           return @"Day E";
+     } else if ([self.typeID  isEqual: @"F1"]) {
+          return @"Day F, HR after 1st Period";
      } else if ([self.typeID isEqual:@"G"]) {
           return @"Day G";
-     } else return nil;
+     } else if ([self.typeID isEqual:@"G1"]) {
+          return @"Day G, HR after 1st Period";
+     }else return nil;
 }
 
 @end

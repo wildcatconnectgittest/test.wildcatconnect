@@ -156,6 +156,7 @@
                               dayLabel.lineBreakMode = NSLineBreakByWordWrapping;
                               dayLabel.numberOfLines = 0;
                               [dayLabel sizeToFit];
+                              [dayLabel setTextAlignment:UITextAlignmentCenter];
                               dayLabel.frame = CGRectMake(self.view.frame.size.width / 2 - dayLabel.frame.size.width / 2, dayLabel.frame.origin.y, dayLabel.frame.size.width, dayLabel.frame.size.height);
                               [scrollView addSubview:dayLabel];
                               

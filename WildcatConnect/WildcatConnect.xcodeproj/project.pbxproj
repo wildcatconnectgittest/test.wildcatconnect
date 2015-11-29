@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0A0AFC771C0B383B0094A2D2 /* ComposeNewsArticleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0AFC761C0B383B0094A2D2 /* ComposeNewsArticleViewController.m */; };
+		0A0AFC791C0B597B0094A2D2 /* logoLarge.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 0A0AFC781C0B597B0094A2D2 /* logoLarge.jpeg */; };
 		0ADBEE2A1C0ABD5E00E946F6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBEE291C0ABD5E00E946F6 /* main.m */; };
 		0ADBEE361C0ABD5E00E946F6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0ADBEE341C0ABD5E00E946F6 /* Main.storyboard */; };
 		0ADBEE381C0ABD5E00E946F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0ADBEE371C0ABD5E00E946F6 /* Assets.xcassets */; };
@@ -124,6 +125,7 @@
 
 /* Begin PBXFileReference section */
 		0A0AFC761C0B383B0094A2D2 /* ComposeNewsArticleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComposeNewsArticleViewController.m; sourceTree = "<group>"; };
+		0A0AFC781C0B597B0094A2D2 /* logoLarge.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = logoLarge.jpeg; sourceTree = "<group>"; };
 		0ADBEE251C0ABD5E00E946F6 /* WildcatConnect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WildcatConnect.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0ADBEE291C0ABD5E00E946F6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0ADBEE351C0ABD5E00E946F6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -357,6 +359,7 @@
 				0ADBEEFB1C0ABE5200E946F6 /* Bolts.framework */,
 				0ADBEEFC1C0ABE5200E946F6 /* Parse.framework */,
 				0ADBEEF81C0ABDFA00E946F6 /* Info.plist */,
+				0A0AFC781C0B597B0094A2D2 /* logoLarge.jpeg */,
 				0ADBEF4D1C0ACC4900E946F6 /* admin@2x.png */,
 				0ADBEF241C0AC57200E946F6 /* calendar@2x.png */,
 				0ADBEF251C0AC57200E946F6 /* communityService@2x.png */,
@@ -651,6 +654,7 @@
 				0ADBEEE01C0ABDE100E946F6 /* wildcat.jpeg in Resources */,
 				0ADBEF471C0AC57200E946F6 /* usefulLinks@2x.png in Resources */,
 				0ADBEEDF1C0ABDE100E946F6 /* wildcatLogo.png in Resources */,
+				0A0AFC791C0B597B0094A2D2 /* logoLarge.jpeg in Resources */,
 				0ADBEF441C0AC57200E946F6 /* studentCenter@2x.png in Resources */,
 				0ADBEF381C0AC57200E946F6 /* email@2x.png in Resources */,
 			);

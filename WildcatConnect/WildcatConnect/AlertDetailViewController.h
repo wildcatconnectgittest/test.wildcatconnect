@@ -12,5 +12,6 @@
 @interface AlertDetailViewController : UIViewController
 
 @property (nonatomic, strong) AlertStructure *alert;
+@property BOOL showCloseButton;
 
 @end

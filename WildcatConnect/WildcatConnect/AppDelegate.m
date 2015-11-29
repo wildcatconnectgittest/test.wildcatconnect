@@ -18,6 +18,7 @@
 #import "PollStructure.h"
 #import "SchoolDayStructure.h"
 #import "ScheduleType.h"
+#import "AlertDetailViewController.h"
 
 @implementation AppDelegate
 
@@ -42,7 +43,31 @@
      NSDictionary *notificationPayload = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
      
      if (notificationPayload) {
-          NSLog(@"%@", notificationPayload);
+          self.alertString = [notificationPayload objectForKey:@"a"];
+          [self getAlertForIDMethodWithCompletion:^(NSMutableArray *array, NSError *error) {
+               dispatch_async(dispatch_get_main_queue(), ^ {
+                    [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"reloadAlertsPage"];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                    NSMutableArray *readArray = [[[NSUserDefaults standardUserDefaults] objectForKey:@"readAlerts"] mutableCopy];
+                    if (! readArray) {
+                         readArray = [[NSMutableArray alloc] init];
+                    }
+                    [readArray addObject:self.alertString];
+                    [[NSUserDefaults standardUserDefaults] setObject:readArray forKey:@"readAlerts"];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                    AlertStructure *theAlert = [[AlertStructure alloc] init];
+                    theAlert.titleString = [[array firstObject] objectForKey:@"titleString"];
+                    theAlert.authorString = [[array firstObject] objectForKey:@"authorString"];
+                    theAlert.dateString = [[array firstObject] objectForKey:@"dateString"];
+                    theAlert.contentString = [[array firstObject] objectForKey:@"contentString"]; AlertDetailViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"AlertDetail"];
+                    controller.alert = theAlert;
+                    controller.showCloseButton = YES;
+                    UINavigationController *nav = (UINavigationController *)self.window.rootViewController;
+                    UINavigationController *navigationController =
+                    [[UINavigationController alloc] initWithRootViewController:controller];
+                    [nav presentViewController:navigationController animated:YES completion:^{}];
+               });
+          } forID:self.alertString];
      }
      
      if (application.applicationState != UIApplicationStateBackground) {
@@ -276,13 +301,69 @@
      }
 }
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+     if (buttonIndex == 0) {
+          [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"reloadAlertsPage"];
+          [[NSUserDefaults standardUserDefaults] synchronize];
+     } else {
+          [self getAlertForIDMethodWithCompletion:^(NSMutableArray *array, NSError *error) {
+               dispatch_async(dispatch_get_main_queue(), ^ {
+                    [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"reloadAlertsPage"];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                    NSMutableArray *readArray = [[[NSUserDefaults standardUserDefaults] objectForKey:@"readAlerts"] mutableCopy];
+                    if (! readArray) {
+                         readArray = [[NSMutableArray alloc] init];
+                    }
+                    [readArray addObject:self.alertString];
+                    [[NSUserDefaults standardUserDefaults] setObject:readArray forKey:@"readAlerts"];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                    AlertStructure *theAlert = [[AlertStructure alloc] init];
+                    theAlert.titleString = [[array firstObject] objectForKey:@"titleString"];
+                    theAlert.authorString = [[array firstObject] objectForKey:@"authorString"];
+                    theAlert.dateString = [[array firstObject] objectForKey:@"dateString"];
+                    theAlert.contentString = [[array firstObject] objectForKey:@"contentString"]; AlertDetailViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"AlertDetail"];
+                    controller.alert = theAlert;
+                    controller.showCloseButton = YES;
+                    UINavigationController *nav = (UINavigationController *)self.window.rootViewController;
+                    UINavigationController *navigationController =
+                    [[UINavigationController alloc] initWithRootViewController:controller];
+                    [nav presentViewController:navigationController animated:YES completion:^{}];
+               });
+          } forID:self.alertString];
+     }
+}
+
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-     [PFPush handlePush:userInfo];
+     NSLog(@"%@", userInfo);
+     self.alertString = [userInfo objectForKey:@"a"];
+     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert" message:@"You have 1 new alert message. Would you like to read now?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+     [alert show];
      if (application.applicationState == UIApplicationStateInactive) {
                // The application was just brought from the background to the foreground,
                // so we consider the app as having been "opened by a push notification."
           [PFAnalytics trackAppOpenedWithRemoteNotificationPayload:userInfo];
      }
+}
+
+- (void)getAlertForIDMethodWithCompletion:(void (^)(NSMutableArray *array, NSError *error))completion forID:(NSString *)IDString {
+     dispatch_group_t serviceGroup = dispatch_group_create();
+     dispatch_group_enter(serviceGroup);
+     __block NSError *theError;
+     NSMutableArray *array = [NSMutableArray array];
+     PFQuery *query = [AlertStructure query];
+     [query whereKey:@"alertID" equalTo:IDString];
+     [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+          theError = error;
+          [array addObject:object];
+          dispatch_group_leave(serviceGroup);
+     }];
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
+          NSError *overallError = nil;
+          if (theError) {
+               overallError = theError;
+          }
+          completion(array, overallError);
+     });
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -300,7 +381,7 @@
      [userDefaults removeObjectForKey:@"likedNewsArticles"];
      [userDefaults removeObjectForKey:@"answeredPolls"];
      [userDefaults removeObjectForKey:@"readAlerts"];
-     [userDefaults removeObjectForKey:@"reloadHomePage"];
+     [userDefaults removeObjectForKey:@"reloadHomePage"]; // keep this
      [userDefaults synchronize];
 }
 
@@ -311,7 +392,7 @@
      [userDefaults removeObjectForKey:@"likedNewsArticles"];
      [userDefaults removeObjectForKey:@"answeredPolls"];
      [userDefaults removeObjectForKey:@"readAlerts"];
-     [userDefaults removeObjectForKey:@"reloadHomePage"];
+     [userDefaults removeObjectForKey:@"reloadHomePage"]; // keep this
      [userDefaults synchronize];
 }
 
