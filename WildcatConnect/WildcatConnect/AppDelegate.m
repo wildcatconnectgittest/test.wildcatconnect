@@ -301,6 +301,7 @@
      [userDefaults removeObjectForKey:@"likedNewsArticles"];
      [userDefaults removeObjectForKey:@"answeredPolls"];
      [userDefaults removeObjectForKey:@"readAlerts"];
+     [userDefaults removeObjectForKey:@"reloadHomePage"];
      [userDefaults synchronize];
 }
 
@@ -311,6 +312,7 @@
      [userDefaults removeObjectForKey:@"likedNewsArticles"];
      [userDefaults removeObjectForKey:@"answeredPolls"];
      [userDefaults removeObjectForKey:@"readAlerts"];
+     [userDefaults removeObjectForKey:@"reloadHomePage"];
      [userDefaults synchronize];
 }
 
