@@ -30,6 +30,8 @@
 		0A21F6421BD1667E00BED46F /* ComposeCommunityServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A21F6411BD1667E00BED46F /* ComposeCommunityServiceViewController.m */; };
 		0A28CE4A1BF0350500B15427 /* PollStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A28CE491BF0350500B15427 /* PollStructure.m */; };
 		0A28CE4D1BF0446400B15427 /* PollDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A28CE4C1BF0446400B15427 /* PollDetailViewController.m */; };
+		0A402FE81C0A00FB001EF13C /* AlertDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A402FE71C0A00FB001EF13C /* AlertDetailViewController.m */; };
+		0A402FEB1C0A06AC001EF13C /* ComposeAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A402FEA1C0A06AC001EF13C /* ComposeAlertViewController.m */; };
 		0A49BD0F1BC6DB7000E84E4C /* AlertStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A49BD0E1BC6DB7000E84E4C /* AlertStructure.m */; };
 		0A49BD121BC6DCBE00E84E4C /* AlertsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A49BD111BC6DCBE00E84E4C /* AlertsTableViewController.m */; };
 		0A4A37E91B7B90D100AF3E36 /* SectionsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4A37E81B7B90D100AF3E36 /* SectionsTableViewController.m */; };
@@ -75,7 +77,6 @@
 		0AE74A2E1B7D84180083EFF1 /* MainTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE74A2D1B7D84180083EFF1 /* MainTabBarController.m */; };
 		0AEEA0711C02B61300F3E377 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AEEA0701C02B61300F3E377 /* libsqlite3.0.tbd */; };
 		0AEEA0771C02BCAE00F3E377 /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AEEA0761C02BCAE00F3E377 /* libstdc++.6.0.9.tbd */; };
-		0AEEA0791C02BCEF00F3E377 /* ParseCrashReporting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AEEA0781C02BCEF00F3E377 /* ParseCrashReporting.framework */; };
 		0AEEA07A1C02BD3A00F3E377 /* ParseCrashReporting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AEEA0781C02BCEF00F3E377 /* ParseCrashReporting.framework */; };
 		0AEEA07B1C02BD3A00F3E377 /* ParseCrashReporting.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0AEEA0781C02BCEF00F3E377 /* ParseCrashReporting.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0AF4BC4D1B7D14E6001149A5 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AF4BC4C1B7D14E6001149A5 /* AudioToolbox.framework */; };
@@ -165,6 +166,10 @@
 		0A28CE491BF0350500B15427 /* PollStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PollStructure.m; sourceTree = "<group>"; };
 		0A28CE4B1BF0446400B15427 /* PollDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PollDetailViewController.h; sourceTree = "<group>"; };
 		0A28CE4C1BF0446400B15427 /* PollDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PollDetailViewController.m; sourceTree = "<group>"; };
+		0A402FE61C0A00FB001EF13C /* AlertDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertDetailViewController.h; sourceTree = "<group>"; };
+		0A402FE71C0A00FB001EF13C /* AlertDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertDetailViewController.m; sourceTree = "<group>"; };
+		0A402FE91C0A06AC001EF13C /* ComposeAlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComposeAlertViewController.h; sourceTree = "<group>"; };
+		0A402FEA1C0A06AC001EF13C /* ComposeAlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComposeAlertViewController.m; sourceTree = "<group>"; };
 		0A49BD0D1BC6DB7000E84E4C /* AlertStructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertStructure.h; sourceTree = "<group>"; };
 		0A49BD0E1BC6DB7000E84E4C /* AlertStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertStructure.m; sourceTree = "<group>"; };
 		0A49BD101BC6DCBE00E84E4C /* AlertsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlertsTableViewController.h; path = ../AlertsTableViewController.h; sourceTree = "<group>"; };
@@ -272,7 +277,6 @@
 				0AEEA07A1C02BD3A00F3E377 /* ParseCrashReporting.framework in Frameworks */,
 				0AAE44651C02AA6F0000D066 /* libz.tbd in Frameworks */,
 				0AAE44621C028C980000D066 /* libstdc++.6.tbd in Frameworks */,
-				0AEEA0791C02BCEF00F3E377 /* ParseCrashReporting.framework in Frameworks */,
 				0AF4BC5B1B7D1514001149A5 /* SystemConfiguration.framework in Frameworks */,
 				0AF4BC591B7D150E001149A5 /* StoreKit.framework in Frameworks */,
 				0AF4BC571B7D1509001149A5 /* Security.framework in Frameworks */,
@@ -394,6 +398,10 @@
 				0A1FE3E21B7B7DA80062A30E /* SecondViewController.h */,
 				0A1FE3E31B7B7DA80062A30E /* SecondViewController.m */,
 				0A1FE3E51B7B7DA80062A30E /* Main.storyboard */,
+				0A402FE91C0A06AC001EF13C /* ComposeAlertViewController.h */,
+				0A402FEA1C0A06AC001EF13C /* ComposeAlertViewController.m */,
+				0A402FE61C0A00FB001EF13C /* AlertDetailViewController.h */,
+				0A402FE71C0A00FB001EF13C /* AlertDetailViewController.m */,
 				0A49BD101BC6DCBE00E84E4C /* AlertsTableViewController.h */,
 				0A49BD111BC6DCBE00E84E4C /* AlertsTableViewController.m */,
 				0A49BD0D1BC6DB7000E84E4C /* AlertStructure.h */,
@@ -532,15 +540,16 @@
 		0A1FE3CD1B7B7DA80062A30E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0640;
+				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = WildcatConnect;
 				TargetAttributes = {
 					0A1FE3D41B7B7DA80062A30E = {
 						CreatedOnToolsVersion = 6.4;
-						DevelopmentTeam = FVC8766NJ2;
+						DevelopmentTeam = 89REZXH8V7;
 					};
 					0A1FE3F01B7B7DA80062A30E = {
 						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = 89REZXH8V7;
 						TestTargetID = 0A1FE3D41B7B7DA80062A30E;
 					};
 				};
@@ -608,6 +617,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A402FE81C0A00FB001EF13C /* AlertDetailViewController.m in Sources */,
 				0A037E5B1BC1543E009A1DBB /* AdministrationMainTableViewController.m in Sources */,
 				0A4A37F81B7BA41A00AF3E36 /* LunchMenusViewController.m in Sources */,
 				F768D0611B8208980064E296 /* CommunityServiceStructure.m in Sources */,
@@ -631,6 +641,7 @@
 				0A0A496F1B7E76A100304629 /* StaffDirectoryMainTableViewController.m in Sources */,
 				0AB797D51B7DC74400113D94 /* StaffMemberStructure.m in Sources */,
 				0A0A497E1B7EFEC800304629 /* ApplicationManager.m in Sources */,
+				0A402FEB1C0A06AC001EF13C /* ComposeAlertViewController.m in Sources */,
 				F7956CB21BA5CAA70091EB5A /* NewsArticleDetailViewController.m in Sources */,
 				0A4A37E91B7B90D100AF3E36 /* SectionsTableViewController.m in Sources */,
 				0A4CBAC21BE91375009E9831 /* StudentCenterTableViewController.m in Sources */,
@@ -713,10 +724,12 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development IOS Push Services: com.wildcatconnect.WildcatConnect";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development IOS Push Services: com.wildcatconnect.WildcatConnect";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -735,6 +748,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "983ba87e-a1c0-40bd-b0ce-5136e33a6994";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -756,7 +770,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development IOS Push Services: com.wildcatconnect.WildcatConnect";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development IOS Push Services: com.wildcatconnect.WildcatConnect";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -771,6 +786,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PROVISIONING_PROFILE = "983ba87e-a1c0-40bd-b0ce-5136e33a6994";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -824,6 +840,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -834,7 +852,9 @@
 				);
 				INFOPLIST_FILE = WildcatConnectGITTestTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "WildcatConnect.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WildcatConnectGITTest.app/WildcatConnectGITTest";
 			};
 			name = Debug;
@@ -843,13 +863,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = WildcatConnectGITTestTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "WildcatConnect.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WildcatConnectGITTest.app/WildcatConnectGITTest";
 			};
 			name = Release;

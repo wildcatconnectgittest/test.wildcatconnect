@@ -34,16 +34,12 @@
      if (self.loadNumber == [NSNumber numberWithInt:1] || ! self.loadNumber) {
           [self refreshData];
      } else {
-          [self getPreviousNewCommunityServiceStructuresWithCompletion:^(NSMutableArray *returnArray) {
-               self.newOpps = returnArray;
-               [self getPreviousOldCommunityServiceStructuresWithCompletion:^(NSMutableArray *returnArrayB) {
-                    self.oldOpps = returnArrayB;
-                    self.allOpps = [[self.newOpps arrayByAddingObjectsFromArray:self.oldOpps] mutableCopy];
-                    dispatch_async(dispatch_get_main_queue(), ^ {
-                         [self.tableView reloadData];
-                         [self refreshControl];
-                    });
-                }];
+          [self getPreviousCommunityServiceStructuresWithCompletion:^(NSMutableArray *returnArray) {
+               self.allOpps = returnArray;
+               dispatch_async(dispatch_get_main_queue(), ^ {
+                    [self.tableView reloadData];
+                    [self refreshControl];
+               });
           }];
      }
 }
@@ -83,73 +79,35 @@
                });
           } else {
                self.allOpps = returnArrayA;
-               [self testMethodThreeWithCompletion:^(NSMutableArray *returnArrayB, NSMutableArray *returnArray2) {
-                    self.newOpps = returnArray2;
-                    self.oldOpps = returnArrayB;
-                    NSMutableArray *itemsToSave = [NSMutableArray array];
-                    for (CommunityServiceStructure *c in returnArray2) {
-                         [itemsToSave addObject:@{ @"commTitleString"     : c.commTitleString, @"commSummaryString" : c.commSummaryString, @"IsNewNumber" : c.IsNewNumber, @"communityServiceID"  : c.communityServiceID, @"startDate" : c.startDate , @"endDate" : c.endDate
-                                                   }];
-                    }
-                    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-                    [userDefaults setObject:itemsToSave forKey:@"newCommServiceItems"];
-                    itemsToSave = [NSMutableArray array];
-                    for (CommunityServiceStructure *c in returnArrayB) {
-                         [itemsToSave addObject:@{ @"commTitleString"     : c.commTitleString, @"commSummaryString" : c.commSummaryString, @"IsNewNumber" : c.IsNewNumber, @"communityServiceID"  : c.communityServiceID, @"startDate" : c.startDate , @"endDate" : c.endDate
-                                                   }];
-                    }
-                    [userDefaults setObject:itemsToSave forKey:@"oldCommServiceItems"];
-                    dispatch_async(dispatch_get_main_queue(), ^ {
-                         [activity stopAnimating];
-                         [self.tableView reloadData];
-                         [self.refreshControl endRefreshing];
-                    });
-               } withArray:returnArrayA];
+               NSMutableArray *itemsToSave = [NSMutableArray array];
+               for (CommunityServiceStructure *c in returnArrayA) {
+                    [itemsToSave addObject:@{ @"commTitleString"     : c.commTitleString, @"commSummaryString" : c.commSummaryString, @"communityServiceID"  : c.communityServiceID, @"startDate" : c.startDate , @"endDate" : c.endDate
+                                              }];
+               }
+               NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+               [userDefaults setObject:itemsToSave forKey:@"commServiceItems"];
+               [userDefaults synchronize];
+               dispatch_async(dispatch_get_main_queue(), ^ {
+                    [activity stopAnimating];
+                    [self.tableView reloadData];
+                    [self.refreshControl endRefreshing];
+               });
           }
      }];
 }
 
-- (void)getPreviousOldCommunityServiceStructuresWithCompletion:(void (^)(NSMutableArray *returnArray))completion {
+- (void)getPreviousCommunityServiceStructuresWithCompletion:(void (^)(NSMutableArray *returnArray))completion {
      dispatch_group_t serviceGroup = dispatch_group_create();
      dispatch_group_enter(serviceGroup);
      CommunityServiceStructure *CSStructure;
      NSMutableArray *array = [[NSMutableArray alloc] init];
-     NSMutableArray *theArrayToSearch = [[NSUserDefaults standardUserDefaults] objectForKey:@"oldCommServiceItems"];
+     NSMutableArray *theArrayToSearch = [[NSUserDefaults standardUserDefaults] objectForKey:@"commServiceItems"];
      NSDictionary *object;
      for (int i = 0; i < theArrayToSearch.count; i++) {
           object = theArrayToSearch[i];
           CSStructure = [[CommunityServiceStructure alloc] init];
           CSStructure.commTitleString = [object objectForKey:@"commTitleString"];
           CSStructure.commSummaryString = [object objectForKey:@"commSummaryString"];
-          CSStructure.IsNewNumber = [object objectForKey:@"IsNewNumber"];
-          CSStructure.communityServiceID = [object objectForKey:@"communityServiceID"];
-          CSStructure.startDate = [object objectForKey:@"startDate"];
-          CSStructure.endDate = [object objectForKey:@"endDate"];
-          [array addObject:CSStructure];
-          if (i == theArrayToSearch.count - 1)
-               dispatch_group_leave(serviceGroup);
-     }
-     if (theArrayToSearch.count == 0) {
-          dispatch_group_leave(serviceGroup);
-     }
-     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
-          completion(array);
-     });
-}
-
-- (void)getPreviousNewCommunityServiceStructuresWithCompletion:(void (^)(NSMutableArray *returnArray))completion {
-     dispatch_group_t serviceGroup = dispatch_group_create();
-     dispatch_group_enter(serviceGroup);
-     CommunityServiceStructure *CSStructure;
-     NSMutableArray *array = [[NSMutableArray alloc] init];
-     NSMutableArray *theArrayToSearch = [[NSUserDefaults standardUserDefaults] objectForKey:@"newCommServiceItems"];
-     NSDictionary *object;
-     for (int i = 0; i < theArrayToSearch.count; i++) {
-          object = theArrayToSearch[i];
-          CSStructure = [[CommunityServiceStructure alloc] init];
-          CSStructure.commTitleString = [object objectForKey:@"commTitleString"];
-          CSStructure.commSummaryString = [object objectForKey:@"commSummaryString"];
-          CSStructure.IsNewNumber = [object objectForKey:@"IsNewNumber"];
           CSStructure.communityServiceID = [object objectForKey:@"communityServiceID"];
           CSStructure.startDate = [object objectForKey:@"startDate"];
           CSStructure.endDate = [object objectForKey:@"endDate"];
@@ -241,56 +199,6 @@
     });
 }
 
-
-
-- (void)testMethodThreeWithCompletion:(void (^)(NSMutableArray *returnArray, NSMutableArray *returnArray2))completion withArray:(NSMutableArray *)theArray {
-    __block NSError *theError = nil;
-    dispatch_group_t theServiceGroup = dispatch_group_create();
-    dispatch_group_enter(theServiceGroup);
-    CommunityServiceStructure *commServiceStructure;
-    NSMutableArray *returnArray =[[NSMutableArray alloc]init];//old
-    NSMutableArray *returnArray2 =[[NSMutableArray alloc]init];//new
-     NSMutableArray *array = [theArray mutableCopy];
-    for(int a = 0; a < array.count; a++ )
-    {
-        commServiceStructure = (CommunityServiceStructure *)[array objectAtIndex:a];
-         NSInteger *integer = [commServiceStructure.IsNewNumber integerValue];
-        if(integer == 0)
-        {
-            [returnArray addObject:commServiceStructure];
-        }
-        else if (integer == 1) {
-            [returnArray2 addObject:commServiceStructure];
-        }
-        if (a == array.count -1)
-            dispatch_group_leave(theServiceGroup);
-    }
-    dispatch_group_notify(theServiceGroup, dispatch_get_main_queue(), ^{
-        NSError *overallError = nil;
-        if (theError)
-            overallError = theError;
-        completion(returnArray, returnArray2);
-    });
-}
-
-
-/*
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
-    return 2;}
- 
- */
-
-
-
-
-/*
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 100;
-}
- */
-
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     // Configure the cell...
     if (self.allOpps.count == 0) {
@@ -298,60 +206,22 @@
         cell.textLabel.text = @"No data to display.";
         return  cell;
     } else {
-        if (indexPath.section == 0) {
-             if (self.newOpps.count == 0) {
-                  UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
-                  cell.textLabel.text = @"No data to display.";
-                  return  cell;
-             } else {
-                  CommunityServiceStructure *commServiceStructure = ((CommunityServiceStructure *)[self.newOpps objectAtIndex:indexPath.row]);
-                  UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
-                  cell.textLabel.text = commServiceStructure.commTitleString;
-                  NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                  [dateFormatter setDateFormat:@"MM-dd-yyyy @ hh:mm a"];
-                  NSString *startString = [dateFormatter stringFromDate:commServiceStructure.startDate];
-                  NSString *endString = [dateFormatter stringFromDate:commServiceStructure.endDate];
-                  cell.detailTextLabel.text = [[[[commServiceStructure.commSummaryString stringByAppendingString:@" ... STARTS "] stringByAppendingString:startString] stringByAppendingString:@" ... ENDS "] stringByAppendingString:endString];
-                  cell.detailTextLabel.numberOfLines = 5;
-                  return cell;
-             }
-        } else if (indexPath.section == 1) {
-             if (self.oldOpps.count == 0) {
-                  UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
-                  cell.textLabel.text = @"No data to display.";
-                  return  cell;
-             } else {
-                  CommunityServiceStructure *commServiceStructure = ((CommunityServiceStructure *)[self.oldOpps objectAtIndex:indexPath.row]);
-                  UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
-                  cell.textLabel.text = commServiceStructure.commTitleString;
-                  NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                  [dateFormatter setDateFormat:@"MM-dd-yyyy @ hh:mm"];
-                  NSString *startString = [dateFormatter stringFromDate:commServiceStructure.startDate];
-                  NSString *endString = [dateFormatter stringFromDate:commServiceStructure.endDate];
-                  cell.detailTextLabel.text = [[[[commServiceStructure.commSummaryString stringByAppendingString:@" ... STARTS "] stringByAppendingString:startString] stringByAppendingString:@" ... ENDS "] stringByAppendingString:endString];
-                  cell.detailTextLabel.numberOfLines = 5;
-                  return cell;
-             }
-        }
-        else return nil;
+        CommunityServiceStructure *commServiceStructure = ((CommunityServiceStructure *)[self.allOpps objectAtIndex:indexPath.row]);
+        UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
+        cell.textLabel.text = commServiceStructure.commTitleString;
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"MM-dd-yyyy @ hh:mm a"];
+        NSString *startString = [dateFormatter stringFromDate:commServiceStructure.startDate];
+        NSString *endString = [dateFormatter stringFromDate:commServiceStructure.endDate];
+        cell.detailTextLabel.text = [[[[commServiceStructure.commSummaryString stringByAppendingString:@" ... STARTS "] stringByAppendingString:startString] stringByAppendingString:@" ... ENDS "] stringByAppendingString:endString];
+        cell.detailTextLabel.numberOfLines = 5;
+        return cell;
     }
     return nil;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
      [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (self.allOpps.count == 0)
-        return @"";
-    else {
-        if (section == 0)
-            return @"NEW OPPORTUNITIES";
-        else if (section == 1)
-            return @"OLD OPPORTUNITIES";
-    }
-    return nil;
 }
 
 
@@ -366,7 +236,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return 2;
+    return 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -378,14 +248,8 @@
     // Return the number of rows in the section.
     if (self.allOpps.count == 0)
         return 1;
-    else {
-        if (section == 0)
-            return (self.newOpps.count == 0) ? 1 : self.newOpps.count;
-        else if (section == 1)
-            return (self.oldOpps.count == 0) ? 1 : self.oldOpps.count;
-        return nil;
-    }
-    return nil;
+    else
+         return self.allOpps.count;
 }
 
 /*- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {

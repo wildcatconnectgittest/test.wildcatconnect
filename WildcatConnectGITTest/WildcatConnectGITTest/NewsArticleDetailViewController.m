@@ -93,6 +93,7 @@
           
           UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(separator.frame.origin.x, separator.frame.origin.y + separator.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
           textView.text = self.NA.contentURLString;
+          textView.font = [UIFont systemFontOfSize:18];
           [textView sizeToFit];
           textView.editable = false;
           textView.scrollEnabled = false;

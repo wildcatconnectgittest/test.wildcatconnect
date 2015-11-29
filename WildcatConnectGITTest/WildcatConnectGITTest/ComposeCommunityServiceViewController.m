@@ -234,7 +234,6 @@
      communityServiceStructure.commSummaryString = authorTextView.text;
      communityServiceStructure.startDate = startDatePicker.date;
      communityServiceStructure.endDate = endDatePicker.date;
-     communityServiceStructure.IsNewNumber = [NSNumber numberWithInt:1];
      PFQuery *query = [CommunityServiceStructure query];
      [query orderByDescending:@"communityServiceID"];
      [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {

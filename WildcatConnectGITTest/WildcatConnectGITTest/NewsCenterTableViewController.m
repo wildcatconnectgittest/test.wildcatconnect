@@ -312,23 +312,6 @@
      [self.tableView reloadData];
 }
 
-- (void)encodeWithCoder:(NSCoder *)coder;
-{
-     [coder encodeObject:self.newsArticles forKey:@"newsArticles"];
-     [coder encodeObject:self.newsArticleImages forKey:@"newsArticleImages"];
-}
-
-- (id)initWithCoder:(NSCoder *)coder;
-{
-     self = [super init];
-     if (self != nil)
-     {
-          self.newsArticles = [[coder decodeObjectForKey:@"newsArticles"] retain];
-          self.newsArticleImages = [[coder decodeObjectForKey:@"newsArticleImages"] retain];
-     }
-     return self;
-}
-
 - (void)testMethodWithCompletion:(void (^)(NSError *error, NSMutableArray *returnArray))completion {
           //Define errors to be processed when everything is complete.
           //One error per service; in this example we'll have two
@@ -356,7 +339,6 @@
 
 - (void)testMethodTwoWithCompletion:(void (^)(NSError *error, NSMutableArray *returnArray, NSMutableArray *returnDataArray))completion withArray:(NSMutableArray *)array {
      __block NSError *theError = nil;
-     __block BOOL lastNone = false;
      dispatch_group_t theServiceGroup = dispatch_group_create();
      dispatch_group_enter(theServiceGroup);
      NSMutableArray *theReturnArray = [NSMutableArray arrayWithArray:array];

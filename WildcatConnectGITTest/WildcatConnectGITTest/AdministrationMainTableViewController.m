@@ -15,6 +15,7 @@
 #import "ComposePollViewController.h"
 #import "EditMessagesViewController.h"
 #import "EditPictureDayViewController.h"
+#import "ComposeAlertViewController.h"
 
 @interface AdministrationMainTableViewController ()
 
@@ -131,6 +132,9 @@
                [self.navigationController pushViewController:controller animated:YES];
           } else if (indexPath.row == 3) {
                ComposePollViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"ComposePoll"];
+               [self.navigationController pushViewController:controller animated:YES];
+          } else if (indexPath.row == 4) {
+               ComposeAlertViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"ComposeAlert"];
                [self.navigationController pushViewController:controller animated:YES];
           }
      }

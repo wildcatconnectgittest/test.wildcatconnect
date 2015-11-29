@@ -13,7 +13,9 @@
 
 @end
 
-@implementation UsefulLinksTableViewController
+@implementation UsefulLinksTableViewController {
+     UIWebView *webView;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -115,8 +117,21 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
      NSString *URLString = [[((NSMutableArray *)([[self.linksArray objectAtIndex:indexPath.section] objectForKey:@"linksArray"])) objectAtIndex:indexPath.row] objectForKey:@"URLString"];
-     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:URLString]];
+     webView = [[UIWebView alloc] initWithFrame:self.tableView.frame];  //Change self.view.bounds to a smaller CGRect if you don't want it to take up the whole screen
+     [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:URLString]]];
+     webView.scalesPageToFit = YES;
+     self.navigationItem.title = [[((NSMutableArray *)([[self.linksArray objectAtIndex:indexPath.section] objectForKey:@"linksArray"])) objectAtIndex:indexPath.row] objectForKey:@"titleString"];
+     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStylePlain target:self action:@selector(closeWebView)];
+     self.navigationItem.rightBarButtonItem = barButtonItem;
+     [barButtonItem release];
+     [self.view addSubview:webView];
      [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (void)closeWebView {
+     [webView removeFromSuperview];
+     self.navigationItem.rightBarButtonItem = nil;
+     self.navigationItem.title = @"Useful Links";
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
