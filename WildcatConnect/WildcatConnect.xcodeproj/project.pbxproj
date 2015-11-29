@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A0AFC771C0B383B0094A2D2 /* ComposeNewsArticleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0AFC761C0B383B0094A2D2 /* ComposeNewsArticleViewController.m */; };
 		0ADBEE2A1C0ABD5E00E946F6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBEE291C0ABD5E00E946F6 /* main.m */; };
 		0ADBEE361C0ABD5E00E946F6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0ADBEE341C0ABD5E00E946F6 /* Main.storyboard */; };
 		0ADBEE381C0ABD5E00E946F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0ADBEE371C0ABD5E00E946F6 /* Assets.xcassets */; };
@@ -122,6 +123,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0A0AFC761C0B383B0094A2D2 /* ComposeNewsArticleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComposeNewsArticleViewController.m; sourceTree = "<group>"; };
 		0ADBEE251C0ABD5E00E946F6 /* WildcatConnect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WildcatConnect.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0ADBEE291C0ABD5E00E946F6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0ADBEE351C0ABD5E00E946F6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -426,6 +428,7 @@
 				0ADBEED31C0ABDE100E946F6 /* alerts@2x.png */,
 				0ADBEED41C0ABDE100E946F6 /* AppManager.m */,
 				0ADBEED51C0ABDE100E946F6 /* MainTabBarController.h */,
+				0A0AFC761C0B383B0094A2D2 /* ComposeNewsArticleViewController.m */,
 				0ADBEED61C0ABDE100E946F6 /* MainTabBarController.m */,
 				0ADBEED71C0ABDE100E946F6 /* Staff DirectoryTableViewController.h */,
 				0ADBEED81C0ABDE100E946F6 /* StaffDirectoryBaseTableViewController.h */,
@@ -689,6 +692,7 @@
 				0ADBEE9B1C0ABD8400E946F6 /* StaffDirectoryResultsTableViewController.m in Sources */,
 				0ADBEEE21C0ABDE100E946F6 /* ComposeExtracurricularUpdateViewController.m in Sources */,
 				0ADBEE9E1C0ABD8400E946F6 /* ComposePollViewController.m in Sources */,
+				0A0AFC771C0B383B0094A2D2 /* ComposeNewsArticleViewController.m in Sources */,
 				0ADBEE981C0ABD8400E946F6 /* LunchMenusViewController.m in Sources */,
 				0ADBEE891C0ABD8400E946F6 /* UsefulLinksTableViewController.m in Sources */,
 				0ADBEE8E1C0ABD8400E946F6 /* AlertDetailViewController.m in Sources */,
@@ -964,6 +968,7 @@
 				0ADBEE571C0ABD5E00E946F6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0ADBEE581C0ABD5E00E946F6 /* Build configuration list for PBXNativeTarget "WildcatConnectTests" */ = {
 			isa = XCConfigurationList;
@@ -972,6 +977,7 @@
 				0ADBEE5A1C0ABD5E00E946F6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0ADBEE5B1C0ABD5E00E946F6 /* Build configuration list for PBXNativeTarget "WildcatConnectUITests" */ = {
 			isa = XCConfigurationList;
@@ -980,6 +986,7 @@
 				0ADBEE5D1C0ABD5E00E946F6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

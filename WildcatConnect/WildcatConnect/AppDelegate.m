@@ -278,7 +278,6 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
      [PFPush handlePush:userInfo];
-     NSLog(@"%@", userInfo);
      if (application.applicationState == UIApplicationStateInactive) {
                // The application was just brought from the background to the foreground,
                // so we consider the app as having been "opened by a push notification."

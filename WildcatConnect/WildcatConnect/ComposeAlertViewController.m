@@ -295,15 +295,13 @@
                PFPush *push = [[PFPush alloc] init];
                [push setQuery:pushQuery];
                [push setData:data];
-               [push sendPushInBackground];
                [push sendPushInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
                     if (error) {
                          NSLog(@"%@", error);
                     } else {
-                         
+                         dispatch_group_leave(serviceGroup);
                     }
                }];
-               dispatch_group_leave(serviceGroup);
           }];
      }];
      dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^{

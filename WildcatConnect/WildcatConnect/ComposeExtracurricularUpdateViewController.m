@@ -105,7 +105,7 @@
      [self.view addSubview:scrollView];
      
      [self getExtracurricularsMethodWithCompletion:^(NSMutableArray *returnArray, NSError *error) {
-          if (error != nil) {
+          if (error.domain) {
                errorAlertView = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"Error fetching data from server. Please try again." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
                [errorAlertView show];
           } else {
@@ -406,15 +406,16 @@
      [query orderByAscending:@"titleString"];
      [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
           [returnArray addObjectsFromArray:objects];
-          if (error) {
+          if (error != nil) {
                theError = error;
           }
           dispatch_group_leave(serviceGroup);
      }];
      dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
           NSError *overallError = nil;
-          if (theError) {
+          if (theError != nil && returnArray.count == 0) {
                overallError = theError;
+               NSLog(@"Error!!!");
           }
           completion(returnArray, overallError);
      });
