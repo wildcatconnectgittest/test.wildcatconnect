@@ -328,6 +328,8 @@
                          if ([readNumber integerValue] > 0) {
                               [[self.tabBarController.viewControllers objectAtIndex:2] tabBarItem].badgeValue = [readNumber stringValue];
                          }
+                         else
+                              [[self.tabBarController.viewControllers objectAtIndex:2] tabBarItem].badgeValue = nil;
                     }];
                }];
           }];

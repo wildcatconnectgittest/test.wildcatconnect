@@ -22,15 +22,20 @@
      UITextView *titleTextView;
      UIAlertView *postAlertView;
      UITextView *authorTextView;
-     UITextView *dateTextView;
+     UITableView *theTableView;
      UITextView *alertTextView;
      UIView *separator;
      UIButton *postButton;
+     int numberOfRows;
+     UIDatePicker *datePicker;
+     UILabel *articleLabel;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+     
+     numberOfRows = 2;
      
      self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:248.0f/255.0f
                                                                             green:183.0f/255.0f
@@ -109,27 +114,20 @@
      [scrollView addSubview:authorTextView];
      
      UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, authorTextView.frame.origin.y + authorTextView.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
-     dateLabel.text = @"Date (MM-dd-YYYY)";
+     dateLabel.text = @"Select Alert Timing";
      [dateLabel setFont:[UIFont systemFontOfSize:16]];
      dateLabel.lineBreakMode = NSLineBreakByWordWrapping;
      dateLabel.numberOfLines = 0;
      [dateLabel sizeToFit];
      [scrollView addSubview:dateLabel];
      
-     dateTextView = [[UITextView alloc] initWithFrame:CGRectMake(dateLabel.frame.origin.x, dateLabel.frame.origin.y + dateLabel.frame.size.height + 10, self.view.frame.size.width - 20, 35)];
-     [dateTextView setDelegate:self];
-     [dateTextView setFont:[UIFont systemFontOfSize:16]];
-     dateTextView.layer.borderWidth = 1.0f;
-     dateTextView.layer.borderColor = [[UIColor grayColor] CGColor];
-     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-     [dateFormatter setDateFormat:@"MM-dd-yyyy"];
-     NSDate *today = [NSDate date];
-     dateTextView.text = [dateFormatter stringFromDate:today];
-     dateTextView.scrollEnabled = false;
-     dateTextView.tag = 2;
-     [scrollView addSubview:dateTextView];
+     theTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, dateLabel.frame.origin.y + dateLabel.frame.size.height + 10, self.view.frame.size.width, 100)];
+     [theTableView setDelegate:self];
+     [theTableView setDataSource:self];
+     [scrollView addSubview:theTableView];
+     [theTableView reloadData];
      
-     UILabel *articleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, dateTextView.frame.origin.y + dateTextView.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
+     articleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, theTableView.frame.origin.y + theTableView.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
      articleLabel.text = @"Alert Text";
      [articleLabel setFont:[UIFont systemFontOfSize:16]];
      articleLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -169,6 +167,96 @@
      [self.view addSubview:scrollView];
 }
 
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
+     if (indexPath.row == 0) {
+          cell.textLabel.text = @"Right Now";
+          if (numberOfRows == 2) {
+               cell.accessoryType = UITableViewCellAccessoryCheckmark;
+          }
+     } else if (indexPath.row == 1) {
+          cell.textLabel.text = @"Scheduled Time...";
+     }
+     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+     if (indexPath.row != 3) {
+          if ((self.checkedIndexPath || indexPath.row == 1) && self.checkedIndexPath != indexPath) {
+               if (indexPath.row == 0) {
+                         //remove that from superview...
+                    [datePicker removeFromSuperview];
+                    
+                    articleLabel.frame = CGRectMake(10, theTableView.frame.origin.y + theTableView.frame.size.height + 10, self.view.frame.size.width - 20, 100);
+                    [articleLabel sizeToFit];
+                    
+                    alertTextView.frame = CGRectMake(articleLabel.frame.origin.x, articleLabel.frame.origin.y + articleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 200);
+                    
+                    separator.frame = CGRectMake(10, alertTextView.frame.origin.y + alertTextView.frame.size.height + 10, self.view.frame.size.width - 20, 1);
+                    
+                    postButton.frame = CGRectMake((self.view.frame.size.width - postButton.frame.size.width - 10), separator.frame.origin.y + separator.frame.size.height + 10, postButton.frame.size.width, postButton.frame.size.height);
+                    
+                    self.automaticallyAdjustsScrollViewInsets = YES;
+                    UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 120, 0);
+                    scrollView.contentInset = adjustForTabbarInsets;
+                    scrollView.scrollIndicatorInsets = adjustForTabbarInsets;
+                    CGRect contentRect = CGRectZero;
+                    for (UIView *view in scrollView.subviews) {
+                         contentRect = CGRectUnion(contentRect, view.frame);
+                    }
+                    scrollView.contentSize = contentRect.size;
+                    [self.view addSubview:scrollView];
+               } else if (indexPath.row == 1) {
+                    UITableViewCell* uncheckCell = [tableView
+                                                    cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+                    uncheckCell.accessoryType = UITableViewCellAccessoryNone;
+                         //add that to superview...
+                    datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(10, theTableView.frame.origin.y + theTableView.frame.size.height + 10, self.view.frame.size.width - 10, 120)];
+                    [datePicker setMinimumDate:[NSDate date]];
+                    [scrollView addSubview:datePicker];
+                    
+                    articleLabel.frame = CGRectMake(10, datePicker.frame.origin.y + datePicker.frame.size.height + 10, self.view.frame.size.width - 20, 100);
+                    [articleLabel sizeToFit];
+                    
+                    alertTextView.frame = CGRectMake(articleLabel.frame.origin.x, articleLabel.frame.origin.y + articleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 200);
+                    
+                    separator.frame = CGRectMake(10, alertTextView.frame.origin.y + alertTextView.frame.size.height + 10, self.view.frame.size.width - 20, 1);
+                    
+                    postButton.frame = CGRectMake((self.view.frame.size.width - postButton.frame.size.width - 10), separator.frame.origin.y + separator.frame.size.height + 10, postButton.frame.size.width, postButton.frame.size.height);
+                    
+                    self.automaticallyAdjustsScrollViewInsets = YES;
+                    UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 120, 0);
+                    scrollView.contentInset = adjustForTabbarInsets;
+                    scrollView.scrollIndicatorInsets = adjustForTabbarInsets;
+                    CGRect contentRect = CGRectZero;
+                    for (UIView *view in scrollView.subviews) {
+                         contentRect = CGRectUnion(contentRect, view.frame);
+                    }
+                    scrollView.contentSize = contentRect.size;
+                    [self.view addSubview:scrollView];
+               }
+               if(self.checkedIndexPath)
+               {
+                    UITableViewCell* uncheckCell = [tableView
+                                                    cellForRowAtIndexPath:self.checkedIndexPath];
+                    uncheckCell.accessoryType = UITableViewCellAccessoryNone;
+               }
+               UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+               cell.accessoryType = UITableViewCellAccessoryCheckmark;
+               self.checkedIndexPath = indexPath;
+          }
+     }
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+     return numberOfRows;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+     return 1;
+}
+
 - (void)postAlert {
      if (! [self validateAllFields]) {
           UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please ensure you have correctly filled out all fields!" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
@@ -180,7 +268,7 @@
 }
 
 - (BOOL)validateAllFields {
-     return (titleTextView.text.length > 0 && authorTextView.text.length > 0 && dateTextView.text.length > 0 && alertTextView.text.length > 0);
+     return (titleTextView.text.length > 0 && authorTextView.text.length > 0 && alertTextView.text.length > 0);
 }
 
 -(void)textViewDidChange:(UITextView *)textView
@@ -223,7 +311,7 @@
                return NO;
           } else
                return [self isAcceptableTextLength:textView.text.length + string.length - range.length forMaximum:50 existsMaximum:YES];
-     } else if (textView == authorTextView || textView == dateTextView) {
+     } else if (textView == authorTextView) {
           if([string isEqualToString:@"\n"])
           {
                [textView resignFirstResponder];
@@ -270,7 +358,25 @@
      AlertStructure *alertStructure = [[AlertStructure alloc] init];
      alertStructure.titleString = titleTextView.text;
      alertStructure.authorString = authorTextView.text;
-     alertStructure.dateString = dateTextView.text;
+     if (self.checkedIndexPath) {
+          if (self.checkedIndexPath.row == 0) {
+               alertStructure.hasTime = [NSNumber numberWithInt:0];
+               NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+               [formatter setDateFormat:@"MMMM dd, h:mm a"];
+               alertStructure.dateString = [formatter stringFromDate:[NSDate date]];
+          } else if (self.checkedIndexPath.row == 1) {
+               alertStructure.hasTime = [NSNumber numberWithInt:1];
+               NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+               [formatter setDateFormat:@"MMMM dd, h:mm a"];
+               alertStructure.alertTime = datePicker.date;
+               alertStructure.dateString = [formatter stringFromDate:datePicker.date];
+          }
+     } else {
+          alertStructure.hasTime = [NSNumber numberWithInt:0];
+          NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+          [formatter setDateFormat:@"MMMM dd, h:mm a"];
+          alertStructure.dateString = [formatter stringFromDate:[NSDate date]];
+     }
      alertStructure.contentString = alertTextView.text;
      PFQuery *query = [AlertStructure query];
      [query orderByDescending:@"alertID"];
@@ -278,32 +384,12 @@
           AlertStructure *structure = (AlertStructure *)object;
           NSString *currentID = structure.alertID;
           NSNumber *theNumber = [NSNumber numberWithInt:([structure.alertID integerValue] + 1)];
-          NSLog(@"%@", theNumber);
-          theString = alertStructure.alertID;
+          alertStructure.alertID = theNumber;
           [alertStructure saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
                if (error) {
                     theError = error;
                }
-               
-                    // Create our Installation query
-               NSDictionary *data = @{
-                                      @"alert" : titleTextView.text,
-                                      @"badge" : @"Increment",
-                                      @"sounds" : @"default",
-                                      @"a" : theString
-                                      };
-               PFQuery *pushQuery = [PFInstallation query];
-               [pushQuery whereKey:@"installationId" notEqualTo:[[PFInstallation currentInstallation] installationId]];
-               PFPush *push = [[PFPush alloc] init];
-               [push setQuery:pushQuery];
-               [push setData:data];
-               [push sendPushInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
-                    if (error) {
-                         NSLog(@"%@", error);
-                    } else {
-                         dispatch_group_leave(serviceGroup);
-                    }
-               }];
+               dispatch_group_leave(serviceGroup);
           }];
      }];
      dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^{

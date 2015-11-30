@@ -12,9 +12,11 @@
 
 @dynamic titleString;
 @dynamic authorString;
-@dynamic dateString;
 @dynamic contentString;
 @dynamic alertID;
+@dynamic alertTime;
+@dynamic hasTime;
+@dynamic dateString;
 
 + (void)load {
      [self registerSubclass];

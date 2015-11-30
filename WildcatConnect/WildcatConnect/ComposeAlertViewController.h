@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ComposeAlertViewController : UIViewController <UITextViewDelegate, UIAlertViewDelegate>
+@interface ComposeAlertViewController : UIViewController <UITextViewDelegate, UIAlertViewDelegate, UITableViewDataSource, UITableViewDelegate> {
+     NSIndexPath *checkedIndexPath;
+}
+
+@property (nonatomic, retain) NSIndexPath *checkedIndexPath;
 
 @end

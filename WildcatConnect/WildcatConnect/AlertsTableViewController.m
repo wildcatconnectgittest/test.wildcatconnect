@@ -72,8 +72,9 @@
           alertStructure.alertID = [object objectForKey:@"alertID"];
           alertStructure.authorString = [object objectForKey:@"authorString"];
           alertStructure.contentString = [object objectForKey:@"contentString"];
-          alertStructure.dateString = [object objectForKey:@"dateString"];
           alertStructure.titleString = [object objectForKey:@"titleString"];
+          alertStructure.hasTime = [object objectForKey:@"hasTime"];
+          alertStructure.dateString = [object objectForKey:@"dateString"];
           [array addObject:alertStructure];
           if (i == theArrayToSearch.count - 1)
                dispatch_group_leave(serviceGroup);
@@ -125,11 +126,13 @@
                                                    
                                                    @"authorString" : a.authorString,
                                                    
-                                                   @"dateString" : a.dateString,
-                                                   
                                                    @"contentString" : a.contentString,
                                                    
-                                                   @"alertID" : a.alertID
+                                                   @"alertID" : a.alertID,
+                                                   
+                                                   @"hasTime" : a.hasTime,
+                                                   
+                                                   @"dateString" : a.dateString
                                                    
                                                    }];
                     }
@@ -156,7 +159,7 @@
      NSMutableArray *returnArray = [[NSMutableArray alloc] init];
      PFQuery *query = [AlertStructure query];
      [query orderByDescending:@"alertID"];
-     query.limit = 10;
+     query.limit = 20;
      [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
           [returnArray addObjectsFromArray:objects];
           firstError = error;

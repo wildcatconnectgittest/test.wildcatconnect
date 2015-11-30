@@ -202,5 +202,72 @@ Parse.Cloud.job("alertStructureDeletion", function(request, response) {
 });
 
 Parse.Cloud.afterSave("AlertStructure", function(request) {
-  console.log("We did it.");
+  if (request.object.get("alertID") != null) {
+    if (request.object.get("alertTime") != null) {
+      Parse.Push.send({
+      channels: [ "global" ],
+      data: {
+        alert: request.object.get("titleString"),
+        a: request.object.get("alertID"),
+        badge: "Increment",
+      },
+      push_time: request.object.get("alertTime")
+    });
+    } else {
+      Parse.Push.send({
+      channels: [ "global" ],
+      data: {
+        alert: request.object.get("titleString"),
+        a: request.object.get("alertID"),
+        badge: "Increment"
+      }
+    });
+    };
+  };
+});
+
+// Just a single icon push for non-critical updates!!!
+
+Parse.Cloud.afterSave("NewsArticleStructure", function(request) {
+  if (request.object.get("articleID") != null) {
+    Parse.Push.send({
+      channels: [ "global" ],
+      data: {
+        badge: "Increment"
+      }
+    });
+  };
+});
+
+Parse.Cloud.afterSave("ExtracurricularUpdateStructure", function(request) {
+  if (request.object.get("extracurricularUpdateID") != null) {
+    Parse.Push.send({
+      channels: [ "global" ],
+      data: {
+        badge: "Increment"
+      }
+    });
+  };
+});
+
+Parse.Cloud.afterSave("CommunityServiceStructure", function(request) {
+  if (request.object.get("communityServiceID") != null) {
+    Parse.Push.send({
+      channels: [ "global" ],
+      data: {
+        badge: "Increment"
+      }
+    });
+  };
+});
+
+Parse.Cloud.afterSave("PollStructure", function(request) {
+  if (request.object.get("pollID") != null) {
+    Parse.Push.send({
+      channels: [ "global" ],
+      data: {
+        badge: "Increment"
+      }
+    });
+  };
 });

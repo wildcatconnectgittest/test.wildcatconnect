@@ -15,8 +15,10 @@
 
 @property NSString *titleString;
 @property NSString *authorString;
-@property NSString *dateString;
 @property NSString *contentString; //could change depending on future web structure...
-@property NSString *alertID;
+@property NSNumber *alertID;
+@property NSData *alertTime;
+@property NSNumber *hasTime;
+@property NSString *dateString;
 
 @end

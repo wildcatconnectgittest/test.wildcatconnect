@@ -70,8 +70,11 @@
                     AlertStructure *theAlert = [[AlertStructure alloc] init];
                     theAlert.titleString = [[array firstObject] objectForKey:@"titleString"];
                     theAlert.authorString = [[array firstObject] objectForKey:@"authorString"];
+                    theAlert.alertTime = [[array firstObject] objectForKey:@"alertTime"];
+                    theAlert.contentString = [[array firstObject] objectForKey:@"contentString"];
+                    theAlert.hasTime = [[array firstObject] objectForKey:@"hasTime"];
                     theAlert.dateString = [[array firstObject] objectForKey:@"dateString"];
-                    theAlert.contentString = [[array firstObject] objectForKey:@"contentString"]; AlertDetailViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"AlertDetail"];
+                    AlertDetailViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"AlertDetail"];
                     controller.alert = theAlert;
                     controller.showCloseButton = YES;
                     UINavigationController *nav = (UINavigationController *)self.window.rootViewController;
@@ -306,10 +309,9 @@
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
      if (error.code == 3010) {
-          NSLog(@"Push notifications are not supported in the iOS Simulator.");
+               //
      } else {
-               // show some alert or otherwise handle the failure to register.
-          NSLog(@"application:didFailToRegisterForRemoteNotificationsWithError: %@", error);
+               //
      }
 }
 
@@ -332,8 +334,11 @@
                     AlertStructure *theAlert = [[AlertStructure alloc] init];
                     theAlert.titleString = [[array firstObject] objectForKey:@"titleString"];
                     theAlert.authorString = [[array firstObject] objectForKey:@"authorString"];
+                    theAlert.alertTime = [[array firstObject] objectForKey:@"alertTime"];
+                    theAlert.contentString = [[array firstObject] objectForKey:@"contentString"];
+                    theAlert.hasTime = [[array firstObject] objectForKey:@"hasTime"];
                     theAlert.dateString = [[array firstObject] objectForKey:@"dateString"];
-                    theAlert.contentString = [[array firstObject] objectForKey:@"contentString"]; AlertDetailViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"AlertDetail"];
+                    AlertDetailViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"AlertDetail"];
                     controller.alert = theAlert;
                     controller.showCloseButton = YES;
                     UINavigationController *nav = (UINavigationController *)self.window.rootViewController;
@@ -346,10 +351,11 @@
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-     NSLog(@"%@", userInfo);
      self.alertString = [userInfo objectForKey:@"a"];
-     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert" message:@"You have 1 new alert message. Would you like to read now?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
-     [alert show];
+     if (self.alertString) {
+          UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert" message:@"You have 1 new alert message. Would you like to read now?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+          [alert show];
+     }
      if (application.applicationState == UIApplicationStateInactive) {
                // The application was just brought from the background to the foreground,
                // so we consider the app as having been "opened by a push notification."
@@ -388,22 +394,12 @@
 
 - (void)applicationWillResignActive:(UIApplication *)application {
      NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-     [userDefaults removeObjectForKey:@"visitedPagesArray"];
-     [userDefaults removeObjectForKey:@"readNewsArticles"];
-     [userDefaults removeObjectForKey:@"likedNewsArticles"];
-     [userDefaults removeObjectForKey:@"answeredPolls"];
-     [userDefaults removeObjectForKey:@"readAlerts"];
      [userDefaults removeObjectForKey:@"reloadHomePage"]; // keep this
      [userDefaults synchronize];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
      NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-     [userDefaults removeObjectForKey:@"visitedPagesArray"];
-     [userDefaults removeObjectForKey:@"readNewsArticles"];
-     [userDefaults removeObjectForKey:@"likedNewsArticles"];
-     [userDefaults removeObjectForKey:@"answeredPolls"];
-     [userDefaults removeObjectForKey:@"readAlerts"];
      [userDefaults removeObjectForKey:@"reloadHomePage"]; // keep this
      [userDefaults synchronize];
 }

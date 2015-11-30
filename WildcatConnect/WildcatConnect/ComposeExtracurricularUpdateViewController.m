@@ -415,7 +415,6 @@
           NSError *overallError = nil;
           if (theError != nil && returnArray.count == 0) {
                overallError = theError;
-               NSLog(@"Error!!!");
           }
           completion(returnArray, overallError);
      });
