@@ -17,6 +17,7 @@
 @dynamic alertTime;
 @dynamic hasTime;
 @dynamic dateString;
+@dynamic isReady;
 
 + (void)load {
      [self registerSubclass];

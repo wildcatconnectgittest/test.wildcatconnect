@@ -213,6 +213,7 @@
                     uncheckCell.accessoryType = UITableViewCellAccessoryNone;
                          //add that to superview...
                     datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(10, theTableView.frame.origin.y + theTableView.frame.size.height + 10, self.view.frame.size.width - 10, 120)];
+                    [datePicker addTarget:self action:@selector(dateIsChanged:) forControlEvents:UIControlEventValueChanged];
                     [datePicker setMinimumDate:[NSDate date]];
                     [scrollView addSubview:datePicker];
                     
@@ -264,6 +265,13 @@
      } else {
           postAlertView = [[UIAlertView alloc] initWithTitle:@"Confirmation" message:@"Are you sure you want to post this alert? It will be live to all app users." delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
           [postAlertView show];
+     }
+}
+
+- (void)dateIsChanged:(id)sender {
+     hasChanged = true;
+     if ((UIDatePicker *)(sender) == datePicker) {
+          datePicker.minimumDate = [NSDate date];
      }
 }
 
@@ -364,18 +372,29 @@
                NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
                [formatter setDateFormat:@"MMMM dd, h:mm a"];
                alertStructure.dateString = [formatter stringFromDate:[NSDate date]];
+               alertStructure.isReady = [NSNumber numberWithInt:1];
           } else if (self.checkedIndexPath.row == 1) {
-               alertStructure.hasTime = [NSNumber numberWithInt:1];
-               NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-               [formatter setDateFormat:@"MMMM dd, h:mm a"];
-               alertStructure.alertTime = datePicker.date;
-               alertStructure.dateString = [formatter stringFromDate:datePicker.date];
+               if ([datePicker.date timeIntervalSinceNow] < 0) {
+                    alertStructure.hasTime = [NSNumber numberWithInt:0];
+                    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+                    [formatter setDateFormat:@"MMMM dd, h:mm a"];
+                    alertStructure.dateString = [formatter stringFromDate:[NSDate date]];
+                    alertStructure.isReady = [NSNumber numberWithInt:1];
+               } else {
+                    alertStructure.hasTime = [NSNumber numberWithInt:1];
+                    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+                    [formatter setDateFormat:@"MMMM dd, h:mm a"];
+                    alertStructure.alertTime = datePicker.date;
+                    alertStructure.dateString = [formatter stringFromDate:datePicker.date];
+                    alertStructure.isReady = [NSNumber numberWithInt:0];
+               }
           }
      } else {
           alertStructure.hasTime = [NSNumber numberWithInt:0];
           NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
           [formatter setDateFormat:@"MMMM dd, h:mm a"];
           alertStructure.dateString = [formatter stringFromDate:[NSDate date]];
+          alertStructure.isReady = [NSNumber numberWithInt:1];
      }
      alertStructure.contentString = alertTextView.text;
      PFQuery *query = [AlertStructure query];

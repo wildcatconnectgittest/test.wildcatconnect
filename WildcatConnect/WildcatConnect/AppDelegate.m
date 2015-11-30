@@ -74,6 +74,7 @@
                     theAlert.contentString = [[array firstObject] objectForKey:@"contentString"];
                     theAlert.hasTime = [[array firstObject] objectForKey:@"hasTime"];
                     theAlert.dateString = [[array firstObject] objectForKey:@"dateString"];
+                    theAlert.isReady = [[array firstObject] objectForKey:@"isReady"];
                     AlertDetailViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"AlertDetail"];
                     controller.alert = theAlert;
                     controller.showCloseButton = YES;
@@ -338,6 +339,7 @@
                     theAlert.contentString = [[array firstObject] objectForKey:@"contentString"];
                     theAlert.hasTime = [[array firstObject] objectForKey:@"hasTime"];
                     theAlert.dateString = [[array firstObject] objectForKey:@"dateString"];
+                    theAlert.isReady = [[array firstObject] objectForKey:@"isReady"];
                     AlertDetailViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"AlertDetail"];
                     controller.alert = theAlert;
                     controller.showCloseButton = YES;

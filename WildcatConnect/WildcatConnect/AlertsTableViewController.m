@@ -75,6 +75,7 @@
           alertStructure.titleString = [object objectForKey:@"titleString"];
           alertStructure.hasTime = [object objectForKey:@"hasTime"];
           alertStructure.dateString = [object objectForKey:@"dateString"];
+          alertStructure.isReady = [object objectForKey:@"isReady"];
           [array addObject:alertStructure];
           if (i == theArrayToSearch.count - 1)
                dispatch_group_leave(serviceGroup);
@@ -132,7 +133,9 @@
                                                    
                                                    @"hasTime" : a.hasTime,
                                                    
-                                                   @"dateString" : a.dateString
+                                                   @"dateString" : a.dateString,
+                                                   
+                                                   @"isReady" : a.isReady
                                                    
                                                    }];
                     }
@@ -159,6 +162,7 @@
      NSMutableArray *returnArray = [[NSMutableArray alloc] init];
      PFQuery *query = [AlertStructure query];
      [query orderByDescending:@"alertID"];
+     [query whereKey:@"isReady" equalTo:[NSNumber numberWithInt:1]];
      query.limit = 20;
      [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
           [returnArray addObjectsFromArray:objects];

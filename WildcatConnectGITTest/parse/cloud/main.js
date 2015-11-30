@@ -1,10 +1,4 @@
-
-// Use Parse.Cloud.define to define as many cloud functions as you want.
-// For example:
-Parse.Cloud.define("hello", function(request, response) {
-  console.log("Hello logger!!!");
-  response.success("Hello world! This is a test of cloud code functionality.");
-});
+//WildcatConnect Parse.com Server-Side Logic
 
 Parse.Cloud.job("schoolDayStructureDeletion", function(request, response) {
   var query = new Parse.Query("SchoolDayStructure");
@@ -202,8 +196,8 @@ Parse.Cloud.job("alertStructureDeletion", function(request, response) {
 });
 
 Parse.Cloud.afterSave("AlertStructure", function(request) {
-  if (request.object.get("alertID") != null) {
-    if (request.object.get("alertTime") != null) {
+  if (request.object.get("alertID")) {
+    if (request.object.get("alertTime") != null && request.object.get("isReady") == 0) {
       Parse.Push.send({
       channels: [ "global" ],
       data: {
@@ -270,4 +264,47 @@ Parse.Cloud.afterSave("PollStructure", function(request) {
       }
     });
   };
+});
+
+Parse.Cloud.job("alertStatusUpdating", function(request, response) {
+  var query = new Parse.Query("AlertStructure");
+  query.ascending("alertID");
+  query.equalTo("isReady", 0);
+  query.find({
+    success: function(structures) {
+      for (var i = 0; i < structures.length; i++) {
+            var currentStructure = structures[i];
+            var thisDate = currentStructure.get("alertTime");
+            var now = new Date();
+          var date1_ms = thisDate.getTime();
+          var date2_ms = now.getTime();
+          var difference_ms = date2_ms - date1_ms;
+          if (difference_ms >= 0) {
+            currentStructure.set("isReady", 1);
+            currentStructure.save(null, {
+  success: function (currentStructure) {
+    // Execute any logic that should take place after the object is saved.
+    //alert('New object created with objectId: ' + gameScore.id);
+    response.success();
+  },
+  error: function(currentStructure, error) {
+    // Execute any logic that should take place if the save fails.
+    // error is a Parse.Error with an error code and message.
+    //alert('Failed to create new object, with error code: ' + error.message);
+    response.error();
+  }
+});
+          };
+          if (i == structures.length - 1) {
+            response.success("Done!!!");
+          };
+        }
+        if (structures.length == 0) {
+          response.success("No objects to change!!!");
+        };
+    },
+    error: function() {
+      response.error("Error.");
+    }
+  });
 });

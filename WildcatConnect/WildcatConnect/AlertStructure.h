@@ -20,5 +20,6 @@
 @property NSData *alertTime;
 @property NSNumber *hasTime;
 @property NSString *dateString;
+@property NSNumber *isReady;
 
 @end

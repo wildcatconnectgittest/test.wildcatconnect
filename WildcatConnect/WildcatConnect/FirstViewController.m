@@ -397,7 +397,7 @@
      __block SchoolDayStructure *theDay;
      NSMutableArray *array = [NSMutableArray array];
      PFQuery *query = [SchoolDayStructure query];
-     [query orderByDescending:@"schoolDayID"];
+     [query orderByAscending:@"schoolDayID"];
      [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
           theError = error;
           [array addObjectsFromArray:objects];
