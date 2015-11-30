@@ -144,7 +144,7 @@
                     [searchDictionaryArray removeObjectAtIndex:i];
                }
           }
-          [[NSUserDefaults standardUserDefaults] setObject:searchDictionaryArray forKey:@"readNewsArticles"];
+          [[NSUserDefaults standardUserDefaults] setObject:searchDictionaryArray forKey:@"answeredPolls"];
           [[NSUserDefaults standardUserDefaults] synchronize];
           dispatch_group_leave(serviceGroup);
      }
@@ -193,7 +193,7 @@
      NSMutableArray *returnArray = [[NSMutableArray alloc] init];
      PFQuery *query = [PollStructure query];
      [query orderByDescending:@"pollID"];
-     query.limit = 5;
+     query.limit = 10;
      [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
           [returnArray addObjectsFromArray:objects];
           firstError = error;
