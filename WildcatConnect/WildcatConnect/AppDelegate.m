@@ -37,8 +37,20 @@
                                                      UIUserNotificationTypeSound);
      UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:userNotificationTypes
                                                                               categories:nil];
-     [application registerUserNotificationSettings:settings];
-     [application registerForRemoteNotifications];
+     
+     if ([application respondsToSelector:@selector(isRegisteredForRemoteNotifications)])
+     {
+               // iOS 8 Notifications
+          [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
+          
+          [application registerForRemoteNotifications];
+     }
+     else
+     {
+               // iOS < 8 Notifications
+          [application registerForRemoteNotificationTypes:
+           (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound)];
+     }
      
      NSDictionary *notificationPayload = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
      

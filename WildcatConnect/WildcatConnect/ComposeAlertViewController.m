@@ -277,29 +277,13 @@
      [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
           AlertStructure *structure = (AlertStructure *)object;
           NSString *currentID = structure.alertID;
-          alertStructure.alertID = [[NSNumber numberWithInt:([structure.alertID integerValue] + 1)] stringValue];
+          NSNumber *theNumber = [NSNumber numberWithInt:([structure.alertID integerValue] + 1)];
+          NSLog(@"%@", theNumber);
           theString = alertStructure.alertID;
           [alertStructure saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
                if (error) {
                     theError = error;
                }
-               
-                    //Testing only.
-               
-               NSString *urlString = [NSString stringWithFormat:@"https://api.parse.com/1/push"];
-               NSURL *url = [[NSURL alloc] initWithString:urlString];
-               NSMutableURLRequest *restAPI = [[NSMutableURLRequest alloc] initWithURL:url];
-               [restAPI setHTTPMethod:@"POST"];
-               [restAPI setValue:@"cLBOvwh6ZTQYex37DSwxL1Cvg34MMiRWYAB4vqs0" forHTTPHeaderField:@"X-Parse-Application-Id"];
-               [restAPI setValue:@"L64VH4MuWvrmawcx70vmsQAbmtWuVmxDuhvce1TW" forHTTPHeaderField:@"X-Parse-REST-API-Key"];
-               NSDictionary *dict = @{
-                                      @"alert" : titleTextView.text,
-                                      @"badge" : @"Increment",
-                                      @"sounds" : @"default",
-                                      @"a" : theString
-                                      };
-               [restAPI set]
-               NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:restAPI delegate:self startImmediately:YES];
                
                     // Create our Installation query
                NSDictionary *data = @{
