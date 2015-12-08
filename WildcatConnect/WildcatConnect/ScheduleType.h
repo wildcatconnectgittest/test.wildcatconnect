@@ -15,7 +15,6 @@
 @property NSString *typeID;
 @property NSString *scheduleString;
 @property BOOL alertNeeded;
-
-- (NSString *)getFullScheduleString;
+@property NSString *fullScheduleString;
 
 @end

@@ -148,7 +148,7 @@
                return cell;
           } else if (indexPath.row == 1) {
                     //Get involved!!!
-               cell.textLabel.text = @"Join the development team";
+               cell.textLabel.text = @"Join the team/give feedback";
                return cell;
           }
           return cell;
@@ -173,7 +173,7 @@
           NSString *url = [URLEMail stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding ];
           [[UIApplication sharedApplication]  openURL: [NSURL URLWithString: url]];
      } else if (indexPath.section == 1 && indexPath.row == 1) {
-          NSString *URLEMail = @"mailto:team@wildcatconnect.org?subject=WildcatConnect App Team";
+          NSString *URLEMail = @"mailto:team@wildcatconnect.org?subject=WildcatConnect App";
           
           NSString *url = [URLEMail stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding ];
           [[UIApplication sharedApplication]  openURL: [NSURL URLWithString: url]];

@@ -366,6 +366,7 @@
      AlertStructure *alertStructure = [[AlertStructure alloc] init];
      alertStructure.titleString = titleTextView.text;
      alertStructure.authorString = authorTextView.text;
+     alertStructure.views = [NSNumber numberWithInt:0];
      if (self.checkedIndexPath) {
           if (self.checkedIndexPath.row == 0) {
                alertStructure.hasTime = [NSNumber numberWithInt:0];

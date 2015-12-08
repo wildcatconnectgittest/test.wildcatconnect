@@ -25,5 +25,6 @@
 @property NSString *contentURLString;
 @property NSNumber *articleID;
 @property NSNumber *likes;
+@property NSNumber *views;
 
 @end

@@ -164,6 +164,7 @@
           newsArticleStructure.likes = [object objectForKey:@"likes"];
           newsArticleStructure.summaryString = [object objectForKey:@"summaryString"];
           newsArticleStructure.titleString = [object objectForKey:@"titleString"];
+          newsArticleStructure.views = [object objectForKey:@"views"];
           [array addObject:newsArticleStructure];
           if (i == theArrayToSearch.count - 1)
                dispatch_group_leave(serviceGroup);
@@ -210,7 +211,9 @@
                                                    
                                                    @"articleID" : n.articleID,
                                                    
-                                                   @"likes" : n.likes
+                                                   @"likes" : n.likes,
+                                                   
+                                                   @"views" : n.views
                                                    
                                                    }];
                     }
@@ -278,7 +281,9 @@
                                          
                                          @"articleID" : n.articleID,
                                          
-                                         @"likes" : n.likes
+                                         @"likes" : n.likes,
+                                         
+                                         @"views" : n.views
                                          
                                          }];
           }

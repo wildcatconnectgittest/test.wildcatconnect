@@ -412,6 +412,7 @@
      newsArticleStructure.summaryString = summaryTextView.text;
      newsArticleStructure.contentURLString = articleTextView.text;
      newsArticleStructure.likes = [NSNumber numberWithInt:0];
+     newsArticleStructure.views = [NSNumber numberWithInt:0];
      PFQuery *query = [NewsArticleStructure query];
      [query orderByDescending:@"articleID"];
      [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {

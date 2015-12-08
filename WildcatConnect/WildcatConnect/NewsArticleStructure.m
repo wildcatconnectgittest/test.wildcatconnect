@@ -22,7 +22,7 @@
 @dynamic contentURLString;
 @dynamic articleID;
 @dynamic likes;
-
+@dynamic views;
 
 + (void)load {
      [self registerSubclass];

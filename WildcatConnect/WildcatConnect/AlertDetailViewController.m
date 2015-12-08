@@ -14,6 +14,7 @@
 
 @implementation AlertDetailViewController {
      UILabel *titleLabel;
+     UIActivityIndicatorView *activity;
 }
 
 - (void)viewDidLoad {
@@ -74,6 +75,48 @@
      }
      scrollView.contentSize = contentRect.size;
      [self.view addSubview:scrollView];
+     
+     self.alert.views = [NSNumber numberWithInt:[self.alert.views integerValue] + 1];
+     
+     activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+     [activity setBackgroundColor:[UIColor clearColor]];
+     [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
+     self.navigationItem.rightBarButtonItem = barButtonItem;
+     [activity startAnimating];
+     
+     [self viewMethodWithCompletion:^(NSUInteger integer, NSError *error) {
+          [activity stopAnimating];
+     } forID:self.alert.objectId];
+}
+
+- (void)viewMethodWithCompletion:(void (^)(NSUInteger integer, NSError *error))completion forID:(NSString *)objectID {
+     dispatch_group_t serviceGroup = dispatch_group_create();
+     dispatch_group_enter(serviceGroup);
+     NSNumber *newViews = [NSNumber numberWithInt:[self.alert.views integerValue]];
+     __block NSError *theError;
+     PFQuery *query = [AlertStructure query];
+     [query whereKey:@"alertID" equalTo:self.alert.alertID];
+     [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+          theError = error;
+          PFObject *object = (PFObject *)[objects firstObject];
+          if (object != nil) {
+               [object setObject:newViews forKey:@"views"];
+               [object saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+                    theError = error;
+                    dispatch_group_leave(serviceGroup);
+               }];
+          } else {
+               dispatch_group_leave(serviceGroup);
+          }
+     }];
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
+          NSError *overallError = nil;
+          if (theError != nil) {
+               overallError = theError;
+          }
+          completion(0, overallError);
+     });
 }
 
 - (void)didReceiveMemoryWarning {

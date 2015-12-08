@@ -21,5 +21,6 @@
 @property NSNumber *hasTime;
 @property NSString *dateString;
 @property NSNumber *isReady;
+@property NSNumber *views;
 
 @end

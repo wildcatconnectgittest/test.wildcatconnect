@@ -69,47 +69,59 @@
      UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:activity];
       self.navigationItem.rightBarButtonItem = barButton;
       [activity startAnimating];
-     [self getCountMethodWithCompletion:^(NSInteger count) {
-          NSMutableArray *array = [[NSUserDefaults standardUserDefaults] objectForKey:@"readNewsArticles"];
-          NSInteger read = array.count;
-          NSNumber *number = [NSNumber numberWithInt:(count - read)];
-          [returnArray addObject:number];
-          [self getCountTwoMethodWithCompletion:^(NSInteger count2) {
-               NSNumber *updates = [NSNumber numberWithInt:count2];
-               NSNumber *updatesSeen = [[NSUserDefaults standardUserDefaults] objectForKey:@"ECviewed"];
-               if (updatesSeen) {
-                    if ([updatesSeen integerValue] >= [updates integerValue]) {
-                         updates = [NSNumber numberWithInt:0];
+     [self getCountMethodWithCompletion:^(NSInteger count, NSError *errorOne) {
+          if (errorOne != nil) {
+               [activity stopAnimating];
+          } else {
+               NSMutableArray *array = [[NSUserDefaults standardUserDefaults] objectForKey:@"readNewsArticles"];
+               NSInteger read = array.count;
+               NSNumber *number = [NSNumber numberWithInt:(count - read)];
+               [returnArray addObject:number];
+               [self getCountTwoMethodWithCompletion:^(NSInteger count2, NSError *errorTwo) {
+                    if (errorTwo != nil) {
+                         [activity stopAnimating];
                     } else {
-                         updates = [NSNumber numberWithInt:[updates integerValue] - [updatesSeen integerValue]];
+                         NSNumber *updates = [NSNumber numberWithInt:count2];
+                         NSNumber *updatesSeen = [[NSUserDefaults standardUserDefaults] objectForKey:@"ECviewed"];
+                         if (updatesSeen) {
+                              if ([updatesSeen integerValue] >= [updates integerValue]) {
+                                   updates = [NSNumber numberWithInt:0];
+                              } else {
+                                   updates = [NSNumber numberWithInt:[updates integerValue] - [updatesSeen integerValue]];
+                              }
+                         } else {
+                              updates = [NSNumber numberWithInt:[updates integerValue] - [updatesSeen integerValue]];
+                         }
+                         [returnArray addObject:updates];
+                         [self getCountThreeMethodWithCompletion:^(NSInteger count3, NSError *errorThree) {
+                              if (errorThree != nil) {
+                                   [activity stopAnimating];
+                              } else {
+                                   NSMutableArray *arrayTwo = [[NSUserDefaults standardUserDefaults] objectForKey:@"answeredPolls"];
+                                   NSInteger answeredInt = arrayTwo.count;
+                                   NSNumber *answered = [NSNumber numberWithInt:(count3 - answeredInt)];
+                                   [returnArray addObject:answered];
+                                   self.sectionsNumbersArray = returnArray;
+                                   [activity stopAnimating];
+                                   [self.tableView reloadData];
+                                   NSInteger final = [number integerValue] + [updates integerValue] + [answered integerValue];
+                                   if (final > 0) {
+                                        [[self.tabBarController.viewControllers objectAtIndex:1] tabBarItem].badgeValue = [[NSNumber numberWithInt:final] stringValue];
+                                   }
+                                   else
+                                        [[self.tabBarController.viewControllers objectAtIndex:1] tabBarItem].badgeValue = nil;
+                              }
+                         }];
                     }
-               } else {
-                    updates = [NSNumber numberWithInt:[updates integerValue] - [updatesSeen integerValue]];
-               }
-               [returnArray addObject:updates];
-               [self getCountThreeMethodWithCompletion:^(NSInteger count3) {
-                    NSMutableArray *arrayTwo = [[NSUserDefaults standardUserDefaults] objectForKey:@"answeredPolls"];
-                    NSInteger answeredInt = arrayTwo.count;
-                    NSNumber *answered = [NSNumber numberWithInt:(count3 - answeredInt)];
-                    [returnArray addObject:answered];
-                    self.sectionsNumbersArray = returnArray;
-                    [activity stopAnimating];
-                    [self.tableView reloadData];
-                    NSInteger final = [number integerValue] + [updates integerValue] + [answered integerValue];
-                    if (final > 0) {
-                         [[self.tabBarController.viewControllers objectAtIndex:1] tabBarItem].badgeValue = [[NSNumber numberWithInt:final] stringValue];
-                    }
-                    else
-                         [[self.tabBarController.viewControllers objectAtIndex:1] tabBarItem].badgeValue = nil;
                }];
-          }];
-          
+          }
      }];
 }
 
-- (void)getCountMethodWithCompletion:(void (^)(NSInteger count))completion {
+- (void)getCountMethodWithCompletion:(void (^)(NSInteger count, NSError *errorOne))completion {
      dispatch_group_t serviceGroup = dispatch_group_create();
      dispatch_group_enter(serviceGroup);
+     __block NSError *theError;
      PFQuery *query = [NewsArticleStructure query];
      __block int count;
      [query countObjectsInBackgroundWithBlock:^(int number, NSError * _Nullable error) {
@@ -117,13 +129,18 @@
           dispatch_group_leave(serviceGroup);
      }];
      dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
-          completion(count);
+          NSError *overallError = nil;
+          if (theError != nil) {
+               overallError = theError;
+          }
+          completion(count, overallError);
      });
 }
 
-- (void)getCountTwoMethodWithCompletion:(void (^)(NSInteger count))completion {
+- (void)getCountTwoMethodWithCompletion:(void (^)(NSInteger count, NSError *errorTwo))completion {
      dispatch_group_t serviceGroup = dispatch_group_create();
      dispatch_group_enter(serviceGroup);
+     __block NSError *theError;
      PFQuery *query = [ExtracurricularUpdateStructure query];
      __block int count;
      [query countObjectsInBackgroundWithBlock:^(int number, NSError * _Nullable error) {
@@ -131,13 +148,18 @@
           dispatch_group_leave(serviceGroup);
      }];
      dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
-          completion(count);
+          NSError *overallError = nil;
+          if (theError != nil) {
+               overallError = theError;
+          }
+          completion(count, overallError);
      });
 }
 
-- (void)getCountThreeMethodWithCompletion:(void (^)(NSInteger count))completion {
+- (void)getCountThreeMethodWithCompletion:(void (^)(NSInteger count, NSError *errorThree))completion {
      dispatch_group_t serviceGroup = dispatch_group_create();
      dispatch_group_enter(serviceGroup);
+     __block NSError *theError;
      PFQuery *query = [PollStructure query];
      __block int count;
      [query countObjectsInBackgroundWithBlock:^(int number, NSError * _Nullable error) {
@@ -145,7 +167,11 @@
           dispatch_group_leave(serviceGroup);
      }];
      dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
-          completion(count);
+          NSError *overallError = nil;
+          if (theError != nil) {
+               overallError = theError;
+          }
+          completion(count, overallError);
      });
 }
 

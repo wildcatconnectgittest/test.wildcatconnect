@@ -58,6 +58,7 @@
           }];
      }
 }
+
 - (void)getOldDataWithCompletion:(void (^)(NSMutableArray *returnArray))completion {
      dispatch_group_t serviceGroup = dispatch_group_create();
           //Start the first service
@@ -76,6 +77,7 @@
           alertStructure.hasTime = [object objectForKey:@"hasTime"];
           alertStructure.dateString = [object objectForKey:@"dateString"];
           alertStructure.isReady = [object objectForKey:@"isReady"];
+          alertStructure.views = [object objectForKey:@"views"];
           [array addObject:alertStructure];
           if (i == theArrayToSearch.count - 1)
                dispatch_group_leave(serviceGroup);
@@ -135,7 +137,9 @@
                                                    
                                                    @"dateString" : a.dateString,
                                                    
-                                                   @"isReady" : a.isReady
+                                                   @"isReady" : a.isReady,
+                                                   
+                                                   @"views" : a.views
                                                    
                                                    }];
                     }
@@ -163,7 +167,7 @@
      PFQuery *query = [AlertStructure query];
      [query orderByDescending:@"alertID"];
      [query whereKey:@"isReady" equalTo:[NSNumber numberWithInt:1]];
-     query.limit = 20;
+     query.limit = 50;
      [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
           [returnArray addObjectsFromArray:objects];
           firstError = error;

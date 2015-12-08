@@ -18,6 +18,7 @@
      UILabel *likesLabel;
      UILabel *titleLabel;
      UIButton *likesButton;
+     UIActivityIndicatorView *activity;
 }
 
 - (void)viewDidLoad {
@@ -111,6 +112,19 @@
           scrollView.contentSize = contentRect.size;
           [self.view addSubview:scrollView];
           
+          self.NA.views = [NSNumber numberWithInt:[self.NA.views integerValue] + 1];
+          
+          activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+          [activity setBackgroundColor:[UIColor clearColor]];
+          [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+          UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
+          self.navigationItem.rightBarButtonItem = barButtonItem;
+          [activity startAnimating];
+          
+          [self viewMethodWithCompletion:^(NSUInteger integer) {
+               [activity stopAnimating];
+          } forID:self.NA.objectId];
+          
      } else {
                UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, 100)];
                UIImage *image = [UIImage imageWithData:self.imageData];
@@ -198,7 +212,43 @@
                }
                scrollView.contentSize = contentRect.size;
                [self.view addSubview:scrollView];
+          
+          self.NA.views = [NSNumber numberWithInt:[self.NA.views integerValue] + 1];
+          
+          activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+          [activity setBackgroundColor:[UIColor clearColor]];
+          [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+          UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
+          self.navigationItem.rightBarButtonItem = barButtonItem;
+          [activity startAnimating];
+          
+          [self viewMethodWithCompletion:^(NSUInteger integer) {
+               [activity stopAnimating];
+          } forID:self.NA.objectId];
      }
+}
+
+- (void)viewMethodWithCompletion:(void (^)(NSUInteger integer))completion forID:(NSString *)objectID {
+     dispatch_group_t serviceGroup = dispatch_group_create();
+     dispatch_group_enter(serviceGroup);
+     NSNumber *newViews = [NSNumber numberWithInt:[self.NA.views integerValue]];
+     PFQuery *query = [NewsArticleStructure query];
+     [query whereKey:@"articleID" equalTo:self.NA.articleID];
+     [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+          PFObject *object = (PFObject *)[objects firstObject];
+          NSLog(@"%@", [object objectForKey:@"views"]);
+          if (object) {
+               [object setObject:newViews forKey:@"views"];
+               [object saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+                    dispatch_group_leave(serviceGroup);
+               }];
+          } else {
+               dispatch_group_leave(serviceGroup);
+          }
+     }];
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
+          completion(0);
+     });
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

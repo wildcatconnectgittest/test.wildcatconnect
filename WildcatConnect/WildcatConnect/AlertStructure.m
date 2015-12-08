@@ -18,6 +18,7 @@
 @dynamic hasTime;
 @dynamic dateString;
 @dynamic isReady;
+@dynamic views;
 
 + (void)load {
      [self registerSubclass];

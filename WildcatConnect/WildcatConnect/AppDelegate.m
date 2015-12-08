@@ -357,6 +357,8 @@
      if (self.alertString) {
           UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert" message:@"You have 1 new alert message. Would you like to read now?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
           [alert show];
+          [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"reloadHomePage"];
+          [[NSUserDefaults standardUserDefaults] synchronize];
      }
      if (application.applicationState == UIApplicationStateInactive) {
                // The application was just brought from the background to the foreground,
@@ -395,15 +397,13 @@
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
-     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-     [userDefaults removeObjectForKey:@"reloadHomePage"]; // keep this
-     [userDefaults synchronize];
+     [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"reloadHomePage"];
+     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-     [userDefaults removeObjectForKey:@"reloadHomePage"]; // keep this
-     [userDefaults synchronize];
+     [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"reloadHomePage"];
+     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 @end
