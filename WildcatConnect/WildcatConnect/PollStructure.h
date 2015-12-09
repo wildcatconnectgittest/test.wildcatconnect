@@ -17,5 +17,6 @@
 @property NSDictionary *pollMultipleChoices; // Dictionary of strings w/ NSNumbers...
 @property NSString *pollID;
 @property NSString *totalResponses;
+@property NSNumber *daysActive;
 
 @end

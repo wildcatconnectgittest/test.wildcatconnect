@@ -87,14 +87,14 @@ Parse.Cloud.job("pollStructureDeletion", function(request, response) {
     success: function(structures) {
       for (var i = 0; i < structures.length; i++) {
             var currentStructure = structures[i];
-            var thisDate = currentStructure.get("updatedAt");
+            var thisDate = currentStructure.get("createdAt");
             var now = new Date();
             var one_day=1000*60*60*24;
           var date1_ms = thisDate.getTime();
           var date2_ms = now.getTime();
           var difference_ms = date2_ms - date1_ms;
           difference_ms = Math.round(difference_ms/one_day);
-          if (difference_ms > 10) {
+          if (difference_ms > currentStructure.get("daysActive")) {
             currentStructure.destroy({
               success: function() {
                 console.log("Just deleted an object!!!");

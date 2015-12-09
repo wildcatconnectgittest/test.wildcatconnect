@@ -16,6 +16,7 @@
 @dynamic pollMultipleChoices;
 @dynamic pollID;
 @dynamic totalResponses;
+@dynamic daysActive;
 
 + (void)load {
      [self registerSubclass];

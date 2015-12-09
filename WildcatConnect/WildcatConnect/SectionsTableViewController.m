@@ -93,24 +93,42 @@
                               updates = [NSNumber numberWithInt:[updates integerValue] - [updatesSeen integerValue]];
                          }
                          [returnArray addObject:updates];
-                         [self getCountThreeMethodWithCompletion:^(NSInteger count3, NSError *errorThree) {
-                              if (errorThree != nil) {
+                         [self getCountFourMethodWithCompletion:^(NSInteger count4, NSError *errorFour) {
+                              if (errorFour != nil) {
                                    [activity stopAnimating];
                               } else {
-                                   NSMutableArray *arrayTwo = [[NSUserDefaults standardUserDefaults] objectForKey:@"answeredPolls"];
-                                   NSInteger answeredInt = arrayTwo.count;
-                                   NSNumber *answered = [NSNumber numberWithInt:(count3 - answeredInt)];
-                                   [returnArray addObject:answered];
-                                   self.sectionsNumbersArray = returnArray;
-                                   [activity stopAnimating];
-                                   [self.tableView reloadData];
-                                   NSInteger final = [number integerValue] + [updates integerValue] + [answered integerValue];
-                                   if (final > 0) {
-                                        [[self.tabBarController.viewControllers objectAtIndex:1] tabBarItem].badgeValue = [[NSNumber numberWithInt:final] stringValue];
+                                   NSNumber *opps = [NSNumber numberWithInteger:count4];
+                                   NSNumber *oppsSeen = [[NSUserDefaults standardUserDefaults] objectForKey:@"CSviewed"];
+                                   if (oppsSeen) {
+                                        if ([oppsSeen integerValue] >= [opps integerValue]) {
+                                             opps = [NSNumber numberWithInt:0];
+                                        } else {
+                                             opps = [NSNumber numberWithInteger:[opps integerValue] - [oppsSeen integerValue]];
+                                        }
+                                   } else {
+                                        opps = [NSNumber numberWithInteger:[opps integerValue] - [oppsSeen integerValue]];
                                    }
-                                   else
-                                        [[self.tabBarController.viewControllers objectAtIndex:1] tabBarItem].badgeValue = nil;
+                                   [returnArray addObject:opps];
                               }
+                              [self getCountThreeMethodWithCompletion:^(NSInteger count3, NSError *errorThree) {
+                                   if (errorThree != nil) {
+                                        [activity stopAnimating];
+                                   } else {
+                                        NSMutableArray *arrayTwo = [[NSUserDefaults standardUserDefaults] objectForKey:@"answeredPolls"];
+                                        NSInteger answeredInt = arrayTwo.count;
+                                        NSNumber *answered = [NSNumber numberWithInt:(count3 - answeredInt)];
+                                        [returnArray addObject:answered];
+                                        self.sectionsNumbersArray = returnArray;
+                                        [activity stopAnimating];
+                                        [self.tableView reloadData];
+                                        NSInteger final = [number integerValue] + [updates integerValue] + [answered integerValue];
+                                        if (final > 0) {
+                                             [[self.tabBarController.viewControllers objectAtIndex:1] tabBarItem].badgeValue = [[NSNumber numberWithInt:final] stringValue];
+                                        }
+                                        else
+                                             [[self.tabBarController.viewControllers objectAtIndex:1] tabBarItem].badgeValue = nil;
+                                   }
+                              }];
                          }];
                     }
                }];
@@ -125,6 +143,7 @@
      PFQuery *query = [NewsArticleStructure query];
      __block int count;
      [query countObjectsInBackgroundWithBlock:^(int number, NSError * _Nullable error) {
+          theError = error;
           count = number;
           dispatch_group_leave(serviceGroup);
      }];
@@ -144,6 +163,7 @@
      PFQuery *query = [ExtracurricularUpdateStructure query];
      __block int count;
      [query countObjectsInBackgroundWithBlock:^(int number, NSError * _Nullable error) {
+          theError = error;
           count = number;
           dispatch_group_leave(serviceGroup);
      }];
@@ -163,6 +183,27 @@
      PFQuery *query = [PollStructure query];
      __block int count;
      [query countObjectsInBackgroundWithBlock:^(int number, NSError * _Nullable error) {
+          theError = error;
+          count = number;
+          dispatch_group_leave(serviceGroup);
+     }];
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
+          NSError *overallError = nil;
+          if (theError != nil) {
+               overallError = theError;
+          }
+          completion(count, overallError);
+     });
+}
+
+- (void)getCountFourMethodWithCompletion:(void (^)(NSInteger count, NSError *errorFour))completion {
+     dispatch_group_t serviceGroup = dispatch_group_create();
+     dispatch_group_enter(serviceGroup);
+     __block NSError *theError;
+     PFQuery *query = [CommunityServiceStructure query];
+     __block int count;
+     [query countObjectsInBackgroundWithBlock:^(int number, NSError * _Nullable error) {
+          theError = error;
           count = number;
           dispatch_group_leave(serviceGroup);
      }];
@@ -228,8 +269,23 @@
           else if (integer == 0) {
                cell.accessoryView = nil;
           }
-     } else if (indexPath.row ==3) {
-          NSNumber *number = [self.sectionsNumbersArray objectAtIndex:indexPath.row - 1]; /// Change!!!
+     } else if (indexPath.row == 2) {
+          NSNumber *number = [self.sectionsNumbersArray objectAtIndex:indexPath.row]; /// Change!!!
+          NSInteger integer = [number integerValue];
+          if (integer > 0) {
+               UIButton *downloadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+               [downloadButton setTitle:[number stringValue] forState:UIControlStateNormal];
+               [downloadButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+               downloadButton.enabled = false;
+               [downloadButton sizeToFit];
+               [downloadButton setFrame:CGRectMake(0, 0, downloadButton.frame.size.width, downloadButton.frame.size.height)];
+               cell.accessoryView = downloadButton;
+          }
+          else if (integer == 0) {
+               cell.accessoryView = nil;
+          }
+     } else if (indexPath.row == 3) {
+          NSNumber *number = [self.sectionsNumbersArray objectAtIndex:indexPath.row]; /// Change!!!
           NSInteger integer = [number integerValue];
           if (integer > 0) {
                UIButton *downloadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -244,8 +300,7 @@
                cell.accessoryView = nil;
           }
 
-     }
-     else if (indexPath.row == 7) {
+     } else if (indexPath.row == 7) {
           if ([PFUser currentUser]) {
                NSString *firstName = [[PFUser currentUser] objectForKey:@"firstName"];
                NSString *lastName = [[PFUser currentUser] objectForKey:@"lastName"];

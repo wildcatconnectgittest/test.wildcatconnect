@@ -44,6 +44,13 @@
      }
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+     [super viewWillDisappear:animated];
+     NSNumber *count = [NSNumber numberWithInteger:self.allOpps.count];
+     [[NSUserDefaults standardUserDefaults] setObject:count forKey:@"CSviewed"];
+     [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 -(void)refreshView:(UIRefreshControl *)refresh {
      refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Refreshing data..."];
      

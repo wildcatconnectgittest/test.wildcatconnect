@@ -97,7 +97,7 @@
                self.pollArray = returnArray;
                NSMutableArray *itemsToSave = [NSMutableArray array];
                for (PollStructure *p in returnArray) {
-                    [itemsToSave addObject:@{ @"pollTitle" : p.pollTitle, @"pollQuestion" : p.pollQuestion, @"pollMultipleChoices" : p.pollMultipleChoices, @"pollID" : p.pollID, @"totalResponses" : p.totalResponses, @"objectId" : p.objectId }];
+                    [itemsToSave addObject:@{ @"pollTitle" : p.pollTitle, @"pollQuestion" : p.pollQuestion, @"pollMultipleChoices" : p.pollMultipleChoices, @"pollID" : p.pollID, @"totalResponses" : p.totalResponses, @"objectId" : p.objectId , @"daysActive" : p.daysActive }];
                }
                [[NSUserDefaults standardUserDefaults] setObject:itemsToSave forKey:@"pollStructures"];
                [[NSUserDefaults standardUserDefaults] synchronize];
@@ -117,7 +117,7 @@
      [super viewDidDisappear:animated];
      NSMutableArray *itemsToSave = [NSMutableArray array];
      for (PollStructure *p in self.pollArray) {
-          [itemsToSave addObject:@{ @"pollTitle" : p.pollTitle, @"pollQuestion" : p.pollQuestion, @"pollMultipleChoices" : p.pollMultipleChoices, @"pollID" : p.pollID, @"totalResponses" : p.totalResponses, @"objectId" : p.objectId }];
+          [itemsToSave addObject:@{ @"pollTitle" : p.pollTitle, @"pollQuestion" : p.pollQuestion, @"pollMultipleChoices" : p.pollMultipleChoices, @"pollID" : p.pollID, @"totalResponses" : p.totalResponses, @"objectId" : p.objectId , @"daysActive" : p.daysActive}];
      }
      [[NSUserDefaults standardUserDefaults] setObject:itemsToSave forKey:@"pollStructures"];
      [[NSUserDefaults standardUserDefaults] synchronize];
@@ -173,6 +173,7 @@
           pollStructure.pollID = [object objectForKey:@"pollID"];
           pollStructure.totalResponses = [object objectForKey:@"totalResponses"];
           pollStructure.objectId = [object objectForKey:@"objectId"];
+          pollStructure.daysActive = [object objectForKey:@"daysActive"];
           [array addObject:pollStructure];
           if (i == theArrayToSearch.count - 1) {
                dispatch_group_leave(serviceGroup);

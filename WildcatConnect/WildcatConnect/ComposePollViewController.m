@@ -21,11 +21,13 @@
      UITextView *titleTextView;
      UILabel *summaryRemainingLabel;
      UITextView *summaryTextView;
+     UITextView *daysTextView;
      UITableView *theTableView;
      UIView *separator;
      UIButton *postButton;
      UIAlertView *av;
      UIAlertView *postAlertView;
+     BOOL numberValid;
 }
 
 - (void)viewDidLoad {
@@ -40,6 +42,8 @@
      self.choicesArray = [[NSMutableArray alloc] init];
      
      hasChanged = false;
+     
+     numberValid = false;
      
      UIBarButtonItem *bbtnBack = [[UIBarButtonItem alloc] initWithTitle:@"Back"
                                                                   style:UIBarButtonItemStylePlain
@@ -113,7 +117,31 @@
      summaryTextView.tag = 3;
      [scrollView addSubview:summaryTextView];
      
-     UILabel *choicesLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, summaryTextView.frame.origin.y + summaryTextView.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
+     UILabel *daysLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, summaryTextView.frame.origin.y + summaryTextView.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
+     daysLabel.text = @"Days Poll is Active in App";
+     [daysLabel setFont:[UIFont systemFontOfSize:16]];
+     daysLabel.lineBreakMode = NSLineBreakByWordWrapping;
+     daysLabel.numberOfLines = 0;
+     [daysLabel sizeToFit];
+     [scrollView addSubview:daysLabel];
+     
+     UILabel *daysInformationLabel = [[UILabel alloc] init];
+     daysInformationLabel.text = @"14 days maximum";
+     [daysInformationLabel setFont:[UIFont systemFontOfSize:10]];
+     [daysInformationLabel sizeToFit];
+     daysInformationLabel.frame = CGRectMake((self.view.frame.size.width - daysInformationLabel.frame.size.width - 10), daysLabel.frame.origin.y, daysInformationLabel.frame.size.width, 20);
+     [scrollView addSubview:daysInformationLabel];
+     
+     daysTextView = [[UITextView alloc] initWithFrame:CGRectMake(daysLabel.frame.origin.x, daysLabel.frame.origin.y + daysLabel.frame.size.height + 10, self.view.frame.size.width - 20, 50)];
+     [daysTextView setDelegate:self];
+     [daysTextView setFont:[UIFont systemFontOfSize:16]];
+     daysTextView.layer.borderWidth = 1.0f;
+     daysTextView.layer.borderColor = [[UIColor grayColor] CGColor];
+     daysTextView.scrollEnabled = false;
+     daysTextView.tag = 3;
+     [scrollView addSubview:daysTextView];
+     
+     UILabel *choicesLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, daysTextView.frame.origin.y + daysTextView.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
      choicesLabel.text = @"Choices";
      [choicesLabel setFont:[UIFont systemFontOfSize:16]];
      choicesLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -170,7 +198,7 @@
 }
 
 - (BOOL)validateAllFields {
-     return (titleTextView.text.length > 0 && summaryTextView.text.length > 0);
+     return (titleTextView.text.length > 0 && summaryTextView.text.length > 0 && numberValid);
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -347,6 +375,7 @@
      pollStructure.pollTitle = titleTextView.text;
      pollStructure.pollQuestion = summaryTextView.text;
      pollStructure.totalResponses = @"0";
+     pollStructure.daysActive = [NSNumber numberWithInteger:[daysTextView.text integerValue]];
      NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
      for (NSString *choice in self.choicesArray) {
           [dictionary setObject:@"0" forKey:choice];
@@ -394,6 +423,57 @@
                return NO;
           } else
                return [self isAcceptableTextLength:textView.text.length + string.length - range.length forMaximum:140 existsMaximum:YES];
+     } else if (textView == daysTextView) {
+          NSLog(@"%@", string);
+          if([string isEqualToString:@"\n"])
+          {
+               [textView resignFirstResponder];
+               
+               return NO;
+          } else if ([string length] == [daysTextView.text length] - 1 ) {
+                    //Backspace pressed...
+               BOOL valid;
+               NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
+               NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:[daysTextView.text substringToIndex:daysTextView.text.length - 1]];
+               valid = [alphaNums isSupersetOfSet:inStringSet];
+               if (valid == NO) {
+                    numberValid = false;
+                    daysTextView.textColor = [UIColor redColor];
+                    return true;
+               } else {
+                    NSInteger integer =  [[daysTextView.text stringByAppendingString:string] integerValue];
+                    if (integer > 14) {
+                         numberValid = false;
+                         daysTextView.textColor = [UIColor redColor];
+                         return true;
+                    } else {
+                         numberValid = true;
+                         daysTextView.textColor = [UIColor blackColor];
+                         return true;
+                    }
+               }
+          } else {
+               BOOL valid;
+               NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
+               NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:daysTextView.text];
+               valid = [alphaNums isSupersetOfSet:inStringSet];
+               if (valid == NO) {
+                    numberValid = false;
+                    daysTextView.textColor = [UIColor redColor];
+                    return true;
+               } else {
+                    NSInteger integer =  [[daysTextView.text stringByAppendingString:string] integerValue];
+                    if (integer > 14) {
+                         numberValid = false;
+                         daysTextView.textColor = [UIColor redColor];
+                         return true;
+                    } else {
+                         numberValid = true;
+                         daysTextView.textColor = [UIColor blackColor];
+                         return true;
+                    }
+               }
+          }
      }
      else return nil;
 }
