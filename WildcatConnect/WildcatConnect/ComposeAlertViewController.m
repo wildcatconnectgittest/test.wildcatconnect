@@ -345,6 +345,7 @@
                     dispatch_async(dispatch_get_main_queue(), ^{
                          [activity stopAnimating];
                          [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"reloadAlertsPage"];
+                         [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"reloadHomePage"];
                          [[NSUserDefaults standardUserDefaults] synchronize];
                          [self.navigationController popViewControllerAnimated:YES];
                     });

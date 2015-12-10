@@ -271,6 +271,7 @@ Parse.Cloud.afterSave("AlertStructure", function(request) {
           badge: "Increment"
         }
       });
+      console.log("Push sent from iOS API.");
     };
   };
 });

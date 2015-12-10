@@ -132,7 +132,7 @@
      daysInformationLabel.frame = CGRectMake((self.view.frame.size.width - daysInformationLabel.frame.size.width - 10), daysLabel.frame.origin.y, daysInformationLabel.frame.size.width, 20);
      [scrollView addSubview:daysInformationLabel];
      
-     daysTextView = [[UITextView alloc] initWithFrame:CGRectMake(daysLabel.frame.origin.x, daysLabel.frame.origin.y + daysLabel.frame.size.height + 10, self.view.frame.size.width - 20, 50)];
+     daysTextView = [[UITextView alloc] initWithFrame:CGRectMake(daysLabel.frame.origin.x, daysLabel.frame.origin.y + daysLabel.frame.size.height + 10, self.view.frame.size.width - 20, 40)];
      [daysTextView setDelegate:self];
      [daysTextView setFont:[UIFont systemFontOfSize:16]];
      daysTextView.layer.borderWidth = 1.0f;
@@ -424,56 +424,13 @@
           } else
                return [self isAcceptableTextLength:textView.text.length + string.length - range.length forMaximum:140 existsMaximum:YES];
      } else if (textView == daysTextView) {
-          NSLog(@"%@", string);
-          if([string isEqualToString:@"\n"])
+          NSCharacterSet* notDigits = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
+          if ([string rangeOfCharacterFromSet:notDigits].location == NSNotFound)
           {
-               [textView resignFirstResponder];
-               
-               return NO;
-          } else if ([string length] == [daysTextView.text length] - 1 ) {
-                    //Backspace pressed...
-               BOOL valid;
-               NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
-               NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:[daysTextView.text substringToIndex:daysTextView.text.length - 1]];
-               valid = [alphaNums isSupersetOfSet:inStringSet];
-               if (valid == NO) {
-                    numberValid = false;
-                    daysTextView.textColor = [UIColor redColor];
-                    return true;
-               } else {
-                    NSInteger integer =  [[daysTextView.text stringByAppendingString:string] integerValue];
-                    if (integer > 14) {
-                         numberValid = false;
-                         daysTextView.textColor = [UIColor redColor];
-                         return true;
-                    } else {
-                         numberValid = true;
-                         daysTextView.textColor = [UIColor blackColor];
-                         return true;
-                    }
-               }
-          } else {
-               BOOL valid;
-               NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
-               NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:daysTextView.text];
-               valid = [alphaNums isSupersetOfSet:inStringSet];
-               if (valid == NO) {
-                    numberValid = false;
-                    daysTextView.textColor = [UIColor redColor];
-                    return true;
-               } else {
-                    NSInteger integer =  [[daysTextView.text stringByAppendingString:string] integerValue];
-                    if (integer > 14) {
-                         numberValid = false;
-                         daysTextView.textColor = [UIColor redColor];
-                         return true;
-                    } else {
-                         numberValid = true;
-                         daysTextView.textColor = [UIColor blackColor];
-                         return true;
-                    }
-               }
-          }
+               if ([[daysTextView.text stringByAppendingString:string] integerValue] > 14 || [[daysTextView.text stringByAppendingString:string] integerValue] == 0) {
+                    return NO;
+               } else return YES;
+          } else return NO;
      }
      else return nil;
 }

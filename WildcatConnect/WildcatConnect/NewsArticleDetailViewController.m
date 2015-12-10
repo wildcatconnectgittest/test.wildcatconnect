@@ -213,8 +213,6 @@
                scrollView.contentSize = contentRect.size;
                [self.view addSubview:scrollView];
           
-          self.NA.views = [NSNumber numberWithInt:[self.NA.views integerValue] + 1];
-          
           activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
           [activity setBackgroundColor:[UIColor clearColor]];
           [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
@@ -231,14 +229,13 @@
 - (void)viewMethodWithCompletion:(void (^)(NSUInteger integer))completion forID:(NSString *)objectID {
      dispatch_group_t serviceGroup = dispatch_group_create();
      dispatch_group_enter(serviceGroup);
-     NSNumber *newViews = [NSNumber numberWithInt:[self.NA.views integerValue]];
      PFQuery *query = [NewsArticleStructure query];
      [query whereKey:@"articleID" equalTo:self.NA.articleID];
      [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
           PFObject *object = (PFObject *)[objects firstObject];
           NSLog(@"%@", [object objectForKey:@"views"]);
           if (object) {
-               [object setObject:newViews forKey:@"views"];
+               [object setObject:[NSNumber numberWithInteger:[[object objectForKey:@"views"] integerValue] + 1] forKey:@"views"];
                [object saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
                     dispatch_group_leave(serviceGroup);
                }];

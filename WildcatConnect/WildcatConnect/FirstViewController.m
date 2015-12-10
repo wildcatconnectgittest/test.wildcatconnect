@@ -45,6 +45,15 @@
 
 - (void)viewWillAppear:(BOOL)animated {
      [super viewWillAppear:animated];
+     
+     
+     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:248.0f/255.0f
+                                                                            green:183.0f/255.0f
+                                                                             blue:23.0f/255.0f
+                                                                            alpha:0.5f];
+     
+     self.navigationController.navigationItem.title = @"Home";
+     
      NSString *loadString = [[NSUserDefaults standardUserDefaults] objectForKey:@"reloadHomePage"];
      if (! loadString || [loadString isEqual:@"1"]) {
           [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"reloadHomePage"];
@@ -66,12 +75,7 @@
           breakfastString = [[NSString alloc] init];
           lunchString = [[NSString alloc] init];
           
-          self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:248.0f/255.0f
-                                                                                 green:183.0f/255.0f
-                                                                                  blue:23.0f/255.0f
-                                                                                 alpha:0.5f];
           
-          self.navigationController.navigationItem.title = @"Home";
           
           [self getCurrentLunchMethodWithCompletion:^(NSError *error, NSMutableArray *theLunch) {
                if (error != nil) {
@@ -79,7 +83,7 @@
                     [alertView show];
                     dispatch_async(dispatch_get_main_queue(), ^ {
                          [activity stopAnimating];
-                         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(viewDidLoad)];
+                         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(viewWillAppear:)];
                          self.navigationItem.rightBarButtonItem = barButtonItem;
                          [activity startAnimating];
                          [barButtonItem release];
@@ -93,7 +97,7 @@
                               [alertView show];
                               dispatch_async(dispatch_get_main_queue(), ^ {
                                    [activity stopAnimating];
-                                   UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(viewDidLoad)];
+                                   UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(viewWillAppear:)];
                                    self.navigationItem.rightBarButtonItem = barButtonItem;
                                    [activity startAnimating];
                                    [barButtonItem release];
@@ -300,7 +304,7 @@
                                              [alertView show];
                                              dispatch_async(dispatch_get_main_queue(), ^ {
                                                   [activity stopAnimating];
-                                                  UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(viewDidLoad)];
+                                                  UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(viewWillAppear:)];
                                                   self.navigationItem.rightBarButtonItem = barButtonItem;
                                                   [activity startAnimating];
                                                   [barButtonItem release];
@@ -530,6 +534,14 @@
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
+     
+     NSString *loadString = [[NSUserDefaults standardUserDefaults] objectForKey:@"reloadHomePage"];
+     if ([loadString isEqual:@"0"]) {
+          [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"reloadHomePage"];
+          [[NSUserDefaults standardUserDefaults] synchronize];
+          UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(viewWillAppear:)];
+          self.navigationItem.rightBarButtonItem = barButtonItem;
+     }
      
      [self getCountMethodWithCompletion:^(NSInteger count) {
           NSMutableArray *array = [[NSUserDefaults standardUserDefaults] objectForKey:@"readNewsArticles"];
