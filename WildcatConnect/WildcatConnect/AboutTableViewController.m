@@ -65,6 +65,12 @@
      }];
 }
 
+- (instancetype)init {
+     [super init];
+     self.navigationItem.title = @"About";
+     return self;
+}
+
 - (void)getConfigListWithCompletion:(void (^)(NSMutableArray *returnArray, NSError *error))completion {
      dispatch_group_t serviceGroup = dispatch_group_create();
      dispatch_group_enter(serviceGroup);
@@ -92,92 +98,64 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-     return 2;
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-     if (section == 0) {
-          return @"APP SUPPORT";
-     } else if (section == 1) {
-          return @"DEVELOPMENT";
-     } else return nil;
+     return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-     if (section == 0) {
-          return 1;
-     } else return 2;
+     return 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
      if (indexPath.section == 0) {
-          return 50;
-     } else if (indexPath.section == 1) {
           if (indexPath.row == 0) {
                return self.cellHeight;
           }
           else return 50;
      }
-     else return 0;
+     else return 50;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
      UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
      if (indexPath.section == 0) {
-          cell.textLabel.text = @"Report a problem";
-          return cell;
-     } else if (indexPath.section == 1) {
-          if (indexPath.row == 0) {
-                    //List out developers...
-               if (self.developerArray) {
-                    cell.textLabel.numberOfLines = self.developerArray.count + 3;
-                    self.cellHeight = (self.developerArray.count + 2) * 30;
-                    if (reloading) {
-                         reloading = false;
-                         [self.tableView reloadData];
-                    }
-                    NSString *developerString = @"Developer List\n";
-                    for (NSString *string in self.developerArray) {
-                         developerString = [[developerString stringByAppendingString:@"\n"] stringByAppendingString:string];
-                    }
-                    cell.textLabel.text = developerString;
-               } else {
-                    cell.textLabel.text = @"No development list available.";
+               //List out developers...
+          if (self.developerArray) {
+               cell.textLabel.numberOfLines = self.developerArray.count + 3;
+               self.cellHeight = (self.developerArray.count + 2) * 30;
+               if (reloading) {
+                    reloading = false;
+                    [self.tableView reloadData];
                }
-               return cell;
-          } else if (indexPath.row == 1) {
-                    //Get involved!!!
-               cell.textLabel.text = @"Join the team/give feedback";
-               return cell;
+               NSString *developerString = @"Developer List\n";
+               for (NSString *string in self.developerArray) {
+                    developerString = [[developerString stringByAppendingString:@"\n"] stringByAppendingString:string];
+               }
+               cell.textLabel.text = developerString;
+          } else {
+               cell.textLabel.text = @"No development list available.";
           }
           return cell;
+     } else if (indexPath.section == 1) {
+               //Version
+          cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CellIdentifier"];
+          cell.textLabel.text = @"Version";
+          cell.detailTextLabel.text = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+     } else if (indexPath.section == 2) {
+               //Capstone
+          cell.textLabel.text = @"Capstone Information";
+          cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+     } else if (indexPath.section == 3) {
+               //Disclaimer
+          cell.textLabel.text = @"Disclaimer";
+          cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
      }
      return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-          //Handle selection
      [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-     if (indexPath.section == 0) {
-
-          NSString *URLEMail = @"mailto:support@wildcatconnect.org?subject=WildcatConnect App Issue&body=";
-          
-          UIDevice *device  = [UIDevice currentDevice];
-          NSString *name    = [device name];
-          NSString *model   = [device model];
-          NSString *systemVersion = device.systemVersion;
-          
-          URLEMail = [[[[[[[[URLEMail stringByAppendingString:@"Device Name = "] stringByAppendingString:name] stringByAppendingString:@"\n"] stringByAppendingString:@"System Version = "] stringByAppendingString:systemVersion] stringByAppendingString:@"\n"] stringByAppendingString:@"Device Model = "] stringByAppendingString:model];
-          
-          NSString *url = [URLEMail stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding ];
-          [[UIApplication sharedApplication]  openURL: [NSURL URLWithString: url]];
-     } else if (indexPath.section == 1 && indexPath.row == 1) {
-          NSString *URLEMail = @"mailto:team@wildcatconnect.org?subject=WildcatConnect App";
-          
-          NSString *url = [URLEMail stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding ];
-          [[UIApplication sharedApplication]  openURL: [NSURL URLWithString: url]];
-     }
+          //Change logic here for new options...
 }
 
 /*

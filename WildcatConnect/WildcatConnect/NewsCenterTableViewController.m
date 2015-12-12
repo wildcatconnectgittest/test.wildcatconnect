@@ -435,6 +435,7 @@
            cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
            cell.detailTextLabel.text = newsArticleStructure.summaryString;
            cell.detailTextLabel.numberOfLines = 4;
+           cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
            NSInteger integerNumber = [newsArticleStructure.hasImage integerValue];
                 if (! [self.readNewsArticles containsObject:newsArticleStructure.articleID]) {
                      UIButton *unreadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];

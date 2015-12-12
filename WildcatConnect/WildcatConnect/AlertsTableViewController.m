@@ -253,6 +253,7 @@
           cell.detailTextLabel.text = alertStructure.authorString;
           cell.textLabel.numberOfLines = 0;
           cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
+          cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
           if (! [self.readAlerts containsObject:alertStructure.alertID]) {
                UIButton *unreadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
                [unreadButton setImage:[UIImage imageNamed:@"unread@2x.png"] forState:UIControlStateNormal];

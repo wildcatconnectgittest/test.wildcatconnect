@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		0A0AFC771C0B383B0094A2D2 /* ComposeNewsArticleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0AFC761C0B383B0094A2D2 /* ComposeNewsArticleViewController.m */; };
 		0A0AFC791C0B597B0094A2D2 /* logoLarge.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 0A0AFC781C0B597B0094A2D2 /* logoLarge.jpeg */; };
+		0A7028D91C1BE26F0053E56D /* settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A7028D81C1BE26F0053E56D /* settings@2x.png */; };
+		0A7028DC1C1BE2E30053E56D /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A7028DB1C1BE2E30053E56D /* SettingsTableViewController.m */; };
 		0ADBEE2A1C0ABD5E00E946F6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBEE291C0ABD5E00E946F6 /* main.m */; };
 		0ADBEE361C0ABD5E00E946F6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0ADBEE341C0ABD5E00E946F6 /* Main.storyboard */; };
 		0ADBEE381C0ABD5E00E946F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0ADBEE371C0ABD5E00E946F6 /* Assets.xcassets */; };
@@ -126,6 +128,9 @@
 /* Begin PBXFileReference section */
 		0A0AFC761C0B383B0094A2D2 /* ComposeNewsArticleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComposeNewsArticleViewController.m; sourceTree = "<group>"; };
 		0A0AFC781C0B597B0094A2D2 /* logoLarge.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = logoLarge.jpeg; sourceTree = "<group>"; };
+		0A7028D81C1BE26F0053E56D /* settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "settings@2x.png"; path = "../settings@2x.png"; sourceTree = "<group>"; };
+		0A7028DA1C1BE2E30053E56D /* SettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsTableViewController.h; sourceTree = "<group>"; };
+		0A7028DB1C1BE2E30053E56D /* SettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTableViewController.m; sourceTree = "<group>"; };
 		0ADBEE251C0ABD5E00E946F6 /* WildcatConnect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WildcatConnect.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0ADBEE291C0ABD5E00E946F6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0ADBEE351C0ABD5E00E946F6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -452,6 +457,9 @@
 				0ADBEF301C0AC57200E946F6 /* sections@2x.png */,
 				0ADBEEBC1C0ABDE100E946F6 /* SectionsTableViewController.h */,
 				0ADBEE7F1C0ABD8400E946F6 /* SectionsTableViewController.m */,
+				0A7028D81C1BE26F0053E56D /* settings@2x.png */,
+				0A7028DA1C1BE2E30053E56D /* SettingsTableViewController.h */,
+				0A7028DB1C1BE2E30053E56D /* SettingsTableViewController.m */,
 				0ADBEEC81C0ABDE100E946F6 /* SplashScreenViewController.h */,
 				0ADBEEA51C0ABDE100E946F6 /* SplashScreenViewController.m */,
 				0ADBEED71C0ABDE100E946F6 /* Staff DirectoryTableViewController.h */,
@@ -655,6 +663,7 @@
 				0ADBEF471C0AC57200E946F6 /* usefulLinks@2x.png in Resources */,
 				0ADBEEDF1C0ABDE100E946F6 /* wildcatLogo.png in Resources */,
 				0A0AFC791C0B597B0094A2D2 /* logoLarge.jpeg in Resources */,
+				0A7028D91C1BE26F0053E56D /* settings@2x.png in Resources */,
 				0ADBEF441C0AC57200E946F6 /* studentCenter@2x.png in Resources */,
 				0ADBEF381C0AC57200E946F6 /* email@2x.png in Resources */,
 			);
@@ -681,6 +690,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A7028DC1C1BE2E30053E56D /* SettingsTableViewController.m in Sources */,
 				0ADBEEA21C0ABD8400E946F6 /* StudentCenterTableViewController.m in Sources */,
 				0ADBEE8F1C0ABD8400E946F6 /* NewsArticleDetailViewController.m in Sources */,
 				0ADBEEEF1C0ABDE100E946F6 /* LunchMenusStructure.m in Sources */,

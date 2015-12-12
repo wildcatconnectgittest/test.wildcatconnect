@@ -47,13 +47,12 @@
                                                                              blue:23.0f/255.0f
                                                                             alpha:0.5f];
      
-     self.sectionsArray = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"News Center", @"Extracurriculars", @"Community Service", @"Student Center",  @"Lunch Menus", @"Useful Links", @"Staff Directory", @"Administration Only", nil]];
+     self.sectionsArray = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"News Center", @"Extracurriculars", @"Community Service", @"Student Center",  @"Lunch Menus", @"Useful Links", @"Staff Directory", @"Secure Login", nil]];
      self.sectionsImagesArray = [[NSMutableArray alloc] init];
      [self.sectionsImagesArray addObject:@"theNews@2x.png"];
      [self.sectionsImagesArray addObject:@"extracurriculars@2x.png"];
      [self.sectionsImagesArray addObject:@"communityService@2x.png"];
      [self.sectionsImagesArray addObject:@"studentCenter@2x.png"];
-     //[self.sectionsImagesArray addObject:@"calendar@2x.png"];
      [self.sectionsImagesArray addObject:@"lunchMenus@2x.png"];
      [self.sectionsImagesArray addObject:@"usefulLinks@2x.png"];
      [self.sectionsImagesArray addObject:@"staffDirectory@2x.png"];
