@@ -27,7 +27,6 @@
      UIButton *postButton;
      UIAlertView *av;
      UIAlertView *postAlertView;
-     BOOL numberValid;
 }
 
 - (void)viewDidLoad {
@@ -42,8 +41,6 @@
      self.choicesArray = [[NSMutableArray alloc] init];
      
      hasChanged = false;
-     
-     numberValid = false;
      
      UIBarButtonItem *bbtnBack = [[UIBarButtonItem alloc] initWithTitle:@"Back"
                                                                   style:UIBarButtonItemStylePlain
@@ -198,7 +195,7 @@
 }
 
 - (BOOL)validateAllFields {
-     return (titleTextView.text.length > 0 && summaryTextView.text.length > 0 && numberValid);
+     return (titleTextView.text.length > 0 && summaryTextView.text.length > 0 && daysTextView.text.length > 0);
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -385,7 +382,10 @@
      [query orderByDescending:@"pollID"];
      [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
           PollStructure *structure = (PollStructure *)object;
-          pollStructure.pollID = [[NSNumber numberWithInt:([structure.pollID integerValue] + 1)] stringValue];
+          if (! structure) {
+               pollStructure.pollID = [[NSNumber numberWithInt:0] stringValue];
+          } else
+               pollStructure.pollID = [[NSNumber numberWithInt:([structure.pollID integerValue] + 1)] stringValue];
           [pollStructure saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
                if (error) {
                     theError = error;

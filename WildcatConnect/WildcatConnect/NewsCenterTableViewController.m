@@ -452,19 +452,22 @@
  }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-     self.newsArticleSelected = self.newsArticles[indexPath.row];
-     NewsArticleDetailViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"NADetail"];
-     controller.NA = self.newsArticleSelected;
-     controller.imageData = self.dataArray[indexPath.row];
-     [self.navigationController pushViewController:controller animated:YES];
-     NSMutableArray *theReadNews = [[[NSUserDefaults standardUserDefaults] objectForKey:@"readNewsArticles"] mutableCopy];
-     if (! theReadNews) {
-          theReadNews = [[NSMutableArray alloc] init];
-     }
-     if (! [theReadNews containsObject:self.newsArticleSelected.articleID]) {
-          [theReadNews addObject:self.newsArticleSelected.articleID];
-          [[NSUserDefaults standardUserDefaults] setObject:theReadNews forKey:@"readNewsArticles"];
-          [[NSUserDefaults standardUserDefaults] synchronize];
+     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+     if (self.newsArticles.count > 0) {
+          self.newsArticleSelected = self.newsArticles[indexPath.row];
+          NewsArticleDetailViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"NADetail"];
+          controller.NA = self.newsArticleSelected;
+          controller.imageData = self.dataArray[indexPath.row];
+          [self.navigationController pushViewController:controller animated:YES];
+          NSMutableArray *theReadNews = [[[NSUserDefaults standardUserDefaults] objectForKey:@"readNewsArticles"] mutableCopy];
+          if (! theReadNews) {
+               theReadNews = [[NSMutableArray alloc] init];
+          }
+          if (! [theReadNews containsObject:self.newsArticleSelected.articleID]) {
+               [theReadNews addObject:self.newsArticleSelected.articleID];
+               [[NSUserDefaults standardUserDefaults] setObject:theReadNews forKey:@"readNewsArticles"];
+               [[NSUserDefaults standardUserDefaults] synchronize];
+          }
      }
 }
 

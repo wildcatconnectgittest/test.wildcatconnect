@@ -1,24 +1,36 @@
 //WildcatConnect Parse.com Server-Side Logic
 
 Parse.Cloud.job("schoolDayStructureDeletion", function(request, response) {
-  var query = new Parse.Query("SchoolDayStructure");
-  query.ascending("schoolDayID");
-  query.first({
-  	success: function(object) {
-    	object.destroy({
-    		success: function(myObject) {
-    			response.success("Yay!");
-  		},
-  		error: function(myObject, error) {
-  			response.error("No!");
-  		}
-    });
-  },
-  	error: function(error) {
-    	alert("Error: " + error.code + " " + error.message);
-    	response.error("No!");
-  	}
- });
+  Parse.Config.get().then(function(config) {
+    var specialKeys = config.get("specialKeys");
+    var date = new Date();
+    if (specialKeys.indexOf("XSDSD") === -1 && date.getDay() != 0 && date.getDay() != 1 && date.getDay() != 6) {
+      //Continue...
+      var query = new Parse.Query("SchoolDayStructure");
+      query.ascending("schoolDayID");
+      query.first({
+        success: function(object) {
+          object.destroy({
+            success: function(myObject) {
+              response.success("Yay!");
+          },
+          error: function(myObject, error) {
+            response.error("No!");
+          }
+        });
+      },
+        error: function(error) {
+          alert("Error: " + error.code + " " + error.message);
+          response.error("No!");
+        }
+     });
+    } else {
+      response.success("Not running this job.");
+    };
+  }, function(error) {
+    // Something went wrong (e.g. request timed out)
+    response.error(error);
+  });
  });
 
 Parse.Cloud.job("lunchMenusStructureDeletion", function(request, response) {

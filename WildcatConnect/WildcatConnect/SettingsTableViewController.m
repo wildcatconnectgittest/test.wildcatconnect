@@ -7,6 +7,7 @@
 //
 
 #import "SettingsTableViewController.h"
+#import "PushSettingsTableViewController.h"
 #import "AboutTableViewController.h"
 #import <Parse/Parse.h>
 
@@ -46,8 +47,6 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-     
-     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     
      UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
      
@@ -70,6 +69,8 @@
      [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
      if (indexPath.section == 0) {
                //Push settings
+          PushSettingsTableViewController *controller = [[PushSettingsTableViewController alloc] init];
+          [self.navigationController pushViewController:controller animated:YES];
      } else if (indexPath.section == 1) {
                //Support mail
           if ([MFMailComposeViewController canSendMail]) {

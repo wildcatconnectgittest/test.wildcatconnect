@@ -277,10 +277,13 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-     self.selectedPollStructure = self.pollArray[indexPath.row];
-     PollDetailViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"PollDetail"];
-     controller.pollStructure = self.selectedPollStructure;
-     [self.navigationController pushViewController:controller animated:YES];
+     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+     if (self.pollArray.count > 0) {
+          self.selectedPollStructure = self.pollArray[indexPath.row];
+          PollDetailViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"PollDetail"];
+          controller.pollStructure = self.selectedPollStructure;
+          [self.navigationController pushViewController:controller animated:YES];
+     }
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {

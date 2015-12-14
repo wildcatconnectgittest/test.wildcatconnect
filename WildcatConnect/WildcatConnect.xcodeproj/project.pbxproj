@@ -11,6 +11,7 @@
 		0A0AFC791C0B597B0094A2D2 /* logoLarge.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 0A0AFC781C0B597B0094A2D2 /* logoLarge.jpeg */; };
 		0A7028D91C1BE26F0053E56D /* settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A7028D81C1BE26F0053E56D /* settings@2x.png */; };
 		0A7028DC1C1BE2E30053E56D /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A7028DB1C1BE2E30053E56D /* SettingsTableViewController.m */; };
+		0A8261641C1D32A300574208 /* PushSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A8261631C1D32A300574208 /* PushSettingsTableViewController.m */; };
 		0ADBEE2A1C0ABD5E00E946F6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBEE291C0ABD5E00E946F6 /* main.m */; };
 		0ADBEE361C0ABD5E00E946F6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0ADBEE341C0ABD5E00E946F6 /* Main.storyboard */; };
 		0ADBEE381C0ABD5E00E946F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0ADBEE371C0ABD5E00E946F6 /* Assets.xcassets */; };
@@ -131,6 +132,8 @@
 		0A7028D81C1BE26F0053E56D /* settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "settings@2x.png"; path = "../settings@2x.png"; sourceTree = "<group>"; };
 		0A7028DA1C1BE2E30053E56D /* SettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsTableViewController.h; sourceTree = "<group>"; };
 		0A7028DB1C1BE2E30053E56D /* SettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTableViewController.m; sourceTree = "<group>"; };
+		0A8261621C1D32A300574208 /* PushSettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushSettingsTableViewController.h; sourceTree = "<group>"; };
+		0A8261631C1D32A300574208 /* PushSettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PushSettingsTableViewController.m; sourceTree = "<group>"; };
 		0ADBEE251C0ABD5E00E946F6 /* WildcatConnect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WildcatConnect.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0ADBEE291C0ABD5E00E946F6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0ADBEE351C0ABD5E00E946F6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -443,6 +446,8 @@
 				0ADBEEB41C0ABDE100E946F6 /* NewsArticleStructure.m */,
 				0ADBEEB21C0ABDE100E946F6 /* NewsCenterTableViewController.h */,
 				0ADBEE6E1C0ABD8400E946F6 /* NewsCenterTableViewController.m */,
+				0A8261621C1D32A300574208 /* PushSettingsTableViewController.h */,
+				0A8261631C1D32A300574208 /* PushSettingsTableViewController.m */,
 				0ADBEF2E1C0AC57200E946F6 /* noPicture@2x.png */,
 				0ADBEEFC1C0ABE5200E946F6 /* Parse.framework */,
 				0ADBEF2F1C0AC57200E946F6 /* picture@2x.png */,
@@ -734,6 +739,7 @@
 				0ADBEE951C0ABD8400E946F6 /* ComposeCommunityServiceViewController.m in Sources */,
 				0ADBEEE71C0ABDE100E946F6 /* CustomLoginSegue.m in Sources */,
 				0ADBEEE31C0ABDE100E946F6 /* AdministrationLogInViewController.m in Sources */,
+				0A8261641C1D32A300574208 /* PushSettingsTableViewController.m in Sources */,
 				0ADBEEED1C0ABDE100E946F6 /* UsefulLinkArray.m in Sources */,
 				0ADBEE2A1C0ABD5E00E946F6 /* main.m in Sources */,
 				0ADBEE861C0ABD8400E946F6 /* AppDelegate.m in Sources */,

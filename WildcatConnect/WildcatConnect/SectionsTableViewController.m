@@ -28,6 +28,7 @@
 
 @implementation SectionsTableViewController {
      UIActivityIndicatorView *activity;
+     NSNumber *opps;
 }
 
 - (void)viewDidLoad {
@@ -96,7 +97,7 @@
                               if (errorFour != nil) {
                                    [activity stopAnimating];
                               } else {
-                                   NSNumber *opps = [NSNumber numberWithInteger:count4];
+                                   opps = [NSNumber numberWithInteger:count4];
                                    NSNumber *oppsSeen = [[NSUserDefaults standardUserDefaults] objectForKey:@"CSviewed"];
                                    if (oppsSeen) {
                                         if ([oppsSeen integerValue] >= [opps integerValue]) {
@@ -120,7 +121,7 @@
                                         self.sectionsNumbersArray = returnArray;
                                         [activity stopAnimating];
                                         [self.tableView reloadData];
-                                        NSInteger final = [number integerValue] + [updates integerValue] + [answered integerValue];
+                                        NSInteger final = [number integerValue] + [updates integerValue] + [opps integerValue] + [answered integerValue];
                                         if (final > 0) {
                                              [[self.tabBarController.viewControllers objectAtIndex:1] tabBarItem].badgeValue = [[NSNumber numberWithInt:final] stringValue];
                                         }
