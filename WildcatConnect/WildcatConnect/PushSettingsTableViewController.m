@@ -34,6 +34,13 @@
                                                                              blue:23.0f/255.0f
                                                                             alpha:0.5f];
      
+     UIBarButtonItem *bbtnBack = [[UIBarButtonItem alloc] initWithTitle:@"Back"
+                                                                  style:UIBarButtonItemStylePlain
+                                                                 target:self
+                                                                 action:@selector(goBack:)];
+     
+     self.navigationItem.leftBarButtonItem = bbtnBack;
+     
      
      activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
      [activity setBackgroundColor:[UIColor clearColor]];
@@ -104,6 +111,21 @@
           }
           completion(returnArray, overallError);
      });
+}
+
+- (void)goBack:(UIBarButtonItem *)sender
+{
+     if (hasChanged) {
+          UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Confirmation"
+                                                          message:@"Are you sure you want to go back? You have not saved your push settings."
+                                                         delegate:self
+                                                cancelButtonTitle:@"No"
+                                                otherButtonTitles:@"Yes", nil];
+          [alert show];
+     }
+     else {
+          [self.navigationController popViewControllerAnimated:YES];
+     }
 }
 
 - (instancetype)init {
@@ -259,7 +281,10 @@
                     });
                }];
           }
-          
+     } else {
+          if (buttonIndex == 1) {
+               [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2] animated:YES];
+          }
      }
 }
 

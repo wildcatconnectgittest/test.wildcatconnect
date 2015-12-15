@@ -39,13 +39,21 @@
      
      self.topBar.topItem.title = [[lastName stringByAppendingString:@", "] stringByAppendingString:firstName];
      
-     self.sectionsArray = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"News Article", @"Extracurricular Update", @"Community Service Update", @"User Poll", @"Alert", nil]];
+     self.sectionsArray = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"News Article", @"Extracurricular Update", @"Community Service Update", @"User Poll", nil]];
+     
+     if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administrator"]) {
+          [self.sectionsArray addObject:@"Alert"];
+     }
+     
      self.sectionsImagesArray = [[NSMutableArray alloc] init];
      [self.sectionsImagesArray addObject:@"theNews@2x.png"];
      [self.sectionsImagesArray addObject:@"extracurriculars@2x.png"];
      [self.sectionsImagesArray addObject:@"communityService@2x.png"];
      [self.sectionsImagesArray addObject:@"studentCenter@2x.png"];
-     [self.sectionsImagesArray addObject:@"alerts@2x.png"];
+     
+     if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administrator"]) {
+          [self.sectionsImagesArray addObject:@"alerts@2x.png"];
+     }
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -68,19 +76,27 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+     if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administrator"]) {
+          return 2;
+     } else return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-     if (section == 0) {
-          return 1;
+     if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administrator"]) {
+          if (section == 0) {
+               return 1;
+          } else
+               return self.sectionsArray.count;
      } else
           return self.sectionsArray.count;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-     if (section == 0) {
-          return @"DAILY UPDATES";
+     if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administrator"]) {
+          if (section == 0) {
+               return @"DAILY UPDATES";
+          } else
+               return @"COMPOSE NEW";
      } else
           return @"COMPOSE NEW";
 }
@@ -95,26 +111,51 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
      UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier" forIndexPath:indexPath];
-     if (indexPath.section == 0) {
-          if (indexPath.row == 0) {
-               cell.textLabel.text = @"Picture of the Day";
-               cell.imageView.image = [UIImage imageNamed:@"picture@2x.png"];
+     if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administrator"]) {
+          if (indexPath.section == 0) {
+               if (indexPath.row == 0) {
+                    cell.textLabel.text = @"Picture of the Day";
+                    cell.imageView.image = [UIImage imageNamed:@"picture@2x.png"];
+               }
+          } else {
+               cell.textLabel.text = self.sectionsArray[indexPath.row];
+               cell.imageView.image = [UIImage imageNamed:self.sectionsImagesArray[indexPath.row]];
           }
      } else {
           cell.textLabel.text = self.sectionsArray[indexPath.row];
           cell.imageView.image = [UIImage imageNamed:self.sectionsImagesArray[indexPath.row]];
      }
+     
      cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
      return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-     if (indexPath.section == 0) {
-          if (indexPath.row == 0) {
-               EditPictureDayViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"EditPicture"];
-               [self.navigationController pushViewController:controller animated:YES];
+     if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administrator"]) {
+          if (indexPath.section == 0) {
+               if (indexPath.row == 0) {
+                    EditPictureDayViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"EditPicture"];
+                    [self.navigationController pushViewController:controller animated:YES];
+               }
+          } else if (indexPath.section == 1) {
+               if (indexPath.row == 0) {
+                    ComposeNewsArticleViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"ComposeNewsArticle"];
+                    [self.navigationController pushViewController:controller animated:YES];
+               } else if (indexPath.row == 1) {
+                    ComposeExtracurricularUpdateViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"ComposeExtracurricular"];
+                    [self.navigationController pushViewController:controller animated:YES];
+               } else if (indexPath.row == 2) {
+                    ComposeCommunityServiceViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"ComposeCommunity"];
+                    [self.navigationController pushViewController:controller animated:YES];
+               } else if (indexPath.row == 3) {
+                    ComposePollViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"ComposePoll"];
+                    [self.navigationController pushViewController:controller animated:YES];
+               } else if (indexPath.row == 4) {
+                    ComposeAlertViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"ComposeAlert"];
+                    [self.navigationController pushViewController:controller animated:YES];
+               }
           }
-     } else if (indexPath.section == 1) {
+     } else {
           if (indexPath.row == 0) {
                ComposeNewsArticleViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"ComposeNewsArticle"];
                [self.navigationController pushViewController:controller animated:YES];

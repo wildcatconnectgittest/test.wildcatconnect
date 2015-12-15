@@ -307,10 +307,23 @@ Parse.Cloud.afterSave("NewsArticleStructure", function(request) {
 
 Parse.Cloud.afterSave("ExtracurricularUpdateStructure", function(request) {
   if (request.object.get("extracurricularUpdateID") != null) {
-    Parse.Push.send({
-      channels: [ "global" ],
-      data: {
-        badge: "Increment"
+    var query = new Parse.Query("ExtracurricularStructure");
+    query.equalTo("extracurricularID", request.object.get("extracurricularID"));
+    query.first({
+      success: function(structure) {
+        var title = structure.get("titleString");
+        var channelString = structure.get("channelString");
+        Parse.Push.send({
+          channels: [ channelString ],
+          data: {
+            alert: title + " - " + request.object.get("messageString"),
+            e: "e",
+            badge: "Increment"
+          }
+        });
+      },
+      error: function(error) {
+        //Handle error
       }
     });
   };
@@ -321,7 +334,6 @@ Parse.Cloud.afterSave("CommunityServiceStructure", function(request) {
     Parse.Push.send({
         channels: [ "allCS" ],
         data: {
-          title: "WildcatConnect",
           alert: "COMMUNITY SERVICE - " + request.object.get("commTitleString"),
           c: "c",
           badge: "Increment"
@@ -341,78 +353,92 @@ Parse.Cloud.beforeSave("PollStructure", function(request, response) {
     response.success();
 });
 
-Parse.Cloud.job("alertStatusUpdating", function(request, response) {
+Parse.Cloud.job("alertStatusUpdatingNight", function(request, response) {
   var query = new Parse.Query("AlertStructure");
+  var existingString = null;
+  var pushSent = false;
   query.ascending("alertID");
   query.equalTo("isReady", 0);
   query.find({
     success: function(structures) {
       for (var i = 0; i < structures.length; i++) {
-            var currentStructure = structures[i];
-            var thisDate = currentStructure.get("alertTime");
-            var now = new Date();
+          var currentStructure = structures[i];
+          var thisDate = currentStructure.get("alertTime");
+          var now = new Date();
           var date1_ms = thisDate.getTime();
           var date2_ms = now.getTime();
           var difference_ms = date2_ms - date1_ms;
-          if (difference_ms >= 0) {
+          if (difference_ms >= 0 || (thisDate.getHours() === now.getHours() && thisDate.getMinutes() === now.getMinutes())) {
+            pushSent = true;
             currentStructure.set("isReady", 1);
             currentStructure.save(null, {
-  success: function (currentStructure) {
-    // Execute any logic that should take place after the object is saved.
-    //alert('New object created with objectId: ' + gameScore.id);
-    response.success();
-  },
-  error: function(currentStructure, error) {
-    // Execute any logic that should take place if the save fails.
-    // error is a Parse.Error with an error code and message.
-    //alert('Failed to create new object, with error code: ' + error.message);
-    response.error();
-  }
-});
-            var query = new Parse.Query("SchoolDayStructure");
-      query.ascending("schoolDayID");
-      query.first({
-        success: function(structure) {
-          var messageString = structure.get("messageString");
-          if (messageString === "No alerts yet.") {
-            messageString = request.object.get("titleString");
-          } else {
-            messageString = messageString + "\n\n" + request.object.get("titleString");
-          };
-          structure.set("messageString", messageString);
-          structure.save(null, {
-            success: function(structure) {
-              // Execute any logic that should take place after the object is saved.
-              //alert('New object created with objectId: ' + gameScore.id);
-            },
-            error: function(error) {
-              // Execute any logic that should take place if the save fails.
-              // error is a Parse.Error with an error code and message.
-              //alert('Failed to create new object, with error code: ' + error.message);
-            }
-          });
-        },
-        error: function(errorTwo) {
-          response.error("Error.");
-        }
-      });
-            Parse.Push.send({
-              channels: [ "global" ],
-              data: {
-              alert: currentStructure.get("titleString"),
-              a: currentStructure.get("alertID"),
-              badge: "Increment",
+              success: function (currentStructure) {
+                // Execute any logic that should take place after the object is saved.
+                //alert('New object created with objectId: ' + gameScore.id);
+                var query = new Parse.Query("SchoolDayStructure");
+                query.ascending("schoolDayID");
+                query.first({
+                  success: function(structure) {
+                    var messageString;
+                    if (existingString != null) {
+                      messageString = existingString;
+                    } else {
+                      messageString = structure.get("messageString");
+                    }
+                    if (messageString === "No alerts yet.") {
+                      messageString = currentStructure.get("titleString");
+                    } else {
+                      messageString = messageString + "\n\n" + currentStructure.get("titleString");
+                    };
+                    existingString = messageString;
+                    structure.set("messageString", messageString);
+                    structure.save(null, {
+                      success: function(structure) {
+                        // Execute any logic that should take place after the object is saved.
+                        //alert('New object created with objectId: ' + gameScore.id);
+                        Parse.Push.send({
+                          channels: [ "global" ],
+                          data: {
+                            alert: currentStructure.get("titleString"),
+                            a: currentStructure.get("alertID"),
+                            badge: "Increment",
+                          },
+                          push_time: currentStructure.get("alertTime")
+                        });
+                        if (i == structures.length - 1) {
+                          if (pushSent === true) {
+                            response.success("Push sent!!!");
+                          }
+                        };
+                      },
+                      error: function(error) {
+                        // Execute any logic that should take place if the save fails.
+                        // error is a Parse.Error with an error code and message.
+                        //alert('Failed to create new object, with error code: ' + error.message);
+                      }
+                    });
+                  },
+                  error: function(errorTwo) {
+                    response.error("Error.");
+                  }
+                });
               },
-              push_time: currentStructure.get("alertTime")
+              error: function(currentStructure, error) {
+                // Execute any logic that should take place if the save fails.
+                // error is a Parse.Error with an error code and message.
+                //alert('Failed to create new object, with error code: ' + error.message);
+                response.error();
+              }
             });
-          };
-          if (i == structures.length - 1) {
-            response.success("Done!!!");
+          } else if (i == structures.length - 1) {
+            if (pushSent === false) {
+              response.success("Done, no push sent!!!");
+            }
           };
         }
-        if (structures.length == 0) {
-          response.success("No objects to change!!!");
-        };
+      if (structures.length == 0) {
+        response.success("No objects to change!!!");
+      };
     },
     error: function() {
       response.error("Error.");
@@ -420,51 +446,92 @@ Parse.Cloud.job("alertStatusUpdating", function(request, response) {
   });
 });
 
-Parse.Cloud.job("alertStatusUpdatingNight", function(request, response) {
+Parse.Cloud.job("alertStatusUpdating", function(request, response) {
   var query = new Parse.Query("AlertStructure");
+  var existingString = null;
+  var pushSent = false;
   query.ascending("alertID");
   query.equalTo("isReady", 0);
   query.find({
     success: function(structures) {
       for (var i = 0; i < structures.length; i++) {
-            var currentStructure = structures[i];
-            var thisDate = currentStructure.get("alertTime");
-            var now = new Date();
+          var currentStructure = structures[i];
+          var thisDate = currentStructure.get("alertTime");
+          var now = new Date();
           var date1_ms = thisDate.getTime();
           var date2_ms = now.getTime();
           var difference_ms = date2_ms - date1_ms;
           if (difference_ms >= 0 || (thisDate.getHours() === now.getHours() && thisDate.getMinutes() === now.getMinutes())) {
+            pushSent = true;
             currentStructure.set("isReady", 1);
             currentStructure.save(null, {
-  success: function (currentStructure) {
-    // Execute any logic that should take place after the object is saved.
-    //alert('New object created with objectId: ' + gameScore.id);
-    response.success();
-  },
-  error: function(currentStructure, error) {
-    // Execute any logic that should take place if the save fails.
-    // error is a Parse.Error with an error code and message.
-    //alert('Failed to create new object, with error code: ' + error.message);
-    response.error();
-  }
-});
-            Parse.Push.send({
-              channels: [ "global" ],
-              data: {
-              alert: currentStructure.get("titleString"),
-              a: currentStructure.get("alertID"),
-              badge: "Increment",
+              success: function (currentStructure) {
+                // Execute any logic that should take place after the object is saved.
+                //alert('New object created with objectId: ' + gameScore.id);
+                var query = new Parse.Query("SchoolDayStructure");
+                query.ascending("schoolDayID");
+                query.first({
+                  success: function(structure) {
+                    var messageString;
+                    if (existingString != null) {
+                      messageString = existingString;
+                    } else {
+                      messageString = structure.get("messageString");
+                    }
+                    if (messageString === "No alerts yet.") {
+                      messageString = currentStructure.get("titleString");
+                    } else {
+                      messageString = messageString + "\n\n" + currentStructure.get("titleString");
+                    };
+                    existingString = messageString;
+                    structure.set("messageString", messageString);
+                    structure.save(null, {
+                      success: function(structure) {
+                        // Execute any logic that should take place after the object is saved.
+                        //alert('New object created with objectId: ' + gameScore.id);
+                        Parse.Push.send({
+                          channels: [ "global" ],
+                          data: {
+                            alert: currentStructure.get("titleString"),
+                            a: currentStructure.get("alertID"),
+                            badge: "Increment",
+                          },
+                          push_time: currentStructure.get("alertTime")
+                        });
+                        if (i == structures.length - 1) {
+                          if (pushSent === true) {
+                            response.success("Push sent!!!");
+                          }
+                        };
+                      },
+                      error: function(error) {
+                        // Execute any logic that should take place if the save fails.
+                        // error is a Parse.Error with an error code and message.
+                        //alert('Failed to create new object, with error code: ' + error.message);
+                      }
+                    });
+                  },
+                  error: function(errorTwo) {
+                    response.error("Error.");
+                  }
+                });
               },
-              push_time: currentStructure.get("alertTime")
+              error: function(currentStructure, error) {
+                // Execute any logic that should take place if the save fails.
+                // error is a Parse.Error with an error code and message.
+                //alert('Failed to create new object, with error code: ' + error.message);
+                response.error();
+              }
             });
-          };
-          if (i == structures.length - 1) {
-            response.success("Done!!!");
+          } else if (i == structures.length - 1) {
+            if (pushSent === false) {
+              response.success("Done, no push sent!!!");
+            }
           };
         }
-        if (structures.length == 0) {
-          response.success("No objects to change!!!");
-        };
+      if (structures.length == 0) {
+        response.success("No objects to change!!!");
+      };
     },
     error: function() {
       response.error("Error.");

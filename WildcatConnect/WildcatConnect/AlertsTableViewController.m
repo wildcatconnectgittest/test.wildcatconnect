@@ -321,6 +321,7 @@
      dispatch_group_enter(serviceGroup);
      PFQuery *query = [AlertStructure query];
      __block int count;
+     [query whereKey:@"isReady" equalTo:[NSNumber numberWithInt:1]];
      [query countObjectsInBackgroundWithBlock:^(int number, NSError * _Nullable error) {
           count = number;
           dispatch_group_leave(serviceGroup);

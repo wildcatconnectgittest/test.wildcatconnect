@@ -119,7 +119,6 @@
                               [moreItems addObject:@{ @"titleString"     : e.titleString,
                                                       @"descriptionString"    : e.descriptionString,
                                                       @"hasImage" :e.hasImage,
-                                                      @"imageURLString": e.imageURLString,
                                                       @"extracurricularID" : e.extracurricularID,
                                                       @"meetingIDs" : e.meetingIDs,
                                                       @"channelString" : e.channelString
@@ -223,7 +222,6 @@
           ECStructure.titleString = [object objectForKey:@"titleString"];
           ECStructure.descriptionString = [object objectForKey:@"descriptionString"];
           ECStructure.hasImage = [object objectForKey:@"hasImage"];
-          ECStructure.imageURLString = [object objectForKey:@"imageURLString"];
           ECStructure.extracurricularID = [object objectForKey:@"extracurricularID"];
           ECStructure.meetingIDs = [object objectForKey:@"meetingIDs"];
           ECStructure.channelString = [object objectForKey:@"channelString"];
@@ -472,6 +470,9 @@
                UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
                cell.textLabel.text = EC.titleString;
                cell.detailTextLabel.text = extracurricularUpdateStructure.messageString;
+               if ([[[PFInstallation currentInstallation] objectForKey:@"channels"] containsObject:EC.channelString]) {
+                    cell.detailTextLabel.textColor = [UIColor redColor];
+               }
                cell.detailTextLabel.numberOfLines = 4;
                NSInteger index = [EC.extracurricularID integerValue];
                NSInteger hasImageInteger = [EC.hasImage integerValue];

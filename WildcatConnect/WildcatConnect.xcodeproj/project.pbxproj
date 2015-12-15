@@ -12,6 +12,7 @@
 		0A7028D91C1BE26F0053E56D /* settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A7028D81C1BE26F0053E56D /* settings@2x.png */; };
 		0A7028DC1C1BE2E30053E56D /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A7028DB1C1BE2E30053E56D /* SettingsTableViewController.m */; };
 		0A8261641C1D32A300574208 /* PushSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A8261631C1D32A300574208 /* PushSettingsTableViewController.m */; };
+		0AD53D5C1C208B4D007E5184 /* RegisterExtracurricularViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AD53D5B1C208B4D007E5184 /* RegisterExtracurricularViewController.m */; };
 		0ADBEE2A1C0ABD5E00E946F6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBEE291C0ABD5E00E946F6 /* main.m */; };
 		0ADBEE361C0ABD5E00E946F6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0ADBEE341C0ABD5E00E946F6 /* Main.storyboard */; };
 		0ADBEE381C0ABD5E00E946F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0ADBEE371C0ABD5E00E946F6 /* Assets.xcassets */; };
@@ -134,6 +135,8 @@
 		0A7028DB1C1BE2E30053E56D /* SettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTableViewController.m; sourceTree = "<group>"; };
 		0A8261621C1D32A300574208 /* PushSettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushSettingsTableViewController.h; sourceTree = "<group>"; };
 		0A8261631C1D32A300574208 /* PushSettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PushSettingsTableViewController.m; sourceTree = "<group>"; };
+		0AD53D5A1C208B4D007E5184 /* RegisterExtracurricularViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterExtracurricularViewController.h; sourceTree = "<group>"; };
+		0AD53D5B1C208B4D007E5184 /* RegisterExtracurricularViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterExtracurricularViewController.m; sourceTree = "<group>"; };
 		0ADBEE251C0ABD5E00E946F6 /* WildcatConnect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WildcatConnect.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0ADBEE291C0ABD5E00E946F6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0ADBEE351C0ABD5E00E946F6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -418,6 +421,8 @@
 				0ADBEE801C0ABD8400E946F6 /* ExtracurricularsTableViewController.m */,
 				0ADBEEB91C0ABDE100E946F6 /* ExtracurricularStructure.h */,
 				0ADBEEBA1C0ABDE100E946F6 /* ExtracurricularStructure.m */,
+				0AD53D5A1C208B4D007E5184 /* RegisterExtracurricularViewController.h */,
+				0AD53D5B1C208B4D007E5184 /* RegisterExtracurricularViewController.m */,
 				0ADBEECA1C0ABDE100E946F6 /* ExtracurricularUpdateStructure.h */,
 				0ADBEEC91C0ABDE100E946F6 /* ExtracurricularUpdateStructure.m */,
 				0ADBEF231C0AC24400E946F6 /* FirstViewController.h */,
@@ -731,6 +736,7 @@
 				0ADBEEE91C0ABDE100E946F6 /* ExtracurricularStructure.m in Sources */,
 				0ADBEEF31C0ABDE100E946F6 /* AppManager.m in Sources */,
 				0ADBEE901C0ABD8400E946F6 /* StaffDirectoryBaseTableViewController.m in Sources */,
+				0AD53D5C1C208B4D007E5184 /* RegisterExtracurricularViewController.m in Sources */,
 				0ADBEE921C0ABD8400E946F6 /* AlertStructure.m in Sources */,
 				0ADBEEEA1C0ABDE100E946F6 /* StaffMemberStructure.m in Sources */,
 				0ADBEE971C0ABD8400E946F6 /* EditPictureDayViewController.m in Sources */,

@@ -17,7 +17,6 @@
 @dynamic descriptionString;
 @dynamic hasImage;
 @dynamic imageFile;
-@dynamic imageURLString;
 @dynamic extracurricularID;
 @dynamic meetingIDs;
 @dynamic channelString;

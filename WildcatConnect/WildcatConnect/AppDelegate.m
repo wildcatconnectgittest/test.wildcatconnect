@@ -61,7 +61,6 @@
                [self getAlertForIDMethodWithCompletion:^(NSMutableArray *array, NSError *error) {
                     dispatch_async(dispatch_get_main_queue(), ^ {
                          [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"reloadAlertsPage"];
-                         [[NSUserDefaults standardUserDefaults] synchronize];
                          NSMutableArray *readArray = [[[NSUserDefaults standardUserDefaults] objectForKey:@"readAlerts"] mutableCopy];
                          if (! readArray) {
                               readArray = [[NSMutableArray alloc] init];
@@ -77,6 +76,7 @@
                          theAlert.hasTime = [[array firstObject] objectForKey:@"hasTime"];
                          theAlert.dateString = [[array firstObject] objectForKey:@"dateString"];
                          theAlert.isReady = [[array firstObject] objectForKey:@"isReady"];
+                         theAlert.alertID = [[array firstObject] objectForKey:@"alertID"];
                          AlertDetailViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"AlertDetail"];
                          controller.alert = theAlert;
                          controller.showCloseButton = YES;
@@ -150,6 +150,17 @@
                } else {
                     if ([pagesArray containsObject:[NSString stringWithFormat:@"%lu", (long)2]]) {
                          [pagesArray removeObject:[NSString stringWithFormat:@"%lu", (long)2]];
+                         [[NSUserDefaults standardUserDefaults] setObject:pagesArray forKey:@"visitedPagesArray"];
+                         [[NSUserDefaults standardUserDefaults] synchronize];
+                    }
+               }
+          } else if ([notificationPayload objectForKey:@"e"]) {
+               NSMutableArray *pagesArray = [[[NSUserDefaults standardUserDefaults] objectForKey:@"visitedPagesArray"] mutableCopy];
+               if (! pagesArray) {
+                    pagesArray = [[NSMutableArray alloc] init];
+               } else {
+                    if ([pagesArray containsObject:[NSString stringWithFormat:@"%lu", (long)1]]) {
+                         [pagesArray removeObject:[NSString stringWithFormat:@"%lu", (long)1]];
                          [[NSUserDefaults standardUserDefaults] setObject:pagesArray forKey:@"visitedPagesArray"];
                          [[NSUserDefaults standardUserDefaults] synchronize];
                     }
@@ -420,7 +431,6 @@
                [self getAlertForIDMethodWithCompletion:^(NSMutableArray *array, NSError *error) {
                     dispatch_async(dispatch_get_main_queue(), ^ {
                          [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"reloadAlertsPage"];
-                         [[NSUserDefaults standardUserDefaults] synchronize];
                          NSMutableArray *readArray = [[[NSUserDefaults standardUserDefaults] objectForKey:@"readAlerts"] mutableCopy];
                          if (! readArray) {
                               readArray = [[NSMutableArray alloc] init];
@@ -550,6 +560,21 @@
           } else {
                if ([pagesArray containsObject:[NSString stringWithFormat:@"%lu", (long)2]]) {
                     [pagesArray removeObject:[NSString stringWithFormat:@"%lu", (long)2]];
+                    [[NSUserDefaults standardUserDefaults] setObject:pagesArray forKey:@"visitedPagesArray"];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+               }
+          }
+     }
+     if ([userInfo objectForKey:@"e"]) {
+          UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Extracurricular" message:@"You have 1 new extracurricular update. Navigate to the Extracurriculars page to read." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+          [alert setTag:3];
+          [alert show];
+          NSMutableArray *pagesArray = [[[NSUserDefaults standardUserDefaults] objectForKey:@"visitedPagesArray"] mutableCopy];
+          if (! pagesArray) {
+               pagesArray = [[NSMutableArray alloc] init];
+          } else {
+               if ([pagesArray containsObject:[NSString stringWithFormat:@"%lu", (long)1]]) {
+                    [pagesArray removeObject:[NSString stringWithFormat:@"%lu", (long)1]];
                     [[NSUserDefaults standardUserDefaults] setObject:pagesArray forKey:@"visitedPagesArray"];
                     [[NSUserDefaults standardUserDefaults] synchronize];
                }

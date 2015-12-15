@@ -18,7 +18,6 @@
 @property NSString *descriptionString;
 @property NSNumber *hasImage;
 @property PFFile *imageFile;
-@property NSString *imageURLString;
 @property NSNumber *extracurricularID;
 @property NSString *meetingIDs;
 @property NSString *channelString;

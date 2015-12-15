@@ -35,6 +35,13 @@
      
      self.navigationController.navigationBar.translucent = NO;
      
+     activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+     [activity setBackgroundColor:[UIColor clearColor]];
+     [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
+     self.navigationItem.rightBarButtonItem = barButtonItem;
+     [activity startAnimating];
+     
      [self getLikesMethodWithCompletion:^(NSInteger integer, NSError *error) {
           
           self.NA.likes = [NSNumber numberWithInteger:integer];
@@ -117,13 +124,6 @@
                }
                scrollView.contentSize = contentRect.size;
                [self.view addSubview:scrollView];
-               
-               activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-               [activity setBackgroundColor:[UIColor clearColor]];
-               [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-               UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
-               self.navigationItem.rightBarButtonItem = barButtonItem;
-               [activity startAnimating];
                
                [self viewMethodWithCompletion:^(NSUInteger integer, NSError *error) {
                     [activity stopAnimating];
@@ -222,13 +222,6 @@
                }
                scrollView.contentSize = contentRect.size;
                [self.view addSubview:scrollView];
-               
-               activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-               [activity setBackgroundColor:[UIColor clearColor]];
-               [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-               UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
-               self.navigationItem.rightBarButtonItem = barButtonItem;
-               [activity startAnimating];
                
                [self viewMethodWithCompletion:^(NSUInteger integer, NSError *error) {
                     [activity stopAnimating];
