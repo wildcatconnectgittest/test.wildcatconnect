@@ -20,6 +20,7 @@
 @dynamic imageURLString;
 @dynamic extracurricularID;
 @dynamic meetingIDs;
+@dynamic channelString;
 
 + (void)load {
      [self registerSubclass];

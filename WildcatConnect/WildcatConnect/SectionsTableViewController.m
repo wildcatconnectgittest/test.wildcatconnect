@@ -239,6 +239,7 @@
      UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
      cell.textLabel.text = self.sectionsArray[indexPath.row];
      cell.imageView.image = [UIImage imageNamed:self.sectionsImagesArray[indexPath.row]];
+     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
      if (indexPath.row == 0) {
           NSNumber *number = [self.sectionsNumbersArray objectAtIndex:indexPath.row];
           NSInteger integer = [number integerValue];
@@ -304,7 +305,8 @@
           if ([PFUser currentUser]) {
                NSString *firstName = [[PFUser currentUser] objectForKey:@"firstName"];
                NSString *lastName = [[PFUser currentUser] objectForKey:@"lastName"];
-               cell.detailTextLabel.text = [@"Logged in as " stringByAppendingString:[[firstName stringByAppendingString:@" "] stringByAppendingString:lastName]];
+               NSString *typeString = [[PFUser currentUser] objectForKey:@"userType"];
+               cell.detailTextLabel.text = [[[@"Logged in as " stringByAppendingString:[[firstName stringByAppendingString:@" "] stringByAppendingString:lastName]] stringByAppendingString:@" - "] stringByAppendingString:typeString];
           }
      }
      return cell;

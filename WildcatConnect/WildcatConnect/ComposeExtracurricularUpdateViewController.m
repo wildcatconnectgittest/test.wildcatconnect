@@ -224,7 +224,10 @@
      [query orderByDescending:@"extracurricularUpdateID"];
      [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
           ExtracurricularUpdateStructure *structure = (ExtracurricularUpdateStructure *)object;
-          extracurricularUpdateStructure.extracurricularUpdateID = [NSNumber numberWithInt:[structure.extracurricularUpdateID integerValue] + 1];
+          if (structure) {
+               extracurricularUpdateStructure.extracurricularUpdateID = [NSNumber numberWithInt:[structure.extracurricularUpdateID integerValue] + 1];
+          } else
+               extracurricularUpdateStructure.extracurricularUpdateID = [NSNumber numberWithInt:0];
           [extracurricularUpdateStructure saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
                if (error) {
                     theError = error;

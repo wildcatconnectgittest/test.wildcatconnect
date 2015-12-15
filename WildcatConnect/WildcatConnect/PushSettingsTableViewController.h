@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PushSettingsTableViewController : UITableViewController
+@interface PushSettingsTableViewController : UITableViewController <UIAlertViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray *ECarray;
+@property (nonatomic, strong) NSMutableArray *pushArray;
 
 @end

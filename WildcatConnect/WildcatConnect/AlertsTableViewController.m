@@ -194,7 +194,7 @@
                NSString *number = (NSString *)[searchDictionaryArray objectAtIndex:i];
                BOOL contained = false;
                for (AlertStructure *structure in theArray) {
-                    if ([structure.alertID isEqual:number]) {
+                    if ([structure.alertID integerValue] == [number integerValue]) {
                          contained = true;
                          break;
                     }

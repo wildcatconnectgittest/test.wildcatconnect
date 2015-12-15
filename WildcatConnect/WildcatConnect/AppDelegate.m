@@ -19,6 +19,7 @@
 #import "SchoolDayStructure.h"
 #import "ScheduleType.h"
 #import "AlertDetailViewController.h"
+#import "NewsArticleDetailViewController.h"
 
 @implementation AppDelegate
 
@@ -55,35 +56,105 @@
      NSDictionary *notificationPayload = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
      
      if (notificationPayload) {
-          self.alertString = [notificationPayload objectForKey:@"a"];
-          [self getAlertForIDMethodWithCompletion:^(NSMutableArray *array, NSError *error) {
-               dispatch_async(dispatch_get_main_queue(), ^ {
-                    [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"reloadAlertsPage"];
-                    [[NSUserDefaults standardUserDefaults] synchronize];
-                    NSMutableArray *readArray = [[[NSUserDefaults standardUserDefaults] objectForKey:@"readAlerts"] mutableCopy];
-                    if (! readArray) {
-                         readArray = [[NSMutableArray alloc] init];
+          if ([notificationPayload objectForKey:@"a"]) {
+               self.alertString = [notificationPayload objectForKey:@"a"];
+               [self getAlertForIDMethodWithCompletion:^(NSMutableArray *array, NSError *error) {
+                    dispatch_async(dispatch_get_main_queue(), ^ {
+                         [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"reloadAlertsPage"];
+                         [[NSUserDefaults standardUserDefaults] synchronize];
+                         NSMutableArray *readArray = [[[NSUserDefaults standardUserDefaults] objectForKey:@"readAlerts"] mutableCopy];
+                         if (! readArray) {
+                              readArray = [[NSMutableArray alloc] init];
+                         }
+                         [readArray addObject:self.alertString];
+                         [[NSUserDefaults standardUserDefaults] setObject:readArray forKey:@"readAlerts"];
+                         [[NSUserDefaults standardUserDefaults] synchronize];
+                         AlertStructure *theAlert = [[AlertStructure alloc] init];
+                         theAlert.titleString = [[array firstObject] objectForKey:@"titleString"];
+                         theAlert.authorString = [[array firstObject] objectForKey:@"authorString"];
+                         theAlert.alertTime = [[array firstObject] objectForKey:@"alertTime"];
+                         theAlert.contentString = [[array firstObject] objectForKey:@"contentString"];
+                         theAlert.hasTime = [[array firstObject] objectForKey:@"hasTime"];
+                         theAlert.dateString = [[array firstObject] objectForKey:@"dateString"];
+                         theAlert.isReady = [[array firstObject] objectForKey:@"isReady"];
+                         AlertDetailViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"AlertDetail"];
+                         controller.alert = theAlert;
+                         controller.showCloseButton = YES;
+                         UINavigationController *nav = (UINavigationController *)self.window.rootViewController;
+                         UINavigationController *navigationController =
+                         [[UINavigationController alloc] initWithRootViewController:controller];
+                         [nav presentViewController:navigationController animated:YES completion:^{}];
+                    });
+               } forID:self.alertString];
+          } else if ([notificationPayload objectForKey:@"n"]) {
+               self.newsString = [notificationPayload objectForKey:@"n"];
+               [self getNewsForIDMethodWithCompletion:^(NSMutableArray *array, NSError *error) {
+                    dispatch_async(dispatch_get_main_queue(), ^ {
+                         NSMutableArray *pagesArray = [[[NSUserDefaults standardUserDefaults] objectForKey:@"visitedPagesArray"] mutableCopy];
+                         if (! pagesArray) {
+                              pagesArray = [[NSMutableArray alloc] init];
+                         } else {
+                              if ([pagesArray containsObject:[NSString stringWithFormat:@"%lu", (long)0]]) {
+                                   [pagesArray removeObject:[NSString stringWithFormat:@"%lu", (long)0]];
+                                   [[NSUserDefaults standardUserDefaults] setObject:pagesArray forKey:@"visitedPagesArray"];
+                                   [[NSUserDefaults standardUserDefaults] synchronize];
+                              }
+                         }
+                         NSMutableArray *readArray = [[[NSUserDefaults standardUserDefaults] objectForKey:@"readNewsArticles"] mutableCopy];
+                         if (! readArray) {
+                              readArray = [[NSMutableArray alloc] init];
+                         }
+                         [readArray addObject:self.newsString];
+                         [[NSUserDefaults standardUserDefaults] setObject:readArray forKey:@"readNewsArticles"];
+                         [[NSUserDefaults standardUserDefaults] synchronize];
+                         
+                         NewsArticleStructure *theNews = [[NewsArticleStructure alloc] init];
+                         theNews.titleString = [[array firstObject] objectForKey:@"titleString"];
+                         theNews.summaryString = [[array firstObject] objectForKey:@"summaryString"];
+                         theNews.authorString = [[array firstObject] objectForKey:@"titleString"];
+                         theNews.dateString = [[array firstObject] objectForKey:@"dateString"];
+                         theNews.contentURLString = [[array firstObject] objectForKey:@"contentURLString"];
+                         theNews.articleID = [[array firstObject] objectForKey:@"articleID"];
+                         theNews.likes = [[array firstObject] objectForKey:@"likes"];
+                         theNews.views = [[array firstObject] objectForKey:@"views"];
+                         theNews.hasImage = [[array firstObject] objectForKey:@"hasImage"];
+                         
+                         if (theNews.hasImage == [NSNumber numberWithInt:0]) {
+                                   //Get the image data...
+                              [self getImageDataMethodWithCompletion:^(NSError *error, NSMutableArray *returnData) {
+                                   NewsArticleDetailViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"NADetail"];
+                                   controller.NA = theNews;
+                                   controller.imageData = [returnData objectAtIndex:0];
+                                   controller.showCloseButton = YES;
+                                   UINavigationController *nav = (UINavigationController *)self.window.rootViewController;
+                                   UINavigationController *navigationController =
+                                   [[UINavigationController alloc] initWithRootViewController:controller];
+                                   [nav presentViewController:navigationController animated:YES completion:^{}];
+                              } forID:theNews.articleID];
+                         } else {
+                              NewsArticleDetailViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"NADetail"];
+                              controller.NA = theNews;
+                              controller.imageData = [[NSData alloc] init];
+                              controller.showCloseButton = YES;
+                              UINavigationController *nav = (UINavigationController *)self.window.rootViewController;
+                              UINavigationController *navigationController =
+                              [[UINavigationController alloc] initWithRootViewController:controller];
+                              [nav presentViewController:navigationController animated:YES completion:^{}];
+                         }
+                    });
+               } forID:self.newsString];
+          } else if ([notificationPayload objectForKey:@"c"]) {
+               NSMutableArray *pagesArray = [[[NSUserDefaults standardUserDefaults] objectForKey:@"visitedPagesArray"] mutableCopy];
+               if (! pagesArray) {
+                    pagesArray = [[NSMutableArray alloc] init];
+               } else {
+                    if ([pagesArray containsObject:[NSString stringWithFormat:@"%lu", (long)2]]) {
+                         [pagesArray removeObject:[NSString stringWithFormat:@"%lu", (long)2]];
+                         [[NSUserDefaults standardUserDefaults] setObject:pagesArray forKey:@"visitedPagesArray"];
+                         [[NSUserDefaults standardUserDefaults] synchronize];
                     }
-                    [readArray addObject:self.alertString];
-                    [[NSUserDefaults standardUserDefaults] setObject:readArray forKey:@"readAlerts"];
-                    [[NSUserDefaults standardUserDefaults] synchronize];
-                    AlertStructure *theAlert = [[AlertStructure alloc] init];
-                    theAlert.titleString = [[array firstObject] objectForKey:@"titleString"];
-                    theAlert.authorString = [[array firstObject] objectForKey:@"authorString"];
-                    theAlert.alertTime = [[array firstObject] objectForKey:@"alertTime"];
-                    theAlert.contentString = [[array firstObject] objectForKey:@"contentString"];
-                    theAlert.hasTime = [[array firstObject] objectForKey:@"hasTime"];
-                    theAlert.dateString = [[array firstObject] objectForKey:@"dateString"];
-                    theAlert.isReady = [[array firstObject] objectForKey:@"isReady"];
-                    AlertDetailViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"AlertDetail"];
-                    controller.alert = theAlert;
-                    controller.showCloseButton = YES;
-                    UINavigationController *nav = (UINavigationController *)self.window.rootViewController;
-                    UINavigationController *navigationController =
-                    [[UINavigationController alloc] initWithRootViewController:controller];
-                    [nav presentViewController:navigationController animated:YES completion:^{}];
-               });
-          } forID:self.alertString];
+               }
+          }
      }
      
      if (application.applicationState != UIApplicationStateBackground) {
@@ -300,11 +371,35 @@
      
     return YES;
 }
+                                   
+- (void)getImageDataMethodWithCompletion:(void (^)(NSError *error, NSMutableArray *returnData))completion forID:(NSNumber *)ID {
+     dispatch_group_t serviceGroup = dispatch_group_create();
+     dispatch_group_enter(serviceGroup);
+     __block NSError *theError;
+     NSMutableArray *array = [NSMutableArray array];
+     PFQuery *query = [NewsArticleStructure query];
+     [query whereKey:@"articleID" equalTo:ID];
+     [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+          NewsArticleStructure *structure = (NewsArticleStructure *)object;
+          PFFile *imageFile = structure.imageFile;
+          [imageFile getDataInBackgroundWithBlock:^(NSData * _Nullable data, NSError * _Nullable error) {
+               theError = error;
+               [array addObject:data];
+               dispatch_group_leave(serviceGroup);
+          }];
+     }];
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
+          NSError *overallError = nil;
+          if (theError) {
+               overallError = theError;
+          }
+          completion(overallError, array);
+     });
+}
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
      PFInstallation *currentInstallation = [PFInstallation currentInstallation];
      [currentInstallation setDeviceTokenFromData:deviceToken];
-     currentInstallation.channels = @[ @"global" ];
      [currentInstallation saveInBackground];
 }
 
@@ -317,38 +412,116 @@
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-     if (buttonIndex == 0) {
-          [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"reloadAlertsPage"];
-          [[NSUserDefaults standardUserDefaults] synchronize];
-     } else {
-          [self getAlertForIDMethodWithCompletion:^(NSMutableArray *array, NSError *error) {
-               dispatch_async(dispatch_get_main_queue(), ^ {
-                    [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"reloadAlertsPage"];
-                    [[NSUserDefaults standardUserDefaults] synchronize];
-                    NSMutableArray *readArray = [[[NSUserDefaults standardUserDefaults] objectForKey:@"readAlerts"] mutableCopy];
-                    if (! readArray) {
-                         readArray = [[NSMutableArray alloc] init];
+     if (alertView.tag == 0) {
+          if (buttonIndex == 0) {
+               [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"reloadAlertsPage"];
+               [[NSUserDefaults standardUserDefaults] synchronize];
+          } else {
+               [self getAlertForIDMethodWithCompletion:^(NSMutableArray *array, NSError *error) {
+                    dispatch_async(dispatch_get_main_queue(), ^ {
+                         [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"reloadAlertsPage"];
+                         [[NSUserDefaults standardUserDefaults] synchronize];
+                         NSMutableArray *readArray = [[[NSUserDefaults standardUserDefaults] objectForKey:@"readAlerts"] mutableCopy];
+                         if (! readArray) {
+                              readArray = [[NSMutableArray alloc] init];
+                         }
+                         [readArray addObject:self.alertString];
+                         [[NSUserDefaults standardUserDefaults] setObject:readArray forKey:@"readAlerts"];
+                         [[NSUserDefaults standardUserDefaults] synchronize];
+                         AlertStructure *theAlert = [[AlertStructure alloc] init];
+                         theAlert.titleString = [[array firstObject] objectForKey:@"titleString"];
+                         theAlert.authorString = [[array firstObject] objectForKey:@"authorString"];
+                         theAlert.alertTime = [[array firstObject] objectForKey:@"alertTime"];
+                         theAlert.contentString = [[array firstObject] objectForKey:@"contentString"];
+                         theAlert.hasTime = [[array firstObject] objectForKey:@"hasTime"];
+                         theAlert.dateString = [[array firstObject] objectForKey:@"dateString"];
+                         theAlert.isReady = [[array firstObject] objectForKey:@"isReady"];
+                         theAlert.alertID = [[array firstObject] objectForKey:@"alertID"];
+                         AlertDetailViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"AlertDetail"];
+                         controller.alert = theAlert;
+                         controller.showCloseButton = YES;
+                         UINavigationController *nav = (UINavigationController *)self.window.rootViewController;
+                         UINavigationController *navigationController =
+                         [[UINavigationController alloc] initWithRootViewController:controller];
+                         [nav presentViewController:navigationController animated:YES completion:^{}];
+                    });
+               } forID:self.alertString];
+          }
+     } else if (alertView.tag == 1) {
+          if (buttonIndex == 0) {
+               NSMutableArray *pagesArray = [[[NSUserDefaults standardUserDefaults] objectForKey:@"visitedPagesArray"] mutableCopy];
+               if (! pagesArray) {
+                    pagesArray = [[NSMutableArray alloc] init];
+               } else {
+                    if ([pagesArray containsObject:[NSString stringWithFormat:@"%lu", (long)0]]) {
+                         [pagesArray removeObject:[NSString stringWithFormat:@"%lu", (long)0]];
+                         [[NSUserDefaults standardUserDefaults] setObject:pagesArray forKey:@"visitedPagesArray"];
+                         [[NSUserDefaults standardUserDefaults] synchronize];
                     }
-                    [readArray addObject:self.alertString];
-                    [[NSUserDefaults standardUserDefaults] setObject:readArray forKey:@"readAlerts"];
-                    [[NSUserDefaults standardUserDefaults] synchronize];
-                    AlertStructure *theAlert = [[AlertStructure alloc] init];
-                    theAlert.titleString = [[array firstObject] objectForKey:@"titleString"];
-                    theAlert.authorString = [[array firstObject] objectForKey:@"authorString"];
-                    theAlert.alertTime = [[array firstObject] objectForKey:@"alertTime"];
-                    theAlert.contentString = [[array firstObject] objectForKey:@"contentString"];
-                    theAlert.hasTime = [[array firstObject] objectForKey:@"hasTime"];
-                    theAlert.dateString = [[array firstObject] objectForKey:@"dateString"];
-                    theAlert.isReady = [[array firstObject] objectForKey:@"isReady"];
-                    AlertDetailViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"AlertDetail"];
-                    controller.alert = theAlert;
-                    controller.showCloseButton = YES;
-                    UINavigationController *nav = (UINavigationController *)self.window.rootViewController;
-                    UINavigationController *navigationController =
-                    [[UINavigationController alloc] initWithRootViewController:controller];
-                    [nav presentViewController:navigationController animated:YES completion:^{}];
-               });
-          } forID:self.alertString];
+               }
+               NSMutableArray *readArray = [[[NSUserDefaults standardUserDefaults] objectForKey:@"readNewsArticles"] mutableCopy];
+               if (! readArray) {
+                    readArray = [[NSMutableArray alloc] init];
+               }
+               [readArray addObject:self.newsString];
+               [[NSUserDefaults standardUserDefaults] setObject:readArray forKey:@"readNewsArticles"];
+               [[NSUserDefaults standardUserDefaults] synchronize];
+          } else {
+               [self getNewsForIDMethodWithCompletion:^(NSMutableArray *array, NSError *error) {
+                    dispatch_async(dispatch_get_main_queue(), ^ {
+                         NSMutableArray *pagesArray = [[[NSUserDefaults standardUserDefaults] objectForKey:@"visitedPagesArray"] mutableCopy];
+                         if (! pagesArray) {
+                              pagesArray = [[NSMutableArray alloc] init];
+                         } else {
+                              if ([pagesArray containsObject:[NSString stringWithFormat:@"%lu", (long)0]]) {
+                                   [pagesArray removeObject:[NSString stringWithFormat:@"%lu", (long)0]];
+                                   [[NSUserDefaults standardUserDefaults] setObject:pagesArray forKey:@"visitedPagesArray"];
+                                   [[NSUserDefaults standardUserDefaults] synchronize];
+                              }
+                         }
+                         NSMutableArray *readArray = [[[NSUserDefaults standardUserDefaults] objectForKey:@"readNewsArticles"] mutableCopy];
+                         if (! readArray) {
+                              readArray = [[NSMutableArray alloc] init];
+                         }
+                         [readArray addObject:self.newsString];
+                         [[NSUserDefaults standardUserDefaults] setObject:readArray forKey:@"readNewsArticles"];
+                         [[NSUserDefaults standardUserDefaults] synchronize];
+                         
+                         NewsArticleStructure *theNews = [[NewsArticleStructure alloc] init];
+                         theNews.titleString = [[array firstObject] objectForKey:@"titleString"];
+                         theNews.summaryString = [[array firstObject] objectForKey:@"summaryString"];
+                         theNews.authorString = [[array firstObject] objectForKey:@"titleString"];
+                         theNews.dateString = [[array firstObject] objectForKey:@"dateString"];
+                         theNews.contentURLString = [[array firstObject] objectForKey:@"contentURLString"];
+                         theNews.articleID = [[array firstObject] objectForKey:@"articleID"];
+                         theNews.likes = [[array firstObject] objectForKey:@"likes"];
+                         theNews.views = [[array firstObject] objectForKey:@"views"];
+                         theNews.hasImage = [[array firstObject] objectForKey:@"hasImage"];
+                         
+                         if ([theNews.hasImage integerValue] == 1) {
+                              [self getImageDataMethodWithCompletion:^(NSError *error, NSMutableArray *returnData) {
+                                   NewsArticleDetailViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"NADetail"];
+                                   controller.NA = theNews;
+                                   controller.imageData = [returnData objectAtIndex:0];
+                                   controller.showCloseButton = YES;
+                                   UINavigationController *nav = (UINavigationController *)self.window.rootViewController;
+                                   UINavigationController *navigationController =
+                                   [[UINavigationController alloc] initWithRootViewController:controller];
+                                   [nav presentViewController:navigationController animated:YES completion:^{}];
+                              } forID:theNews.articleID];
+                         } else {
+                              NewsArticleDetailViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"NADetail"];
+                              controller.NA = theNews;
+                              controller.imageData = [[NSData alloc] init];
+                              controller.showCloseButton = YES;
+                              UINavigationController *nav = (UINavigationController *)self.window.rootViewController;
+                              UINavigationController *navigationController =
+                              [[UINavigationController alloc] initWithRootViewController:controller];
+                              [nav presentViewController:navigationController animated:YES completion:^{}];
+                         }
+                    });
+               } forID:self.newsString];
+          }
      }
 }
 
@@ -356,9 +529,31 @@
      self.alertString = [userInfo objectForKey:@"a"];
      if (self.alertString) {
           UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert" message:@"You have 1 new alert message. Would you like to read now?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+          [alert setTag:0];
           [alert show];
           [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"reloadHomePage"];
           [[NSUserDefaults standardUserDefaults] synchronize];
+     }
+     self.newsString = [userInfo objectForKey:@"n"];
+     if (self.newsString) {
+          UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"News Article" message:@"You have 1 new article. Would you like to read now?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+          [alert setTag:1];
+          [alert show];
+     }
+     if ([userInfo objectForKey:@"c"]) {
+          UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Community Service" message:@"You have 1 new community service opportunity. Navigate to the Community Service page to read." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+          [alert setTag:2];
+          [alert show];
+          NSMutableArray *pagesArray = [[[NSUserDefaults standardUserDefaults] objectForKey:@"visitedPagesArray"] mutableCopy];
+          if (! pagesArray) {
+               pagesArray = [[NSMutableArray alloc] init];
+          } else {
+               if ([pagesArray containsObject:[NSString stringWithFormat:@"%lu", (long)2]]) {
+                    [pagesArray removeObject:[NSString stringWithFormat:@"%lu", (long)2]];
+                    [[NSUserDefaults standardUserDefaults] setObject:pagesArray forKey:@"visitedPagesArray"];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+               }
+          }
      }
      if (application.applicationState == UIApplicationStateInactive) {
                // The application was just brought from the background to the foreground,
@@ -374,6 +569,27 @@
      NSMutableArray *array = [NSMutableArray array];
      PFQuery *query = [AlertStructure query];
      [query whereKey:@"alertID" equalTo:IDString];
+     [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+          theError = error;
+          [array addObject:object];
+          dispatch_group_leave(serviceGroup);
+     }];
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
+          NSError *overallError = nil;
+          if (theError) {
+               overallError = theError;
+          }
+          completion(array, overallError);
+     });
+}
+
+- (void)getNewsForIDMethodWithCompletion:(void (^)(NSMutableArray *array, NSError *error))completion forID:(NSString *)IDString {
+     dispatch_group_t serviceGroup = dispatch_group_create();
+     dispatch_group_enter(serviceGroup);
+     __block NSError *theError;
+     NSMutableArray *array = [NSMutableArray array];
+     PFQuery *query = [NewsArticleStructure query];
+     [query whereKey:@"articleID" equalTo:IDString];
      [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
           theError = error;
           [array addObject:object];

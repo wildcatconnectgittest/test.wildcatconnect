@@ -110,6 +110,8 @@
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
      
      cell.textLabel.text = [[((NSMutableArray *)([[self.linksArray objectAtIndex:indexPath.section] objectForKey:@"linksArray"])) objectAtIndex:indexPath.row] objectForKey:@"titleString"];
+     
+     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     return cell;
 }

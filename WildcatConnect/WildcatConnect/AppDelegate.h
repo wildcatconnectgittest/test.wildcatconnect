@@ -12,9 +12,9 @@
     
 }
 
-
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic, strong) NSString *alertString;
+@property (nonatomic, strong) NSString *newsString;
 
 @end
 

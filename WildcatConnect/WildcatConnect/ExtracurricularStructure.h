@@ -21,5 +21,6 @@
 @property NSString *imageURLString;
 @property NSNumber *extracurricularID;
 @property NSString *meetingIDs;
+@property NSString *channelString;
 
 @end

@@ -73,7 +73,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
      if (section == 0) {
-          return 2;
+          return 1;
      } else
           return self.sectionsArray.count;
 }
@@ -97,9 +97,6 @@
      UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier" forIndexPath:indexPath];
      if (indexPath.section == 0) {
           if (indexPath.row == 0) {
-               cell.textLabel.text = @"Messages";
-               cell.imageView.image = [UIImage imageNamed:@"message@2x.png"];
-          } else if (indexPath.row == 1) {
                cell.textLabel.text = @"Picture of the Day";
                cell.imageView.image = [UIImage imageNamed:@"picture@2x.png"];
           }
@@ -107,15 +104,13 @@
           cell.textLabel.text = self.sectionsArray[indexPath.row];
           cell.imageView.image = [UIImage imageNamed:self.sectionsImagesArray[indexPath.row]];
      }
+     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
      return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
      if (indexPath.section == 0) {
           if (indexPath.row == 0) {
-               EditMessagesViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"EditMessages"];
-               [self.navigationController pushViewController:controller animated:YES];
-          } else if (indexPath.row == 1) {
                EditPictureDayViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"EditPicture"];
                [self.navigationController pushViewController:controller animated:YES];
           }

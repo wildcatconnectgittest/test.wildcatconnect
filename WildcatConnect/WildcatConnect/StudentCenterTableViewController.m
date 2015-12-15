@@ -249,6 +249,7 @@
           cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
           cell.detailTextLabel.text = pollStructure.pollQuestion;
           cell.detailTextLabel.numberOfLines = 4;
+          cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
           if (! [self.answeredPolls containsObject:pollStructure.pollID]) {
                UIButton *unreadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
                [unreadButton setImage:[UIImage imageNamed:@"unread@2x.png"] forState:UIControlStateNormal];

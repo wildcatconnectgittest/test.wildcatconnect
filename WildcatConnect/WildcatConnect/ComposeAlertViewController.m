@@ -403,8 +403,12 @@
      [query orderByDescending:@"alertID"];
      [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
           AlertStructure *structure = (AlertStructure *)object;
-          NSString *currentID = structure.alertID;
-          NSNumber *theNumber = [NSNumber numberWithInt:([structure.alertID integerValue] + 1)];
+          NSNumber *theNumber;
+          if (structure) {
+               theNumber = [NSNumber numberWithInteger:([structure.alertID integerValue] + 1)];
+          } else {
+               theNumber = [NSNumber numberWithInt:0];
+          }
           alertStructure.alertID = theNumber;
           [alertStructure saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
                if (error) {

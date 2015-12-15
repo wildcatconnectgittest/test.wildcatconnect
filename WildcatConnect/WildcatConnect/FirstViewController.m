@@ -162,9 +162,7 @@
                                    } else {
                                         dayLabel.text = [actual stringByAppendingString:@" will be  a custom schedule."];
                                    }
-                                   if (scheduleType.alertNeeded == YES) {
-                                        dayLabel.textColor = [UIColor redColor];
-                                   }
+                                   dayLabel.textColor = [UIColor redColor];
                                    [dayLabel setFont:[UIFont systemFontOfSize:22]];
                                    dayLabel.lineBreakMode = NSLineBreakByWordWrapping;
                                    dayLabel.numberOfLines = 0;

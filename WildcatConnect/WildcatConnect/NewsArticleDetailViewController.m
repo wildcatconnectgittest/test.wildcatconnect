@@ -33,43 +33,58 @@
      
      UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
      
-     if ([self.NA.hasImage integerValue] == 0) {
-          titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, 100)];
-          titleLabel.text = self.NA.titleString;
-          [titleLabel setFont:[UIFont systemFontOfSize:24]];
-          titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-          titleLabel.numberOfLines = 0;
-          [titleLabel sizeToFit];
-          [scrollView addSubview:titleLabel];
+     self.navigationController.navigationBar.translucent = NO;
+     
+     [self getLikesMethodWithCompletion:^(NSInteger integer, NSError *error) {
           
-          UILabel *summaryLabel = [[UILabel alloc] initWithFrame:CGRectMake(titleLabel.frame.origin.x, titleLabel.frame.origin.y + titleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
-          summaryLabel.text = self.NA.summaryString;
-          UIFont *font = [UIFont fontWithName:@"Helvetica Neue" size:16];
-          [summaryLabel setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
-          summaryLabel.lineBreakMode = NSLineBreakByWordWrapping;
-          summaryLabel.numberOfLines = 0;
-          [summaryLabel sizeToFit];
-          [scrollView addSubview:summaryLabel];
+          self.NA.likes = [NSNumber numberWithInteger:integer];
           
-          UILabel *authorDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(summaryLabel.frame.origin.x, summaryLabel.frame.origin.y + summaryLabel.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
-          authorDateLabel.text = [[self.NA.authorString stringByAppendingString:@" | "] stringByAppendingString:self.NA.dateString];
-          [authorDateLabel setFont:[UIFont systemFontOfSize:12]];
-          authorDateLabel.lineBreakMode = NSLineBreakByWordWrapping;
-          authorDateLabel.numberOfLines = 0;
-          [authorDateLabel sizeToFit];
-          [scrollView addSubview:authorDateLabel];
-          
-          likesLabel = [[UILabel alloc] initWithFrame:CGRectMake(authorDateLabel.frame.origin.x, authorDateLabel.frame.origin.y + authorDateLabel.frame.size.height + 10, self.view.frame.size.width - 20, 30)];
-          if ([self.NA.likes integerValue] == 1) {
-               likesLabel.text = [[self.NA.likes stringValue] stringByAppendingString:@" like"];
-          } else
-               likesLabel.text = [[self.NA.likes stringValue] stringByAppendingString:@" likes"];
-          [likesLabel setFont:[UIFont systemFontOfSize:16]];
-          [scrollView addSubview:likesLabel];
-          
-          NSMutableArray *liked = [[NSUserDefaults standardUserDefaults] objectForKey:@"likedNewsArticles"];
-          if (liked) {
-               if (! [liked containsObject:self.NA.articleID]) {
+          if ([self.NA.hasImage integerValue] == 0) {
+               titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, 100)];
+               titleLabel.text = self.NA.titleString;
+               [titleLabel setFont:[UIFont systemFontOfSize:24]];
+               titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+               titleLabel.numberOfLines = 0;
+               [titleLabel sizeToFit];
+               [scrollView addSubview:titleLabel];
+               
+               UILabel *summaryLabel = [[UILabel alloc] initWithFrame:CGRectMake(titleLabel.frame.origin.x, titleLabel.frame.origin.y + titleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
+               summaryLabel.text = self.NA.summaryString;
+               UIFont *font = [UIFont fontWithName:@"Helvetica Neue" size:16];
+               [summaryLabel setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
+               summaryLabel.lineBreakMode = NSLineBreakByWordWrapping;
+               summaryLabel.numberOfLines = 0;
+               [summaryLabel sizeToFit];
+               [scrollView addSubview:summaryLabel];
+               
+               UILabel *authorDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(summaryLabel.frame.origin.x, summaryLabel.frame.origin.y + summaryLabel.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
+               authorDateLabel.text = [[self.NA.authorString stringByAppendingString:@" | "] stringByAppendingString:self.NA.dateString];
+               [authorDateLabel setFont:[UIFont systemFontOfSize:12]];
+               authorDateLabel.lineBreakMode = NSLineBreakByWordWrapping;
+               authorDateLabel.numberOfLines = 0;
+               [authorDateLabel sizeToFit];
+               [scrollView addSubview:authorDateLabel];
+               
+               likesLabel = [[UILabel alloc] initWithFrame:CGRectMake(authorDateLabel.frame.origin.x, authorDateLabel.frame.origin.y + authorDateLabel.frame.size.height + 10, self.view.frame.size.width - 20, 30)];
+               if ([self.NA.likes integerValue] == 1) {
+                    likesLabel.text = [[self.NA.likes stringValue] stringByAppendingString:@" like"];
+               } else
+                    likesLabel.text = [[self.NA.likes stringValue] stringByAppendingString:@" likes"];
+               [likesLabel setFont:[UIFont systemFontOfSize:16]];
+               [scrollView addSubview:likesLabel];
+               
+               NSMutableArray *liked = [[NSUserDefaults standardUserDefaults] objectForKey:@"likedNewsArticles"];
+               if (liked) {
+                    if (! [liked containsObject:self.NA.articleID]) {
+                         likesButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                         [likesButton addTarget:self action:@selector(likeMethod) forControlEvents:UIControlEventTouchUpInside];
+                         [likesButton setTitle:@"Like this!" forState:UIControlStateNormal];
+                         [likesButton sizeToFit];
+                         CGFloat width = likesButton.frame.size.width;
+                         likesButton.frame = CGRectMake((self.view.frame.size.width - width - 10), likesLabel.frame.origin.y, likesButton.frame.size.width, 30);
+                         [scrollView addSubview:likesButton];
+                    }
+               } else {
                     likesButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
                     [likesButton addTarget:self action:@selector(likeMethod) forControlEvents:UIControlEventTouchUpInside];
                     [likesButton setTitle:@"Like this!" forState:UIControlStateNormal];
@@ -78,62 +93,56 @@
                     likesButton.frame = CGRectMake((self.view.frame.size.width - width - 10), likesLabel.frame.origin.y, likesButton.frame.size.width, 30);
                     [scrollView addSubview:likesButton];
                }
+               
+               UIView * separator = [[UIView alloc] initWithFrame:CGRectMake(10, likesLabel.frame.origin.y + likesLabel.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+               separator.backgroundColor = [UIColor blackColor];
+               [scrollView addSubview:separator];
+               
+               UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(separator.frame.origin.x, separator.frame.origin.y + separator.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
+               textView.text = self.NA.contentURLString;
+               textView.font = [UIFont systemFontOfSize:18];
+               [textView sizeToFit];
+               textView.editable = false;
+               textView.scrollEnabled = false;
+               textView.dataDetectorTypes = UIDataDetectorTypeLink;
+               [scrollView addSubview:textView];
+               
+                    //Takes care of all resizing needs based on sizes.
+               UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 150, 0);
+               scrollView.contentInset = adjustForTabbarInsets;
+               scrollView.scrollIndicatorInsets = adjustForTabbarInsets;
+               CGRect contentRect = CGRectZero;
+               for (UIView *view in scrollView.subviews) {
+                    contentRect = CGRectUnion(contentRect, view.frame);
+               }
+               scrollView.contentSize = contentRect.size;
+               [self.view addSubview:scrollView];
+               
+               activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+               [activity setBackgroundColor:[UIColor clearColor]];
+               [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+               UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
+               self.navigationItem.rightBarButtonItem = barButtonItem;
+               [activity startAnimating];
+               
+               [self viewMethodWithCompletion:^(NSUInteger integer, NSError *error) {
+                    [activity stopAnimating];
+                    if (self.showCloseButton == true) {
+                         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleDone target:self action:@selector(dismissModalViewControllerAnimated:)];
+                         self.navigationItem.rightBarButtonItem = barButtonItem;
+                         [barButtonItem release];
+                    }
+               } forID:self.NA.objectId];
+               
           } else {
-               likesButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-               [likesButton addTarget:self action:@selector(likeMethod) forControlEvents:UIControlEventTouchUpInside];
-               [likesButton setTitle:@"Like this!" forState:UIControlStateNormal];
-               [likesButton sizeToFit];
-               CGFloat width = likesButton.frame.size.width;
-               likesButton.frame = CGRectMake((self.view.frame.size.width - width - 10), likesLabel.frame.origin.y, likesButton.frame.size.width, 30);
-               [scrollView addSubview:likesButton];
-          }
-          
-          UIView * separator = [[UIView alloc] initWithFrame:CGRectMake(10, likesLabel.frame.origin.y + likesLabel.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
-          separator.backgroundColor = [UIColor blackColor];
-          [scrollView addSubview:separator];
-          
-          UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(separator.frame.origin.x, separator.frame.origin.y + separator.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
-          textView.text = self.NA.contentURLString;
-          textView.font = [UIFont systemFontOfSize:18];
-          [textView sizeToFit];
-          textView.editable = false;
-          textView.scrollEnabled = false;
-          textView.dataDetectorTypes = UIDataDetectorTypeLink;
-          [scrollView addSubview:textView];
-          
-               //Takes care of all resizing needs based on sizes.
-          UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 70, 0);
-          scrollView.contentInset = adjustForTabbarInsets;
-          scrollView.scrollIndicatorInsets = adjustForTabbarInsets;
-          CGRect contentRect = CGRectZero;
-          for (UIView *view in scrollView.subviews) {
-               contentRect = CGRectUnion(contentRect, view.frame);
-          }
-          scrollView.contentSize = contentRect.size;
-          [self.view addSubview:scrollView];
-          
-          self.NA.views = [NSNumber numberWithInt:[self.NA.views integerValue] + 1];
-          
-          activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-          [activity setBackgroundColor:[UIColor clearColor]];
-          [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-          UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
-          self.navigationItem.rightBarButtonItem = barButtonItem;
-          [activity startAnimating];
-          
-          [self viewMethodWithCompletion:^(NSUInteger integer) {
-               [activity stopAnimating];
-          } forID:self.NA.objectId];
-          
-     } else {
                UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, 100)];
                UIImage *image = [UIImage imageWithData:self.imageData];
-          if (image.size.width > self.view.frame.size.width - 20) {
-               image = [[AppManager getInstance] imageFromImage:image scaledToWidth:self.view.frame.size.width - 20];
-          }
+               if (image.size.width > self.view.frame.size.width - 20) {
+                    image = [[AppManager getInstance] imageFromImage:image scaledToWidth:self.view.frame.size.width - 20];
+               }
                imageView.image = image;
                [imageView sizeToFit];
-          imageView.frame = CGRectMake(self.view.frame.size.width / 2 - imageView.frame.size.width / 2, 10, imageView.frame.size.width, imageView.frame.size.height);
+               imageView.frame = CGRectMake(self.view.frame.size.width / 2 - imageView.frame.size.width / 2, 10, imageView.frame.size.width, imageView.frame.size.height);
                [scrollView addSubview:imageView];
                
                titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, imageView.frame.origin.y + imageView.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
@@ -196,6 +205,7 @@
                
                UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(separator.frame.origin.x, separator.frame.origin.y + separator.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
                textView.text = self.NA.contentURLString;
+               textView.font = [UIFont systemFontOfSize:18];
                [textView sizeToFit];
                textView.editable = false;
                textView.scrollEnabled = false;
@@ -203,7 +213,7 @@
                [scrollView addSubview:textView];
                
                     //Takes care of all resizing needs based on sizes.
-               UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 70, 0);
+               UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 150, 0);
                scrollView.contentInset = adjustForTabbarInsets;
                scrollView.scrollIndicatorInsets = adjustForTabbarInsets;
                CGRect contentRect = CGRectZero;
@@ -212,28 +222,34 @@
                }
                scrollView.contentSize = contentRect.size;
                [self.view addSubview:scrollView];
-          
-          activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-          [activity setBackgroundColor:[UIColor clearColor]];
-          [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-          UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
-          self.navigationItem.rightBarButtonItem = barButtonItem;
-          [activity startAnimating];
-          
-          [self viewMethodWithCompletion:^(NSUInteger integer) {
-               [activity stopAnimating];
-          } forID:self.NA.objectId];
-     }
+               
+               activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+               [activity setBackgroundColor:[UIColor clearColor]];
+               [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+               UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
+               self.navigationItem.rightBarButtonItem = barButtonItem;
+               [activity startAnimating];
+               
+               [self viewMethodWithCompletion:^(NSUInteger integer, NSError *error) {
+                    [activity stopAnimating];
+                    if (self.showCloseButton == true) {
+                         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleDone target:self action:@selector(dismissModalViewControllerAnimated:)];
+                         self.navigationItem.rightBarButtonItem = barButtonItem;
+                         [barButtonItem release];
+                    }
+               } forID:self.NA.objectId];
+          }
+     } forID:self.NA.objectId];
 }
 
-- (void)viewMethodWithCompletion:(void (^)(NSUInteger integer))completion forID:(NSString *)objectID {
+- (void)viewMethodWithCompletion:(void (^)(NSUInteger integer, NSError *error))completion forID:(NSString *)objectID {
      dispatch_group_t serviceGroup = dispatch_group_create();
      dispatch_group_enter(serviceGroup);
+     __block NSError *theError;
      PFQuery *query = [NewsArticleStructure query];
      [query whereKey:@"articleID" equalTo:self.NA.articleID];
      [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
           PFObject *object = (PFObject *)[objects firstObject];
-          NSLog(@"%@", [object objectForKey:@"views"]);
           if (object) {
                [object setObject:[NSNumber numberWithInteger:[[object objectForKey:@"views"] integerValue] + 1] forKey:@"views"];
                [object saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
@@ -244,15 +260,46 @@
           }
      }];
      dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
-          completion(0);
+          NSError *overallError = nil;
+          if (theError != nil) {
+               overallError = theError;
+          }
+          completion(0, overallError);
+     });
+}
+
+- (void)getLikesMethodWithCompletion:(void (^)(NSInteger integer, NSError *error))completion forID:(NSString *)objectID {
+     dispatch_group_t serviceGroup = dispatch_group_create();
+     dispatch_group_enter(serviceGroup);
+     __block NSError *theError;
+     __block NSInteger returnInteger;
+     PFQuery *query = [NewsArticleStructure query];
+     [query whereKey:@"articleID" equalTo:self.NA.articleID];
+     [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+          PFObject *object = (PFObject *)[objects firstObject];
+          if (object)
+               returnInteger = [[object objectForKey:@"likes"] integerValue];
+          theError = error;
+          dispatch_group_leave(serviceGroup);
+     }];
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
+          NSError *overallError = nil;
+          if (theError != nil) {
+               overallError = theError;
+          }
+          completion(returnInteger, overallError);
      });
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
      [super viewWillDisappear:animated];
           //Run method to pass current structure back to the tableView...
-     NewsCenterTableViewController *viewController = (NewsCenterTableViewController *)[self.navigationController.viewControllers objectAtIndex:1];
-     [viewController replaceNewsArticleStructure:self.NA];
+     if (! self.showCloseButton) {
+          if ([self.navigationController.viewControllers objectAtIndex:1]) {
+               NewsCenterTableViewController *viewController = (NewsCenterTableViewController *)[self.navigationController.viewControllers objectAtIndex:1];
+               [viewController replaceNewsArticleStructure:self.NA];
+          }
+     }
 }
 
 - (void)getImageWithCompletion:(void (^)(NSError *error, UIImage *image))completion {
@@ -290,6 +337,11 @@
      [activity startAnimating];
      [self likeImageWithCompletion:^(NSUInteger integer) {
           [activity stopAnimating];
+          if (self.showCloseButton == true) {
+               UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleDone target:self action:@selector(dismissModalViewControllerAnimated:)];
+               self.navigationItem.rightBarButtonItem = barButtonItem;
+               [barButtonItem release];
+          }
      } forID:self.NA.objectId];
 }
 

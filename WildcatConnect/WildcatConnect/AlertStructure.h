@@ -17,7 +17,7 @@
 @property NSString *authorString;
 @property NSString *contentString; //could change depending on future web structure...
 @property NSNumber *alertID;
-@property NSData *alertTime;
+@property NSDate *alertTime;
 @property NSNumber *hasTime;
 @property NSString *dateString;
 @property NSNumber *isReady;

@@ -121,7 +121,8 @@
                                                       @"hasImage" :e.hasImage,
                                                       @"imageURLString": e.imageURLString,
                                                       @"extracurricularID" : e.extracurricularID,
-                                                      @"meetingIDs" : e.meetingIDs
+                                                      @"meetingIDs" : e.meetingIDs,
+                                                      @"channelString" : e.channelString
                                                       }];
                          }
                          [userDefaults setObject:moreItems forKey:@"ECArray"];
@@ -225,6 +226,7 @@
           ECStructure.imageURLString = [object objectForKey:@"imageURLString"];
           ECStructure.extracurricularID = [object objectForKey:@"extracurricularID"];
           ECStructure.meetingIDs = [object objectForKey:@"meetingIDs"];
+          ECStructure.channelString = [object objectForKey:@"channelString"];
           [array addObject:ECStructure];
           if (i == theArrayToSearch.count - 1)
                dispatch_group_leave(serviceGroup);

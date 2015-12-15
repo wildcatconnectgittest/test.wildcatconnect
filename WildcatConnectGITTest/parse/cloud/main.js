@@ -278,6 +278,7 @@ Parse.Cloud.afterSave("AlertStructure", function(request) {
       Parse.Push.send({
         channels: [ "global" ],
         data: {
+          title: "WildcatConnect",
           alert: request.object.get("titleString"),
           a: request.object.get("alertID"),
           badge: "Increment"
@@ -292,13 +293,15 @@ Parse.Cloud.afterSave("AlertStructure", function(request) {
 
 Parse.Cloud.afterSave("NewsArticleStructure", function(request) {
   if (request.object.get("articleID") != null && request.object.get("views") == 0) {
-    console.log("Hey Parse.");
     Parse.Push.send({
-      channels: [ "global" ],
-      data: {
-        badge: "Increment"
-      }
-    });
+        channels: [ "allNews" ],
+        data: {
+          title: "WildcatConnect",
+          alert: "NEWS - " + request.object.get("titleString"),
+          n: request.object.get("articleID"),
+          badge: "Increment"
+        }
+      });
   };
 });
 
@@ -316,23 +319,26 @@ Parse.Cloud.afterSave("ExtracurricularUpdateStructure", function(request) {
 Parse.Cloud.afterSave("CommunityServiceStructure", function(request) {
   if (request.object.get("communityServiceID") != null) {
     Parse.Push.send({
-      channels: [ "global" ],
-      data: {
-        badge: "Increment"
-      }
-    });
+        channels: [ "allCS" ],
+        data: {
+          title: "WildcatConnect",
+          alert: "COMMUNITY SERVICE - " + request.object.get("commTitleString"),
+          c: "c",
+          badge: "Increment"
+        }
+      });
   };
 });
 
-Parse.Cloud.afterSave("PollStructure", function(request) {
-  if (request.object.get("pollID") != null) {
-    Parse.Push.send({
-      channels: [ "global" ],
-      data: {
-        badge: "Increment"
-      }
-    });
-  };
+Parse.Cloud.beforeSave("PollStructure", function(request, response) {
+    //Not first save...sum responses from individual choices...
+    var dictionary = request.object.get("pollMultipleChoices");
+    var sum = 0;
+    for (var key in dictionary) {
+      sum += parseInt(dictionary[key], 10);
+    }
+    request.object.set("totalResponses", sum.toString());
+    response.success();
 });
 
 Parse.Cloud.job("alertStatusUpdating", function(request, response) {

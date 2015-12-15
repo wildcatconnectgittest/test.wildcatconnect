@@ -13,6 +13,7 @@
 
 @property (nonatomic, strong) NewsArticleStructure *NA;
 @property (nonatomic, strong) NSData *imageData;
+@property BOOL showCloseButton;
 
 - (instancetype)initWithNewsArticle:(NewsArticleStructure *)newsArticle;
 

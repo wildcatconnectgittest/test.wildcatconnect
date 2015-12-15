@@ -236,14 +236,24 @@
      PFQuery *query = [CommunityServiceStructure query];
      [query orderByDescending:@"communityServiceID"];
      [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
-          CommunityServiceStructure *structure = (CommunityServiceStructure *)object;
-          communityServiceStructure.communityServiceID = [NSNumber numberWithInt:[structure.communityServiceID integerValue] + 1];
-          [communityServiceStructure saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
-               if (error) {
-                    theError = error;
-               }
-               dispatch_group_leave(serviceGroup);
-          }];
+          if (error) {
+               communityServiceStructure.communityServiceID = [NSNumber numberWithInt:0];
+               [communityServiceStructure saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+                    if (error) {
+                         theError = error;
+                    }
+                    dispatch_group_leave(serviceGroup);
+               }];
+          } else {
+               CommunityServiceStructure *structure = (CommunityServiceStructure *)object;
+               communityServiceStructure.communityServiceID = [NSNumber numberWithInteger:[structure.communityServiceID integerValue] + 1];
+               [communityServiceStructure saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+                    if (error) {
+                         theError = error;
+                    }
+                    dispatch_group_leave(serviceGroup);
+               }];
+          }
      }];
      dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^{
           completion(theError);

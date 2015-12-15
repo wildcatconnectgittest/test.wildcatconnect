@@ -69,13 +69,13 @@
      NSMutableArray *searchDictionaryArray = [dictionaryArray mutableCopy];
      NSMutableArray *likedArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"likedNewsArticles"];
      NSMutableArray *likesDictionaryArray = [likedArray mutableCopy];
-     if (searchDictionaryArray.count > theArray.count) {
+     if (searchDictionaryArray.count > theArray.count || likesDictionaryArray.count > theArray.count) {
                //Have some objects to remove...
           for (int i = 0; i < searchDictionaryArray.count; i++) {
                NSNumber *number = (NSNumber *)[searchDictionaryArray objectAtIndex:i];
                BOOL contained = false;
                for (NewsArticleStructure *structure in theArray) {
-                    if (structure.articleID == number) {
+                    if ([structure.articleID integerValue] == [number integerValue]) {
                          contained = true;
                          break;
                     }
@@ -85,16 +85,12 @@
                }
           }
           [[NSUserDefaults standardUserDefaults] setObject:searchDictionaryArray forKey:@"readNewsArticles"];
-          [[NSUserDefaults standardUserDefaults] synchronize];
-          dispatch_group_leave(serviceGroup);
-     }
-     else {
-               //Have some objects to remove...
+         
           for (int i = 0; i < likesDictionaryArray.count; i++) {
                NSNumber *number = (NSNumber *)[likesDictionaryArray objectAtIndex:i];
                BOOL contained = false;
                for (NewsArticleStructure *structure in theArray) {
-                    if (structure.articleID == number) {
+                    if ([structure.articleID integerValue] == [number integerValue]) {
                          contained = true;
                          break;
                     }
@@ -105,6 +101,8 @@
           }
           [[NSUserDefaults standardUserDefaults] setObject:likesDictionaryArray forKey:@"likedNewsArticles"];
           [[NSUserDefaults standardUserDefaults] synchronize];
+          dispatch_group_leave(serviceGroup);
+     } else {
           dispatch_group_leave(serviceGroup);
      }
      dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
@@ -326,7 +324,7 @@
       NSMutableArray *returnArray = [[NSMutableArray alloc] init];
      PFQuery *query = [NewsArticleStructure query];
      [query orderByDescending:@"articleID"];
-     query.limit = 10;
+     query.limit = 25;
      [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
           [returnArray addObjectsFromArray:objects];
           firstError = error;
@@ -445,7 +443,7 @@
                      cell.accessoryView = unreadButton;
                      [cell setNeedsLayout];
                 }
-           if (integerNumber == 1)
+           if (integerNumber == 1 && self.newsArticleImages.count > 0)
                 cell.imageView.image = (UIImage *)[self.newsArticleImages objectAtIndex:indexPath.row];
            return cell;
       }
@@ -457,7 +455,9 @@
           self.newsArticleSelected = self.newsArticles[indexPath.row];
           NewsArticleDetailViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"NADetail"];
           controller.NA = self.newsArticleSelected;
-          controller.imageData = self.dataArray[indexPath.row];
+          if (self.dataArray.count > 0) {
+               controller.imageData = self.dataArray[indexPath.row];
+          }
           [self.navigationController pushViewController:controller animated:YES];
           NSMutableArray *theReadNews = [[[NSUserDefaults standardUserDefaults] objectForKey:@"readNewsArticles"] mutableCopy];
           if (! theReadNews) {
