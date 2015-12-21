@@ -120,9 +120,7 @@
           [scrollView addSubview:thank];
           [self postVoteMethodWithCompletion:^(NSDictionary *dictionary) {
                [self.pollStructure fetchInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
-                    NSLog(@"%@", self.pollStructure.totalResponses);
                     self.pollStructure = (PollStructure *)object;
-                    NSLog(@"%@", self.pollStructure.totalResponses);
                     self.valuesArray = [NSMutableArray arrayWithArray:[self.pollStructure.pollMultipleChoices allValues]];
                     self.hasAnswered = true;
                     NSMutableArray *theArray = [[[NSUserDefaults standardUserDefaults] objectForKey:@"answeredPolls"] mutableCopy];

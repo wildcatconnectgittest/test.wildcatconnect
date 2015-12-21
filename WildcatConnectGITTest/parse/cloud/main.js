@@ -4,7 +4,7 @@ Parse.Cloud.job("schoolDayStructureDeletion", function(request, response) {
   Parse.Config.get().then(function(config) {
     var specialKeys = config.get("specialKeys");
     var date = new Date();
-    if (specialKeys.indexOf("XSDSD") === -1 && date.getDay() != 0 && date.getDay() != 1 && date.getDay() != 6) {
+    if (specialKeys.indexOf("XSDSD") === -1 && date.getDay() != 0 && date.getDay() != 1) {
       //Continue...
       var query = new Parse.Query("SchoolDayStructure");
       query.ascending("schoolDayID");
@@ -289,7 +289,44 @@ Parse.Cloud.afterSave("AlertStructure", function(request) {
   };
 });
 
-// Just a single icon push for non-critical updates!!!
+Parse.Cloud.define("goBackOneDayFromStructure", function(request, response) {
+  var array = [];
+  var query = new Parse.Query("SchoolDayStructure");
+  query.greaterThanOrEqualTo("schoolDayID", request.params.ID);
+  query.descending("schoolDayID");
+  query.find( {
+    success: function (results) {
+      for (var i = 0; i < results.length; i++) {
+        if (i != results.length - 1) {
+          var nextScheduleType = results[i + 1].get("scheduleType");
+          var currentObject = results[i];
+          currentObject.set("scheduleType", nextScheduleType);
+          array.push(currentObject);
+        } else {
+          results[i].destroy( {
+            success: function() {
+              //
+            },
+            error: function (error) {
+              response.error();
+            }
+          });
+        };
+      };
+      Parse.Object.saveAll(array, {
+        success: function() {
+          response.success();
+        },
+        error: function() {
+          response.error();
+        }
+      });
+    },
+    error: function (error) {
+      response.error();
+    }
+  });
+});
 
 Parse.Cloud.afterSave("NewsArticleStructure", function(request) {
   if (request.object.get("articleID") != null && request.object.get("views") == 0) {

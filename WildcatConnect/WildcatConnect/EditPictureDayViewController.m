@@ -502,6 +502,7 @@
      if (actionSheet == postAlertView) {
           if (buttonIndex == 1) {
                UIActivityIndicatorView *theActivity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(10, postButton.frame.origin.y, 30, 30)];
+               [postButton removeFromSuperview];
                [theActivity setBackgroundColor:[UIColor clearColor]];
                [theActivity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
                [scrollView addSubview:theActivity];

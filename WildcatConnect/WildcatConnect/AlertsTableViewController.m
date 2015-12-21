@@ -15,10 +15,13 @@
 
 @implementation AlertsTableViewController {
      UIActivityIndicatorView *activity;
+     BOOL isReloading;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+     
+     isReloading = false;
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -56,6 +59,33 @@
                     [self refreshControl];
                });
           }];
+     }
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+     if (self.alerts.count > 0) {
+          NSMutableArray *itemsToSave = [NSMutableArray array];
+          for (AlertStructure *a in self.alerts) {
+               [itemsToSave addObject:@{ @"titleString" : a.titleString,
+                                         
+                                         @"authorString" : a.authorString,
+                                         
+                                         @"contentString" : a.contentString,
+                                         
+                                         @"alertID" : a.alertID,
+                                         
+                                         @"hasTime" : a.hasTime,
+                                         
+                                         @"dateString" : a.dateString,
+                                         
+                                         @"isReady" : a.isReady,
+                                         
+                                         @"views" : a.views
+                                         
+                                         }];
+          }
+          NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+          [userDefaults setObject:itemsToSave forKey:@"alertStructures"];
      }
 }
 
@@ -254,6 +284,10 @@
           cell.textLabel.numberOfLines = 0;
           cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
           cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+          if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administrator"]) {
+                    //Show the views...
+               cell.detailTextLabel.text = [[[alertStructure.authorString stringByAppendingString:@" - "] stringByAppendingString:[alertStructure.views stringValue]] stringByAppendingString:@" VIEWS"];
+          }
           if (! [self.readAlerts containsObject:alertStructure.alertID]) {
                UIButton *unreadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
                [unreadButton setImage:[UIImage imageNamed:@"unread@2x.png"] forState:UIControlStateNormal];
@@ -275,21 +309,23 @@
           [self refreshData];
      }
      else {
-          activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-          [activity setBackgroundColor:[UIColor clearColor]];
-          [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-          UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
-          self.navigationItem.rightBarButtonItem = barButtonItem;
-          [activity startAnimating];
-          [barButtonItem release];
-          [self getOldDataWithCompletion:^(NSMutableArray *returnArray) {
-               self.alerts = returnArray;
-               dispatch_async(dispatch_get_main_queue(), ^ {
-                    [self.tableView reloadData];
-                    [activity stopAnimating];
-                    [self refreshControl];
-               });
-          }];
+          if (! isReloading || isReloading == false) {
+               activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+               [activity setBackgroundColor:[UIColor clearColor]];
+               [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+               UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
+               self.navigationItem.rightBarButtonItem = barButtonItem;
+               [activity startAnimating];
+               [barButtonItem release];
+               [self getOldDataWithCompletion:^(NSMutableArray *returnArray) {
+                    self.alerts = returnArray;
+                    dispatch_async(dispatch_get_main_queue(), ^ {
+                         [self.tableView reloadData];
+                         [activity stopAnimating];
+                         [self refreshControl];
+                    });
+               }];
+          }
      }
      NSMutableArray *readArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"readAlerts"];
      if (! readArray) {
@@ -391,5 +427,18 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+- (void)replaceAlertStructure:(AlertStructure *)alertStructure {
+     NSNumber *index = alertStructure.alertID;
+     AlertStructure *structure;
+     for (int i = 0; i < self.alerts.count; i++) {
+          structure = (AlertStructure *)self.alerts[i];
+          if (structure.alertID == index) {
+               self.alerts[i] = alertStructure;
+          }
+     }
+     isReloading = true;
+     [self.tableView reloadData];
+}
 
 @end

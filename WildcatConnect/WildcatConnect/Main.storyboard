@@ -55,7 +55,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CellIdentifier" id="Wqj-he-UlG">
-                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Wqj-he-UlG" id="DGz-aE-PHY">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
@@ -213,6 +213,7 @@
                         <segue destination="34U-7Z-jaT" kind="push" id="E2S-4T-ELu"/>
                         <segue destination="k0D-Yj-4r0" kind="push" id="2Zh-tx-LF8"/>
                         <segue destination="6Wy-ry-IMv" kind="push" id="9ta-MT-gDc"/>
+                        <segue destination="hNf-hX-KhC" kind="push" id="gaU-7t-2ab"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i8U-RW-G92" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -334,7 +335,7 @@
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CellIdentifier" id="7cF-0U-qWv">
-                                <rect key="frame" x="0.0" y="113.5" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="49.5" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7cF-0U-qWv" id="Smn-m7-Ukc">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
@@ -366,7 +367,7 @@
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CellIdentifier" id="Tdh-WK-NPc">
-                                <rect key="frame" x="0.0" y="113.5" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="49.5" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Tdh-WK-NPc" id="6MR-xP-eHU">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
@@ -385,6 +386,39 @@
             </objects>
             <point key="canvasLocation" x="2164" y="197"/>
         </scene>
+        <!--Custom Schedule View Controller-->
+        <scene sceneID="Geo-ZI-Xs3">
+            <objects>
+                <viewController storyboardIdentifier="CustomSchedule" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Wy2-DA-dhF" customClass="CustomScheduleViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="b2H-Ro-OJP">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="4g7-MF-y1U"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Rt3-b1-ndj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2104" y="-692"/>
+        </scene>
+        <!--Edit Schedule View Controller-->
+        <scene sceneID="jlH-S9-rRG">
+            <objects>
+                <viewController storyboardIdentifier="EditSchedule" useStoryboardIdentifierAsRestorationIdentifier="YES" id="hNf-hX-KhC" customClass="EditScheduleViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ucU-pU-OMr">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="AC7-zi-mdf"/>
+                    <connections>
+                        <segue destination="Wy2-DA-dhF" kind="push" id="zZy-jT-Mtf"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Si8-9g-nX9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2340" y="-923"/>
+        </scene>
         <!--Register Extracurricular View Controller-->
         <scene sceneID="NHn-tV-G5H">
             <objects>
@@ -398,7 +432,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tT1-D1-MKU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2438" y="-931"/>
+            <point key="canvasLocation" x="2864" y="-1055"/>
         </scene>
         <!--Student Center-->
         <scene sceneID="pch-Gi-mKF">
@@ -486,7 +520,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" restorationIdentifier="CellIdentifer" selectionStyle="default" indentationWidth="10" reuseIdentifier="CellIdentifier" id="Z4z-hF-FBy">
-                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Z4z-hF-FBy" id="shV-Wa-muS">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
@@ -546,7 +580,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="CellIdentifier" selectionStyle="default" indentationWidth="10" id="3Tp-lB-UpO">
-                                <rect key="frame" x="0.0" y="92" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3Tp-lB-UpO" id="rOy-n0-MWD">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
@@ -631,7 +665,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="3kj-Df-433">
-                                <rect key="frame" x="0.0" y="92" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3kj-Df-433" id="kee-WJ-61y">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
@@ -660,7 +694,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CellIdentifier" id="P4O-VN-d3u">
-                                <rect key="frame" x="0.0" y="92" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="P4O-VN-d3u" id="bNL-Lq-Z48">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
@@ -693,7 +727,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="5Ux-bd-gU4">
-                                <rect key="frame" x="0.0" y="92" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5Ux-bd-gU4" id="vei-55-ZLO">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>

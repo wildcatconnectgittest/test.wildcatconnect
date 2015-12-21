@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AdministrationMainTableViewController : UITableViewController
+@interface AdministrationMainTableViewController : UITableViewController <UIAlertViewDelegate>
 
 @property (retain, nonatomic) IBOutlet UINavigationBar *topBar;
 @property (nonatomic, strong) NSMutableArray *sectionsArray;

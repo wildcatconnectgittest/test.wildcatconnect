@@ -75,7 +75,11 @@
           breakfastString = [[NSString alloc] init];
           lunchString = [[NSString alloc] init];
           
+          if (scrollView) {
+               [scrollView removeFromSuperview];
+          }
           
+          scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
           
           [self getCurrentLunchMethodWithCompletion:^(NSError *error, NSMutableArray *theLunch) {
                if (error != nil) {
@@ -113,10 +117,6 @@
                               schoolDay.customSchedule = [[theDay objectAtIndex:0] objectForKey:@"customSchedule"];
                               if ([schoolDay.scheduleType isEqual:@"*"]) {
                                    
-                                   [scrollView removeFromSuperview];
-                                   
-                                   scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-                                   
                                    titleLabelB = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 0, 0)];
                                    NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
                                    [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
@@ -138,8 +138,6 @@
                                    titleLabelC.numberOfLines = 0;
                                    [titleLabelC sizeToFit];
                                    [scrollView addSubview:titleLabelC];
-                                   
-                                   [self.view addSubview:scrollView];
                                    
                                    UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(10, titleLabelC.frame.origin.y + titleLabelC.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
                                    separator.backgroundColor = [UIColor blackColor];
@@ -171,7 +169,7 @@
                                    dayLabel.frame = CGRectMake(self.view.frame.size.width / 2 - dayLabel.frame.size.width / 2, dayLabel.frame.origin.y, dayLabel.frame.size.width, dayLabel.frame.size.height);
                                    [scrollView addSubview:dayLabel];
                                    
-                                   scheduleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, dayLabel.frame.origin.y + dayLabel.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
+                                   scheduleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, dayLabel.frame.origin.y + dayLabel.frame.size.height + 10, self.view.frame.size.width - 20, 120)];
                                    scheduleLabel.text = schoolDay.customSchedule;
                                    [scheduleLabel setFont:[UIFont systemFontOfSize:14]];
                                    scheduleLabel.numberOfLines = 0;
@@ -269,7 +267,7 @@
                                              [scrollView addSubview:imageLabelB];
                                              
                                              self.automaticallyAdjustsScrollViewInsets = YES;
-                                             UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 60, 0);
+                                             UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 120, 0);
                                              scrollView.contentInset = adjustForTabbarInsets;
                                              scrollView.scrollIndicatorInsets = adjustForTabbarInsets;
                                              CGRect contentRect = CGRectZero;
@@ -278,12 +276,14 @@
                                              }
                                              scrollView.contentSize = contentRect.size;
                                              
+                                             [self.view addSubview:scrollView];
+                                             
                                              [activity stopAnimating];
                                         }];
                                    }
                                    else {
                                         self.automaticallyAdjustsScrollViewInsets = YES;
-                                        UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 60, 0);
+                                        UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 120, 0);
                                         scrollView.contentInset = adjustForTabbarInsets;
                                         scrollView.scrollIndicatorInsets = adjustForTabbarInsets;
                                         CGRect contentRect = CGRectZero;
@@ -291,6 +291,8 @@
                                              contentRect = CGRectUnion(contentRect, view.frame);
                                         }
                                         scrollView.contentSize = contentRect.size;
+                                        
+                                        [self.view addSubview:scrollView];
                                         
                                         [activity stopAnimating];
                                    }
@@ -311,10 +313,6 @@
                                              scheduleType = [returnSchedule objectAtIndex:0];
                                              scheduleType.scheduleString = [[returnSchedule objectAtIndex:0] objectForKey:@"scheduleString"];
                                              scheduleType.fullScheduleString = [[returnSchedule objectAtIndex:0] objectForKey:@"fullScheduleString"];
-                                             
-                                             [scrollView removeFromSuperview];
-                                             
-                                             scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
                                              
                                              titleLabelB = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 0, 0)];
                                              NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
@@ -337,8 +335,6 @@
                                              titleLabelC.numberOfLines = 0;
                                              [titleLabelC sizeToFit];
                                              [scrollView addSubview:titleLabelC];
-                                             
-                                             [self.view addSubview:scrollView];
                                              
                                              UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(10, titleLabelC.frame.origin.y + titleLabelC.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
                                              separator.backgroundColor = [UIColor blackColor];
@@ -470,7 +466,7 @@
                                                        [scrollView addSubview:imageLabelB];
                                                        
                                                        self.automaticallyAdjustsScrollViewInsets = YES;
-                                                       UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 60, 0);
+                                                       UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 120, 0);
                                                        scrollView.contentInset = adjustForTabbarInsets;
                                                        scrollView.scrollIndicatorInsets = adjustForTabbarInsets;
                                                        CGRect contentRect = CGRectZero;
@@ -479,12 +475,14 @@
                                                        }
                                                        scrollView.contentSize = contentRect.size;
                                                        
+                                                       [self.view addSubview:scrollView];
+                                                       
                                                        [activity stopAnimating];
                                                   }];
                                              }
                                              else {
                                                   self.automaticallyAdjustsScrollViewInsets = YES;
-                                                  UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 60, 0);
+                                                  UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 120, 0);
                                                   scrollView.contentInset = adjustForTabbarInsets;
                                                   scrollView.scrollIndicatorInsets = adjustForTabbarInsets;
                                                   CGRect contentRect = CGRectZero;
@@ -492,6 +490,8 @@
                                                        contentRect = CGRectUnion(contentRect, view.frame);
                                                   }
                                                   scrollView.contentSize = contentRect.size;
+                                                  
+                                                  [self.view addSubview:scrollView];
                                                   
                                                   [activity stopAnimating];
                                              }

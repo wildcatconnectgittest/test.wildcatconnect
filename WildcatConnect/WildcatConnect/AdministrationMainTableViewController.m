@@ -16,6 +16,8 @@
 #import "EditMessagesViewController.h"
 #import "EditPictureDayViewController.h"
 #import "ComposeAlertViewController.h"
+#import "RegisterExtracurricularViewController.h"
+#import "EditScheduleViewController.h"
 
 @interface AdministrationMainTableViewController ()
 
@@ -39,19 +41,21 @@
      
      self.topBar.topItem.title = [[lastName stringByAppendingString:@", "] stringByAppendingString:firstName];
      
-     self.sectionsArray = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"News Article", @"Extracurricular Update", @"Community Service Update", @"User Poll", nil]];
+     self.sectionsArray = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"News Article", @"Extracurricular Update", nil]];
      
      if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administrator"]) {
+          [self.sectionsArray addObject:@"Community Service Update"];
+          [self.sectionsArray addObject:@"User Poll"];
           [self.sectionsArray addObject:@"Alert"];
      }
      
      self.sectionsImagesArray = [[NSMutableArray alloc] init];
      [self.sectionsImagesArray addObject:@"theNews@2x.png"];
      [self.sectionsImagesArray addObject:@"extracurriculars@2x.png"];
-     [self.sectionsImagesArray addObject:@"communityService@2x.png"];
-     [self.sectionsImagesArray addObject:@"studentCenter@2x.png"];
      
      if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administrator"]) {
+          [self.sectionsImagesArray addObject:@"communityService@2x.png"];
+          [self.sectionsImagesArray addObject:@"studentCenter@2x.png"];
           [self.sectionsImagesArray addObject:@"alerts@2x.png"];
      }
     
@@ -77,28 +81,40 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
      if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administrator"]) {
-          return 2;
-     } else return 1;
+          return 3;
+     } else return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
      if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administrator"]) {
           if (section == 0) {
-               return 1;
-          } else
+               return 2;
+          } else if (section == 1)
                return self.sectionsArray.count;
-     } else
-          return self.sectionsArray.count;
+          else
+               return 2; // Change password, new extracurricular group...
+     } else {
+          if (section == 0)
+               return self.sectionsArray.count;
+          else
+               return 2; // Change password, new extracurricular group...
+     }
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
      if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administrator"]) {
           if (section == 0) {
-               return @"DAILY UPDATES";
-          } else
+               return @"ADMINISTRATION ONLY";
+          } else if (section == 1)
                return @"COMPOSE NEW";
-     } else
-          return @"COMPOSE NEW";
+          else
+               return @"ACCOUNT MANAGEMENT";
+     } else {
+          if (section == 0)
+               return @"COMPOSE NEW";
+          else
+               return @"ACCOUNT MANAGEMENT";
+     }
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -116,14 +132,35 @@
                if (indexPath.row == 0) {
                     cell.textLabel.text = @"Picture of the Day";
                     cell.imageView.image = [UIImage imageNamed:@"picture@2x.png"];
+               } else if (indexPath.row == 1) {
+                    cell.textLabel .text = @"Scheduling";
+                    cell.imageView.image = [UIImage imageNamed:@"calendar@2x.png"];
                }
-          } else {
+          } else if (indexPath.section == 1) {
                cell.textLabel.text = self.sectionsArray[indexPath.row];
                cell.imageView.image = [UIImage imageNamed:self.sectionsImagesArray[indexPath.row]];
+          } else if (indexPath.section == 2) {
+               if (indexPath.row == 0) {
+                    cell.textLabel.text = @"Change Password";
+                    cell.imageView.image = [UIImage imageNamed:@"password@2x.png"];
+               } else if (indexPath.row == 1) {
+                    cell.textLabel.text = @"Register Extracurricular";
+                    cell.imageView.image = [UIImage imageNamed:@"EC@2x.png"];
+               }
           }
      } else {
-          cell.textLabel.text = self.sectionsArray[indexPath.row];
-          cell.imageView.image = [UIImage imageNamed:self.sectionsImagesArray[indexPath.row]];
+          if (indexPath.section == 0) {
+               cell.textLabel.text = self.sectionsArray[indexPath.row];
+               cell.imageView.image = [UIImage imageNamed:self.sectionsImagesArray[indexPath.row]];
+          } else if (indexPath.section == 1) {
+               if (indexPath.row == 0) {
+                    cell.textLabel.text = @"Change Password";
+                    cell.imageView.image = [UIImage imageNamed:@"password@2x.png"];
+               } else if (indexPath.row == 1) {
+                    cell.textLabel.text = @"Register Extracurricular";
+                    cell.imageView.image = [UIImage imageNamed:@"EC@2x.png"];
+               }
+          }
      }
      
      cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -135,6 +172,9 @@
           if (indexPath.section == 0) {
                if (indexPath.row == 0) {
                     EditPictureDayViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"EditPicture"];
+                    [self.navigationController pushViewController:controller animated:YES];
+               } else if (indexPath.row == 1) {
+                    EditScheduleViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"EditSchedule"];
                     [self.navigationController pushViewController:controller animated:YES];
                }
           } else if (indexPath.section == 1) {
@@ -154,26 +194,51 @@
                     ComposeAlertViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"ComposeAlert"];
                     [self.navigationController pushViewController:controller animated:YES];
                }
+          } else if (indexPath.section == 2) {
+               if (indexPath.row == 0) {
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Change Password?" message:[[@"Are you sure you want to reset your password? An e-mail will be sent to you at " stringByAppendingString:[[PFUser currentUser] email]] stringByAppendingString:@" with instructions."] delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+                    [alertView show];
+               } else if (indexPath.row == 1) {
+                    RegisterExtracurricularViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"RegisterEC"];
+                    [self.navigationController pushViewController:controller animated:YES];
+               }
           }
      } else {
-          if (indexPath.row == 0) {
-               ComposeNewsArticleViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"ComposeNewsArticle"];
-               [self.navigationController pushViewController:controller animated:YES];
-          } else if (indexPath.row == 1) {
-               ComposeExtracurricularUpdateViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"ComposeExtracurricular"];
-               [self.navigationController pushViewController:controller animated:YES];
-          } else if (indexPath.row == 2) {
-               ComposeCommunityServiceViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"ComposeCommunity"];
-               [self.navigationController pushViewController:controller animated:YES];
-          } else if (indexPath.row == 3) {
-               ComposePollViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"ComposePoll"];
-               [self.navigationController pushViewController:controller animated:YES];
-          } else if (indexPath.row == 4) {
-               ComposeAlertViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"ComposeAlert"];
-               [self.navigationController pushViewController:controller animated:YES];
+          if (indexPath.section == 0) {
+               if (indexPath.row == 0) {
+                    ComposeNewsArticleViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"ComposeNewsArticle"];
+                    [self.navigationController pushViewController:controller animated:YES];
+               } else if (indexPath.row == 1) {
+                    ComposeExtracurricularUpdateViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"ComposeExtracurricular"];
+                    [self.navigationController pushViewController:controller animated:YES];
+               }
+          } else if (indexPath.section == 1) {
+               if (indexPath.row == 0) {
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Change Password?" message:[[@"Are you sure you want to reset your password? An e-mail will be sent to you at " stringByAppendingString:[[PFUser currentUser] email]] stringByAppendingString:@" with instructions."] delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+                    [alertView show];
+               } else if (indexPath.row == 1) {
+                    RegisterExtracurricularViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"RegisterEC"];
+                    [self.navigationController pushViewController:controller animated:YES];
+               }
           }
      }
      [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+     if (buttonIndex == 1) {
+          UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+          [activity setBackgroundColor:[UIColor clearColor]];
+          [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+          UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
+          self.navigationItem.rightBarButtonItem = barButtonItem;
+          [activity startAnimating];
+          [PFUser requestPasswordResetForEmailInBackground:[[PFUser currentUser] email] block:^(BOOL succeeded, NSError * _Nullable error) {
+               [activity stopAnimating];
+               UIBarButtonItem *logoutButton = [[UIBarButtonItem alloc] initWithTitle:@"Log Out" style:UIBarButtonItemStylePlain target:self action:@selector(logOutCurrentUser)];
+               self.navigationItem.rightBarButtonItem = logoutButton;
+          }];
+     }
 }
 
 /*

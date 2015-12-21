@@ -156,7 +156,7 @@
           UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please ensure you have correctly filled out all fields!" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
           [alertView show];
      } else {
-          postAlertView = [[UIAlertView alloc] initWithTitle:@"Confirmation" message:@"Are you sure you want to register this extracurricular group? Please allow some time for approval from administration." delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+          postAlertView = [[UIAlertView alloc] initWithTitle:@"Confirmation" message:@"Are you sure you want to register this extracurricular group?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
           [postAlertView show];
      }
 }

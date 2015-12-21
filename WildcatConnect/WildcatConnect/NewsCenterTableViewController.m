@@ -434,6 +434,10 @@
            cell.detailTextLabel.text = newsArticleStructure.summaryString;
            cell.detailTextLabel.numberOfLines = 4;
            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+           if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administrator"]) {
+                     //Show the views...
+                cell.detailTextLabel.text = [[[newsArticleStructure.summaryString stringByAppendingString:@" - "] stringByAppendingString:[newsArticleStructure.views stringValue]] stringByAppendingString:@" VIEWS"];
+           }
            NSInteger integerNumber = [newsArticleStructure.hasImage integerValue];
                 if (! [self.readNewsArticles containsObject:newsArticleStructure.articleID]) {
                      UIButton *unreadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];

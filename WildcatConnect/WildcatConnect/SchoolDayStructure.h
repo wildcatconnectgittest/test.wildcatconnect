@@ -12,7 +12,7 @@
 
 + (NSString *)parseClassName;
 
-@property NSString *schoolDayID;
+@property NSNumber *schoolDayID;
 @property NSString *schoolDate; // MM/dd/yyyy
 @property NSString *scheduleType;
 @property NSString *messageString;

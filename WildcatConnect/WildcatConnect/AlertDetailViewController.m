@@ -7,6 +7,7 @@
 //
 
 #import "AlertDetailViewController.h"
+#import "AlertsTableViewController.h"
 
 @interface AlertDetailViewController ()
 
@@ -78,6 +79,8 @@
      self.navigationItem.rightBarButtonItem = barButtonItem;
      [activity startAnimating];
      
+     self.alert.views = [NSNumber numberWithInteger:[self.alert.views integerValue] + 1];
+     
      [self viewMethodWithCompletion:^(NSUInteger integer, NSError *error) {
           [activity stopAnimating];
           if (self.showCloseButton) {
@@ -85,6 +88,17 @@
                self.navigationItem.rightBarButtonItem = barButtonItem;
           }
      } forID:self.alert.objectId];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+     [super viewWillDisappear:animated];
+          //Run method to pass current structure back to the tableView...
+     if (! self.showCloseButton) {
+          if ([self.navigationController.viewControllers objectAtIndex:0]) {
+               AlertsTableViewController *viewController = (AlertsTableViewController *)[self.navigationController.viewControllers objectAtIndex:0];
+               [viewController replaceAlertStructure:self.alert];
+          }
+     }
 }
 
 - (void)viewMethodWithCompletion:(void (^)(NSUInteger integer, NSError *error))completion forID:(NSString *)objectID {

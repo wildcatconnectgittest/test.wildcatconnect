@@ -444,18 +444,28 @@
      dispatch_group_enter(serviceGroup);
      __block NSError *theError;
      NSMutableArray *returnArray = [NSMutableArray array];
-     [[PFUser currentUser] fetchInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
-          PFUser *currentUser = (PFUser *)object;
-          NSArray *ECArray = [currentUser objectForKey:@"ownedEC"];
+     if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administrator"]) {
           PFQuery *query = [ExtracurricularStructure query];
-          [query whereKey:@"extracurricularID" containedIn:ECArray];
           [query orderByAscending:@"titleString"];
           [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
                [returnArray addObjectsFromArray:objects];
                theError = error;
                dispatch_group_leave(serviceGroup);
           }];
-     }];
+     } else {
+          [[PFUser currentUser] fetchInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+               PFUser *currentUser = (PFUser *)object;
+               NSArray *ECArray = [currentUser objectForKey:@"ownedEC"];
+               PFQuery *query = [ExtracurricularStructure query];
+               [query whereKey:@"extracurricularID" containedIn:ECArray];
+               [query orderByAscending:@"titleString"];
+               [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+                    [returnArray addObjectsFromArray:objects];
+                    theError = error;
+                    dispatch_group_leave(serviceGroup);
+               }];
+          }];
+     }
      dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
           NSError *overallError = nil;
           if (theError != nil) {

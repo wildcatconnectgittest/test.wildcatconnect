@@ -21,4 +21,6 @@
 @property (nonatomic, retain) NSMutableArray *readAlerts;
 @property (nonatomic, retain) AlertStructure *selectedAlertStructure;
 
+- (void)replaceAlertStructure:(AlertStructure *)alertStructure;
+
 @end
