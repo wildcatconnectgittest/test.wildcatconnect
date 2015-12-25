@@ -22,6 +22,7 @@
      UIActivityIndicatorView *activity;
      UITableView *theTableView;
      UIAlertView *errorAlertView;
+     UIActionSheet *popupActionSheet;
 }
 
 - (void)viewDidLoad {
@@ -71,7 +72,14 @@
      [titleLabel sizeToFit];
      [scrollView addSubview:titleLabel];
      
-     UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(10, titleLabel.frame.origin.y + titleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+     UIButton *modeButton = [UIButton buttonWithType:UIButtonTypeSystem];
+     [modeButton setTitle:@"EDIT SCHEDULE MODE FOR VACATIONS" forState:UIControlStateNormal];
+     [modeButton sizeToFit];
+     [modeButton addTarget:self action:@selector(modeButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+     modeButton.frame = CGRectMake(titleLabel.frame.origin.x, titleLabel.frame.origin.y + titleLabel.frame.size.height + 10, modeButton.frame.size.width, modeButton.frame.size.height);
+     [scrollView addSubview:modeButton];
+     
+     UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(10, modeButton.frame.origin.y + modeButton.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
      separator.backgroundColor = [UIColor blackColor];
      [scrollView addSubview:separator];
      
@@ -104,6 +112,17 @@
      }
      scrollView.contentSize = contentRect.size;
      [self.view addSubview:scrollView];
+}
+
+- (void)modeButtonClicked {
+     popupActionSheet = [[UIActionSheet alloc] initWithTitle:@"Schedule Modes" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:
+                             @"THANKSGIVING BREAK",
+                             @"HOLIDAY BREAK",
+                             @"FEBRUARY BREAK",
+                             @"SPRING BREAK",
+                             @"SUMMER",
+                             nil];
+     [popupActionSheet showInView:self.view];
 }
 
 - (void)getSchedulesMethodWithCompletion:(void (^)(NSMutableArray *returnArray, NSError *error))completion {
@@ -144,6 +163,8 @@
           NSString *today = [day stringFromDate:[dateFormatter dateFromString:schoolDay.schoolDate]];
           NSString *totalString = [[today stringByAppendingString:@", "] stringByAppendingString:schoolDay.schoolDate];
           cell.textLabel.text = totalString;
+          if (indexPath.row == 0)
+               cell.textLabel.textColor = [UIColor redColor];
           if ([schoolDay.scheduleType isEqual:@"*"]) {
                cell.detailTextLabel.text = @"Custom Schedule";
                cell.detailTextLabel.textColor = [UIColor redColor];
@@ -157,44 +178,54 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
      [tableView deselectRowAtIndexPath:indexPath animated:YES];
      UIActionSheet *popup = [[UIActionSheet alloc] initWithTitle:@"Scheduling Options" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:
-                             @"Go Back 1 Day To Here",
+                             @"Go Back 1 Day from Here",
                              @"Edit Custom Schedule",
                              nil];
      [popup setTag:indexPath.row];
-     [popup showInView:self.view];
+     [popup showInView:self.view]; 
 }
 
 - (void)actionSheet:(UIActionSheet *)popup clickedButtonAtIndex:(NSInteger)buttonIndex {
-     if (buttonIndex == 0) {
-               //Go Back 1 Day
-          activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-          [activity setBackgroundColor:[UIColor clearColor]];
-          [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-          UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
-          self.navigationItem.rightBarButtonItem = barButtonItem;
-          [activity startAnimating];
-          [PFCloud callFunctionInBackground:@"goBackOneDayFromStructure" withParameters:@{@"ID":[NSNumber numberWithInteger:popup.tag]} block:^(id  _Nullable object, NSError * _Nullable error) {
-               [activity stopAnimating];
-               [self viewWillAppear:YES];
-          }];
-     } else if (buttonIndex == 1) {
-               //Edit Custom Schedule
-          CustomScheduleViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"CustomSchedule"];
-          NSDateFormatter *day = [[NSDateFormatter alloc] init];
-          [day setDateFormat:@"EEEE"];
-          NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-          [dateFormatter setDateFormat:@"MM-dd-yyyy"];
-          SchoolDayStructure *schoolDay = (SchoolDayStructure *)[self.scheduleArray objectAtIndex:popup.tag];
-          NSString *today = [day stringFromDate:[dateFormatter dateFromString:schoolDay.schoolDate]];
-          NSString *totalString = [[today stringByAppendingString:@", "] stringByAppendingString:schoolDay.schoolDate];
-          controller.titleString = totalString;
-          controller.IDString = schoolDay.schoolDayID;
-          if ([schoolDay.scheduleType isEqual:@"*"]) {
-               controller.scheduleString = schoolDay.customSchedule;
-          } else {
-               controller.scheduleString = @"";
+     if (popup == popupActionSheet) {
+               //Handle those events
+               //Create custom array structure for this...
+     } else {
+          if (buttonIndex == 0) {
+                    //Go Back 1 Day
+               if (popup.tag != 0) {
+                    activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+                    [activity setBackgroundColor:[UIColor clearColor]];
+                    [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+                    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
+                    self.navigationItem.rightBarButtonItem = barButtonItem;
+                    [activity startAnimating];
+                    [PFCloud callFunctionInBackground:@"goBackOneDayFromStructure" withParameters:@{@"ID":[NSNumber numberWithInteger:popup.tag]} block:^(id  _Nullable object, NSError * _Nullable error) {
+                         [activity stopAnimating];
+                         [self viewWillAppear:YES];
+                    }];
+               } else {
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"You can't go back a day from today." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                    [alertView show];
+               }
+          } else if (buttonIndex == 1) {
+                    //Edit Custom Schedule
+               CustomScheduleViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"CustomSchedule"];
+               NSDateFormatter *day = [[NSDateFormatter alloc] init];
+               [day setDateFormat:@"EEEE"];
+               NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+               [dateFormatter setDateFormat:@"MM-dd-yyyy"];
+               SchoolDayStructure *schoolDay = (SchoolDayStructure *)[self.scheduleArray objectAtIndex:popup.tag];
+               NSString *today = [day stringFromDate:[dateFormatter dateFromString:schoolDay.schoolDate]];
+               NSString *totalString = [[today stringByAppendingString:@", "] stringByAppendingString:schoolDay.schoolDate];
+               controller.titleString = totalString;
+               controller.IDString = schoolDay.schoolDayID;
+               if ([schoolDay.scheduleType isEqual:@"*"]) {
+                    controller.scheduleString = schoolDay.customSchedule;
+               } else {
+                    controller.scheduleString = @"Period 1: \nPeriod 2: \nPeriod 3: \nPeriod 4: \n1st: \n2nd: \n3rd: \nPeriod 6: \nPeriod 7: ";
+               }
+               [self.navigationController pushViewController:controller animated:YES];
           }
-          [self.navigationController pushViewController:controller animated:YES];
      }
 }
 

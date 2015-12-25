@@ -411,6 +411,7 @@
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
      PFInstallation *currentInstallation = [PFInstallation currentInstallation];
      [currentInstallation setDeviceTokenFromData:deviceToken];
+     [currentInstallation setChannels:[NSArray arrayWithObject:@"global"]];
      [currentInstallation saveInBackground];
 }
 

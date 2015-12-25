@@ -342,6 +342,14 @@ Parse.Cloud.afterSave("NewsArticleStructure", function(request) {
   };
 });
 
+Parse.Cloud.beforeSave("ExtracurricularUpdateStructure", function(request, response) {
+    if (request.object.get("extracurricularID") >= 0) {
+      response.success();
+    } else {
+      response.error()
+    };
+});
+
 Parse.Cloud.afterSave("ExtracurricularUpdateStructure", function(request) {
   if (request.object.get("extracurricularUpdateID") != null) {
     var query = new Parse.Query("ExtracurricularStructure");
@@ -386,7 +394,11 @@ Parse.Cloud.beforeSave("PollStructure", function(request, response) {
     for (var key in dictionary) {
       sum += parseInt(dictionary[key], 10);
     }
-    request.object.set("totalResponses", sum.toString());
+    if (sum && sum > 0) {
+      request.object.set("totalResponses", sum.toString());
+    } else {
+      request.object.set("totalResponses", "0".toString());
+    };
     response.success();
 });
 
