@@ -26,6 +26,7 @@
                                                                             alpha:0.5f];
      
      self.usernameField.frame = CGRectMake(10, self.usernameField.frame.origin.y, self.view.frame.size.width - 20, self.usernameField.frame.size.height);
+     self.usernameField.autocapitalizationType = UITextAutocapitalizationTypeNone;
      self.passwordField.frame = CGRectMake(10, self.passwordField.frame.origin.y, self.view.frame.size.width - 20, self.passwordField.frame.size.height);
      
      [self.logInButton sizeToFit];

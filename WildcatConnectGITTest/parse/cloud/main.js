@@ -1,5 +1,8 @@
 //WildcatConnect Parse.com Server-Side Logic
 
+var Mailgun = require('mailgun');
+Mailgun.initialize('wildcatconnect.org', 'key-21b93c07c71f9d42c7b0bec1fa68567f');
+
 Parse.Cloud.job("schoolDayStructureDeletion", function(request, response) {
   Parse.Config.get().then(function(config) {
     var specialKeys = config.get("specialKeys");
@@ -326,6 +329,25 @@ Parse.Cloud.define("goBackOneDayFromStructure", function(request, response) {
       response.error();
     }
   });
+});
+
+Parse.Cloud.define("sendTestMessage", function(request, response) {
+  Mailgun.sendEmail({
+    to: "team@wildcatconnect.org",
+    from: "team@wildcatconnect.org",
+    subject: "Hello from Cloud Code!",
+    text: "Using Parse and Mailgun is great!"
+  }, {
+    success: function(httpResponse) {
+      console.log(httpResponse);
+      response.success("Email sent!");
+    },
+    error: function(httpResponse) {
+      console.error(httpResponse);
+      response.error("Uh oh, something went wrong");
+    }
+  });
+
 });
 
 Parse.Cloud.afterSave("NewsArticleStructure", function(request) {

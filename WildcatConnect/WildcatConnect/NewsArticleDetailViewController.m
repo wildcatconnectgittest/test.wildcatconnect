@@ -19,6 +19,8 @@
      UILabel *titleLabel;
      UIButton *likesButton;
      UIActivityIndicatorView *activity;
+     UIScrollView *scrollView;
+     UILabel *authorDateLabel;
 }
 
 - (void)viewDidLoad {
@@ -31,7 +33,7 @@
      
      self.navigationItem.title = @"Article";
      
-     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+     scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
      
      self.navigationController.navigationBar.translucent = NO;
      
@@ -60,7 +62,7 @@
           [summaryLabel sizeToFit];
           [scrollView addSubview:summaryLabel];
           
-          UILabel *authorDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(summaryLabel.frame.origin.x, summaryLabel.frame.origin.y + summaryLabel.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
+          authorDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(summaryLabel.frame.origin.x, summaryLabel.frame.origin.y + summaryLabel.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
           authorDateLabel.text = [[self.NA.authorString stringByAppendingString:@" | "] stringByAppendingString:self.NA.dateString];
           [authorDateLabel setFont:[UIFont systemFontOfSize:12]];
           authorDateLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -158,7 +160,7 @@
           [summaryLabel sizeToFit];
           [scrollView addSubview:summaryLabel];
           
-          UILabel *authorDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(summaryLabel.frame.origin.x, summaryLabel.frame.origin.y + summaryLabel.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
+          authorDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(summaryLabel.frame.origin.x, summaryLabel.frame.origin.y + summaryLabel.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
           authorDateLabel.text = [[self.NA.authorString stringByAppendingString:@" | "] stringByAppendingString:self.NA.dateString];
           [authorDateLabel setFont:[UIFont systemFontOfSize:12]];
           authorDateLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -172,6 +174,7 @@
           } else
                likesLabel.text = [[self.NA.likes stringValue] stringByAppendingString:@" likes"];
           [likesLabel setFont:[UIFont systemFontOfSize:16]];
+          [likesLabel sizeToFit];
           [scrollView addSubview:likesLabel];
           
           NSMutableArray *liked = [[NSUserDefaults standardUserDefaults] objectForKey:@"likedNewsArticles"];
@@ -223,15 +226,15 @@
                
                self.NA.likes = [NSNumber numberWithInteger:integer];
                
+               [likesLabel removeFromSuperview];
                likesLabel = [[UILabel alloc] initWithFrame:CGRectMake(authorDateLabel.frame.origin.x, authorDateLabel.frame.origin.y + authorDateLabel.frame.size.height + 10, self.view.frame.size.width - 20, 30)];
                if ([self.NA.likes integerValue] == 1) {
                     likesLabel.text = [[self.NA.likes stringValue] stringByAppendingString:@" like"];
                } else
                     likesLabel.text = [[self.NA.likes stringValue] stringByAppendingString:@" likes"];
                [likesLabel setFont:[UIFont systemFontOfSize:16]];
+               [likesLabel sizeToFit];
                [scrollView addSubview:likesLabel];
-               
-               self.NA.views = [NSNumber numberWithInteger:[self.NA.views integerValue] + 1];
                
                [self viewMethodWithCompletion:^(NSUInteger integer, NSError *error) {
                     [activity stopAnimating];
@@ -256,7 +259,7 @@
           PFObject *object = (PFObject *)[objects firstObject];
           if (object) {
                [object setObject:[NSNumber numberWithInteger:[[object objectForKey:@"views"] integerValue] + 1] forKey:@"views"];
-               [object saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+               [self.NA setObject:[NSNumber numberWithInteger:[self.NA.views integerValue] + 1] forKey:@"views"];               [object saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
                     dispatch_group_leave(serviceGroup);
                }];
           } else {
@@ -326,6 +329,9 @@
 
 - (void)likeMethod {
      [likesButton removeFromSuperview];
+     [likesLabel removeFromSuperview];
+     likesLabel = [[UILabel alloc] initWithFrame:CGRectMake(authorDateLabel.frame.origin.x, authorDateLabel.frame.origin.y + authorDateLabel.frame.size.height + 10, self.view.frame.size.width - 20, 30)];
+     [likesLabel setFont:[UIFont systemFontOfSize:16]];
      NSInteger likes = [self.NA.likes integerValue];
      NSNumber *newLikes = [NSNumber numberWithInt:likes + 1];
      self.NA.likes = newLikes;
@@ -333,6 +339,8 @@
           likesLabel.text = [[self.NA.likes stringValue] stringByAppendingString:@" like"];
      } else
           likesLabel.text = [[self.NA.likes stringValue] stringByAppendingString:@" likes"];
+     [likesLabel sizeToFit];
+     [scrollView addSubview:likesLabel];
      UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
      [activity setBackgroundColor:[UIColor clearColor]];
      [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];

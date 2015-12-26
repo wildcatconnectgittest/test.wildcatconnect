@@ -13,6 +13,7 @@
 
 @implementation NewsCenterTableViewController {
      UIActivityIndicatorView *activity;
+     BOOL isReloading;
 }
 
 - (void)viewDidLoad {
@@ -21,6 +22,8 @@
     [refreshControl addTarget:self action:@selector(refreshView:) forControlEvents:UIControlEventValueChanged];
      refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"PULL TO REFRESH"];
     self.refreshControl= refreshControl;
+     
+     isReloading = false;
     
     if (self.loadNumber == [NSNumber numberWithInt:1] || ! self.loadNumber) {
                [self refreshData];
@@ -536,9 +539,10 @@
      for (int i = 0; i < self.newsArticles.count; i++) {
           structure = (NewsArticleStructure *)self.newsArticles[i];
           if (structure.articleID == index) {
-               self.newsArticles[i] = newsArticleStructure;
+               [self.newsArticles[i] setObject:[newsArticleStructure objectForKey:@"views"] forKey:@"views"];
           }
      }
+     isReloading = true;
      [self.tableView reloadData];
 }
 
