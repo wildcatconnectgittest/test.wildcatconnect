@@ -10,10 +10,4 @@
 
 @interface AdministrationLogInViewController : UIViewController
 
-@property (retain, nonatomic) IBOutlet UITextField *usernameField;
-@property (retain, nonatomic) IBOutlet UITextField *passwordField;
-@property (retain, nonatomic) IBOutlet UIButton *logInButton;
-
-- (IBAction)logInButton:(id)sender;
-
 @end

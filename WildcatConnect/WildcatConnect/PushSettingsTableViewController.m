@@ -147,7 +147,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
      if (section == 0) {
-          return 2;
+          return 3;
      } else if (section == 1) {
           if (self.ECarray.count == 0) {
                return 1;
@@ -180,6 +180,11 @@
                     [switchView setOn:YES animated:NO];
                } else
                     [switchView setOn:NO animated:NO];
+          } else if (indexPath.row == 2) {
+               if (self.pushArray.count > 0 && [self.pushArray containsObject:@"allPolls"]) {
+                    [switchView setOn:YES animated:NO];
+               } else
+                    [switchView setOn:NO animated:NO];
           }
      } else if (indexPath.section == 1) {
           ExtracurricularStructure *EC = [self.ECarray objectAtIndex:indexPath.row];
@@ -198,6 +203,9 @@
           } else if (indexPath.row == 1) {
                cell.textLabel.text = @"All Community Service";
                [switchView setTag:1];
+          } else if (indexPath.row == 2) {
+               cell.textLabel.text = @"All Poll Questions";
+               [switchView setTag:2];
           }
           cell.accessoryView = switchView;
      } else if (indexPath.section == 1) {
@@ -238,6 +246,16 @@
           } else {
                if ([self.pushArray containsObject:@"allCS"]) {
                     [self.pushArray removeObject:@"allCS"];
+               }
+          }
+     } else if (switchControl.tag == 2) {
+          if (switchControl.on == true) {
+               if (! [self.pushArray containsObject:@"allPolls"]) {
+                    [self.pushArray addObject:@"allPolls"];
+               }
+          } else {
+               if ([self.pushArray containsObject:@"allPolls"]) {
+                    [self.pushArray removeObject:@"allPolls"];
                }
           }
      } else {

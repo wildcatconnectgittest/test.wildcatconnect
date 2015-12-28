@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MessageUI/MessageUI.h>
 
 @class StaffMemberStructure;
 
-@interface StaffDirectoryBaseTableViewController : UITableViewController
+@interface StaffDirectoryBaseTableViewController : UITableViewController <MFMailComposeViewControllerDelegate>
 
 - (UITableViewCell *)configureCell:(UITableViewCell *)cell forStaffMemberStructure:(StaffMemberStructure *)staffMemberStructure;
 

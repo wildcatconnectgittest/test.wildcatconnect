@@ -20,6 +20,7 @@
 #import "ScheduleType.h"
 #import "AlertDetailViewController.h"
 #import "NewsArticleDetailViewController.h"
+#import "UserRegisterStructure.h"
 
 @implementation AppDelegate
 
@@ -161,6 +162,17 @@
                } else {
                     if ([pagesArray containsObject:[NSString stringWithFormat:@"%lu", (long)1]]) {
                          [pagesArray removeObject:[NSString stringWithFormat:@"%lu", (long)1]];
+                         [[NSUserDefaults standardUserDefaults] setObject:pagesArray forKey:@"visitedPagesArray"];
+                         [[NSUserDefaults standardUserDefaults] synchronize];
+                    }
+               }
+          } else if ([notificationPayload objectForKey:@"p"]) {
+               NSMutableArray *pagesArray = [[[NSUserDefaults standardUserDefaults] objectForKey:@"visitedPagesArray"] mutableCopy];
+               if (! pagesArray) {
+                    pagesArray = [[NSMutableArray alloc] init];
+               } else {
+                    if ([pagesArray containsObject:[NSString stringWithFormat:@"%lu", (long)3]]) {
+                         [pagesArray removeObject:[NSString stringWithFormat:@"%lu", (long)3]];
                          [[NSUserDefaults standardUserDefaults] setObject:pagesArray forKey:@"visitedPagesArray"];
                          [[NSUserDefaults standardUserDefaults] synchronize];
                     }
@@ -373,12 +385,17 @@
      schoolDayStructure.imageString = @"None.";
      [schoolDayStructure saveInBackground];*/
      
-     
      /*ScheduleType *scheduleType = [[ScheduleType alloc] init];
      scheduleType.typeID = @"F1";
      scheduleType.scheduleString = @"To be copied.";
      scheduleType.alertNeeded = YES;
      [scheduleType saveInBackground];*/
+     
+     /*UserRegisterStructure *URS = [[UserRegisterStructure alloc] init];
+     URS.firstName = @"Joe";
+     URS.lastName = @"Smith";
+     URS.email = @"team@wildcatconnect.org";
+     [URS saveInBackground];*/
      
     return YES;
 }
@@ -411,7 +428,9 @@
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
      PFInstallation *currentInstallation = [PFInstallation currentInstallation];
      [currentInstallation setDeviceTokenFromData:deviceToken];
-     [currentInstallation setChannels:[NSArray arrayWithObject:@"global"]];
+     if (currentInstallation.channels.count == 0) {
+          [currentInstallation setChannels:[NSArray arrayWithObject:@"global"]];
+     }
      [currentInstallation saveInBackground];
 }
 
@@ -581,6 +600,21 @@
                }
           }
      }
+     if ([userInfo objectForKey:@"p"]) {
+          UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"User Poll" message:@"You have 1 new user poll. Navigate to the Student Center page to cast your vote!" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+          [alert setTag:3];
+          [alert show];
+          NSMutableArray *pagesArray = [[[NSUserDefaults standardUserDefaults] objectForKey:@"visitedPagesArray"] mutableCopy];
+          if (! pagesArray) {
+               pagesArray = [[NSMutableArray alloc] init];
+          } else {
+               if ([pagesArray containsObject:[NSString stringWithFormat:@"%lu", (long)3]]) {
+                    [pagesArray removeObject:[NSString stringWithFormat:@"%lu", (long)3]];
+                    [[NSUserDefaults standardUserDefaults] setObject:pagesArray forKey:@"visitedPagesArray"];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+               }
+          }
+     }
      if (application.applicationState == UIApplicationStateInactive) {
                // The application was just brought from the background to the foreground,
                // so we consider the app as having been "opened by a push notification."
@@ -639,8 +673,7 @@
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
-     [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"reloadHomePage"];
-     [[NSUserDefaults standardUserDefaults] synchronize];
+     
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

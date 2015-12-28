@@ -3,6 +3,8 @@
 var Mailgun = require('mailgun');
 Mailgun.initialize('wildcatconnect.org', 'key-21b93c07c71f9d42c7b0bec1fa68567f');
 
+var Buffer = require('buffer').Buffer;
+
 Parse.Cloud.job("schoolDayStructureDeletion", function(request, response) {
   Parse.Config.get().then(function(config) {
     var specialKeys = config.get("specialKeys");
@@ -331,22 +333,155 @@ Parse.Cloud.define("goBackOneDayFromStructure", function(request, response) {
   });
 });
 
-Parse.Cloud.define("sendTestMessage", function(request, response) {
-  Mailgun.sendEmail({
-    to: "team@wildcatconnect.org",
-    from: "team@wildcatconnect.org",
-    subject: "Hello from Cloud Code!",
-    text: "Using Parse and Mailgun is great!"
-  }, {
-    success: function(httpResponse) {
-      console.log(httpResponse);
-      response.success("Email sent!");
+Parse.Cloud.define("registerUser", function(request, response) {
+
+  Parse.Cloud.useMasterKey();
+
+  var username = request.params.username;
+  var password = request.params.password;
+  var email = request.params.email;
+  var firstName = request.params.firstName;
+  var lastName = request.params.lastName;
+
+  var theUser = new Parse.User();
+
+  theUser.set("username", username);
+  theUser.set("password", password.replace(/\0/g, ''));
+  theUser.set("email", email);
+  theUser.set("userType", "Faculty");
+  theUser.set("ownedEC", new Array());
+  theUser.set("firstName", firstName);
+  theUser.set("lastName", lastName);
+
+  theUser.signUp(null, {
+    success: function(newUser) {
+      var query = new Parse.Query("UserRegisterStructure");
+      query.equalTo("username", username.toString());
+      query.first({
+        success: function(object) {
+          object.destroy({
+            success: function(object) {
+              Mailgun.sendEmail({
+                to: email,
+                from: "WildcatConnect <team@wildcatconnect.org>",
+                subject: "WildcatConnect Account Confirmation",
+                text: firstName + ", \n\nYour new WildcatConnect account has been approved! With your faculty account, you will now be able to log in to both the WildcatConnect iOS App and our web portal at http://www.wildcatconnect.org. Your username is... \n\n" + username + "\n\n Enjoy posting and sharing with students, faculty and families!\n\nBest,\n\nWildcatConnect Development Team\n\nWeb: http://www.wildcatconnect.org\nSupport: support@wildcatconnect.org\nContact: team@wildcatconnect.org"
+              }, {
+                success: function(httpResponse) {
+                  response.success("Email sent!");
+                },
+                error: function(httpResponse) {
+                  console.error(httpResponse);
+                  response.error("Uh oh, something went wrong");
+                }
+              });
+            },
+            error: function(error) {
+              response.error(error);
+            }
+          })
+        },
+        error: function(error) {
+          response.error(error);
+        }
+      });
     },
-    error: function(httpResponse) {
-      console.error(httpResponse);
-      response.error("Uh oh, something went wrong");
+    error: function(user, error){
+      response.error(error);
     }
   });
+
+});
+
+Parse.Cloud.define("deleteUser", function(request, response) {
+  var username = request.params.username;
+
+  Parse.Cloud.useMasterKey();
+
+  var query = new Parse.Query("User");
+  query.equalTo("username", username);
+  query.first().then(function(user) {
+    return user.destroy();
+  }).then(function(user) {
+    response.success("User deleted!!!");
+  }), function(error) {
+    response.error(error);
+  };
+});
+
+Parse.Cloud.define("encryptPassword", function(request, response) {
+
+  try {
+    var str = '',
+        i = 0,
+        tmp_len = request.params.password.length,
+        c;
+ 
+    for (; i < tmp_len; i += 1) {
+        c = request.params.password.charCodeAt(i);
+        str += c.toString(16) + 'XABCWCENSPAP1357';
+    }
+
+    response.success(str.toString());
+
+  } catch (error) {
+    response.error(error);
+  }
+
+});
+
+Parse.Cloud.define("decryptPassword", function(request, response) {
+
+  try {
+    var arr = request.params.password.split('XABCWCENSPAP1357'),
+        str = '',
+        i = 0,
+        arr_len = arr.length,
+        c;
+ 
+    for (; i < arr_len - 1; i += 1) {
+        c = String.fromCharCode( parseInt(arr[i], 16) );
+        str += c;
+    }
+
+    response.success(str.toString());
+
+  } catch (error) {
+    response.error(error);
+  }
+
+});
+
+Parse.Cloud.define("validateUser", function(request, response) {
+
+  var count = 0;
+
+  var username = request.params.username;
+  var email = request.params.email;
+
+  var query = new Parse.Query("User");
+  query.equalTo("username", username);
+  query.find().then(function(usersA) {
+    count += usersA.length;
+    var queryFour = new Parse.Query("User");
+    queryFour.equalTo("email", email);
+    return queryFour.find();
+  }).then(function(usersB) {
+    count += usersB.length;
+    var queryTwo = new Parse.Query("UserRegisterStructure");
+    query.equalTo("username", username);
+    return query.find();
+  }).then(function(usersC) {
+    count += usersC.length;
+    var queryThree = new Parse.Query("UserRegisterStructure");
+    queryThree.equalTo("email", email);
+    return queryThree.find();
+  }).then(function(usersD) {
+    count += usersD.length;
+    response.success(count);
+  }), function(error) {
+    response.error(error);
+  }
 
 });
 
@@ -422,6 +557,20 @@ Parse.Cloud.beforeSave("PollStructure", function(request, response) {
       request.object.set("totalResponses", "0".toString());
     };
     response.success();
+});
+
+Parse.Cloud.afterSave("PollStructure", function(request) {
+  if (request.object.get("pollID") != null && request.object.get("totalResponses") === "0") {
+    Parse.Push.send({
+        channels: [ "allPolls" ],
+        data: {
+          title: "WildcatConnect",
+          alert: "POLL - " + request.object.get("pollTitle"),
+          p: request.object.get("pollID"),
+          badge: "Increment"
+        }
+      });
+  };
 });
 
 Parse.Cloud.job("alertStatusUpdatingNight", function(request, response) {

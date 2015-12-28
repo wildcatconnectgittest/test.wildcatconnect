@@ -13,6 +13,10 @@
 NSString *const kCellIdentifier = @"cellID";
 NSString *const kTableCellNibName = @"TableCell";
 
+@interface StaffDirectoryBaseTableViewController () <MFMailComposeViewControllerDelegate>
+
+@end
+
 @implementation StaffDirectoryBaseTableViewController
 
 - (void)viewDidLoad {
@@ -44,10 +48,20 @@ NSString *const kTableCellNibName = @"TableCell";
      return cell;
 }
 
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
+{
+     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 - (IBAction) buttonTouchUpInside:(id)sender {
      EmailButton *buttonClicked = (EmailButton *)sender;
-     NSString *theString = [@"mailto:" stringByAppendingString:buttonClicked.staffMember.staffMemberEMail];
-     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:theString]];
+     if ([MFMailComposeViewController canSendMail]) {
+          MFMailComposeViewController *composeViewController = [[MFMailComposeViewController alloc] initWithNibName:nil bundle:nil];
+          [composeViewController setMailComposeDelegate:self];
+          [composeViewController setToRecipients:@[buttonClicked.staffMember.staffMemberEMail]];
+          
+          [self presentViewController:composeViewController animated:YES completion:nil];
+     }
 }
 
 + (NSString*) kCellIdentifierString {

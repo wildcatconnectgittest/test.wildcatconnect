@@ -158,7 +158,7 @@
                                    if ([today isEqualToString:actual]) {
                                         dayLabel.text = @"Today is a custom schedule.";
                                    } else {
-                                        dayLabel.text = [actual stringByAppendingString:@" will be  a custom schedule."];
+                                        dayLabel.text = [actual stringByAppendingString:@" - Custom Schedule"];
                                    }
                                    dayLabel.textColor = [UIColor redColor];
                                    [dayLabel setFont:[UIFont systemFontOfSize:22]];
@@ -343,7 +343,6 @@
                                              dayLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, separator.frame.origin.y + separator.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
                                              NSDateFormatter* day = [[NSDateFormatter alloc] init];
                                              [day setDateFormat: @"EEEE"];
-                                             NSString *today = [day stringFromDate:[NSDate date]];
                                              dateFormatter = [[NSDateFormatter alloc] init];
                                                   // this is imporant - we set our input date format to match our input string
                                                   // if format doesn't match you'll get nil from your string, so be careful
@@ -351,11 +350,13 @@
                                              NSDate *dateFromString = [[NSDate alloc] init];
                                                   // voila!
                                              dateFromString = [dateFormatter dateFromString:schoolDay.schoolDate];
+                                             NSString *thatDateString = [dateFormatter stringFromDate:dateFromString];
+                                             NSString *todayDateString = [dateFormatter stringFromDate:[NSDate date]];
                                              NSString *actual = [day stringFromDate:dateFromString];
-                                             if ([today isEqualToString:actual]) {
+                                             if ([todayDateString isEqualToString:thatDateString]) {
                                                   dayLabel.text = [@"Today is " stringByAppendingString:scheduleType.fullScheduleString];
                                              } else {
-                                                  dayLabel.text = [[actual stringByAppendingString:@" will be "] stringByAppendingString:scheduleType.fullScheduleString];
+                                                  dayLabel.text = [[[[actual stringByAppendingString:@" ("] stringByAppendingString:thatDateString] stringByAppendingString:@") - "] stringByAppendingString:scheduleType.fullScheduleString];
                                              }
                                              if (scheduleType.alertNeeded == YES) {
                                                   dayLabel.textColor = [UIColor redColor];

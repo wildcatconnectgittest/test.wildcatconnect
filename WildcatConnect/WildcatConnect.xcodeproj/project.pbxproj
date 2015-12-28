@@ -13,6 +13,7 @@
 		0A2DDCD61C23282E00662F94 /* EC@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A2DDCD51C23282E00662F94 /* EC@2x.png */; };
 		0A2DDCD91C232EE700662F94 /* EditScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A2DDCD81C232EE700662F94 /* EditScheduleViewController.m */; };
 		0A2DDCDC1C28826700662F94 /* CustomScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A2DDCDB1C28826700662F94 /* CustomScheduleViewController.m */; };
+		0A2ED78C1C2F2C8600A34EDB /* UserRegisterStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A2ED78B1C2F2C8600A34EDB /* UserRegisterStructure.m */; };
 		0A7028D91C1BE26F0053E56D /* settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A7028D81C1BE26F0053E56D /* settings@2x.png */; };
 		0A7028DC1C1BE2E30053E56D /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A7028DB1C1BE2E30053E56D /* SettingsTableViewController.m */; };
 		0A8261641C1D32A300574208 /* PushSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A8261631C1D32A300574208 /* PushSettingsTableViewController.m */; };
@@ -140,6 +141,8 @@
 		0A2DDCD81C232EE700662F94 /* EditScheduleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditScheduleViewController.m; sourceTree = "<group>"; };
 		0A2DDCDA1C28826700662F94 /* CustomScheduleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomScheduleViewController.h; sourceTree = "<group>"; };
 		0A2DDCDB1C28826700662F94 /* CustomScheduleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomScheduleViewController.m; sourceTree = "<group>"; };
+		0A2ED78A1C2F2C8600A34EDB /* UserRegisterStructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserRegisterStructure.h; sourceTree = "<group>"; };
+		0A2ED78B1C2F2C8600A34EDB /* UserRegisterStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserRegisterStructure.m; sourceTree = "<group>"; };
 		0A7028D81C1BE26F0053E56D /* settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "settings@2x.png"; path = "../settings@2x.png"; sourceTree = "<group>"; };
 		0A7028DA1C1BE2E30053E56D /* SettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsTableViewController.h; sourceTree = "<group>"; };
 		0A7028DB1C1BE2E30053E56D /* SettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTableViewController.m; sourceTree = "<group>"; };
@@ -420,14 +423,14 @@
 				0ADBEE7D1C0ABD8400E946F6 /* ComposePollViewController.m */,
 				0ADBEEB71C0ABDE100E946F6 /* CustomLoginSegue.h */,
 				0ADBEEB61C0ABDE100E946F6 /* CustomLoginSegue.m */,
+				0A2DDCDA1C28826700662F94 /* CustomScheduleViewController.h */,
+				0A2DDCDB1C28826700662F94 /* CustomScheduleViewController.m */,
 				0ADBEE7E1C0ABD8400E946F6 /* EditMessagesViewController.h */,
 				0ADBEE7C1C0ABD8400E946F6 /* EditMessagesViewController.m */,
 				0ADBEE7B1C0ABD8400E946F6 /* EditPictureDayViewController.h */,
 				0ADBEE731C0ABD8400E946F6 /* EditPictureDayViewController.m */,
 				0A2DDCD71C232EE700662F94 /* EditScheduleViewController.h */,
 				0A2DDCD81C232EE700662F94 /* EditScheduleViewController.m */,
-				0A2DDCDA1C28826700662F94 /* CustomScheduleViewController.h */,
-				0A2DDCDB1C28826700662F94 /* CustomScheduleViewController.m */,
 				0ADBEF261C0AC57200E946F6 /* email@2x.png */,
 				0ADBEEC01C0ABDE100E946F6 /* EmailButton.h */,
 				0ADBEEC11C0ABDE100E946F6 /* EmailButton.m */,
@@ -516,6 +519,8 @@
 				0ADBEF351C0AC57200E946F6 /* usefulLinks@2x.png */,
 				0ADBEEC31C0ABDE100E946F6 /* UsefulLinksTableViewController.h */,
 				0ADBEE611C0ABD8400E946F6 /* UsefulLinksTableViewController.m */,
+				0A2ED78A1C2F2C8600A34EDB /* UserRegisterStructure.h */,
+				0A2ED78B1C2F2C8600A34EDB /* UserRegisterStructure.m */,
 				0ADBEEA41C0ABDE100E946F6 /* wildcat.jpeg */,
 				0ADBEEA31C0ABDE100E946F6 /* wildcatLogo.png */,
 				0ADBEEAD1C0ABDE100E946F6 /* StudentCenterTableViewController.h */,
@@ -755,6 +760,7 @@
 				0ADBEEE91C0ABDE100E946F6 /* ExtracurricularStructure.m in Sources */,
 				0ADBEEF31C0ABDE100E946F6 /* AppManager.m in Sources */,
 				0ADBEE901C0ABD8400E946F6 /* StaffDirectoryBaseTableViewController.m in Sources */,
+				0A2ED78C1C2F2C8600A34EDB /* UserRegisterStructure.m in Sources */,
 				0AD53D5C1C208B4D007E5184 /* RegisterExtracurricularViewController.m in Sources */,
 				0A2DDCD91C232EE700662F94 /* EditScheduleViewController.m in Sources */,
 				0ADBEE921C0ABD8400E946F6 /* AlertStructure.m in Sources */,
