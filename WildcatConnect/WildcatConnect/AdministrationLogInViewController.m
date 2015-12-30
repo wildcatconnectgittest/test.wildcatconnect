@@ -28,6 +28,7 @@
      UITextField *regPasswordTextField;
      UIButton *logButton;
      UIButton *signButton;
+     UIAlertView *av;
 }
 
 - (void)viewDidLoad {
@@ -345,14 +346,48 @@
           [activity startAnimating];
           [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser * _Nullable user, NSError * _Nullable error) {
                if (! error) {
-                    [self performSegueWithIdentifier:@"showAdministrationView" sender:self];
                     [activity stopAnimating];
+                    NSInteger verified = [[[PFUser currentUser] objectForKey:@"verified"] integerValue];
+                    if (verified == 0) {
+                         av = [[UIAlertView alloc]initWithTitle:@"Registration Key" message:@"Please enter your registration key." delegate:self cancelButtonTitle:nil otherButtonTitles:@"Verify", nil];
+                         av.alertViewStyle = UIAlertViewStylePlainTextInput;
+                         [av textFieldAtIndex:0].secureTextEntry = YES;
+                         [av setDelegate:self];
+                         [av show];
+                    } else {
+                         AdministrationMainTableViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"MainID"];
+                         [self.navigationController popToRootViewControllerAnimated:YES];
+                         [self.navigationController pushViewController:controller animated:YES];
+                    }
                } else if (error) {
                     [activity stopAnimating];
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"Error logging in. Please try again." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
                     [alertView show];
                }
           }];
+     }
+}
+
+- (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+          // the user clicked one of the OK/Cancel buttons
+     if (actionSheet == av) {
+          if (buttonIndex == 0) {
+               NSString *choiceText = [actionSheet textFieldAtIndex:0].text;
+               if ([choiceText isEqual:[[PFUser currentUser] objectForKey:@"key"]]) {
+                    AdministrationMainTableViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"MainID"];
+                    [self.navigationController popToRootViewControllerAnimated:YES];
+                    [self.navigationController pushViewController:controller animated:YES];
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Success!" message:@"Welcome to WildcatConnect!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                    [alertView show];
+                    [[PFUser currentUser] setObject:[NSNumber numberWithInteger:1] forKey:@"verified"];
+                    [[PFUser currentUser] saveInBackground];
+               } else {
+                    [PFUser logOutInBackground];
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"Incorrect registration key." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                    [alertView show];
+               }
+          }
+          [self.view endEditing:YES];
      }
 }
 

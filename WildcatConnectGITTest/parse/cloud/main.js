@@ -531,6 +531,7 @@ Parse.Cloud.define("registerUser", function(request, response) {
   var email = request.params.email;
   var firstName = request.params.firstName;
   var lastName = request.params.lastName;
+  var key = request.params.key;
 
   var theUser = new Parse.User();
 
@@ -541,6 +542,8 @@ Parse.Cloud.define("registerUser", function(request, response) {
   theUser.set("ownedEC", new Array());
   theUser.set("firstName", firstName);
   theUser.set("lastName", lastName);
+  theUser.set("verified", 0);
+  theUser.set("key", key);
 
   theUser.signUp(null, {
     success: function(newUser) {
@@ -554,7 +557,7 @@ Parse.Cloud.define("registerUser", function(request, response) {
                 to: email,
                 from: "WildcatConnect <team@wildcatconnect.org>",
                 subject: "WildcatConnect Account Confirmation",
-                text: firstName + ", \n\nYour new WildcatConnect account has been approved! With your faculty account, you will now be able to log in to both the WildcatConnect iOS App and our web portal at http://www.wildcatconnect.org. Your username is... \n\n" + username + "\n\nNOTE: Usernames and passwords are case-sensitive.\n\nEnjoy posting and sharing with students, faculty and families!\n\nBest,\n\nWildcatConnect Development Team\n\nWeb: http://www.wildcatconnect.org\nSupport: support@wildcatconnect.org\nContact: team@wildcatconnect.org"
+                text: firstName + ", \n\nYour new WildcatConnect account has been approved! With your faculty account, you will now be able to log in to both the WildcatConnect iOS App and our web portal at http://www.wildcatconnect.org.\n\nUsername = " + username + "\nRegistration Key = " + key +"\n\nNOTE: All usernames, passwords and keys are case-sensitive.\n\nEnjoy posting and sharing with students, faculty and families!\n\nBest,\n\nWildcatConnect Development Team\n\nWeb: http://www.wildcatconnect.org\nSupport: support@wildcatconnect.org\nContact: team@wildcatconnect.org"
               }, {
                 success: function(httpResponse) {
                   response.success("Email sent!");
