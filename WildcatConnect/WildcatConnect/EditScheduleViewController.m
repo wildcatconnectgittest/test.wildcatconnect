@@ -9,6 +9,7 @@
 #import "EditScheduleViewController.h"
 #import "SchoolDayStructure.h"
 #import "CustomScheduleViewController.h"
+#import "SpecialKeyStructure.h"
 
 @interface EditScheduleViewController ()
 
@@ -23,14 +24,17 @@
      UITableView *theTableView;
      UIAlertView *errorAlertView;
      UIActionSheet *popupActionSheet;
+     BOOL reload;
+     UILabel *modeLabel;
+     UIView *separator;
+     UIButton *modeButton;
 }
+
+@synthesize modeString;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-}
-
-- (void)viewWillAppear:(BOOL)animated {
      self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:248.0f/255.0f
                                                                             green:183.0f/255.0f
                                                                              blue:23.0f/255.0f
@@ -40,6 +44,7 @@
      self.navigationController.navigationBar.translucent = NO;
      
      hasChanged = false;
+     reload = false;
      
      UIBarButtonItem *bbtnBack = [[UIBarButtonItem alloc] initWithTitle:@"Back"
                                                                   style:UIBarButtonItemStylePlain
@@ -72,14 +77,22 @@
      [titleLabel sizeToFit];
      [scrollView addSubview:titleLabel];
      
-     UIButton *modeButton = [UIButton buttonWithType:UIButtonTypeSystem];
+     modeButton = [UIButton buttonWithType:UIButtonTypeSystem];
      [modeButton setTitle:@"EDIT SCHEDULE MODE FOR VACATIONS" forState:UIControlStateNormal];
      [modeButton sizeToFit];
      [modeButton addTarget:self action:@selector(modeButtonClicked) forControlEvents:UIControlEventTouchUpInside];
      modeButton.frame = CGRectMake(titleLabel.frame.origin.x, titleLabel.frame.origin.y + titleLabel.frame.size.height + 10, modeButton.frame.size.width, modeButton.frame.size.height);
      [scrollView addSubview:modeButton];
      
-     UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(10, modeButton.frame.origin.y + modeButton.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+     modeLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, modeButton.frame.origin.y + modeButton.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
+     modeLabel.text = @"Current Mode - LOADING...";
+     [modeLabel setFont:[UIFont systemFontOfSize:16]];
+     modeLabel.lineBreakMode = NSLineBreakByWordWrapping;
+     modeLabel.numberOfLines = 0;
+     [modeLabel sizeToFit];
+     [scrollView addSubview:modeLabel];
+     
+     separator = [[UIView alloc] initWithFrame:CGRectMake(10, modeLabel.frame.origin.y + modeLabel.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
      separator.backgroundColor = [UIColor blackColor];
      [scrollView addSubview:separator];
      
@@ -96,11 +109,7 @@
      self.navigationItem.rightBarButtonItem = barButtonItem;
      [activity startAnimating];
      
-     [self getSchedulesMethodWithCompletion:^(NSMutableArray *returnArray, NSError *error) {
-          [activity stopAnimating];
-          self.scheduleArray = returnArray;
-          [theTableView reloadData];
-     }];
+     [self reloadMethodBig];
      
      self.automaticallyAdjustsScrollViewInsets = YES;
      UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 70, 0);
@@ -114,8 +123,150 @@
      [self.view addSubview:scrollView];
 }
 
+- (void)reloadMethodBig {
+     [self getModeMethodWithCompletion:^(NSString *returnString, NSError *error) {
+          
+          [self getModeMethodWithCompletion:^(NSString *returnString, NSError *error) {
+               
+               self.modeString = returnString;
+               
+               [self getSchedulesMethodWithCompletion:^(NSMutableArray *returnArray, NSError *error) {
+                    
+                    [activity stopAnimating];
+                    
+                    self.scheduleArray = returnArray;
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^ {
+                         [self reloadMethod];
+                    });
+               }];
+          }];
+          
+     }];
+}
+
+- (void)reloadMethod {
+     
+     [modeLabel removeFromSuperview];
+     modeLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, modeButton.frame.origin.y + modeButton.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
+     [modeLabel setFont:[UIFont systemFontOfSize:16]];
+     modeLabel.lineBreakMode = NSLineBreakByWordWrapping;
+     modeLabel.numberOfLines = 0;
+     [scrollView addSubview:modeLabel];
+     [modeLabel setText:[@"Current Mode - " stringByAppendingString:self.modeString]];
+     [modeLabel sizeToFit];
+     
+     [separator removeFromSuperview];
+     separator = [[UIView alloc] initWithFrame:CGRectMake(10, modeLabel.frame.origin.y + modeLabel.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+     separator.backgroundColor = [UIColor blackColor];
+     [scrollView addSubview:separator];
+     
+     [theTableView removeFromSuperview];
+     theTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, separator.frame.origin.y + separator.frame.size.height + 10, self.view.frame.size.width, 250)];
+     [theTableView setDelegate:self];
+     [theTableView setDataSource:self];
+     [scrollView addSubview:theTableView];
+     
+     [theTableView reloadData];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+     [super viewWillAppear:animated];
+     
+     if (reload == true) {
+          
+          reload = false;
+          
+          self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:248.0f/255.0f
+                                                                                 green:183.0f/255.0f
+                                                                                  blue:23.0f/255.0f
+                                                                                 alpha:0.5f];
+          
+          self.navigationItem.title = @"Scheduling";
+          self.navigationController.navigationBar.translucent = NO;
+          
+          UIBarButtonItem *bbtnBack = [[UIBarButtonItem alloc] initWithTitle:@"Back"
+                                                                       style:UIBarButtonItemStylePlain
+                                                                      target:self
+                                                                      action:@selector(goBack:)];
+          
+          self.navigationItem.leftBarButtonItem = bbtnBack;
+          
+          [super viewDidLoad];
+          
+          [[NSNotificationCenter defaultCenter] addObserver:self
+                                                   selector:@selector(keyboardWillShow:)
+                                                       name:UIKeyboardWillShowNotification
+                                                     object:self.view.window];
+               // register for keyboard notifications
+          [[NSNotificationCenter defaultCenter] addObserver:self
+                                                   selector:@selector(keyboardWillHide:)
+                                                       name:UIKeyboardWillHideNotification
+                                                     object:self.view.window];
+          keyboardIsShown = NO;
+          
+          [scrollView removeFromSuperview];
+          scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+          scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
+          
+          titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, 100)];
+          titleLabel.text = @"Tap on a day to edit its schedule with the following options...\n\n- Go back a day\n\n- Edit a custom schedule";
+          [titleLabel setFont:[UIFont systemFontOfSize:16]];
+          titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+          titleLabel.numberOfLines = 0;
+          [titleLabel sizeToFit];
+          [scrollView addSubview:titleLabel];
+          
+          modeButton = [UIButton buttonWithType:UIButtonTypeSystem];
+          [modeButton setTitle:@"EDIT SCHEDULE MODE FOR VACATIONS" forState:UIControlStateNormal];
+          [modeButton sizeToFit];
+          [modeButton addTarget:self action:@selector(modeButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+          modeButton.frame = CGRectMake(titleLabel.frame.origin.x, titleLabel.frame.origin.y + titleLabel.frame.size.height + 10, modeButton.frame.size.width, modeButton.frame.size.height);
+          [scrollView addSubview:modeButton];
+          
+          modeLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, modeButton.frame.origin.y + modeButton.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
+          modeLabel.text = @"Current Mode - LOADING...";
+          [modeLabel setFont:[UIFont systemFontOfSize:16]];
+          modeLabel.lineBreakMode = NSLineBreakByWordWrapping;
+          modeLabel.numberOfLines = 0;
+          [modeLabel sizeToFit];
+          [scrollView addSubview:modeLabel];
+          
+          separator = [[UIView alloc] initWithFrame:CGRectMake(10, modeLabel.frame.origin.y + modeLabel.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+          separator.backgroundColor = [UIColor blackColor];
+          [scrollView addSubview:separator];
+          
+          theTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, separator.frame.origin.y + separator.frame.size.height + 10, self.view.frame.size.width, 250)];
+          [theTableView setDelegate:self];
+          [theTableView setDataSource:self];
+          [scrollView addSubview:theTableView];
+          [theTableView reloadData];
+          
+          activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+          [activity setBackgroundColor:[UIColor clearColor]];
+          [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+          UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
+          self.navigationItem.rightBarButtonItem = barButtonItem;
+          [activity startAnimating];
+          
+          [self reloadMethodBig];
+          
+          self.automaticallyAdjustsScrollViewInsets = YES;
+          UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 70, 0);
+          scrollView.contentInset = adjustForTabbarInsets;
+          scrollView.scrollIndicatorInsets = adjustForTabbarInsets;
+          CGRect contentRect = CGRectZero;
+          for (UIView *view in scrollView.subviews) {
+               contentRect = CGRectUnion(contentRect, view.frame);
+          }
+          scrollView.contentSize = contentRect.size;
+          [self.view addSubview:scrollView];
+     }
+}
+
 - (void)modeButtonClicked {
      popupActionSheet = [[UIActionSheet alloc] initWithTitle:@"Schedule Modes" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:
+                         @"NORMAL",
                              @"THANKSGIVING BREAK",
                              @"HOLIDAY BREAK",
                              @"FEBRUARY BREAK",
@@ -132,6 +283,7 @@
      NSMutableArray *returnArray = [NSMutableArray array];
      PFQuery *query = [SchoolDayStructure query];
      query.limit = 10;
+     [query whereKey:@"isActive" equalTo:[NSNumber numberWithInt:1]];
      [query orderByAscending:@"schoolDayID"];
      [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
           [returnArray addObjectsFromArray:objects];
@@ -146,6 +298,50 @@
                overallError = theError;
           }
           completion(returnArray, overallError);
+     });
+}
+
+- (void)getModeMethodWithCompletion:(void (^)(NSString *returnString, NSError *error))completion {
+     dispatch_group_t serviceGroup = dispatch_group_create();
+     dispatch_group_enter(serviceGroup);
+     __block NSError *theError;
+     __block NSString *returnString;
+     PFQuery *query = [SpecialKeyStructure query];
+     [query whereKey:@"key" equalTo:@"scheduleMode"];
+     [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+          theError = error;
+          returnString = [object objectForKey:@"value"];
+          dispatch_group_leave(serviceGroup);
+     }];
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
+          NSError *overallError = nil;
+          if (theError != nil && returnString.length == 0) {
+               overallError = theError;
+          }
+          completion(returnString, overallError);
+     });
+}
+
+- (void)saveModeMethodWithCompletion:(void (^)(NSError *error))completion forString:(NSString *)theString {
+     dispatch_group_t serviceGroup = dispatch_group_create();
+     dispatch_group_enter(serviceGroup);
+     __block NSError *theError;
+     PFQuery *query = [SpecialKeyStructure query];
+     [query whereKey:@"key" equalTo:@"scheduleMode"];
+     [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+          theError = error;
+          [object setObject:theString forKey:@"value"];
+          [object saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+               theError = error;
+               dispatch_group_leave(serviceGroup);
+          }];
+     }];
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
+          NSError *overallError = nil;
+          if (theError != nil) {
+               overallError = theError;
+          }
+          completion(overallError);
      });
 }
 
@@ -181,18 +377,60 @@
                              @"Go Back 1 Day from Here",
                              @"Edit Custom Schedule",
                              nil];
-     [popup setTag:indexPath.row];
+     [popup setTag:[[[self.scheduleArray objectAtIndex:indexPath.row] objectForKey:@"schoolDayID"] integerValue]];
      [popup showInView:self.view]; 
 }
 
 - (void)actionSheet:(UIActionSheet *)popup clickedButtonAtIndex:(NSInteger)buttonIndex {
      if (popup == popupActionSheet) {
-               //Handle those events
-               //Create custom array structure for this...
+               //Need to develop SpecialKeyStructure
+               //Will have a "key" and "value" parameter, both strings???
+               //For instance, one will be { key : "scheduleMode" , value : "NORMAL" }
+               //Another will need to be { key : "doSDSD" , value : "1" }
+               //the afterSave trigger for this structure will need to take a look at the key paramter
+               //if it is "scheduleMode", then other keys must be reflected... (i.e. turning off/on all necessary Cloud Code functions...
+          
+               //Set the SKS for "scheduleMode" to a given string
+          
+          NSString *theString;
+          
+          switch (buttonIndex) {
+               case 0:
+                    theString = @"NORMAL";
+                    break;
+               
+               case 1:
+                    theString = @"THANKSGIVING BREAK";
+                    break;
+               
+               case 2:
+                    theString = @"HOLIDAY BREAK";
+                    break;
+                    
+               case 3:
+                    theString = @"FEBRUARY BREAK";
+                    break;
+                    
+               case 4:
+                    theString = @"SPRING BREAK";
+                    break;
+                    
+               case 5:
+                    theString = @"SUMMER";
+                    break;
+                    
+               default:
+                    break;
+          }
+          
+          [self saveModeMethodWithCompletion:^(NSError *error) {
+               
+          } forString:theString];
+          
      } else {
           if (buttonIndex == 0) {
                     //Go Back 1 Day
-               if (popup.tag != 0) {
+               if (popup.tag != [[[self.scheduleArray objectAtIndex:self.scheduleArray.count - 1] objectForKey:@"schoolDayID"] integerValue]) {
                     activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
                     [activity setBackgroundColor:[UIColor clearColor]];
                     [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
@@ -201,10 +439,10 @@
                     [activity startAnimating];
                     [PFCloud callFunctionInBackground:@"goBackOneDayFromStructure" withParameters:@{@"ID":[NSNumber numberWithInteger:popup.tag]} block:^(id  _Nullable object, NSError * _Nullable error) {
                          [activity stopAnimating];
-                         [self viewWillAppear:YES];
+                         [self reloadMethodBig];
                     }];
                } else {
-                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"You can't go back a day from today." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"You can't go back a day from here." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
                     [alertView show];
                }
           } else if (buttonIndex == 1) {

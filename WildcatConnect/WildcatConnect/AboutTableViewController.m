@@ -8,6 +8,8 @@
 
 #import "AboutTableViewController.h"
 #import <Parse/Parse.h>
+#import "DisclaimerViewController.h"
+#import "CapstoneViewController.h"
 
 @interface AboutTableViewController ()
 
@@ -127,13 +129,13 @@
                     reloading = false;
                     [self.tableView reloadData];
                }
-               NSString *developerString = @"Developer List\n";
+               NSString *developerString = @"Application Team\n";
                for (NSString *string in self.developerArray) {
                     developerString = [[developerString stringByAppendingString:@"\n"] stringByAppendingString:string];
                }
                cell.textLabel.text = developerString;
           } else {
-               cell.textLabel.text = @"No development list available.";
+               cell.textLabel.text = @"No list available.";
           }
           return cell;
      } else if (indexPath.section == 1) {
@@ -156,6 +158,13 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
      [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
           //Change logic here for new options...
+     if (indexPath.section == 3) {
+          DisclaimerViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"DisclaimerView"];
+          [self.navigationController pushViewController:controller animated:YES];
+     } else if (indexPath.section == 2) {
+          CapstoneViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"CapstoneView"];
+          [self.navigationController pushViewController:controller animated:YES];
+     }
 }
 
 /*

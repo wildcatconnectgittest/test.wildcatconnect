@@ -21,6 +21,7 @@
 #import "AlertDetailViewController.h"
 #import "NewsArticleDetailViewController.h"
 #import "UserRegisterStructure.h"
+#import "SpecialKeyStructure.h"
 
 @implementation AppDelegate
 
@@ -30,7 +31,7 @@
      [Parse setApplicationId:@"cLBOvwh6ZTQYex37DSwxL1Cvg34MMiRWYAB4vqs0"
                    clientKey:@"jGjp3WuCzf4ZetH8kpTLGNnj1h3DgtHlCuK1QbTi"];
      
-     
+     [PFUser enableRevocableSessionInBackground];
      
      [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
      
@@ -397,6 +398,11 @@
      URS.email = @"team@wildcatconnect.org";
      [URS saveInBackground];*/
      
+     /*SpecialKeyStructure *SKS = [[SpecialKeyStructure alloc] init];
+     SKS.key = @"doSDSD";
+     SKS.value = @"1";
+     [SKS saveInBackground];*/
+     
     return YES;
 }
                                    
@@ -668,7 +674,7 @@
      PFInstallation *currentInstallation = [PFInstallation currentInstallation];
      if (currentInstallation.badge != 0) {
           currentInstallation.badge = 0;
-          [currentInstallation saveEventually];
+          [currentInstallation saveInBackground];
      }
 }
 
@@ -678,6 +684,7 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
      [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"reloadHomePage"];
+     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"visitedPagesArray"];
      [[NSUserDefaults standardUserDefaults] synchronize];
 }
 

@@ -72,6 +72,7 @@
      usernameTextField.autocorrectionType = UITextAutocorrectionTypeNo;
      usernameTextField.placeholder = @"Username";
      usernameTextField.tag = 0;
+     [usernameTextField setDelegate:self];
      [scrollView addSubview:usernameTextField];
      
      passwordTextField = [[UITextField alloc] initWithFrame:CGRectMake(usernameTextField.frame.origin.x, usernameTextField.frame.origin.y + usernameTextField.frame.size.height + 10, self.view.frame.size.width - 20, 31)];
@@ -79,6 +80,7 @@
      passwordTextField.placeholder = @"Password";
      passwordTextField.secureTextEntry = YES;
      passwordTextField.tag = 1;
+     [passwordTextField setDelegate:self];
      [scrollView addSubview:passwordTextField];
      
      logButton = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -86,6 +88,7 @@
      [logButton sizeToFit];
      [logButton addTarget:self action:@selector(logIn) forControlEvents:UIControlEventTouchUpInside];
      logButton.frame = CGRectMake((self.view.frame.size.width / 2 - logButton.frame.size.width / 2), passwordTextField.frame.origin.y + passwordTextField.frame.size.height + 10, logButton.frame.size.width, logButton.frame.size.height);
+     [usernameTextField setDelegate:self];
      [scrollView addSubview:logButton];
      
      UILabel *signLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, logButton.frame.origin.y + logButton.frame.size.height + 10, self.view.frame.size.width - 20, 50)];
@@ -100,12 +103,14 @@
      firstNameTextField.borderStyle = UITextBorderStyleRoundedRect;
      firstNameTextField.placeholder = @"First Name";
      firstNameTextField.tag = 2;
+     [firstNameTextField setDelegate:self];
      [scrollView addSubview:firstNameTextField];
      
      lastNameTextField = [[UITextField alloc] initWithFrame:CGRectMake(signLabel.frame.origin.x, firstNameTextField.frame.origin.y + firstNameTextField.frame.size.height + 10, self.view.frame.size.width - 20, 31)];
      lastNameTextField.borderStyle = UITextBorderStyleRoundedRect;
      lastNameTextField.placeholder = @"Last Name";
      lastNameTextField.tag = 3;
+     [lastNameTextField setDelegate:self];
      [scrollView addSubview:lastNameTextField];
      
      emailTextField = [[UITextField alloc] initWithFrame:CGRectMake(signLabel.frame.origin.x, lastNameTextField.frame.origin.y + lastNameTextField.frame.size.height + 10, self.view.frame.size.width - 20, 31)];
@@ -114,6 +119,7 @@
      emailTextField.autocorrectionType = UITextAutocorrectionTypeNo;
      emailTextField.placeholder = @"E-Mail";
      emailTextField.tag = 4;
+     [emailTextField setDelegate:self];
      [scrollView addSubview:emailTextField];
      
      regUsernameTextField = [[UITextField alloc] initWithFrame:CGRectMake(titleLabel.frame.origin.x, emailTextField.frame.origin.y + emailTextField.frame.size.height + 10, self.view.frame.size.width - 20, 31)];
@@ -122,6 +128,7 @@
      regUsernameTextField.autocorrectionType = UITextAutocorrectionTypeNo;
      regUsernameTextField.placeholder = @"Username";
      regUsernameTextField.tag = 5;
+     [regUsernameTextField setDelegate:self];
      [scrollView addSubview:regUsernameTextField];
      
      regPasswordTextField = [[UITextField alloc] initWithFrame:CGRectMake(regUsernameTextField.frame.origin.x, regUsernameTextField.frame.origin.y + regUsernameTextField.frame.size.height + 10, self.view.frame.size.width - 20, 31)];
@@ -129,6 +136,7 @@
      regPasswordTextField.placeholder = @"Password";
      regPasswordTextField.secureTextEntry = YES;
      regPasswordTextField.tag = 6;
+     [regPasswordTextField setDelegate:self];
      [scrollView addSubview:regPasswordTextField];
      
      signButton = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -266,6 +274,21 @@
                });
           } forDictionary:@{ @"username" : username , @"password" : password , @"firstName" : firstName , @"lastName" : lastName , @"email" : email }];
      }
+}
+
+-(BOOL)textFieldShouldReturn:(UITextField*)textField
+{
+     NSInteger nextTag = textField.tag + 1;
+          // Try to find next responder
+     UIResponder* nextResponder = [textField.superview viewWithTag:nextTag];
+     if (nextResponder) {
+               // Found next responder, so set it.
+          [nextResponder becomeFirstResponder];
+     } else {
+               // Not found, so remove keyboard.
+          [textField resignFirstResponder];
+     }
+     return NO; // We do not want UITextField to insert line-breaks.
 }
 
 - (void)registerMethodWithCompletion:(void (^)(NSError *error, NSInteger response))completion forDictionary:(NSDictionary *)dictionary {

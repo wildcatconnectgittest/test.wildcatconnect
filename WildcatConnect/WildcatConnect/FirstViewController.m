@@ -46,13 +46,16 @@
 - (void)viewWillAppear:(BOOL)animated {
      [super viewWillAppear:animated];
      
+     self.navigationController.navigationItem.title = @"Home";
+     
+     UIBarButtonItem *bar = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"logoSmall.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:nil action:nil];
+     bar.enabled = false;
+     self.navigationItem.leftBarButtonItem = bar;
      
      self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:248.0f/255.0f
                                                                             green:183.0f/255.0f
                                                                              blue:23.0f/255.0f
                                                                             alpha:0.5f];
-     
-     self.navigationController.navigationItem.title = @"Home";
      
      NSString *loadString = [[NSUserDefaults standardUserDefaults] objectForKey:@"reloadHomePage"];
      if (! loadString || [loadString isEqual:@"1"]) {
@@ -87,6 +90,8 @@
                     [alertView show];
                     dispatch_async(dispatch_get_main_queue(), ^ {
                          [activity stopAnimating];
+                         [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"reloadHomePage"];
+                         [[NSUserDefaults standardUserDefaults] synchronize];
                          UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(viewWillAppear:)];
                          self.navigationItem.rightBarButtonItem = barButtonItem;
                          [activity startAnimating];
@@ -101,6 +106,8 @@
                               [alertView show];
                               dispatch_async(dispatch_get_main_queue(), ^ {
                                    [activity stopAnimating];
+                                   [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"reloadHomePage"];
+                                   [[NSUserDefaults standardUserDefaults] synchronize];
                                    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(viewWillAppear:)];
                                    self.navigationItem.rightBarButtonItem = barButtonItem;
                                    [activity startAnimating];
@@ -304,6 +311,8 @@
                                              [alertView show];
                                              dispatch_async(dispatch_get_main_queue(), ^ {
                                                   [activity stopAnimating];
+                                                  [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"reloadHomePage"];
+                                                  [[NSUserDefaults standardUserDefaults] synchronize];
                                                   UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(viewWillAppear:)];
                                                   self.navigationItem.rightBarButtonItem = barButtonItem;
                                                   [activity startAnimating];
@@ -641,10 +650,10 @@
      dispatch_group_t serviceGroup = dispatch_group_create();
      dispatch_group_enter(serviceGroup);
      __block NSError *theError;
-     __block SchoolDayStructure *theDay;
      NSMutableArray *array = [NSMutableArray array];
      PFQuery *query = [SchoolDayStructure query];
      [query orderByAscending:@"schoolDayID"];
+     [query whereKey:@"isActive" equalTo:[NSNumber numberWithInt:1]];
      [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
           theError = error;
           [array addObjectsFromArray:objects];

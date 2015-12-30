@@ -604,6 +604,7 @@
      NSMutableArray *array = [NSMutableArray array];
      PFQuery *query = [SchoolDayStructure query];
      [query orderByAscending:@"schoolDayID"];
+     [query whereKey:@"isActive" equalTo:[NSNumber numberWithInt:1]];
      [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
           theError = error;
           [array addObjectsFromArray:objects];

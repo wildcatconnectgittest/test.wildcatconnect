@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AdministrationLogInViewController : UIViewController
+@interface AdministrationLogInViewController : UIViewController <UITextFieldDelegate>
 
 @end

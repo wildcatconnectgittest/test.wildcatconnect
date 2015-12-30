@@ -50,8 +50,8 @@
      }
      
      self.sectionsImagesArray = [[NSMutableArray alloc] init];
-     [self.sectionsImagesArray addObject:@"theNews@2x.png"];
-     [self.sectionsImagesArray addObject:@"extracurriculars@2x.png"];
+     [self.sectionsImagesArray addObject:@"news@2x.png"];
+     [self.sectionsImagesArray addObject:@"EC@2x.png"];
      
      if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administrator"]) {
           [self.sectionsImagesArray addObject:@"communityService@2x.png"];
@@ -88,7 +88,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
      if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administrator"]) {
           if (section == 0) {
-               return 2;
+               return 1;
           } else if (section == 1)
                return self.sectionsArray.count;
           else
@@ -132,9 +132,6 @@
                if (indexPath.row == 0) {
                     cell.textLabel.text = @"Picture of the Day";
                     cell.imageView.image = [UIImage imageNamed:@"picture@2x.png"];
-               } else if (indexPath.row == 1) {
-                    cell.textLabel .text = @"Scheduling";
-                    cell.imageView.image = [UIImage imageNamed:@"calendar@2x.png"];
                }
           } else if (indexPath.section == 1) {
                cell.textLabel.text = self.sectionsArray[indexPath.row];
@@ -172,9 +169,6 @@
           if (indexPath.section == 0) {
                if (indexPath.row == 0) {
                     EditPictureDayViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"EditPicture"];
-                    [self.navigationController pushViewController:controller animated:YES];
-               } else if (indexPath.row == 1) {
-                    EditScheduleViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"EditSchedule"];
                     [self.navigationController pushViewController:controller animated:YES];
                }
           } else if (indexPath.section == 1) {

@@ -22,6 +22,10 @@
      
      self.navigationController.navigationItem.title = @"Settings";
      
+     UIBarButtonItem *bar = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"logoSmall.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:nil action:nil];
+     bar.enabled = false;
+     self.navigationItem.leftBarButtonItem = bar;
+     
      self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];
      
      self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:248.0f/255.0f
@@ -53,13 +57,17 @@
      if (indexPath.section == 0) {
           cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
           cell.textLabel.text = @"Push Notifications";
+          cell.imageView.image = [UIImage imageNamed:@"push@2x.png"];
      } else if (indexPath.section == 1) {
           cell.textLabel.text = @"App Support";
+          cell.imageView.image = [UIImage imageNamed:@"email@2x.png"];
      } else if (indexPath.section == 2) {
           cell.textLabel.text = @"Feeback/Join WildcatConnect";
+          cell.imageView.image = [UIImage imageNamed:@"email@2x.png"];
      } else if (indexPath.section == 3) {
           cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
           cell.textLabel.text = @"About";
+          cell.imageView.image = [UIImage imageNamed:@"about@2x.png"];
      }
     
     return cell;

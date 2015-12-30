@@ -31,6 +31,10 @@
      
      self.navigationController.navigationItem.title = @"Alerts";
      
+     UIBarButtonItem *bar = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"logoSmall.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:nil action:nil];
+     bar.enabled = false;
+     self.navigationItem.leftBarButtonItem = bar;
+     
      self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:248.0f/255.0f
                                                                             green:183.0f/255.0f
                                                                              blue:23.0f/255.0f

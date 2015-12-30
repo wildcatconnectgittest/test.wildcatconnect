@@ -5,58 +5,193 @@ Mailgun.initialize('wildcatconnect.org', 'key-21b93c07c71f9d42c7b0bec1fa68567f')
 
 var Buffer = require('buffer').Buffer;
 
+var Moment = require('moment');
+
 Parse.Cloud.job("schoolDayStructureDeletion", function(request, response) {
-  Parse.Config.get().then(function(config) {
-    var specialKeys = config.get("specialKeys");
-    var date = new Date();
-    if (specialKeys.indexOf("XSDSD") === -1 && date.getDay() != 0 && date.getDay() != 1) {
-      //Continue...
-      var query = new Parse.Query("SchoolDayStructure");
-      query.ascending("schoolDayID");
-      query.first({
-        success: function(object) {
-          object.destroy({
-            success: function(myObject) {
-              response.success("Yay!");
+  var query = new Parse.Query("SpecialKeyStructure");
+  query.equalTo("key", "scheduleMode");
+  query.first({
+    success: function(object) {
+      var date = new Date();
+      if (object.get("Value") === "NORMAL" && date.getDay() != 0 && date.getDay() != 1) {
+        //Continue...
+        var query = new Parse.Query("SchoolDayStructure");
+        query.ascending("schoolDayID");
+        query.first({
+          success: function(object) {
+            object.set("isActive", 0);
+            object.save(null, {
+              success: function(myObject) {
+                response.success("Yay!");
+              },
+              error: function(myObject, error) {
+                response.error(error);
+              }
+            });
           },
-          error: function(myObject, error) {
+          error: function(error) {
+            alert("Error: " + error.code + " " + error.message);
             response.error("No!");
           }
-        });
-      },
-        error: function(error) {
-          alert("Error: " + error.code + " " + error.message);
-          response.error("No!");
-        }
-     });
-    } else {
-      response.success("Not running this job.");
-    };
-  }, function(error) {
-    // Something went wrong (e.g. request timed out)
-    response.error(error);
+       });
+      } else {
+        response.success("Schedule mode does not allow deletion at this time.");
+      };
+    },
+    error: function(error) {
+      response.error(error);
+    }
+  });
+ });
+
+Parse.Cloud.job("schoolDayStructureGeneration", function(request, response) {
+  var query = new Parse.Query("SpecialKeyStructure");
+  query.equalTo("key", "scheduleMode");
+  query.first({
+    success: function(object) {
+      var date = new Date();
+      if (object.get("Value") === "NORMAL" && date.getDay() != 0 && date.getDay() != 1) {
+        var query = new Parse.Query("SchoolDayStructure");
+        query.descending("schoolDayID");
+        query.first({
+          success: function(object) {
+            var ID = object.get("schoolDayID") + 1;
+            var oldDate = object.get("schoolDate");
+            var oldDateDate =  Moment(oldDate, "MM-DD-YYYY");
+            var thatDay = oldDateDate.day();
+            if (thatDay === 5) {
+              var newDateDate = oldDateDate.add('days', 3);
+              var newDate = newDateDate.format("MM-DD-YYYY");
+              var oldType = object.get("scheduleType");
+              var newType = "";
+              if (oldType.indexOf("A") > -1) {
+                newType = "B1";
+              } else if (oldType.indexOf("B") > -1) {
+                newType = "C1";
+              } else if (oldType.indexOf("C") > -1) {
+                newType = "D1";
+              } else if (oldType.indexOf("D") > -1) {
+                newType = "E1";
+              } else if (oldType.indexOf("E") > -1) {
+                newType = "F1";
+              } else if (oldType.indexOf("F") > -1) {
+                newType = "G1";
+              } else if (oldType.indexOf("G") > -1) {
+                newType = "A1";
+              };
+              var SchoolDayStructure = Parse.Object.extend("SchoolDayStructure");
+              var newDay = new SchoolDayStructure();
+              newDay.save({
+                "hasImage": 0,
+                "imageString" : "None.",
+                "messageString" : "No alerts yet.",
+                "scheduleType" : newType,
+                "schoolDate" : newDate,
+                "imageUser" : "None.",
+                "customSchedule" : "None",
+                "imageUserFullString" : "None.",
+                "schoolDayID" : ID,
+                "isActive" : 1
+              }, {
+                success: function(savedObject) {
+                  response.success("New day created.");
+                },
+                error: function(savedObject, error) {
+                  response.error(error.code + " - " + error.message);
+                }
+              });
+            } else {
+              var newDateDate = oldDateDate.add('days', 1);
+              var newDate = newDateDate.format("MM-DD-YYYY");
+              var oldType = object.get("scheduleType");
+              var newType = "";
+              if (oldType.indexOf("A") > -1) {
+                newType = "B";
+              } else if (oldType.indexOf("B") > -1) {
+                newType = "C";
+              } else if (oldType.indexOf("C") > -1) {
+                newType = "D";
+              } else if (oldType.indexOf("D") > -1) {
+                newType = "E";
+              } else if (oldType.indexOf("E") > -1) {
+                newType = "F";
+              } else if (oldType.indexOf("F") > -1) {
+                newType = "G";
+              } else if (oldType.indexOf("G") > -1) {
+                newType = "A";
+              };
+              var SchoolDayStructure = Parse.Object.extend("SchoolDayStructure");
+              var newDay = new SchoolDayStructure();
+              newDay.save({
+                "hasImage": 0,
+                "imageString" : "None.",
+                "messageString" : "No alerts yet.",
+                "scheduleType" : newType,
+                "schoolDate" : newDate,
+                "imageUser" : "None.",
+                "customSchedule" : "None",
+                "imageUserFullString" : "None.",
+                "schoolDayID" : ID,
+                "isActive" : 1
+              }, {
+                success: function(savedObject) {
+                  response.success("New day created.");
+                },
+                error: function(savedObject, error) {
+                  response.error(error.code + " - " + error.message);
+                }
+              });
+            };
+          },
+          error: function(error) {
+            alert("Error: " + error.code + " " + error.message);
+            response.error("No!");
+          }
+       });
+      } else {
+        response.success("Schedule mode does not allow generation at this time.");
+      };
+    },
+    error: function(error) {
+      response.error(error);
+    }
   });
  });
 
 Parse.Cloud.job("lunchMenusStructureDeletion", function(request, response) {
-  var query = new Parse.Query("LunchMenusStructure");
-  query.ascending("lunchStructureID");
+  var query = new Parse.Query("SpecialKeyStructure");
+  query.equalTo("key", "scheduleMode");
   query.first({
     success: function(object) {
-      object.destroy({
-        success: function(myObject) {
-          response.success("Yay!");
-      },
-      error: function(myObject, error) {
-        response.error("No!");
-      }
-    });
-  },
+      var date = new Date();
+      if (object.get("Value") === "NORMAL" && date.getDay() != 0 && date.getDay() != 1) {
+        //Continue...
+        var query = new Parse.Query("LunchMenusStructure");
+        query.ascending("lunchStructureID");
+        query.first({
+          success: function(object) {
+            object.destroy({
+              success: function(myObject) {
+                response.success("Yay!");
+            },
+            error: function(myObject, error) {
+              response.error("No!");
+            }
+          });
+        },
+          error: function(error) {
+            alert("Error: " + error.code + " " + error.message);
+            response.error("No!");
+          }
+       });
+      } else {
+        response.success("Schedule mode does not allow deletion at this time.");
+      };
+    },
     error: function(error) {
-      alert("Error: " + error.code + " " + error.message);
-      response.error("No!");
+      response.error(error);
     }
- });
+  });
  });
 
 Parse.Cloud.job("communityServiceStructureDeletion", function(request, response) {
@@ -111,7 +246,7 @@ Parse.Cloud.job("pollStructureDeletion", function(request, response) {
           var date2_ms = now.getTime();
           var difference_ms = date2_ms - date1_ms;
           difference_ms = Math.round(difference_ms/one_day);
-          if (difference_ms > currentStructure.get("daysActive")) {
+          if (difference_ms >= currentStructure.get("daysActive")) {
             currentStructure.destroy({
               success: function() {
                 console.log("Just deleted an object!!!");
@@ -296,39 +431,93 @@ Parse.Cloud.afterSave("AlertStructure", function(request) {
 
 Parse.Cloud.define("goBackOneDayFromStructure", function(request, response) {
   var array = [];
+  var ID = request.params.ID;
+  var hasChanged = false;
   var query = new Parse.Query("SchoolDayStructure");
-  query.greaterThanOrEqualTo("schoolDayID", request.params.ID);
   query.descending("schoolDayID");
   query.find( {
     success: function (results) {
       for (var i = 0; i < results.length; i++) {
-        if (i != results.length - 1) {
-          var nextScheduleType = results[i + 1].get("scheduleType");
-          var currentObject = results[i];
-          currentObject.set("scheduleType", nextScheduleType);
-          array.push(currentObject);
-        } else {
-          results[i].destroy( {
-            success: function() {
-              //
-            },
-            error: function (error) {
-              response.error();
-            }
-          });
+        if (results[i].get("schoolDayID") >= ID && i != results.length - 1) {
+          if (results[i + 1].get("isActive") == 0) {
+            //Skip and keep going until find the right one at j
+            var done = false;
+            for (var j = i + 2; j < results.length; j++) {
+              if (results[j].get("isActive") == 1) {
+                done = true;
+                var nextScheduleType = results[j].get("scheduleType");
+                if (nextScheduleType === "*") {
+                  //Set the custom schedule as well!
+                  results[i].set("customSchedule", results[j].get("customSchedule"));
+                };
+                results[i].set("scheduleType", nextScheduleType);
+                array.push(results[i]);
+              };
+            };
+            if (done == false) {
+              for (var j = i + 1; j < results.length; j++) {
+                if (results[j].get("scheduleType") != results[i].get("scheduleType")) {
+                  var nextScheduleType = results[j].get("scheduleType");
+                  if (nextScheduleType === "*") {
+                    //Set the custom schedule as well!
+                    results[i].set("customSchedule", results[j].get("customSchedule"));
+                  };
+                  results[i].set("scheduleType", nextScheduleType);
+                  array.push(results[i]);
+                  break;
+                };
+              };
+            };
+          } else {
+            var nextScheduleType = results[i + 1].get("scheduleType");
+            if (nextScheduleType === "*") {
+              //Set the custom schedule as well!
+              results[i].set("customSchedule", results[i + 1].get("customSchedule"));
+            };
+            results[i].set("scheduleType", nextScheduleType);
+            array.push(results[i]);
+          };
+        } else if (results[i].get("schoolDayID") < ID && hasChanged == false) {
+          hasChanged = true;
+          if (i != results.length - 1) {
+            //Destroy it - no longer needed!
+            results[i].destroy({
+              success: function(myObject) {
+                //No response yet...
+              },
+              error: function(myObject, error) {
+                response.error(error);
+              }
+            });
+            //console.log("Destroying..." + results[i].get("schoolDayID"));
+          } else {
+            results[i].set("isActive", 0);
+            results[i].save(null, {
+              success: function(myObject) {
+                //No response yet...
+              },
+              error: function(myObject, error) {
+                response.error(error);
+              }
+            });
+          };
         };
       };
+      /*for (var i = 0; i < array.length; i++) {
+        console.log(array[i]);
+      };
+      response.success();*/
       Parse.Object.saveAll(array, {
         success: function() {
           response.success();
         },
-        error: function() {
-          response.error();
+        error: function(objects, error) {
+          response.error(error);
         }
       });
     },
     error: function (error) {
-      response.error();
+      response.error(error);
     }
   });
 });
@@ -365,7 +554,7 @@ Parse.Cloud.define("registerUser", function(request, response) {
                 to: email,
                 from: "WildcatConnect <team@wildcatconnect.org>",
                 subject: "WildcatConnect Account Confirmation",
-                text: firstName + ", \n\nYour new WildcatConnect account has been approved! With your faculty account, you will now be able to log in to both the WildcatConnect iOS App and our web portal at http://www.wildcatconnect.org. Your username is... \n\n" + username + "\n\n Enjoy posting and sharing with students, faculty and families!\n\nBest,\n\nWildcatConnect Development Team\n\nWeb: http://www.wildcatconnect.org\nSupport: support@wildcatconnect.org\nContact: team@wildcatconnect.org"
+                text: firstName + ", \n\nYour new WildcatConnect account has been approved! With your faculty account, you will now be able to log in to both the WildcatConnect iOS App and our web portal at http://www.wildcatconnect.org. Your username is... \n\n" + username + "\n\nNOTE: Usernames and passwords are case-sensitive.\n\nEnjoy posting and sharing with students, faculty and families!\n\nBest,\n\nWildcatConnect Development Team\n\nWeb: http://www.wildcatconnect.org\nSupport: support@wildcatconnect.org\nContact: team@wildcatconnect.org"
               }, {
                 success: function(httpResponse) {
                   response.success("Email sent!");
@@ -483,6 +672,18 @@ Parse.Cloud.define("validateUser", function(request, response) {
     response.error(error);
   }
 
+});
+
+Parse.Cloud.define("recoverUser", function(request, response) {
+  var email = request.params.email;
+  Parse.User.requestPasswordReset(email, {
+    success: function() {
+      response.success();
+    },
+    error: function(error) {
+      response.error(error.code + " - " + error.message);
+    }
+  });
 });
 
 Parse.Cloud.afterSave("NewsArticleStructure", function(request) {

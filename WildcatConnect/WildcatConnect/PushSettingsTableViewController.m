@@ -214,7 +214,7 @@
           } else {
                ExtracurricularStructure *EC = [self.ECarray objectAtIndex:indexPath.row];
                cell.textLabel.text = EC.titleString;
-               NSInteger integer = indexPath.row + 2;
+               NSInteger integer = indexPath.row + 3;
                [switchView setTag:integer];
                cell.accessoryView = switchView;
           }
@@ -259,7 +259,7 @@
                }
           }
      } else {
-          ExtracurricularStructure *EC = [self.ECarray objectAtIndex:switchControl.tag - 2];
+          ExtracurricularStructure *EC = [self.ECarray objectAtIndex:switchControl.tag - 3];
           if (switchControl.on == true) {
                if (! [self.pushArray containsObject:EC.channelString]) {
                     [self.pushArray addObject:EC.channelString];

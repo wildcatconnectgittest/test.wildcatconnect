@@ -11,5 +11,6 @@
 @interface EditScheduleViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, retain) NSMutableArray *scheduleArray;
+@property (nonatomic, retain) NSString *modeString;
 
 @end
