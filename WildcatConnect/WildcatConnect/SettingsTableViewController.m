@@ -104,16 +104,6 @@
                MFMailComposeViewController *composeViewController = [[MFMailComposeViewController alloc] initWithNibName:nil bundle:nil];
                [composeViewController setMailComposeDelegate:self];
                [composeViewController setToRecipients:@[@"team@wildcatconnect.org"]];
-               [composeViewController setSubject:@"WildcatConnect App Feedback"];
-               NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
-               NSString *majorVersion = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
-               NSString *deviceToken = [[PFInstallation currentInstallation] deviceToken];
-               if (! deviceToken) {
-                    deviceToken = @"Not available.";
-               }
-               NSString *bodyString = [[[@"Version = " stringByAppendingString:majorVersion] stringByAppendingString:@"\n\nDeviceToken = "] stringByAppendingString:deviceToken];
-               
-               [composeViewController setMessageBody:bodyString isHTML:NO];
                
                [self presentViewController:composeViewController animated:YES completion:nil];
           }

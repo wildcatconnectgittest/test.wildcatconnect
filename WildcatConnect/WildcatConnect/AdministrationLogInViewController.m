@@ -351,7 +351,6 @@
                     if (verified == 0) {
                          av = [[UIAlertView alloc]initWithTitle:@"Registration Key" message:@"Please enter your registration key." delegate:self cancelButtonTitle:nil otherButtonTitles:@"Verify", nil];
                          av.alertViewStyle = UIAlertViewStylePlainTextInput;
-                         [av textFieldAtIndex:0].secureTextEntry = YES;
                          [av setDelegate:self];
                          [av show];
                     } else {

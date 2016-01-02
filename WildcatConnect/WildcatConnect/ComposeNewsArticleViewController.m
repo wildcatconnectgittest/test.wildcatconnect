@@ -418,7 +418,11 @@
      [query orderByDescending:@"articleID"];
      [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
           NewsArticleStructure *structure = (NewsArticleStructure *)object;
-          newsArticleStructure.articleID = [NSNumber numberWithInt:[structure.articleID integerValue] + 1];
+          if (structure) {
+               newsArticleStructure.articleID = [NSNumber numberWithInt:[structure.articleID integerValue] + 1];
+          } else {
+               newsArticleStructure.articleID = [NSNumber numberWithInt:0];
+          }
           if (imageView.image) {
                newsArticleStructure.hasImage = [NSNumber numberWithInt:1];
                NSData *data = UIImagePNGRepresentation(imageView.image);

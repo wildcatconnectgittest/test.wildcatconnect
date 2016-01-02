@@ -246,7 +246,11 @@
                }];
           } else {
                CommunityServiceStructure *structure = (CommunityServiceStructure *)object;
-               communityServiceStructure.communityServiceID = [NSNumber numberWithInteger:[structure.communityServiceID integerValue] + 1];
+               if (structure) {
+                    communityServiceStructure.communityServiceID = [NSNumber numberWithInteger:[structure.communityServiceID integerValue] + 1];
+               } else {
+                    communityServiceStructure.communityServiceID = [NSNumber numberWithInteger:0];
+               }
                [communityServiceStructure saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
                     if (error) {
                          theError = error;
