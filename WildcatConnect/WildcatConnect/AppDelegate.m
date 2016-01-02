@@ -113,7 +113,7 @@
                          NewsArticleStructure *theNews = [[NewsArticleStructure alloc] init];
                          theNews.titleString = [[array firstObject] objectForKey:@"titleString"];
                          theNews.summaryString = [[array firstObject] objectForKey:@"summaryString"];
-                         theNews.authorString = [[array firstObject] objectForKey:@"titleString"];
+                         theNews.authorString = [[array firstObject] objectForKey:@"authorString"];
                          theNews.dateString = [[array firstObject] objectForKey:@"dateString"];
                          theNews.contentURLString = [[array firstObject] objectForKey:@"contentURLString"];
                          theNews.articleID = [[array firstObject] objectForKey:@"articleID"];
@@ -526,7 +526,7 @@
                          NewsArticleStructure *theNews = [[NewsArticleStructure alloc] init];
                          theNews.titleString = [[array firstObject] objectForKey:@"titleString"];
                          theNews.summaryString = [[array firstObject] objectForKey:@"summaryString"];
-                         theNews.authorString = [[array firstObject] objectForKey:@"titleString"];
+                         theNews.authorString = [[array firstObject] objectForKey:@"authorString"];
                          theNews.dateString = [[array firstObject] objectForKey:@"dateString"];
                          theNews.contentURLString = [[array firstObject] objectForKey:@"contentURLString"];
                          theNews.articleID = [[array firstObject] objectForKey:@"articleID"];
