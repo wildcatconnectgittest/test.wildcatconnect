@@ -13,9 +13,10 @@ Parse.Cloud.job("schoolDayStructureDeletion", function(request, response) {
   query.first({
     success: function(object) {
       var date = new Date();
-      if (object.get("Value") === "NORMAL" && date.getDay() != 0 && date.getDay() != 1) {
+      if (object.get("value") === "NORMAL" && date.getDay() != 0 && date.getDay() != 6) {
         //Continue...
         var query = new Parse.Query("SchoolDayStructure");
+        query.isEqual("isActive", 1);
         query.ascending("schoolDayID");
         query.first({
           success: function(object) {
@@ -50,7 +51,7 @@ Parse.Cloud.job("schoolDayStructureGeneration", function(request, response) {
   query.first({
     success: function(object) {
       var date = new Date();
-      if (object.get("Value") === "NORMAL" && date.getDay() != 0 && date.getDay() != 1) {
+      if (object.get("value") === "NORMAL" && date.getDay() != 0 && date.getDay() != 6) {
         var query = new Parse.Query("SchoolDayStructure");
         query.descending("schoolDayID");
         query.first({

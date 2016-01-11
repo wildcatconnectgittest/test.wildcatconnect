@@ -52,7 +52,7 @@
                                                                              blue:23.0f/255.0f
                                                                             alpha:0.5f];
      
-     self.sectionsArray = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"News Center", @"Extracurriculars", @"Community Service", @"Student Center",  @"Lunch Menus", @"Useful Links", @"Staff Directory", @"Secure Login/Register", nil]];
+     self.sectionsArray = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"Wildcat News", @"Extracurriculars", @"Community Service", @"Student Center",  @"Lunch Menus", @"Useful Links", @"Staff Directory", @"Secure Login/Register", nil]];
      self.sectionsImagesArray = [[NSMutableArray alloc] init];
      [self.sectionsImagesArray addObject:@"news@2x.png"];
      [self.sectionsImagesArray addObject:@"EC@2x.png"];
