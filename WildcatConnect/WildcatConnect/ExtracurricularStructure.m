@@ -19,7 +19,6 @@
 @dynamic imageFile;
 @dynamic extracurricularID;
 @dynamic meetingIDs;
-@dynamic channelString;
 
 + (void)load {
      [self registerSubclass];

@@ -52,13 +52,12 @@
                                                                              blue:23.0f/255.0f
                                                                             alpha:0.5f];
      
-     self.sectionsArray = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"Wildcat News", @"Extracurriculars", @"Community Service", @"Student Center",  @"Lunch Menus", @"Useful Links", @"Staff Directory", @"Secure Login/Register", nil]];
+     self.sectionsArray = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"Wildcat News", @"Groups", @"Community Service", @"Student Center", @"Useful Links", @"Staff Directory", @"Secure Login/Register", nil]];
      self.sectionsImagesArray = [[NSMutableArray alloc] init];
      [self.sectionsImagesArray addObject:@"news@2x.png"];
      [self.sectionsImagesArray addObject:@"EC@2x.png"];
      [self.sectionsImagesArray addObject:@"communityService@2x.png"];
      [self.sectionsImagesArray addObject:@"studentCenter@2x.png"];
-     [self.sectionsImagesArray addObject:@"lunchMenus@2x.png"];
      [self.sectionsImagesArray addObject:@"usefulLinks@2x.png"];
      [self.sectionsImagesArray addObject:@"staffDirectory@2x.png"];
      [self.sectionsImagesArray addObject:@"admin@2x.png"];
@@ -164,7 +163,14 @@
      dispatch_group_t serviceGroup = dispatch_group_create();
      dispatch_group_enter(serviceGroup);
      __block NSError *theError;
+     NSMutableArray *myArray = [[[PFInstallation currentInstallation] objectForKey:@"channels"] mutableCopy];
+     for (int i = 0; i < myArray.count; i++) {
+          if ([myArray[i] length] == 2) {
+               myArray[i] = [NSNumber numberWithInteger:[((NSString *)[myArray[i] substringFromIndex:1]) integerValue]];
+          }
+     }
      PFQuery *query = [ExtracurricularUpdateStructure query];
+     [query whereKey:@"extracurricularID" containedIn:myArray];
      __block int count;
      [query countObjectsInBackgroundWithBlock:^(int number, NSError * _Nullable error) {
           theError = error;
@@ -305,7 +311,7 @@
                cell.accessoryView = nil;
           }
 
-     } else if (indexPath.row == 7) {
+     } else if (indexPath.row == 6) {
           if ([PFUser currentUser]) {
                NSString *firstName = [[PFUser currentUser] objectForKey:@"firstName"];
                NSString *lastName = [[PFUser currentUser] objectForKey:@"lastName"];
@@ -344,18 +350,14 @@
               [self.navigationController pushViewController:controller animated:YES];
           }
           else if (indexPath.row == 4) {
-               LunchMenusViewController *controller = [[LunchMenusViewController alloc] initWithStyle:UITableViewStyleGrouped];
-               [self.navigationController pushViewController:controller animated:YES];
-          }
-          else if (indexPath.row == 5) {
                UsefulLinksTableViewController *controller = [[UsefulLinksTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
                [self.navigationController pushViewController:controller animated:YES];
           }
-          else if (indexPath.row == 6) {
+          else if (indexPath.row == 5) {
                StaffDirectoryMainTableViewController *controller = [[StaffDirectoryMainTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
                [self.navigationController pushViewController:controller animated:YES];
           }
-          else if (indexPath.row == 7) {
+          else if (indexPath.row == 6) {
                if ([PFUser currentUser]) {
                     AdministrationMainTableViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"MainID"];
                     [self.navigationController pushViewController:controller animated:YES];
@@ -384,18 +386,14 @@
                    [self.navigationController pushViewController:controller animated:YES];
                }
                else if (indexPath.row == 4) {
-                    LunchMenusViewController *controller = [[LunchMenusViewController alloc] initWithStyle:UITableViewStyleGrouped];
-                    [self.navigationController pushViewController:controller animated:YES];
-               }
-               else if (indexPath.row == 5) {
                     UsefulLinksTableViewController *controller = [[UsefulLinksTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
                     [self.navigationController pushViewController:controller animated:YES];
                }
-               else if (indexPath.row == 6) {
+               else if (indexPath.row == 5) {
                     StaffDirectoryMainTableViewController *controller = [[StaffDirectoryMainTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:0]];
                     [self.navigationController pushViewController:controller animated:YES];
                }
-               else if (indexPath.row == 7) {
+               else if (indexPath.row == 6) {
                     if ([PFUser currentUser]) {
                          AdministrationMainTableViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"MainID"];
                          [self.navigationController pushViewController:controller animated:YES];
@@ -424,18 +422,14 @@
                    [self.navigationController pushViewController:controller animated:YES];
                }
                else if (indexPath.row == 4) {
-                    LunchMenusViewController *controller = [[LunchMenusViewController alloc] initWithStyle:UITableViewStyleGrouped];
-                    [self.navigationController pushViewController:controller animated:YES];
-               }
-               else if (indexPath.row == 5) {
                     UsefulLinksTableViewController *controller = [[UsefulLinksTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
                     [self.navigationController pushViewController:controller animated:YES];
                }
-               else if (indexPath.row == 6) {
+               else if (indexPath.row == 5) {
                     StaffDirectoryMainTableViewController *controller = [[StaffDirectoryMainTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
                     [self.navigationController pushViewController:controller animated:YES];
                }
-               else if (indexPath.row == 7) {
+               else if (indexPath.row == 6) {
                     if ([PFUser currentUser]) {
                          AdministrationMainTableViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"MainID"];
                          [self.navigationController pushViewController:controller animated:YES];

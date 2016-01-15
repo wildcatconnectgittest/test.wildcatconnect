@@ -48,6 +48,9 @@
                     }];
                }];
           }
+     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Read All" style:UIBarButtonItemStylePlain target:self action:@selector(readAllMethod)];
+     self.navigationItem.rightBarButtonItem = barButtonItem;
+     [barButtonItem release];
 }
 
 
@@ -64,6 +67,19 @@
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
 }*/
 
+- (void)readAllMethod {
+     NSMutableArray *readArray = [[[NSUserDefaults standardUserDefaults] objectForKey:@"readNewsArticles"] mutableCopy];
+     for (NewsArticleStructure *NA in self.newsArticles) {
+          if (! [readArray containsObject:NA.articleID]) {
+               [readArray addObject:[NSNumber numberWithInteger:[NA.articleID integerValue]]];
+          }
+     }
+     [[NSUserDefaults standardUserDefaults] setObject:readArray forKey:@"readNewsArticles"];
+     [[NSUserDefaults standardUserDefaults] synchronize];
+     self.readNewsArticles = readArray;
+     [self.tableView reloadData];
+}
+
 - (void)removeOldArrayObjectsWithCompletion:(void (^)(NSUInteger integer))completion withArray:(NSMutableArray *)array {
      dispatch_group_t serviceGroup = dispatch_group_create();
      dispatch_group_enter(serviceGroup);
@@ -72,42 +88,35 @@
      NSMutableArray *searchDictionaryArray = [dictionaryArray mutableCopy];
      NSMutableArray *likedArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"likedNewsArticles"];
      NSMutableArray *likesDictionaryArray = [likedArray mutableCopy];
-     if (searchDictionaryArray.count > theArray.count || likesDictionaryArray.count > theArray.count) {
-               //Have some objects to remove...
-          for (int i = 0; i < searchDictionaryArray.count; i++) {
-               NSNumber *number = (NSNumber *)[searchDictionaryArray objectAtIndex:i];
-               BOOL contained = false;
-               for (NewsArticleStructure *structure in theArray) {
-                    if ([structure.articleID integerValue] == [number integerValue]) {
-                         contained = true;
-                         break;
-                    }
-               }
-               if (! contained) {
-                    [searchDictionaryArray removeObjectAtIndex:i];
-               }
-          }
-          [[NSUserDefaults standardUserDefaults] setObject:searchDictionaryArray forKey:@"readNewsArticles"];
-         
-          for (int i = 0; i < likesDictionaryArray.count; i++) {
-               NSNumber *number = (NSNumber *)[likesDictionaryArray objectAtIndex:i];
-               BOOL contained = false;
-               for (NewsArticleStructure *structure in theArray) {
-                    if ([structure.articleID integerValue] == [number integerValue]) {
-                         contained = true;
-                         break;
-                    }
-               }
-               if (! contained) {
-                    [likesDictionaryArray removeObjectAtIndex:i];
-               }
-          }
-          [[NSUserDefaults standardUserDefaults] setObject:likesDictionaryArray forKey:@"likedNewsArticles"];
-          [[NSUserDefaults standardUserDefaults] synchronize];
-          dispatch_group_leave(serviceGroup);
-     } else {
-          dispatch_group_leave(serviceGroup);
+          //Have some objects to remove...
+     NSMutableArray *currentArray = [NSMutableArray array];
+     
+     for (NewsArticleStructure *NA in theArray) {
+          [currentArray addObject:NA.articleID];
      }
+     
+     NSMutableArray *twoArray = [searchDictionaryArray mutableCopy];
+     
+     for (NSNumber *number in searchDictionaryArray) {
+          if (! [currentArray containsObject:number]) {
+               [twoArray removeObject:number];
+          }
+     }
+     
+     [[NSUserDefaults standardUserDefaults] setObject:twoArray forKey:@"readNewsArticles"];
+     
+     NSMutableArray *threeArray = [likesDictionaryArray mutableCopy];
+     
+     for (NSNumber *number in searchDictionaryArray) {
+          if (! [currentArray containsObject:number]) {
+               [threeArray removeObject:number];
+          }
+     }
+     
+     [[NSUserDefaults standardUserDefaults] setObject:threeArray forKey:@"likedNewsArticles"];
+     
+     [[NSUserDefaults standardUserDefaults] synchronize];
+     dispatch_group_leave(serviceGroup);
      dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
           completion(0);
      });
@@ -220,6 +229,11 @@
                     }
                     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
                     [userDefaults setObject:itemsToSave forKey:@"newsArticles"];
+                    NSMutableArray *readArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"readNewsArticles"];
+                    if (! readArray) {
+                         self.readNewsArticles = [NSMutableArray array];
+                    } else
+                         self.readNewsArticles = [readArray mutableCopy];
                     [self testMethodTwoWithCompletion:^(NSError *error, NSMutableArray *returnArray, NSMutableArray *theReturnDataArray) {
                          if (error) {
                               UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"Error fetching data from server. Please try again." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
@@ -244,6 +258,9 @@
                                    [self refreshControl];
                               });
                          }
+                         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Read All" style:UIBarButtonItemStylePlain target:self action:@selector(readAllMethod)];
+                         self.navigationItem.rightBarButtonItem = barButtonItem;
+                         [barButtonItem release];
                     } withArray:returnArrayA];
                } withArray:returnArrayA];
           }
@@ -295,6 +312,7 @@
                [moreItems addObject:self.dataArray[i]];
           }
           [userDefaults setObject:moreItems forKey:@"newsArticleImages"];
+          [userDefaults setObject:self.readNewsArticles forKey:@"readNewsArticles"];
           [userDefaults synchronize];
      }
 }

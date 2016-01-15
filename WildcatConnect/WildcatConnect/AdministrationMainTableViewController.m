@@ -41,7 +41,7 @@
      
      self.topBar.topItem.title = [[lastName stringByAppendingString:@", "] stringByAppendingString:firstName];
      
-     self.sectionsArray = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"News Article", @"Extracurricular Update", nil]];
+     self.sectionsArray = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"Wildcat News Story", @"Extracurricular Update", nil]];
      
      if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administrator"]) {
           [self.sectionsArray addObject:@"Community Service Update"];
@@ -141,7 +141,7 @@
                     cell.textLabel.text = @"Change Password";
                     cell.imageView.image = [UIImage imageNamed:@"password@2x.png"];
                } else if (indexPath.row == 1) {
-                    cell.textLabel.text = @"Register Extracurricular";
+                    cell.textLabel.text = @"Register Group";
                     cell.imageView.image = [UIImage imageNamed:@"EC@2x.png"];
                }
           }
@@ -154,7 +154,7 @@
                     cell.textLabel.text = @"Change Password";
                     cell.imageView.image = [UIImage imageNamed:@"password@2x.png"];
                } else if (indexPath.row == 1) {
-                    cell.textLabel.text = @"Register Extracurricular";
+                    cell.textLabel.text = @"Register Group";
                     cell.imageView.image = [UIImage imageNamed:@"EC@2x.png"];
                }
           }

@@ -61,9 +61,25 @@
                     [self.tableView reloadData];
                     [activity stopAnimating];
                     [self refreshControl];
+                    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Read All" style:UIBarButtonItemStylePlain target:self action:@selector(readAllMethod)];
+                    self.navigationItem.rightBarButtonItem = barButtonItem;
+                    [barButtonItem release];
                });
           }];
      }
+}
+
+- (void)readAllMethod {
+     NSMutableArray *readArray = [[[NSUserDefaults standardUserDefaults] objectForKey:@"readAlerts"] mutableCopy];
+     for (AlertStructure *NA in self.alerts) {
+          if (! [readArray containsObject:NA.alertID]) {
+               [readArray addObject:[NSNumber numberWithInteger:[NA.alertID integerValue]]];
+          }
+     }
+     [[NSUserDefaults standardUserDefaults] setObject:readArray forKey:@"readNewsArticles"];
+     [[NSUserDefaults standardUserDefaults] synchronize];
+     self.readAlerts = readArray;
+     [self.tableView reloadData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -179,10 +195,19 @@
                     }
                     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
                     [userDefaults setObject:itemsToSave forKey:@"alertStructures"];
+                    NSMutableArray *readArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"readAlerts"];
+                    if (! readArray) {
+                         self.readAlerts = [NSMutableArray array];
+                    } else
+                         self.readAlerts = [readArray mutableCopy];
+                    [userDefaults synchronize];
                     dispatch_async(dispatch_get_main_queue(), ^ {
                          [activity stopAnimating];
                          [self.tableView reloadData];
                          [self refreshControl];
+                         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Read All" style:UIBarButtonItemStylePlain target:self action:@selector(readAllMethod)];
+                         self.navigationItem.rightBarButtonItem = barButtonItem;
+                         [barButtonItem release];
                     });
                } withArray:returnArrayA];
           }
@@ -222,27 +247,27 @@
      NSMutableArray *theArray = [array mutableCopy];
      NSMutableArray *dictionaryArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"readAlerts"];
      NSMutableArray *searchDictionaryArray = [dictionaryArray mutableCopy];
-     if (searchDictionaryArray.count > theArray.count) {
-               //Have some objects to remove...
-          for (int i = 0; i < searchDictionaryArray.count; i++) {
-               NSString *number = (NSString *)[searchDictionaryArray objectAtIndex:i];
-               BOOL contained = false;
-               for (AlertStructure *structure in theArray) {
-                    if ([structure.alertID integerValue] == [number integerValue]) {
-                         contained = true;
-                         break;
-                    }
-               }
-               if (! contained) {
-                    [searchDictionaryArray removeObjectAtIndex:i];
-               }
-          }
-          [[NSUserDefaults standardUserDefaults] setObject:searchDictionaryArray forKey:@"readAlerts"];
-          [[NSUserDefaults standardUserDefaults] synchronize];
-          dispatch_group_leave(serviceGroup);
-     } else {
-          dispatch_group_leave(serviceGroup);
+     
+     NSMutableArray *currentArray = [NSMutableArray array];
+     
+     for (AlertStructure *NA in theArray) {
+          [currentArray addObject:NA.alertID];
      }
+     
+     NSMutableArray *twoArray = [searchDictionaryArray mutableCopy];
+     
+     for (NSNumber *number in searchDictionaryArray) {
+          if (! [currentArray containsObject:number]) {
+               [twoArray removeObject:number];
+          }
+     }
+     
+     [[NSUserDefaults standardUserDefaults] setObject:twoArray forKey:@"readAlerts"];
+     
+     [[NSUserDefaults standardUserDefaults] synchronize];
+     
+     dispatch_group_leave(serviceGroup);
+     
      dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
           completion(0);
      });
@@ -345,6 +370,9 @@
      [activity startAnimating];
      [self getCountFourMethodWithCompletion:^(NSInteger count4) {
           [activity stopAnimating];
+          UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Read All" style:UIBarButtonItemStylePlain target:self action:@selector(readAllMethod)];
+          self.navigationItem.rightBarButtonItem = barButtonItem;
+          [barButtonItem release];
           NSMutableArray *alertsArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"readAlerts"];
           NSInteger read = alertsArray.count;
           NSNumber *readNumber = [NSNumber numberWithInt:(count4 - read)];

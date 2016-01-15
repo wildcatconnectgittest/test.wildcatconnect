@@ -14,6 +14,8 @@
 		0A2DDCD91C232EE700662F94 /* EditScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A2DDCD81C232EE700662F94 /* EditScheduleViewController.m */; };
 		0A2DDCDC1C28826700662F94 /* CustomScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A2DDCDB1C28826700662F94 /* CustomScheduleViewController.m */; };
 		0A2ED78C1C2F2C8600A34EDB /* UserRegisterStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A2ED78B1C2F2C8600A34EDB /* UserRegisterStructure.m */; };
+		0A634C5A1C49651000210D33 /* ErrorStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A634C591C49651000210D33 /* ErrorStructure.m */; };
+		0A634C5D1C496C6900210D33 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A634C5C1C496C6900210D33 /* Reachability.m */; };
 		0A7028D91C1BE26F0053E56D /* settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A7028D81C1BE26F0053E56D /* settings@2x.png */; };
 		0A7028DC1C1BE2E30053E56D /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A7028DB1C1BE2E30053E56D /* SettingsTableViewController.m */; };
 		0A7AA7941C32260C0012671E /* SpecialKeyStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A7AA7931C32260C0012671E /* SpecialKeyStructure.m */; };
@@ -117,6 +119,7 @@
 		0ADBEF461C0AC57200E946F6 /* unread@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0ADBEF341C0AC57200E946F6 /* unread@2x.png */; };
 		0ADBEF4C1C0AC61F00E946F6 /* AlertsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBEF4B1C0AC61F00E946F6 /* AlertsTableViewController.m */; };
 		0ADBEF4E1C0ACC4900E946F6 /* admin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0ADBEF4D1C0ACC4900E946F6 /* admin@2x.png */; };
+		0AF9D3351C43E9C400618042 /* minus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AF9D3341C43E9C400618042 /* minus@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -147,6 +150,10 @@
 		0A2DDCDB1C28826700662F94 /* CustomScheduleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomScheduleViewController.m; sourceTree = "<group>"; };
 		0A2ED78A1C2F2C8600A34EDB /* UserRegisterStructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserRegisterStructure.h; sourceTree = "<group>"; };
 		0A2ED78B1C2F2C8600A34EDB /* UserRegisterStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserRegisterStructure.m; sourceTree = "<group>"; };
+		0A634C581C49651000210D33 /* ErrorStructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ErrorStructure.h; sourceTree = "<group>"; };
+		0A634C591C49651000210D33 /* ErrorStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ErrorStructure.m; sourceTree = "<group>"; };
+		0A634C5B1C496C6900210D33 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = ../Reachability.h; sourceTree = "<group>"; };
+		0A634C5C1C496C6900210D33 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = ../Reachability.m; sourceTree = "<group>"; };
 		0A7028D81C1BE26F0053E56D /* settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "settings@2x.png"; path = "../settings@2x.png"; sourceTree = "<group>"; };
 		0A7028DA1C1BE2E30053E56D /* SettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsTableViewController.h; sourceTree = "<group>"; };
 		0A7028DB1C1BE2E30053E56D /* SettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTableViewController.m; sourceTree = "<group>"; };
@@ -311,6 +318,7 @@
 		0ADBEF4A1C0AC61F00E946F6 /* AlertsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertsTableViewController.h; sourceTree = "<group>"; };
 		0ADBEF4B1C0AC61F00E946F6 /* AlertsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertsTableViewController.m; sourceTree = "<group>"; };
 		0ADBEF4D1C0ACC4900E946F6 /* admin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "admin@2x.png"; sourceTree = "<group>"; };
+		0AF9D3341C43E9C400618042 /* minus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "minus@2x.png"; path = "../minus@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -391,6 +399,9 @@
 		0ADBEE271C0ABD5E00E946F6 /* WildcatConnect */ = {
 			isa = PBXGroup;
 			children = (
+				0A634C5B1C496C6900210D33 /* Reachability.h */,
+				0A634C5C1C496C6900210D33 /* Reachability.m */,
+				0AF9D3341C43E9C400618042 /* minus@2x.png */,
 				0AD8B9C61C337D0B002A3ABB /* alerts@2x.png */,
 				0AA5C9031C3326BB00C42892 /* logoSmall.png */,
 				0AA5C8FD1C33227200C42892 /* about@2x.png */,
@@ -415,6 +426,8 @@
 				0ADBEF4B1C0AC61F00E946F6 /* AlertsTableViewController.m */,
 				0ADBEE6D1C0ABD8400E946F6 /* AlertStructure.h */,
 				0ADBEE6C1C0ABD8400E946F6 /* AlertStructure.m */,
+				0A634C581C49651000210D33 /* ErrorStructure.h */,
+				0A634C591C49651000210D33 /* ErrorStructure.m */,
 				0ADBEECD1C0ABDE100E946F6 /* AppDelegate.h */,
 				0ADBEE5E1C0ABD8400E946F6 /* AppDelegate.m */,
 				0ADBEECE1C0ABDE100E946F6 /* ApplicationManager.h */,
@@ -704,6 +717,7 @@
 				0ADBEF391C0AC57200E946F6 /* extracurriculars@2x.png in Resources */,
 				0AA5C8FE1C33227200C42892 /* about@2x.png in Resources */,
 				0ADBEE381C0ABD5E00E946F6 /* Assets.xcassets in Resources */,
+				0AF9D3351C43E9C400618042 /* minus@2x.png in Resources */,
 				0AA5C8F81C3321B300C42892 /* lunchMenus@2x.png in Resources */,
 				0ADBEF3C1C0AC57200E946F6 /* image.png in Resources */,
 				0ADBEEF91C0ABDFA00E946F6 /* Info.plist in Resources */,
@@ -762,6 +776,7 @@
 				0ADBEE9E1C0ABD8400E946F6 /* ComposePollViewController.m in Sources */,
 				0AA5C8E91C331B6700C42892 /* DisclaimerViewController.m in Sources */,
 				0A0AFC771C0B383B0094A2D2 /* ComposeNewsArticleViewController.m in Sources */,
+				0A634C5D1C496C6900210D33 /* Reachability.m in Sources */,
 				0ADBEE981C0ABD8400E946F6 /* LunchMenusViewController.m in Sources */,
 				0ADBEE891C0ABD8400E946F6 /* UsefulLinksTableViewController.m in Sources */,
 				0ADBEE8E1C0ABD8400E946F6 /* AlertDetailViewController.m in Sources */,
@@ -780,6 +795,7 @@
 				0ADBEE911C0ABD8400E946F6 /* FirstViewController.m in Sources */,
 				0ADBEEF51C0ABDE100E946F6 /* StaffDirectoryDetailViewController.m in Sources */,
 				0ADBEEE91C0ABDE100E946F6 /* ExtracurricularStructure.m in Sources */,
+				0A634C5A1C49651000210D33 /* ErrorStructure.m in Sources */,
 				0ADBEEF31C0ABDE100E946F6 /* AppManager.m in Sources */,
 				0ADBEE901C0ABD8400E946F6 /* StaffDirectoryBaseTableViewController.m in Sources */,
 				0A2ED78C1C2F2C8600A34EDB /* UserRegisterStructure.m in Sources */,

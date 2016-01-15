@@ -38,7 +38,7 @@
                                                                              blue:23.0f/255.0f
                                                                             alpha:0.5f];
      
-     self.navigationItem.title = @"New Extracurricular";
+     self.navigationItem.title = @"New Group";
      self.navigationController.navigationBar.translucent = NO;
      
      hasChanged = false;
@@ -156,7 +156,7 @@
           UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please ensure you have correctly filled out all fields!" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
           [alertView show];
      } else {
-          postAlertView = [[UIAlertView alloc] initWithTitle:@"Confirmation" message:@"Are you sure you want to register this extracurricular group?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+          postAlertView = [[UIAlertView alloc] initWithTitle:@"Confirmation" message:@"Are you sure you want to register this group?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
           [postAlertView show];
      }
 }
@@ -171,17 +171,28 @@
                [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
                [scrollView addSubview:activity];
                [activity startAnimating];
-               [self postECMethodWithCompletion:^(NSError *error) {
+               [self postECMethodWithCompletion:^(NSError *error, NSInteger response) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                          [activity stopAnimating];
-                         NSMutableArray *array = [[NSUserDefaults standardUserDefaults] objectForKey:@"visitedPagesArray"];
-                         if ([array containsObject:[NSString stringWithFormat:@"%lu", (long)1]]) {
-                              NSMutableArray *newArray = [array mutableCopy];
-                              [newArray removeObject:[NSString stringWithFormat:@"%lu", (long)1]];
-                              [[NSUserDefaults standardUserDefaults] setObject:newArray forKey:@"visitedPagesArray"];
-                              [[NSUserDefaults standardUserDefaults] synchronize];
+                         if (response == 1) {
+                              UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"A group with this name has already been registered. Please enter a different name." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                              [alertView show];
+                              postButton = [UIButton buttonWithType:UIButtonTypeSystem];
+                              [postButton setTitle:@"REGISTER GROUP" forState:UIControlStateNormal];
+                              [postButton sizeToFit];
+                              [postButton addTarget:self action:@selector(registerMethod) forControlEvents:UIControlEventTouchUpInside];
+                              postButton.frame = CGRectMake((self.view.frame.size.width - postButton.frame.size.width - 10), separator.frame.origin.y + separator.frame.size.height + 10, postButton.frame.size.width, postButton.frame.size.height);
+                              [scrollView addSubview:postButton];
+                         } else {
+                              NSMutableArray *array = [[NSUserDefaults standardUserDefaults] objectForKey:@"visitedPagesArray"];
+                              if ([array containsObject:[NSString stringWithFormat:@"%lu", (long)1]]) {
+                                   NSMutableArray *newArray = [array mutableCopy];
+                                   [newArray removeObject:[NSString stringWithFormat:@"%lu", (long)1]];
+                                   [[NSUserDefaults standardUserDefaults] setObject:newArray forKey:@"visitedPagesArray"];
+                                   [[NSUserDefaults standardUserDefaults] synchronize];
+                              }
+                              [self.navigationController popViewControllerAnimated:YES];
                          }
-                         [self.navigationController popViewControllerAnimated:YES];
                     });
                }];
           }
@@ -193,10 +204,11 @@
      }
 }
 
-- (void)postECMethodWithCompletion:(void (^)(NSError *error))completion {
+- (void)postECMethodWithCompletion:(void (^)(NSError *error, NSInteger response))completion {
      dispatch_group_t serviceGroup = dispatch_group_create();
      dispatch_group_enter(serviceGroup);
      __block NSError *theError;
+     __block NSInteger response;
      ExtracurricularStructure *EC = [[ExtracurricularStructure alloc] init];
      EC.hasImage = [NSNumber numberWithInt:0];
      EC.descriptionString = descriptionTextView.text;
@@ -204,30 +216,41 @@
      EC.meetingIDs = self.meetingString;
      PFQuery *query = [ExtracurricularStructure query];
      [query orderByDescending:@"extracurricularID"];
-     [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
-          ExtracurricularStructure *structure = (ExtracurricularStructure *)object;
-          if (structure) {
-               EC.extracurricularID = [NSNumber numberWithInteger:[structure.extracurricularID integerValue] + 1];
-          } else
-               EC.extracurricularID = [NSNumber numberWithInt:0];
-          EC.channelString = [@"E" stringByAppendingString:[EC.extracurricularID stringValue]];
-          [EC saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
-               if (error) {
-                    theError = error;
-               }
-               NSMutableArray *array = [[[PFUser currentUser] objectForKey:@"ownedEC"] mutableCopy];
-               [array addObject:EC.extracurricularID];
-               [[PFUser currentUser] setObject:array forKey:@"ownedEC"];
-               [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
-                    if (error) {
-                         theError = error;
-                    }
-                    dispatch_group_leave(serviceGroup);
+     [query whereKey:@"titleString" equalTo:EC.titleString];
+     [query countObjectsInBackgroundWithBlock:^(int number, NSError * _Nullable error) {
+          if (number > 0) {
+               response = 1;
+               dispatch_group_leave(serviceGroup);
+          } else {
+               PFQuery *queryTwo = [ExtracurricularStructure query];
+               [queryTwo orderByDescending:@"extracurricularID"];
+               [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+                    ExtracurricularStructure *structure = (ExtracurricularStructure *)object;
+                    if (structure) {
+                         EC.extracurricularID = [NSNumber numberWithInteger:[structure.extracurricularID integerValue] + 1];
+                    } else
+                         EC.extracurricularID = [NSNumber numberWithInt:0];
+                    [EC saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+                         if (error) {
+                              theError = error;
+                              response = 0;
+                         }
+                         NSMutableArray *array = [[[PFUser currentUser] objectForKey:@"ownedEC"] mutableCopy];
+                         [array addObject:EC.extracurricularID];
+                         [[PFUser currentUser] setObject:array forKey:@"ownedEC"];
+                         [[PFUser currentUser] saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+                              if (error) {
+                                   theError = error;
+                                   response = 0;
+                              }
+                              dispatch_group_leave(serviceGroup);
+                         }];
+                    }];
                }];
-          }];
+          }
      }];
      dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^{
-          completion(theError);
+          completion(theError, response);
      });
 }
 
@@ -287,7 +310,7 @@
 {
      if (hasChanged) {
           UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Confirmation"
-                                                          message:@"Are you sure you want to go back? Any changes to this Extracurricular group will be lost."
+                                                          message:@"Are you sure you want to go back? Any changes to this group will be lost."
                                                          delegate:self
                                                 cancelButtonTitle:@"No"
                                                 otherButtonTitles:@"Yes", nil];

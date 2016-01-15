@@ -22,5 +22,8 @@
 @property NSString *imageUser;
 @property NSString *customSchedule;
 @property NSString *imageUserFullString;
+@property NSString *customString;
+@property NSString *breakfastString;
+@property NSString *lunchString;
 
 @end

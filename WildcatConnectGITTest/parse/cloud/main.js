@@ -16,7 +16,7 @@ Parse.Cloud.job("schoolDayStructureDeletion", function(request, response) {
       if (object.get("value") === "NORMAL" && date.getDay() != 0 && date.getDay() != 6) {
         //Continue...
         var query = new Parse.Query("SchoolDayStructure");
-        query.isEqual("isActive", 1);
+        query.equalTo("isActive", 1);
         query.ascending("schoolDayID");
         query.first({
           success: function(object) {
@@ -92,7 +92,8 @@ Parse.Cloud.job("schoolDayStructureGeneration", function(request, response) {
                 "customSchedule" : "None",
                 "imageUserFullString" : "None.",
                 "schoolDayID" : ID,
-                "isActive" : 1
+                "isActive" : 1,
+                "customString" : ""
               }, {
                 success: function(savedObject) {
                   response.success("New day created.");
@@ -133,7 +134,10 @@ Parse.Cloud.job("schoolDayStructureGeneration", function(request, response) {
                 "customSchedule" : "None",
                 "imageUserFullString" : "None.",
                 "schoolDayID" : ID,
-                "isActive" : 1
+                "isActive" : 1,
+                "customString" : "",
+                "breakfastString" : "No breakfast data.",
+                "lunchString" : "No lunch data."
               }, {
                 success: function(savedObject) {
                   response.success("New day created.");
@@ -430,7 +434,7 @@ Parse.Cloud.afterSave("AlertStructure", function(request) {
   };
 });
 
-Parse.Cloud.define("goBackOneDayFromStructure", function(request, response) {
+Parse.Cloud.define("snowDay", function(request, response) {
   var array = [];
   var ID = request.params.ID;
   var hasChanged = false;
@@ -439,69 +443,24 @@ Parse.Cloud.define("goBackOneDayFromStructure", function(request, response) {
   query.find( {
     success: function (results) {
       for (var i = 0; i < results.length; i++) {
-        if (results[i].get("schoolDayID") >= ID && i != results.length - 1) {
-          if (results[i + 1].get("isActive") == 0) {
-            //Skip and keep going until find the right one at j
-            var done = false;
-            for (var j = i + 2; j < results.length; j++) {
-              if (results[j].get("isActive") == 1) {
-                done = true;
-                var nextScheduleType = results[j].get("scheduleType");
-                if (nextScheduleType === "*") {
-                  //Set the custom schedule as well!
-                  results[i].set("customSchedule", results[j].get("customSchedule"));
-                };
-                results[i].set("scheduleType", nextScheduleType);
-                array.push(results[i]);
-              };
-            };
-            if (done == false) {
-              for (var j = i + 1; j < results.length; j++) {
-                if (results[j].get("scheduleType") != results[i].get("scheduleType")) {
-                  var nextScheduleType = results[j].get("scheduleType");
-                  if (nextScheduleType === "*") {
-                    //Set the custom schedule as well!
-                    results[i].set("customSchedule", results[j].get("customSchedule"));
-                  };
-                  results[i].set("scheduleType", nextScheduleType);
-                  array.push(results[i]);
-                  break;
-                };
-              };
-            };
-          } else {
-            var nextScheduleType = results[i + 1].get("scheduleType");
-            if (nextScheduleType === "*") {
-              //Set the custom schedule as well!
-              results[i].set("customSchedule", results[i + 1].get("customSchedule"));
-            };
-            results[i].set("scheduleType", nextScheduleType);
-            array.push(results[i]);
+        if (results[i].get("schoolDayID") > ID && i != results.length - 1) {
+          var nextScheduleType = results[i + 1].get("scheduleType");
+          if (nextScheduleType === "*") {
+            //Set the custom schedule as well!
+            results[i].set("customSchedule", results[i + 1].get("customSchedule"));
           };
-        } else if (results[i].get("schoolDayID") < ID && hasChanged == false) {
-          hasChanged = true;
-          if (i != results.length - 1) {
-            //Destroy it - no longer needed!
-            results[i].destroy({
-              success: function(myObject) {
-                //No response yet...
-              },
-              error: function(myObject, error) {
-                response.error(error);
-              }
-            });
-            //console.log("Destroying..." + results[i].get("schoolDayID"));
-          } else {
-            results[i].set("isActive", 0);
-            results[i].save(null, {
-              success: function(myObject) {
-                //No response yet...
-              },
-              error: function(myObject, error) {
-                response.error(error);
-              }
-            });
-          };
+          results[i].set("scheduleType", nextScheduleType);
+          array.push(results[i]);
+        } else if (results[i].get("schoolDayID") === ID) {
+          results[i].set("isActive", 0);
+          results[i].save(null, {
+            success: function(myObject) {
+              //No response yet...
+            },
+            error: function(myObject, error) {
+              response.error(error);
+            }
+          });
         };
       };
       /*for (var i = 0; i < array.length; i++) {
@@ -719,7 +678,7 @@ Parse.Cloud.afterSave("ExtracurricularUpdateStructure", function(request) {
     query.first({
       success: function(structure) {
         var title = structure.get("titleString");
-        var channelString = structure.get("channelString");
+        var channelString = "E" + structure.get("extracurricularID").toString();
         Parse.Push.send({
           channels: [ channelString ],
           data: {

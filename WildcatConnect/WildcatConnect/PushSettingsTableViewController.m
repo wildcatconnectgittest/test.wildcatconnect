@@ -49,45 +49,11 @@
      self.navigationItem.rightBarButtonItem = barButtonItem;
      [activity startAnimating];
      
-     [self getExtracurricularsMethodWithCompletion:^(NSMutableArray *returnArray, NSError *error) {
-          if (error != nil) {
-               UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"Error fetching data from server. Please try again." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
-               [alertView show];
-               dispatch_async(dispatch_get_main_queue(), ^ {
-                    [activity stopAnimating];
-               });
-          } else {
-               self.ECarray = returnArray;
-               [[PFInstallation currentInstallation] fetchIfNeededInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
-                    self.pushArray = [NSMutableArray arrayWithArray:((PFInstallation *)object).channels];
-                    [activity stopAnimating];
-                    [self.tableView reloadData];
-               }];
-          }
+     [[PFInstallation currentInstallation] fetchIfNeededInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+          self.pushArray = [NSMutableArray arrayWithArray:((PFInstallation *)object).channels];
+          [activity stopAnimating];
+          [self.tableView reloadData];
      }];
-}
-
-- (void)getExtracurricularsMethodWithCompletion:(void (^)(NSMutableArray *returnArray, NSError *error))completion {
-     dispatch_group_t serviceGroup = dispatch_group_create();
-     dispatch_group_enter(serviceGroup);
-     __block NSError *theError;
-     NSMutableArray *returnArray = [NSMutableArray array];
-     PFQuery *query = [ExtracurricularStructure query];
-     [query orderByAscending:@"titleString"];
-     [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
-          [returnArray addObjectsFromArray:objects];
-          if (error != nil) {
-               theError = error;
-          }
-          dispatch_group_leave(serviceGroup);
-     }];
-     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
-          NSError *overallError = nil;
-          if (theError != nil && returnArray.count == 0) {
-               overallError = theError;
-          }
-          completion(returnArray, overallError);
-     });
 }
 
 - (void)getChannelsMethodWithCompletion:(void (^)(NSMutableArray *returnArray, NSError *error))completion {
@@ -142,25 +108,15 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-     if (section == 0) {
-          return 3;
-     } else if (section == 1) {
-          if (self.ECarray.count == 0) {
-               return 1;
-          } else return self.ECarray.count;
-     } else return 0;
+     return 3;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-     if (section == 0) {
-          return @"SELECT THE PUSH NOTIFICATIONS YOU WOULD LIKE TO RECEIVE...";
-     } else if (section == 1) {
-          return @"EXTRACURRICULARS";
-     } else return @"";
+     return @"SELECT THE PUSH NOTIFICATIONS YOU WOULD LIKE TO RECEIVE...";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -186,12 +142,6 @@
                } else
                     [switchView setOn:NO animated:NO];
           }
-     } else if (indexPath.section == 1) {
-          ExtracurricularStructure *EC = [self.ECarray objectAtIndex:indexPath.row];
-          if (self.pushArray.count != 0 && [self.pushArray containsObject:EC.channelString]) {
-               [switchView setOn:YES animated:NO];
-          } else
-               [switchView setOn:NO animated:NO];
      }
      
      [switchView addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
@@ -208,16 +158,6 @@
                [switchView setTag:2];
           }
           cell.accessoryView = switchView;
-     } else if (indexPath.section == 1) {
-          if (self.ECarray.count == 0) {
-               cell.textLabel.text = @"Loading...";
-          } else {
-               ExtracurricularStructure *EC = [self.ECarray objectAtIndex:indexPath.row];
-               cell.textLabel.text = EC.titleString;
-               NSInteger integer = indexPath.row + 3;
-               [switchView setTag:integer];
-               cell.accessoryView = switchView;
-          }
      }
      
      [switchView release];
@@ -256,17 +196,6 @@
           } else {
                if ([self.pushArray containsObject:@"allPolls"]) {
                     [self.pushArray removeObject:@"allPolls"];
-               }
-          }
-     } else {
-          ExtracurricularStructure *EC = [self.ECarray objectAtIndex:switchControl.tag - 3];
-          if (switchControl.on == true) {
-               if (! [self.pushArray containsObject:EC.channelString]) {
-                    [self.pushArray addObject:EC.channelString];
-               }
-          } else {
-               if ([self.pushArray containsObject:EC.channelString]) {
-                    [self.pushArray removeObject:EC.channelString];
                }
           }
      }

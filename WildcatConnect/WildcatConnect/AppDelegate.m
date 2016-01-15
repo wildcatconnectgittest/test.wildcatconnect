@@ -22,8 +22,32 @@
 #import "NewsArticleDetailViewController.h"
 #import "UserRegisterStructure.h"
 #import "SpecialKeyStructure.h"
+#import "ErrorStructure.h"
+#import <SystemConfiguration/SystemConfiguration.h>
+#import "Reachability.h"
 
-@implementation AppDelegate
+@implementation AppDelegate {
+     BOOL connected;
+}
+
+void uncaughtExceptionHandler(NSException *exception) {
+     NSString *deviceToken = [[PFInstallation currentInstallation] objectForKey:@"deviceToken"];
+     if (! deviceToken) {
+          deviceToken = @"No device token available.";
+     }
+     NSString *username;
+     if ([PFUser currentUser]) {
+          username = [[PFUser currentUser] username];
+     } else
+          username = @"No username available.";
+     NSMutableArray *errorsArray = [[[NSUserDefaults standardUserDefaults] objectForKey:@"errorsArray"] mutableCopy];
+     if (! errorsArray || [errorsArray class] != [NSMutableArray class]) {
+          errorsArray = [NSMutableArray array];
+     }
+     [errorsArray addObject:@{ @"nameString" : exception.name , @"infoString" : exception.reason , @"deviceToken" : deviceToken, @"username" : username }];
+     [[NSUserDefaults standardUserDefaults] setObject:errorsArray forKey:@"errorsArray"];
+     [[NSUserDefaults standardUserDefaults] synchronize];
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -34,6 +58,28 @@
      [PFUser enableRevocableSessionInBackground];
      
      [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+     
+     Reachability *reachability = [Reachability reachabilityForInternetConnection];
+     NetworkStatus networkStatus = [reachability currentReachabilityStatus];
+     connected = (networkStatus != NotReachable);
+     
+     NSMutableArray *errorsArray = [[[NSUserDefaults standardUserDefaults] objectForKey:@"errorsArray"] mutableCopy];
+     if (! errorsArray) {
+          errorsArray = [NSMutableArray array];
+     } else if (errorsArray.count > 0) {
+          NSMutableArray *copyArray = [errorsArray mutableCopy];
+          for (NSObject *object in errorsArray) {
+               [copyArray removeObject:object];
+               ErrorStructure *error = [[ErrorStructure alloc] init];
+               error.nameString = [object valueForKey:@"nameString"];
+               error.infoString = [object valueForKey:@"infoString"];
+               error.deviceToken = [object valueForKey:@"deviceToken"];
+               error.username = [object valueForKey:@"username"];
+               [error saveInBackground];
+          }
+          [[NSUserDefaults standardUserDefaults] setObject:copyArray forKey:@"errorsArray"];
+          [[NSUserDefaults standardUserDefaults] synchronize];
+     }
      
      UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeAlert |
                                                      UIUserNotificationTypeBadge |
@@ -55,10 +101,12 @@
            (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound)];
      }
      
+     NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
+     
      NSDictionary *notificationPayload = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
      
      if (notificationPayload) {
-          if ([notificationPayload objectForKey:@"a"]) {
+          if ([notificationPayload objectForKey:@"a"] && connected == true) {
                self.alertString = [notificationPayload objectForKey:@"a"];
                [self getAlertForIDMethodWithCompletion:^(NSMutableArray *array, NSError *error) {
                     dispatch_async(dispatch_get_main_queue(), ^ {
@@ -88,7 +136,7 @@
                          [nav presentViewController:navigationController animated:YES completion:^{}];
                     });
                } forID:self.alertString];
-          } else if ([notificationPayload objectForKey:@"n"]) {
+          } else if ([notificationPayload objectForKey:@"n"] && connected == true) {
                self.newsString = [notificationPayload objectForKey:@"n"];
                [self getNewsForIDMethodWithCompletion:^(NSMutableArray *array, NSError *error) {
                     dispatch_async(dispatch_get_main_queue(), ^ {
@@ -181,7 +229,7 @@
           }
      }
      
-     if (application.applicationState != UIApplicationStateBackground) {
+     /*if (application.applicationState != UIApplicationStateBackground) {
                // Track an app open here if we launch with a push, unless
                // "content_available" was used to trigger a background push (introduced
                // in iOS 7). In that case, we skip tracking here to avoid double
@@ -192,7 +240,7 @@
           if (preBackgroundPush || oldPushHandlerOnly || noPushPayload) {
                [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
           }
-     }
+     }*/
      
     /*CommunityServiceStructure *TestOne = [[CommunityServiceStructure alloc] init];
     TestOne.commDateString = @"SampleDate";

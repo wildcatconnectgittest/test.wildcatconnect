@@ -21,6 +21,7 @@
 @dynamic imageUser;
 @dynamic customSchedule;
 @dynamic imageUserFullString;
+@dynamic customString;
 
 + (void)load {
      [self registerSubclass];

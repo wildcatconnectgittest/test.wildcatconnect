@@ -20,6 +20,5 @@
 @property PFFile *imageFile;
 @property NSNumber *extracurricularID;
 @property NSString *meetingIDs;
-@property NSString *channelString;
 
 @end

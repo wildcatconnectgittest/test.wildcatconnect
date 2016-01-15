@@ -69,7 +69,20 @@
      scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
      scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
      
-     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, 50)];
+     UILabel *descriptionLabelC = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, 100)];
+     UIFont *font = [UIFont systemFontOfSize:12];
+     [descriptionLabelC setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
+     descriptionLabelC.text = @"NOTE: All Wildcat News Stories will require administrative approval before they appear in the app.";
+     descriptionLabelC.lineBreakMode = NSLineBreakByWordWrapping;
+     descriptionLabelC.numberOfLines = 0;
+     [descriptionLabelC sizeToFit];
+     [scrollView addSubview:descriptionLabelC];
+     
+     UIView *separatorTwo = [[UIView alloc] initWithFrame:CGRectMake(10, descriptionLabelC.frame.origin.y + descriptionLabelC.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+     separatorTwo.backgroundColor = [UIColor blackColor];
+     [scrollView addSubview:separatorTwo];
+     
+     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, separatorTwo.frame.origin.y + separatorTwo.frame.size.height + 10, self.view.frame.size.width - 20, 50)];
      titleLabel.text = @"Title";
      [titleLabel setFont:[UIFont systemFontOfSize:16]];
      titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -156,14 +169,22 @@
      [scrollView addSubview:summaryTextView];
      
      UILabel *articleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, summaryTextView.frame.origin.y + summaryTextView.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
-     articleLabel.text = @"Article Text";
+     articleLabel.text = @"Content";
      [articleLabel setFont:[UIFont systemFontOfSize:16]];
      articleLabel.lineBreakMode = NSLineBreakByWordWrapping;
      articleLabel.numberOfLines = 0;
      [articleLabel sizeToFit];
      [scrollView addSubview:articleLabel];
      
-     articleTextView = [[UITextView alloc] initWithFrame:CGRectMake(articleLabel.frame.origin.x, articleLabel.frame.origin.y + articleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 200)];
+     UILabel *descriptionLabelB = [[UILabel alloc] initWithFrame:CGRectMake(10, articleLabel.frame.origin.y + articleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
+     [descriptionLabelB setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
+     descriptionLabelB.text = @"NOTE: You can embed links in the article content below and they will appear as hyperlinks in the iOS app. (i.e 'http://www.wildcatconnect.org')";
+     descriptionLabelB.lineBreakMode = NSLineBreakByWordWrapping;
+     descriptionLabelB.numberOfLines = 0;
+     [descriptionLabelB sizeToFit];
+     [scrollView addSubview:descriptionLabelB];
+     
+     articleTextView = [[UITextView alloc] initWithFrame:CGRectMake(descriptionLabelB.frame.origin.x, descriptionLabelB.frame.origin.y + descriptionLabelB.frame.size.height + 10, self.view.frame.size.width - 20, 200)];
      [articleTextView setDelegate:self];
      [articleTextView setFont:[UIFont systemFontOfSize:16]];
      articleTextView.layer.borderWidth = 1.0f;
@@ -185,7 +206,6 @@
      [scrollView addSubview:imageView];
      
      currentImageLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, imageLabel.frame.origin.y + imageLabel.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
-     UIFont *font = [UIFont systemFontOfSize:10];
      [currentImageLabel setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
      currentImageLabel.text = @"No image selected.";
      currentImageLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -205,7 +225,7 @@
      [scrollView addSubview:separator];
      
      postButton = [UIButton buttonWithType:UIButtonTypeSystem];
-     [postButton setTitle:@"POST ARTICLE" forState:UIControlStateNormal];
+     [postButton setTitle:@"SUBMIT FOR APPROVALa" forState:UIControlStateNormal];
      [postButton sizeToFit];
      [postButton addTarget:self action:@selector(postArticle) forControlEvents:UIControlEventTouchUpInside];
      postButton.frame = CGRectMake((self.view.frame.size.width - postButton.frame.size.width - 10), separator.frame.origin.y + separator.frame.size.height + 10, postButton.frame.size.width, postButton.frame.size.height);

@@ -17,6 +17,8 @@
 
 @implementation ExtracurricularsTableViewController {
      UIActivityIndicatorView *activity;
+     UIAlertView *unsubscribeAlertView;
+     UIAlertView *subscribeAlertView;
 }
 
 - (void)viewDidLoad {
@@ -120,44 +122,17 @@
                                                       @"descriptionString"    : e.descriptionString,
                                                       @"hasImage" :e.hasImage,
                                                       @"extracurricularID" : e.extracurricularID,
-                                                      @"meetingIDs" : e.meetingIDs,
-                                                      @"channelString" : e.channelString
+                                                      @"meetingIDs" : e.meetingIDs
                                                       }];
                          }
                          [userDefaults setObject:moreItems forKey:@"ECArray"];
-                         [self testMethodThreeWithCompletion:^(NSError *error, NSMutableArray *returnArrayB) {
-                              if (error) {
-                                   UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"Error fetching data from server. Please try again." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
-                                   [alertView show];
-                                   dispatch_async(dispatch_get_main_queue(), ^ {
-                                        [activity stopAnimating];
-                                        [self.tableView reloadData];
-                                        [self refreshControl];
-                                        [self.refreshControl endRefreshing];
-                                   });
-                              } else {
-                                   self.ECImagesArray = returnArrayB;
-                                   NSMutableArray *moreItems = [NSMutableArray array];
-                                   NSData *data;
-                                   for (int i = 0; i < returnArrayB.count; i++) {
-                                        if ([returnArrayB[i] isKindOfClass:[UIImage class]]) {
-                                             data = [[NSData alloc] init];
-                                             data = UIImagePNGRepresentation(returnArrayB[i]);
-                                             [moreItems addObject:data];
-                                        } else {
-                                             [moreItems addObject:[[NSData alloc] init]];
-                                        }
-                                   }
-                                   [userDefaults setObject:moreItems forKey:@"ECImagesArray"];
-                                   [userDefaults synchronize];
-                                   dispatch_async(dispatch_get_main_queue(), ^ {
-                                        [activity stopAnimating];
-                                        [self.tableView reloadData];
-                                        [self refreshControl];
-                                        [self.refreshControl endRefreshing];
-                                   });
-                              }
-                         } withArray:returnArrayNew];
+                         [userDefaults synchronize];
+                         dispatch_async(dispatch_get_main_queue(), ^ {
+                              [activity stopAnimating];
+                              [self.tableView reloadData];
+                              [self refreshControl];
+                              [self.refreshControl endRefreshing];
+                         });
                     } withArray:returnArrayA];
                }];
           }
@@ -224,7 +199,6 @@
           ECStructure.hasImage = [object objectForKey:@"hasImage"];
           ECStructure.extracurricularID = [object objectForKey:@"extracurricularID"];
           ECStructure.meetingIDs = [object objectForKey:@"meetingIDs"];
-          ECStructure.channelString = [object objectForKey:@"channelString"];
           [array addObject:ECStructure];
           if (i == theArrayToSearch.count - 1)
                dispatch_group_leave(serviceGroup);
@@ -307,59 +281,59 @@
      });
 }
 
-- (void)testMethodThreeWithCompletion:(void (^)(NSError *error, NSMutableArray *returnArray))completion withArray:(NSMutableArray *)array {
-     __block NSError *theError = nil;
-     __block BOOL lastNone = false;
-     dispatch_group_t theServiceGroup = dispatch_group_create();
-     dispatch_group_enter(theServiceGroup);
-     NSMutableArray *theReturnArray = [NSMutableArray arrayWithArray:array];
-     ExtracurricularStructure *ECStructure;
-     for (int i = 0; i < array.count; i++) {
-          ECStructure = (ExtracurricularStructure *)[array objectAtIndex:i];
-          NSInteger imageNumber = [ECStructure.hasImage integerValue];
-          if (imageNumber == 1) {
-               PFFile *file = ECStructure.imageFile;
-               [file getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
-                    UIImage *image = [UIImage imageWithData:data];
-                    image = [[AppManager getInstance] imageFromImage:image scaledToWidth:70];
-                    [theReturnArray setObject:image atIndexedSubscript:[[NSNumber numberWithInt:i] integerValue]];
-                         BOOL go = true;
-                         for (NSObject *object in theReturnArray) {
-                              if (object.class == [ExtracurricularStructure class]) {
-                                   go = false;
-                                   break;
-                              }
-                         }
-                         if (go) {
-                              dispatch_group_leave(theServiceGroup);
-                         }
-               }];
-          } else {
-               [theReturnArray setObject:[[NSObject alloc] init] atIndexedSubscript:[[NSNumber numberWithInt:i] integerValue]];
-               if (i == array.count - 1) {
-                    BOOL go = true;
-                    for (NSObject *object in theReturnArray) {
-                         if (object.class == [ExtracurricularStructure class]) {
-                              go = false;
-                              break;
-                         }
-                    }
-                    if (go) {
-                         dispatch_group_leave(theServiceGroup);
-                    }
-               }
-          }
-     }
-     if (array.count == 0) {
-          dispatch_group_leave(theServiceGroup);
-     }
-     dispatch_group_notify(theServiceGroup, dispatch_get_main_queue(), ^{
-          NSError *overallError = nil;
-          if (theError)
-               overallError = theError;
-          completion(overallError, theReturnArray);
-     });
-}
+//- (void)testMethodThreeWithCompletion:(void (^)(NSError *error, NSMutableArray *returnArray))completion withArray:(NSMutableArray *)array {
+//     __block NSError *theError = nil;
+//     __block BOOL lastNone = false;
+//     dispatch_group_t theServiceGroup = dispatch_group_create();
+//     dispatch_group_enter(theServiceGroup);
+//     NSMutableArray *theReturnArray = [NSMutableArray arrayWithArray:array];
+//     ExtracurricularStructure *ECStructure;
+//     for (int i = 0; i < array.count; i++) {
+//          ECStructure = (ExtracurricularStructure *)[array objectAtIndex:i];
+//          NSInteger imageNumber = [ECStructure.hasImage integerValue];
+//          if (imageNumber == 1) {
+//               PFFile *file = ECStructure.imageFile;
+//               [file getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
+//                    UIImage *image = [UIImage imageWithData:data];
+//                    image = [[AppManager getInstance] imageFromImage:image scaledToWidth:70];
+//                    [theReturnArray setObject:image atIndexedSubscript:[[NSNumber numberWithInt:i] integerValue]];
+//                         BOOL go = true;
+//                         for (NSObject *object in theReturnArray) {
+//                              if (object.class == [ExtracurricularStructure class]) {
+//                                   go = false;
+//                                   break;
+//                              }
+//                         }
+//                         if (go) {
+//                              dispatch_group_leave(theServiceGroup);
+//                         }
+//               }];
+//          } else {
+//               [theReturnArray setObject:[[NSObject alloc] init] atIndexedSubscript:[[NSNumber numberWithInt:i] integerValue]];
+//               if (i == array.count - 1) {
+//                    BOOL go = true;
+//                    for (NSObject *object in theReturnArray) {
+//                         if (object.class == [ExtracurricularStructure class]) {
+//                              go = false;
+//                              break;
+//                         }
+//                    }
+//                    if (go) {
+//                         dispatch_group_leave(theServiceGroup);
+//                    }
+//               }
+//          }
+//     }
+//     if (array.count == 0) {
+//          dispatch_group_leave(theServiceGroup);
+//     }
+//     dispatch_group_notify(theServiceGroup, dispatch_get_main_queue(), ^{
+//          NSError *overallError = nil;
+//          if (theError)
+//               overallError = theError;
+//          completion(overallError, theReturnArray);
+//     });
+//}
 
 - (void)testMethodTwoWithCompletion:(void (^)(NSError *error, NSMutableArray *returnArray))completion {
      __block NSError *theError = nil;
@@ -371,7 +345,10 @@
      [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
           [theReturnArray addObjectsFromArray:objects];
           theError = error;
-          dispatch_group_leave(theServiceGroup);
+          [[PFInstallation currentInstallation] fetchInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable errorTwo) {
+                    theError = errorTwo;
+               dispatch_group_leave(theServiceGroup);
+          }];
      }];
      dispatch_group_notify(theServiceGroup, dispatch_get_main_queue(), ^ {
           NSError *overallError = nil;
@@ -387,7 +364,14 @@
      dispatch_group_enter(theServiceGroup);
      NSMutableArray *returnArray = [[NSMutableArray alloc] init];
           //Return array will be updatesArray
+     NSMutableArray *myArray = [[[PFInstallation currentInstallation] objectForKey:@"channels"] mutableCopy];
+     for (int i = 0; i < myArray.count; i++) {
+          if ([myArray[i] length] == 2) {
+               myArray[i] = [NSNumber numberWithInteger:[((NSString *)[myArray[i] substringFromIndex:1]) integerValue]];
+          }
+     }
      PFQuery *query = [ExtracurricularUpdateStructure query];
+     [query whereKey:@"extracurricularID" containedIn:myArray];
      [query orderByDescending:@"createdAt"];
      [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
           [returnArray addObjectsFromArray:objects];
@@ -452,9 +436,9 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
      if (section == 0)
-          return @"UPDATES";
+          return @"MY GROUPS";
      else if (section == 1)
-          return @"ALL EXTRACURRICULARS";
+          return @"ALL GROUPS";
      else return nil;
 }
 
@@ -470,14 +454,15 @@
                UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
                cell.textLabel.text = EC.titleString;
                cell.detailTextLabel.text = extracurricularUpdateStructure.messageString;
-               if ([[[PFInstallation currentInstallation] objectForKey:@"channels"] containsObject:EC.channelString]) {
-                    cell.detailTextLabel.textColor = [UIColor redColor];
-               }
                cell.detailTextLabel.numberOfLines = 4;
-               NSInteger index = [EC.extracurricularID integerValue];
-               NSInteger hasImageInteger = [EC.hasImage integerValue];
-               if (hasImageInteger == 1)
-                    cell.imageView.image = (UIImage *)[self.ECImagesArray objectAtIndex:index];
+               UIButton *unreadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+               [unreadButton setImage:[UIImage imageNamed:@"minus@2x.png"] forState:UIControlStateNormal];
+               [unreadButton setTintColor:[UIColor redColor]];
+               [unreadButton addTarget:self action:@selector(removeGroup:) forControlEvents:UIControlEventTouchUpInside];
+               [unreadButton sizeToFit];
+               [unreadButton setTag:indexPath.row];
+               cell.accessoryView = unreadButton;
+               [cell setNeedsLayout];
                return cell;
           }
      } else if (indexPath.section == 1) {
@@ -491,13 +476,101 @@
                cell.textLabel.text = extracurricularStructure.titleString;
                cell.detailTextLabel.text = extracurricularStructure.descriptionString;
                cell.detailTextLabel.numberOfLines = 4;
-               NSInteger imageInteger = [extracurricularStructure.hasImage integerValue];
-               if (imageInteger == 1)
-                    cell.imageView.image = (UIImage *)[self.ECImagesArray objectAtIndex:indexPath.row];
+               UIButton *unreadButton = [UIButton buttonWithType:UIButtonTypeContactAdd];
+               [unreadButton addTarget:self action:@selector(addGroup:) forControlEvents:UIControlEventTouchUpInside];
+               [unreadButton sizeToFit];
+               [unreadButton setTag:indexPath.row];
+               cell.accessoryView = unreadButton;
+               [cell setNeedsLayout];
                return cell;
           }
      }
      else return nil;
+}
+
+- (void)addGroup:(id)sender {
+     NSInteger index = ((UIButton *)sender).tag;
+     ExtracurricularStructure *EC = [self.extracurricularsArray objectAtIndex:index];
+     subscribeAlertView = [[UIAlertView alloc] initWithTitle:@"Confirmation" message:[[@"Are you sure you want to subscribe to the group \"" stringByAppendingString:EC.titleString] stringByAppendingString:@"\"?"] delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Subscribe", nil];
+     subscribeAlertView.tag = index;
+     [subscribeAlertView show];
+}
+
+- (void)removeGroup:(id)sender {
+     NSInteger index = ((UIButton *)sender).tag;
+     ExtracurricularStructure *EC = [self.extracurricularsArray objectAtIndex:[self getIndexofStructureWithID:[[self.updatesArray objectAtIndex:index] objectForKey:@"extracurricularID"]]];
+    unsubscribeAlertView = [[UIAlertView alloc] initWithTitle:@"Confirmation" message:[[@"Are you sure you want to unsubscribe from the group \"" stringByAppendingString:EC.titleString] stringByAppendingString:@"\"?"] delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Unsubscribe", nil];
+     unsubscribeAlertView.tag = index;
+     [unsubscribeAlertView show];
+}
+
+- (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+          // the user clicked one of the OK/Cancel buttons
+     if (actionSheet == unsubscribeAlertView) {
+          if (buttonIndex == 1) {
+                    //Yes
+               NSInteger index = actionSheet.tag;
+               ExtracurricularStructure *EC = [self.extracurricularsArray objectAtIndex:[self getIndexofStructureWithID:[[self.updatesArray objectAtIndex:index] objectForKey:@"extracurricularID"]]];
+               activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+               [activity setBackgroundColor:[UIColor clearColor]];
+               [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+               UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
+               self.navigationItem.rightBarButtonItem = barButtonItem;
+               [activity startAnimating];
+               [self changeGroupMethodWithCompletion:^(NSError *error) {
+                    [activity stopAnimating];
+                    [self refreshData];
+               } forID:[@"E" stringByAppendingString:[EC.extracurricularID stringValue]] forAction:0];
+          }
+          
+     } else if (actionSheet == subscribeAlertView) {
+          if (buttonIndex == 1) {
+                    //Yes
+               NSInteger index = actionSheet.tag;
+               ExtracurricularStructure *EC = [self.extracurricularsArray objectAtIndex:index];
+               activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+               [activity setBackgroundColor:[UIColor clearColor]];
+               [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+               UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
+               self.navigationItem.rightBarButtonItem = barButtonItem;
+               [activity startAnimating];
+               [self changeGroupMethodWithCompletion:^(NSError *error) {
+                    [activity stopAnimating];
+                    [self refreshData];
+               } forID:[@"E" stringByAppendingString:[EC.extracurricularID stringValue]] forAction:1];
+          }
+          
+     }
+}
+
+- (void)changeGroupMethodWithCompletion:(void (^)(NSError *error))completion forID:(NSString *)channel forAction:(NSInteger)action {
+     dispatch_group_t serviceGroup = dispatch_group_create();
+     dispatch_group_enter(serviceGroup);
+     __block NSError *theError;
+     NSMutableArray *currentChannels = [[[PFInstallation currentInstallation] objectForKey:@"channels"] mutableCopy];
+     if (action == 0) {
+               //Remove
+          [currentChannels removeObject:channel];
+     } else if (action == 1) {
+          [currentChannels addObject:channel];
+     }
+     [[PFInstallation currentInstallation] setObject:currentChannels forKey:@"channels"];
+     [[PFInstallation currentInstallation] saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+          theError = error;
+          dispatch_group_leave(serviceGroup);
+     }];
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^{
+          completion(theError);
+     });
+}
+
+- (NSInteger)indexOfEC:(ExtracurricularUpdateStructure *)update {
+     for (int i = 0; i < self.extracurricularsArray.count; i++) {
+          if ([[update objectForKey:@"extracurricularID"] integerValue] == [[[self.extracurricularsArray objectAtIndex:i] objectForKey:@"extracurricularID"] integerValue]) {
+               return i;
+          }
+     }
+     return -1;
 }
 
 - (NSInteger)getIndexofStructureWithID:(NSNumber *)theID {

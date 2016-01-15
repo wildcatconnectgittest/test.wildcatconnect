@@ -24,8 +24,10 @@
      UITextField *firstNameTextField;
      UITextField *lastNameTextField;
      UITextField *emailTextField;
+     UITextField *confirmEmailTextField;
      UITextField *regUsernameTextField;
      UITextField *regPasswordTextField;
+     UITextField *confirmRegPasswordTextField;
      UIButton *logButton;
      UIButton *signButton;
      UIAlertView *av;
@@ -93,7 +95,7 @@
      [scrollView addSubview:logButton];
      
      UILabel *signLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, logButton.frame.origin.y + logButton.frame.size.height + 10, self.view.frame.size.width - 20, 50)];
-     signLabel.text = @"Register";
+     signLabel.text = @"Register an Account (Faculty Only)";
      [signLabel setFont:[UIFont systemFontOfSize:16]];
      signLabel.lineBreakMode = NSLineBreakByWordWrapping;
      signLabel.numberOfLines = 0;
@@ -118,17 +120,26 @@
      emailTextField.borderStyle = UITextBorderStyleRoundedRect;
      emailTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
      emailTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-     emailTextField.placeholder = @"E-Mail";
+     emailTextField.placeholder = @"Faculty E-Mail";
      emailTextField.tag = 4;
      [emailTextField setDelegate:self];
      [scrollView addSubview:emailTextField];
      
-     regUsernameTextField = [[UITextField alloc] initWithFrame:CGRectMake(titleLabel.frame.origin.x, emailTextField.frame.origin.y + emailTextField.frame.size.height + 10, self.view.frame.size.width - 20, 31)];
+     confirmEmailTextField = [[UITextField alloc] initWithFrame:CGRectMake(signLabel.frame.origin.x, emailTextField.frame.origin.y + emailTextField.frame.size.height + 10, self.view.frame.size.width - 20, 31)];
+     confirmEmailTextField.borderStyle = UITextBorderStyleRoundedRect;
+     confirmEmailTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+     confirmEmailTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+     confirmEmailTextField.placeholder = @"Confirm Faculty E-Mail";
+     confirmEmailTextField.tag = 5;
+     [confirmEmailTextField setDelegate:self];
+     [scrollView addSubview:confirmEmailTextField];
+     
+     regUsernameTextField = [[UITextField alloc] initWithFrame:CGRectMake(titleLabel.frame.origin.x, confirmEmailTextField.frame.origin.y + confirmEmailTextField.frame.size.height + 10, self.view.frame.size.width - 20, 31)];
      regUsernameTextField.borderStyle = UITextBorderStyleRoundedRect;
      regUsernameTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
      regUsernameTextField.autocorrectionType = UITextAutocorrectionTypeNo;
      regUsernameTextField.placeholder = @"Username";
-     regUsernameTextField.tag = 5;
+     regUsernameTextField.tag = 6;
      [regUsernameTextField setDelegate:self];
      [scrollView addSubview:regUsernameTextField];
      
@@ -136,19 +147,27 @@
      regPasswordTextField.borderStyle = UITextBorderStyleRoundedRect;
      regPasswordTextField.placeholder = @"Password";
      regPasswordTextField.secureTextEntry = YES;
-     regPasswordTextField.tag = 6;
+     regPasswordTextField.tag = 7;
      [regPasswordTextField setDelegate:self];
      [scrollView addSubview:regPasswordTextField];
+     
+     confirmRegPasswordTextField = [[UITextField alloc] initWithFrame:CGRectMake(regPasswordTextField.frame.origin.x, regPasswordTextField.frame.origin.y + regPasswordTextField.frame.size.height + 10, self.view.frame.size.width - 20, 31)];
+     confirmRegPasswordTextField.borderStyle = UITextBorderStyleRoundedRect;
+     confirmRegPasswordTextField.placeholder = @"Confirm Password";
+     confirmRegPasswordTextField.secureTextEntry = YES;
+     confirmRegPasswordTextField.tag = 8;
+     [confirmRegPasswordTextField setDelegate:self];
+     [scrollView addSubview:confirmRegPasswordTextField];
      
      signButton = [UIButton buttonWithType:UIButtonTypeSystem];
      [signButton setTitle:@"REGISTER" forState:UIControlStateNormal];
      [signButton sizeToFit];
      [signButton addTarget:self action:@selector(registerUser) forControlEvents:UIControlEventTouchUpInside];
-     signButton.frame = CGRectMake((self.view.frame.size.width / 2 - signButton.frame.size.width / 2), regPasswordTextField.frame.origin.y + regPasswordTextField.frame.size.height + 10, signButton.frame.size.width, signButton.frame.size.height);
+     signButton.frame = CGRectMake((self.view.frame.size.width / 2 - signButton.frame.size.width / 2), confirmRegPasswordTextField.frame.origin.y + confirmRegPasswordTextField.frame.size.height + 10, signButton.frame.size.width, signButton.frame.size.height);
      [scrollView addSubview:signButton];
      
      self.automaticallyAdjustsScrollViewInsets = YES;
-     UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 60, 0);
+     UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 80, 0);
      scrollView.contentInset = adjustForTabbarInsets;
      scrollView.scrollIndicatorInsets = adjustForTabbarInsets;
      CGRect contentRect = CGRectZero;
@@ -174,7 +193,7 @@
      keyboardIsShown = NO;
      
      self.automaticallyAdjustsScrollViewInsets = YES;
-     UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 70, 0);
+     UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 80, 0);
      scrollView.contentInset = adjustForTabbarInsets;
      scrollView.scrollIndicatorInsets = adjustForTabbarInsets;
      CGRect contentRect = CGRectZero;
@@ -227,11 +246,28 @@
 - (void)registerUser{
      NSString *username = regUsernameTextField.text;
      NSString *password = regPasswordTextField.text;
+     NSString *confirmPassword = confirmRegPasswordTextField.text;
      NSString *firstName = firstNameTextField.text;
      NSString *lastName = lastNameTextField.text;
      NSString *email = emailTextField.text;
+     NSString *confirmEmail = confirmEmailTextField.text;
      if ([username length] == 0 || [password length] == 0 || [firstName length] == 0 || [lastName length] == 0 || [email length] == 0 || [self validateEmail:email] == false) {
-          UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"You must enter a valid username and password." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+          UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"Please ensure you have correctly filled out all required fields!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+          [alertView show];
+     } else if (! [email isEqualToString:confirmEmail]) {
+          UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"Your e-mail addresses do not match!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+          [alertView show];
+     } else if (! [password isEqualToString:password]) {
+          UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"Your passwords do not match!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+          [alertView show];
+     } else if (! [email containsString:@"weymouthschools.org"]) {
+          UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"Your e-mail address is not a valid faculty address!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+          [alertView show];
+     } else if ([username containsString:@" "]) {
+          UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"Your username cannot contain any spaces!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+          [alertView show];
+     } else if ([password containsString:@" "]) {
+          UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"Your password cannot contain any spaces!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
           [alertView show];
      } else {
           UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(self.view.frame.size.width / 2 - 15, signButton.frame.origin.y, 30, 30)];
