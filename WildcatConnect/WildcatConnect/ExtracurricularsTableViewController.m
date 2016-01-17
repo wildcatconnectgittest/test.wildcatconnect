@@ -35,7 +35,7 @@
      refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"PULL TO REFRESH"];
     self.refreshControl= refreshControl;
     
-    
+     self.navigationItem.title = @"Groups";
     
      if (self.loadNumber == [NSNumber numberWithInt:1] || ! self.loadNumber) {
           [self refreshData];

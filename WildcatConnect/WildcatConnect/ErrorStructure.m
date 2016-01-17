@@ -14,6 +14,7 @@
 @dynamic infoString;
 @dynamic deviceToken;
 @dynamic username;
+@dynamic version;
 
 + (void)load {
      [self registerSubclass];

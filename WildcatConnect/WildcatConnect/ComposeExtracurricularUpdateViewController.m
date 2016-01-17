@@ -31,6 +31,7 @@
      UIAlertView *postAlertView;
      UIAlertView *errorAlertView;
      BOOL keyboardIsShown;
+     UITableView *theTableView;
 }
 
 - (void)viewDidLoad {
@@ -38,6 +39,8 @@
     // Do any additional setup after loading the view.
      
      hasChanged = false;
+     
+     self.groupArray = [[NSMutableArray alloc] init];
      
           //UIBarButtonItem *bbtnBack = [[UIBarButtonItem alloc] initWithTitle:@"Back"
           //style:UIBarButtonItemStylePlain
@@ -52,7 +55,7 @@
                                                                              blue:23.0f/255.0f
                                                                             alpha:0.5f];
      
-     self.navigationItem.title = @"Extracurricular Update";
+     self.navigationItem.title = @"Group Update";
      self.navigationController.navigationBar.translucent = NO;
      
      hasChanged = false;
@@ -115,7 +118,7 @@
                     dispatch_async(dispatch_get_main_queue(), ^ {
                          [activity stopAnimating];
                          
-                         [titleLabel removeFromSuperview];
+                         [scrollView removeFromSuperview];
                          titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, 50)];
                          titleLabel.text = @"You are not the owner of any Extracurricular groups. However, you can register a new group, where you will be able to send push notifications to users who subscribe.";
                          [titleLabel setFont:[UIFont systemFontOfSize:16]];
@@ -145,15 +148,15 @@
                     self.ECarray = returnArray;
                     dispatch_async(dispatch_get_main_queue(), ^ {
                          [activity stopAnimating];
-                         titleLabel.text = @"Select Extracurricular";
+                         titleLabel.text = @"Select Group(s)";
                          [titleLabel sizeToFit];
                          
-                         extracurricularPickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(10, titleLabel.frame.origin.y + titleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 150)];
-                         extracurricularPickerView.delegate = self;
-                         extracurricularPickerView.showsSelectionIndicator = YES;
-                         [scrollView addSubview:extracurricularPickerView];
+                         theTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, titleLabel.frame.origin.y + titleLabel.frame.size.height + 10, self.view.frame.size.width, 250)];
+                         [theTableView setDelegate:self];
+                         [theTableView setDataSource:self];
+                         [scrollView addSubview:theTableView];
                          
-                         UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, extracurricularPickerView.frame.origin.y + extracurricularPickerView.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
+                         UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, theTableView.frame.origin.y + theTableView.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
                          messageLabel.text = @"Message";
                          [messageLabel setFont:[UIFont systemFontOfSize:16]];
                          messageLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -188,7 +191,7 @@
                          [scrollView addSubview:postButton];
                          
                          self.automaticallyAdjustsScrollViewInsets = YES;
-                         UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 10, 0);
+                         UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 150, 0);
                          scrollView.contentInset = adjustForTabbarInsets;
                          scrollView.scrollIndicatorInsets = adjustForTabbarInsets;
                          CGRect contentRect = CGRectZero;
@@ -196,6 +199,8 @@
                               contentRect = CGRectUnion(contentRect, view.frame);
                          }
                          scrollView.contentSize = contentRect.size;
+                         
+                         [self.view addSubview:scrollView];
                     });
                }
           }
@@ -216,7 +221,7 @@
      keyboardIsShown = NO;
      
      self.automaticallyAdjustsScrollViewInsets = YES;
-     UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 10, 0);
+     UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 150, 0);
      scrollView.contentInset = adjustForTabbarInsets;
      scrollView.scrollIndicatorInsets = adjustForTabbarInsets;
      CGRect contentRect = CGRectZero;
@@ -251,22 +256,60 @@
      keyboardIsShown = YES;
 }
 
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
+     ExtracurricularStructure *EC = (ExtracurricularStructure *)[self.ECarray objectAtIndex:indexPath.row];
+     UISwitch *switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+     [switchView setOn:NO animated:NO];
+     [switchView setTag:[EC.extracurricularID integerValue]];
+     [switchView addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+     cell.accessoryView = switchView;
+     cell.textLabel.text = EC.titleString;
+     return cell;
+}
+
+- (void)switchChanged:(id)sender {
+     hasChanged = true;
+     UISwitch *switchControl = (UISwitch *)sender;
+     if (switchControl.on == true) {
+          [self.groupArray addObject:[NSNumber numberWithInteger:switchControl.tag]];
+     } else if (switchControl.on == false) {
+          [self.groupArray removeObject:[NSNumber numberWithInteger:switchControl.tag]];
+     }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+     if (self.ECarray.count == 0) {
+          return 1;
+     } else
+          return self.ECarray.count;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+     return 1;
+}
+
 - (void)postUpdateMethodWithCompletion:(void (^)(NSError *error))completion {
      dispatch_group_t serviceGroup = dispatch_group_create();
      dispatch_group_enter(serviceGroup);
      __block NSError *theError;
-     ExtracurricularUpdateStructure *extracurricularUpdateStructure = [[ExtracurricularUpdateStructure alloc] init];
-     extracurricularUpdateStructure.extracurricularID = self.EC.extracurricularID;
-     extracurricularUpdateStructure.messageString = messageTextView.text;
+     NSMutableArray *finalArray = [[NSMutableArray alloc] init];
      PFQuery *query = [ExtracurricularUpdateStructure query];
      [query orderByDescending:@"extracurricularUpdateID"];
      [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
-          ExtracurricularUpdateStructure *structure = (ExtracurricularUpdateStructure *)object;
-          if (structure) {
-               extracurricularUpdateStructure.extracurricularUpdateID = [NSNumber numberWithInt:[structure.extracurricularUpdateID integerValue] + 1];
-          } else
-               extracurricularUpdateStructure.extracurricularUpdateID = [NSNumber numberWithInt:0];
-          [extracurricularUpdateStructure saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+          NSInteger firstIndex = [[object objectForKey:@"extracurricularUpdateID"] integerValue];
+          for (int i = 0; i < self.groupArray.count; i++) {
+               ExtracurricularUpdateStructure *extracurricularUpdateStructure = [[ExtracurricularUpdateStructure alloc] init];
+               extracurricularUpdateStructure.extracurricularID = [self.groupArray objectAtIndex:i];
+               extracurricularUpdateStructure.messageString = messageTextView.text;
+               extracurricularUpdateStructure.extracurricularUpdateID = [NSNumber numberWithInteger:firstIndex + 1 + i];
+               [finalArray addObject:extracurricularUpdateStructure];
+          }
+          [PFObject saveAllInBackground:finalArray block:^(BOOL succeeded, NSError * _Nullable error) {
                if (error) {
                     theError = error;
                }
@@ -300,7 +343,7 @@
 }
 
 - (BOOL)validateAllFields {
-     return (self.EC && messageTextView.text.length > 0);
+     return (self.groupArray.count > 0 && messageTextView.text.length > 0);
 }
 
 - (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {

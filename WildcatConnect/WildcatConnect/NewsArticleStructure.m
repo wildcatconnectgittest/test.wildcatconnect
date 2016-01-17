@@ -23,6 +23,7 @@
 @dynamic articleID;
 @dynamic likes;
 @dynamic views;
+@dynamic isApproved;
 
 + (void)load {
      [self registerSubclass];

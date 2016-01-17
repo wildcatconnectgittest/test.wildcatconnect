@@ -215,12 +215,14 @@
         CommunityServiceStructure *commServiceStructure = ((CommunityServiceStructure *)[self.allOpps objectAtIndex:indexPath.row]);
         UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
         cell.textLabel.text = commServiceStructure.commTitleString;
+        cell.textLabel.numberOfLines = 0;
+        cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"MM-dd-yyyy @ hh:mm a"];
         NSString *startString = [dateFormatter stringFromDate:commServiceStructure.startDate];
         NSString *endString = [dateFormatter stringFromDate:commServiceStructure.endDate];
         cell.detailTextLabel.text = [[[[commServiceStructure.commSummaryString stringByAppendingString:@" ... STARTS "] stringByAppendingString:startString] stringByAppendingString:@" ... ENDS "] stringByAppendingString:endString];
-        cell.detailTextLabel.numberOfLines = 5;
+        cell.detailTextLabel.numberOfLines = 10;
         return cell;
     }
     return nil;
@@ -246,7 +248,11 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 120;
+     if (self.allOpps.count == 0)
+          return 60;
+     else
+          return 220;
+
 }
 
 

@@ -129,28 +129,24 @@
      NSMutableArray *theArray = [array mutableCopy];
      NSMutableArray *dictionaryArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"answeredPolls"];
      NSMutableArray *searchDictionaryArray = [dictionaryArray mutableCopy];
-     if (searchDictionaryArray.count > theArray.count) {
                //Have some objects to remove...
-          for (int i = 0; i < searchDictionaryArray.count; i++) {
-               NSString *string = (NSString *)[searchDictionaryArray objectAtIndex:i];
-               BOOL contained = false;
-               for (PollStructure *structure in theArray) {
-                    if (structure.pollID == string) {
-                         contained = true;
-                         break;
-                    }
-               }
-               if (! contained) {
-                    [searchDictionaryArray removeObjectAtIndex:i];
-               }
+     NSMutableArray *currentArray = [NSMutableArray array];
+     
+     for (PollStructure *poll in theArray) {
+          [currentArray addObject:poll.pollID];
+     }
+     
+     NSMutableArray *twoArray = [searchDictionaryArray mutableCopy];
+     
+     for (NSNumber *number in searchDictionaryArray) {
+          if (! [currentArray containsObject:number]) {
+               [twoArray removeObject:number];
           }
-          [[NSUserDefaults standardUserDefaults] setObject:searchDictionaryArray forKey:@"answeredPolls"];
-          [[NSUserDefaults standardUserDefaults] synchronize];
-          dispatch_group_leave(serviceGroup);
      }
-     else {
-          dispatch_group_leave(serviceGroup);
-     }
+     
+     [[NSUserDefaults standardUserDefaults] setObject:twoArray forKey:@"answeredPolls"];
+     [[NSUserDefaults standardUserDefaults] synchronize];
+     dispatch_group_leave(serviceGroup);
      dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^ {
           completion(0);
      });

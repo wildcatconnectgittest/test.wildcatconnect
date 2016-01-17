@@ -21,6 +21,9 @@
 #import "ExtracurricularUpdateStructure.h"
 #import "CommunityServiceStructure.h"
 #import "PollStructure.h"
+#import <SystemConfiguration/SystemConfiguration.h>
+#import "Reachability.h"
+#import "EventsTableViewController.h"
 
 @interface SectionsTableViewController ()
 
@@ -29,6 +32,7 @@
 @implementation SectionsTableViewController {
      UIActivityIndicatorView *activity;
      NSNumber *opps;
+     BOOL connected;
 }
 
 - (void)viewDidLoad {
@@ -52,11 +56,12 @@
                                                                              blue:23.0f/255.0f
                                                                             alpha:0.5f];
      
-     self.sectionsArray = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"Wildcat News", @"Groups", @"Community Service", @"Student Center", @"Useful Links", @"Staff Directory", @"Secure Login/Register", nil]];
+     self.sectionsArray = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"Wildcat News", @"Groups", @"Community Service", @"Events", @"Student Center", @"Useful Links", @"Staff Directory", @"Secure Login/Register", nil]];
      self.sectionsImagesArray = [[NSMutableArray alloc] init];
      [self.sectionsImagesArray addObject:@"news@2x.png"];
      [self.sectionsImagesArray addObject:@"EC@2x.png"];
      [self.sectionsImagesArray addObject:@"communityService@2x.png"];
+     [self.sectionsImagesArray addObject:@"events@2x.png"];
      [self.sectionsImagesArray addObject:@"studentCenter@2x.png"];
      [self.sectionsImagesArray addObject:@"usefulLinks@2x.png"];
      [self.sectionsImagesArray addObject:@"staffDirectory@2x.png"];
@@ -71,72 +76,79 @@
      [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
      UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:activity];
       self.navigationItem.rightBarButtonItem = barButton;
-      [activity startAnimating];
-     [self getCountMethodWithCompletion:^(NSInteger count, NSError *errorOne) {
-          if (errorOne != nil) {
-               [activity stopAnimating];
-          } else {
-               NSMutableArray *array = [[NSUserDefaults standardUserDefaults] objectForKey:@"readNewsArticles"];
-               NSInteger read = array.count;
-               NSNumber *number = [NSNumber numberWithInt:(count - read)];
-               [returnArray addObject:number];
-               [self getCountTwoMethodWithCompletion:^(NSInteger count2, NSError *errorTwo) {
-                    if (errorTwo != nil) {
-                         [activity stopAnimating];
-                    } else {
-                         NSNumber *updates = [NSNumber numberWithInt:count2];
-                         NSNumber *updatesSeen = [[NSUserDefaults standardUserDefaults] objectForKey:@"ECviewed"];
-                         if (updatesSeen) {
-                              if ([updatesSeen integerValue] >= [updates integerValue]) {
-                                   updates = [NSNumber numberWithInt:0];
+     
+     Reachability *reachability = [Reachability reachabilityForInternetConnection];
+     NetworkStatus networkStatus = [reachability currentReachabilityStatus];
+     connected = (networkStatus != NotReachable);
+     
+     if (connected == true) {
+          [activity startAnimating];
+          [self getCountMethodWithCompletion:^(NSInteger count, NSError *errorOne) {
+               if (errorOne != nil) {
+                    [activity stopAnimating];
+               } else {
+                    NSMutableArray *array = [[NSUserDefaults standardUserDefaults] objectForKey:@"readNewsArticles"];
+                    NSInteger read = array.count;
+                    NSNumber *number = [NSNumber numberWithInt:(count - read)];
+                    [returnArray addObject:number];
+                    [self getCountTwoMethodWithCompletion:^(NSInteger count2, NSError *errorTwo) {
+                         if (errorTwo != nil) {
+                              [activity stopAnimating];
+                         } else {
+                              NSNumber *updates = [NSNumber numberWithInt:count2];
+                              NSNumber *updatesSeen = [[NSUserDefaults standardUserDefaults] objectForKey:@"ECviewed"];
+                              if (updatesSeen) {
+                                   if ([updatesSeen integerValue] >= [updates integerValue]) {
+                                        updates = [NSNumber numberWithInt:0];
+                                   } else {
+                                        updates = [NSNumber numberWithInt:[updates integerValue] - [updatesSeen integerValue]];
+                                   }
                               } else {
                                    updates = [NSNumber numberWithInt:[updates integerValue] - [updatesSeen integerValue]];
                               }
-                         } else {
-                              updates = [NSNumber numberWithInt:[updates integerValue] - [updatesSeen integerValue]];
-                         }
-                         [returnArray addObject:updates];
-                         [self getCountFourMethodWithCompletion:^(NSInteger count4, NSError *errorFour) {
-                              if (errorFour != nil) {
-                                   [activity stopAnimating];
-                              } else {
-                                   opps = [NSNumber numberWithInteger:count4];
-                                   NSNumber *oppsSeen = [[NSUserDefaults standardUserDefaults] objectForKey:@"CSviewed"];
-                                   if (oppsSeen) {
-                                        if ([oppsSeen integerValue] >= [opps integerValue]) {
-                                             opps = [NSNumber numberWithInt:0];
+                              [returnArray addObject:updates];
+                              [self getCountFourMethodWithCompletion:^(NSInteger count4, NSError *errorFour) {
+                                   if (errorFour != nil) {
+                                        [activity stopAnimating];
+                                   } else {
+                                        opps = [NSNumber numberWithInteger:count4];
+                                        NSNumber *oppsSeen = [[NSUserDefaults standardUserDefaults] objectForKey:@"CSviewed"];
+                                        if (oppsSeen) {
+                                             if ([oppsSeen integerValue] >= [opps integerValue]) {
+                                                  opps = [NSNumber numberWithInt:0];
+                                             } else {
+                                                  opps = [NSNumber numberWithInteger:[opps integerValue] - [oppsSeen integerValue]];
+                                             }
                                         } else {
                                              opps = [NSNumber numberWithInteger:[opps integerValue] - [oppsSeen integerValue]];
                                         }
-                                   } else {
-                                        opps = [NSNumber numberWithInteger:[opps integerValue] - [oppsSeen integerValue]];
+                                        [returnArray addObject:opps];
                                    }
-                                   [returnArray addObject:opps];
-                              }
-                              [self getCountThreeMethodWithCompletion:^(NSInteger count3, NSError *errorThree) {
-                                   if (errorThree != nil) {
-                                        [activity stopAnimating];
-                                   } else {
-                                        NSMutableArray *arrayTwo = [[NSUserDefaults standardUserDefaults] objectForKey:@"answeredPolls"];
-                                        NSInteger answeredInt = arrayTwo.count;
-                                        NSNumber *answered = [NSNumber numberWithInt:(count3 - answeredInt)];
-                                        [returnArray addObject:answered];
-                                        self.sectionsNumbersArray = returnArray;
-                                        [activity stopAnimating];
-                                        [self.tableView reloadData];
-                                        NSInteger final = [number integerValue] + [updates integerValue] + [opps integerValue] + [answered integerValue];
-                                        if (final > 0) {
-                                             [[self.tabBarController.viewControllers objectAtIndex:1] tabBarItem].badgeValue = [[NSNumber numberWithInt:final] stringValue];
+                                   [self getCountThreeMethodWithCompletion:^(NSInteger count3, NSError *errorThree) {
+                                        if (errorThree != nil) {
+                                             [activity stopAnimating];
+                                        } else {
+                                             NSMutableArray *arrayTwo = [[NSUserDefaults standardUserDefaults] objectForKey:@"answeredPolls"];
+                                             NSInteger answeredInt = arrayTwo.count;
+                                             NSNumber *answered = [NSNumber numberWithInt:(count3 - answeredInt)];
+                                             [returnArray addObject:answered];
+                                             self.sectionsNumbersArray = returnArray;
+                                             [activity stopAnimating];
+                                             [self.tableView reloadData];
+                                             NSInteger final = [number integerValue] + [updates integerValue] + [opps integerValue] + [answered integerValue];
+                                             if (final > 0) {
+                                                  [[self.tabBarController.viewControllers objectAtIndex:1] tabBarItem].badgeValue = [[NSNumber numberWithInt:final] stringValue];
+                                             }
+                                             else
+                                                  [[self.tabBarController.viewControllers objectAtIndex:1] tabBarItem].badgeValue = nil;
                                         }
-                                        else
-                                             [[self.tabBarController.viewControllers objectAtIndex:1] tabBarItem].badgeValue = nil;
-                                   }
+                                   }];
                               }];
-                         }];
-                    }
-               }];
-          }
-     }];
+                         }
+                    }];
+               }
+          }];
+     }
 }
 
 - (void)getCountMethodWithCompletion:(void (^)(NSInteger count, NSError *errorOne))completion {
@@ -144,6 +156,7 @@
      dispatch_group_enter(serviceGroup);
      __block NSError *theError;
      PFQuery *query = [NewsArticleStructure query];
+     [query whereKey:@"isApproved" equalTo:[NSNumber numberWithInteger:1]];
      __block int count;
      [query countObjectsInBackgroundWithBlock:^(int number, NSError * _Nullable error) {
           theError = error;
@@ -295,8 +308,8 @@
           else if (integer == 0) {
                cell.accessoryView = nil;
           }
-     } else if (indexPath.row == 3) {
-          NSNumber *number = [self.sectionsNumbersArray objectAtIndex:indexPath.row]; /// Change!!!
+     } else if (indexPath.row == 4) {
+          NSNumber *number = [self.sectionsNumbersArray objectAtIndex:indexPath.row - 1];
           NSInteger integer = [number integerValue];
           if (integer > 0) {
                UIButton *downloadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -311,7 +324,7 @@
                cell.accessoryView = nil;
           }
 
-     } else if (indexPath.row == 6) {
+     } else if (indexPath.row == 7) {
           if ([PFUser currentUser]) {
                NSString *firstName = [[PFUser currentUser] objectForKey:@"firstName"];
                NSString *lastName = [[PFUser currentUser] objectForKey:@"lastName"];
@@ -346,18 +359,22 @@
                [self.navigationController pushViewController:controller animated:YES];
           }
           else if (indexPath.row == 3) {
+               EventsTableViewController *controller = [[EventsTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
+               [self.navigationController pushViewController:controller animated:YES];
+          }
+          else if (indexPath.row == 4) {
               StudentCenterTableViewController *controller = [[StudentCenterTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
               [self.navigationController pushViewController:controller animated:YES];
           }
-          else if (indexPath.row == 4) {
+          else if (indexPath.row == 5) {
                UsefulLinksTableViewController *controller = [[UsefulLinksTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
                [self.navigationController pushViewController:controller animated:YES];
           }
-          else if (indexPath.row == 5) {
+          else if (indexPath.row == 6) {
                StaffDirectoryMainTableViewController *controller = [[StaffDirectoryMainTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
                [self.navigationController pushViewController:controller animated:YES];
           }
-          else if (indexPath.row == 6) {
+          else if (indexPath.row == 7) {
                if ([PFUser currentUser]) {
                     AdministrationMainTableViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"MainID"];
                     [self.navigationController pushViewController:controller animated:YES];
@@ -382,18 +399,22 @@
                     [self.navigationController pushViewController:controller animated:YES];
                }
                else if (indexPath.row == 3) {
+                    EventsTableViewController *controller = [[EventsTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:0]];
+                    [self.navigationController pushViewController:controller animated:YES];
+               }
+               else if (indexPath.row == 4) {
                    StudentCenterTableViewController *controller = [[StudentCenterTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:0]];
                    [self.navigationController pushViewController:controller animated:YES];
                }
-               else if (indexPath.row == 4) {
+               else if (indexPath.row == 5) {
                     UsefulLinksTableViewController *controller = [[UsefulLinksTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
                     [self.navigationController pushViewController:controller animated:YES];
                }
-               else if (indexPath.row == 5) {
+               else if (indexPath.row == 6) {
                     StaffDirectoryMainTableViewController *controller = [[StaffDirectoryMainTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:0]];
                     [self.navigationController pushViewController:controller animated:YES];
                }
-               else if (indexPath.row == 6) {
+               else if (indexPath.row == 7) {
                     if ([PFUser currentUser]) {
                          AdministrationMainTableViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"MainID"];
                          [self.navigationController pushViewController:controller animated:YES];
@@ -410,26 +431,29 @@
                if (indexPath.row == 0) {
                          NewsCenterTableViewController *controller = [[NewsCenterTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
                          [self.navigationController pushViewController:controller animated:YES];
-               }else if (indexPath.row == 1) {
+               } else if (indexPath.row == 1) {
                     ExtracurricularsTableViewController *controller = [[ExtracurricularsTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
                     [self.navigationController pushViewController:controller animated:YES];
                } else if (indexPath.row == 2) {
                     CommunityServiceTableViewController *controller = [[CommunityServiceTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
                     [self.navigationController pushViewController:controller animated:YES];
+               } else if (indexPath.row == 3) {
+                    EventsTableViewController *controller = [[EventsTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
+                    [self.navigationController pushViewController:controller animated:YES];
                }
-               else if (indexPath.row == 3) {
+               else if (indexPath.row == 4) {
                    StudentCenterTableViewController *controller = [[StudentCenterTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
                    [self.navigationController pushViewController:controller animated:YES];
                }
-               else if (indexPath.row == 4) {
+               else if (indexPath.row == 5) {
                     UsefulLinksTableViewController *controller = [[UsefulLinksTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
                     [self.navigationController pushViewController:controller animated:YES];
                }
-               else if (indexPath.row == 5) {
+               else if (indexPath.row == 6) {
                     StaffDirectoryMainTableViewController *controller = [[StaffDirectoryMainTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
                     [self.navigationController pushViewController:controller animated:YES];
                }
-               else if (indexPath.row == 6) {
+               else if (indexPath.row == 7) {
                     if ([PFUser currentUser]) {
                          AdministrationMainTableViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"MainID"];
                          [self.navigationController pushViewController:controller animated:YES];

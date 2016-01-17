@@ -53,7 +53,7 @@
      self.navigationItem.leftBarButtonItem = bbtnBack;
      [bbtnBack release];
      
-     self.navigationItem.title = @"News Article";
+     self.navigationItem.title = @"News Story";
      
 //     [[NSNotificationCenter defaultCenter] addObserver:self
 //                                              selector:@selector(keyboardWillShow:)
@@ -72,7 +72,7 @@
      UILabel *descriptionLabelC = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, 100)];
      UIFont *font = [UIFont systemFontOfSize:12];
      [descriptionLabelC setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
-     descriptionLabelC.text = @"NOTE: All Wildcat News Stories will require administrative approval before they appear in the app.";
+     descriptionLabelC.text = @"NOTE: All Wildcat News Stories will require administrative approval before they appear in the app. You should use this tool to post significant accomplishments of your students or groups. (i.e. big athletic victory, individual award, notable community work, etc.) It may be in your best interest to save a copy of this story before sumbitting for approval.";
      descriptionLabelC.lineBreakMode = NSLineBreakByWordWrapping;
      descriptionLabelC.numberOfLines = 0;
      [descriptionLabelC sizeToFit];
@@ -225,7 +225,7 @@
      [scrollView addSubview:separator];
      
      postButton = [UIButton buttonWithType:UIButtonTypeSystem];
-     [postButton setTitle:@"SUBMIT FOR APPROVALa" forState:UIControlStateNormal];
+     [postButton setTitle:@"SUBMIT FOR APPROVAL" forState:UIControlStateNormal];
      [postButton sizeToFit];
      [postButton addTarget:self action:@selector(postArticle) forControlEvents:UIControlEventTouchUpInside];
      postButton.frame = CGRectMake((self.view.frame.size.width - postButton.frame.size.width - 10), separator.frame.origin.y + separator.frame.size.height + 10, postButton.frame.size.width, postButton.frame.size.height);
@@ -249,7 +249,7 @@
           UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please ensure you have correctly filled out all fields!" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
           [alertView show];
      } else {
-          postAlertView = [[UIAlertView alloc] initWithTitle:@"Confirmation" message:@"Are you sure you want to post this article? It will be live to all app users." delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+          postAlertView = [[UIAlertView alloc] initWithTitle:@"Confirmation" message:@"Are you sure you want to submit this Wildcat News Story for administrative approval?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
           [postAlertView show];
      }
 }
@@ -434,6 +434,7 @@
      newsArticleStructure.contentURLString = articleTextView.text;
      newsArticleStructure.likes = [NSNumber numberWithInt:0];
      newsArticleStructure.views = [NSNumber numberWithInt:0];
+     newsArticleStructure.isApproved = [NSNumber numberWithInt:0];
      PFQuery *query = [NewsArticleStructure query];
      [query orderByDescending:@"articleID"];
      [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {

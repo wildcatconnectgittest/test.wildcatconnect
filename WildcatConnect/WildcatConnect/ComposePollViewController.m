@@ -63,7 +63,7 @@
      scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
      scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
      
-     self.navigationItem.title = @"Poll";
+     self.navigationItem.title = @"User Poll";
      self.navigationController.navigationBar.translucent = NO;
      
      UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, 50)];
@@ -320,6 +320,7 @@
           else if (buttonIndex == 1) {
                hasChanged = true;
                NSString *choiceText = [actionSheet textFieldAtIndex:0].text;
+               choiceText = [[choiceText stringByReplacingOccurrencesOfString:@"." withString:@""] stringByReplacingOccurrencesOfString:@"$" withString:@""];
                if (! [choiceText isEqualToString:@""]) {
                     NSInteger tag = actionSheet.tag;
                     if (tag == self.choicesArray.count) {
@@ -346,9 +347,9 @@
                     dispatch_async(dispatch_get_main_queue(), ^{
                          [activity stopAnimating];
                          NSMutableArray *array = [[NSUserDefaults standardUserDefaults] objectForKey:@"visitedPagesArray"];
-                         if ([array containsObject:[NSString stringWithFormat:@"%lu", (long)3]]) {
+                         if ([array containsObject:[NSString stringWithFormat:@"%lu", (long)4]]) {
                               NSMutableArray *newArray = [array mutableCopy];
-                              [newArray removeObject:[NSString stringWithFormat:@"%lu", (long)3]];
+                              [newArray removeObject:[NSString stringWithFormat:@"%lu", (long)4]];
                               [[NSUserDefaults standardUserDefaults] setObject:newArray forKey:@"visitedPagesArray"];
                               [[NSUserDefaults standardUserDefaults] synchronize];
                          }

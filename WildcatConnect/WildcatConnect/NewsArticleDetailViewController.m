@@ -31,7 +31,7 @@
                                                                              blue:23.0f/255.0f
                                                                             alpha:0.5f];
      
-     self.navigationItem.title = @"Article";
+     self.navigationItem.title = @"News Story";
      
      scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
      

@@ -383,16 +383,23 @@
           [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser * _Nullable user, NSError * _Nullable error) {
                if (! error) {
                     [activity stopAnimating];
-                    NSInteger verified = [[[PFUser currentUser] objectForKey:@"verified"] integerValue];
-                    if (verified == 0) {
-                         av = [[UIAlertView alloc]initWithTitle:@"Registration Key" message:@"Please enter your registration key." delegate:self cancelButtonTitle:nil otherButtonTitles:@"Verify", nil];
-                         av.alertViewStyle = UIAlertViewStylePlainTextInput;
-                         [av setDelegate:self];
-                         [av show];
-                    } else {
-                         AdministrationMainTableViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"MainID"];
+                    if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Lunch Manager"]) {
+                         [PFUser logOutInBackground];
+                         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"User Security" message:@"As a lunch manager, you only have access to the WildcatConnect Web Portal to update breakfast and lunch information." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                         [alertView show];
                          [self.navigationController popToRootViewControllerAnimated:YES];
-                         [self.navigationController pushViewController:controller animated:YES];
+                    } else {
+                         NSInteger verified = [[[PFUser currentUser] objectForKey:@"verified"] integerValue];
+                         if (verified == 0) {
+                              av = [[UIAlertView alloc]initWithTitle:@"Registration Key" message:@"Please enter your registration key." delegate:self cancelButtonTitle:nil otherButtonTitles:@"Verify", nil];
+                              av.alertViewStyle = UIAlertViewStylePlainTextInput;
+                              [av setDelegate:self];
+                              [av show];
+                         } else {
+                              AdministrationMainTableViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"MainID"];
+                              [self.navigationController popToRootViewControllerAnimated:YES];
+                              [self.navigationController pushViewController:controller animated:YES];
+                         }
                     }
                } else if (error) {
                     [activity stopAnimating];

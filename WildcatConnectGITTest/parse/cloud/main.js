@@ -13,7 +13,7 @@ Parse.Cloud.job("schoolDayStructureDeletion", function(request, response) {
   query.first({
     success: function(object) {
       var date = new Date();
-      if (object.get("value") === "NORMAL" && date.getDay() != 0 && date.getDay() != 6) {
+      if (object.get("value") === "NORMAL" && date.getDay() != 0 && date.getDay() != 1) {
         //Continue...
         var query = new Parse.Query("SchoolDayStructure");
         query.equalTo("isActive", 1);
@@ -51,7 +51,7 @@ Parse.Cloud.job("schoolDayStructureGeneration", function(request, response) {
   query.first({
     success: function(object) {
       var date = new Date();
-      if (object.get("value") === "NORMAL" && date.getDay() != 0 && date.getDay() != 6) {
+      if (object.get("value") === "NORMAL" && date.getDay() != 0 && date.getDay() != 1) {
         var query = new Parse.Query("SchoolDayStructure");
         query.descending("schoolDayID");
         query.first({
@@ -93,7 +93,9 @@ Parse.Cloud.job("schoolDayStructureGeneration", function(request, response) {
                 "imageUserFullString" : "None.",
                 "schoolDayID" : ID,
                 "isActive" : 1,
-                "customString" : ""
+                "customString" : "",
+                "breakfastString" : "No breakfast yet.",
+                "lunch" : "No lunch yet."
               }, {
                 success: function(savedObject) {
                   response.success("New day created.");
@@ -155,42 +157,6 @@ Parse.Cloud.job("schoolDayStructureGeneration", function(request, response) {
        });
       } else {
         response.success("Schedule mode does not allow generation at this time.");
-      };
-    },
-    error: function(error) {
-      response.error(error);
-    }
-  });
- });
-
-Parse.Cloud.job("lunchMenusStructureDeletion", function(request, response) {
-  var query = new Parse.Query("SpecialKeyStructure");
-  query.equalTo("key", "scheduleMode");
-  query.first({
-    success: function(object) {
-      var date = new Date();
-      if (object.get("Value") === "NORMAL" && date.getDay() != 0 && date.getDay() != 1) {
-        //Continue...
-        var query = new Parse.Query("LunchMenusStructure");
-        query.ascending("lunchStructureID");
-        query.first({
-          success: function(object) {
-            object.destroy({
-              success: function(myObject) {
-                response.success("Yay!");
-            },
-            error: function(myObject, error) {
-              response.error("No!");
-            }
-          });
-        },
-          error: function(error) {
-            alert("Error: " + error.code + " " + error.message);
-            response.error("No!");
-          }
-       });
-      } else {
-        response.success("Schedule mode does not allow deletion at this time.");
       };
     },
     error: function(error) {
@@ -390,6 +356,45 @@ Parse.Cloud.job("alertStructureDeletion", function(request, response) {
   });
 });
 
+Parse.Cloud.job("userRegisterStructureDeletion", function(request, response) {
+  var query = new Parse.Query("UserRegisterStructure");
+  query.ascending("createdAt");
+  query.find({
+    success: function(structures) {
+      for (var i = 0; i < structures.length; i++) {
+            var currentStructure = structures[i];
+            var thisDate = currentStructure.get("createdAt");
+            var now = new Date();
+            var one_day=1000*60*60*24;
+          var date1_ms = thisDate.getTime();
+          var date2_ms = now.getTime();
+          var difference_ms = date2_ms - date1_ms;
+          difference_ms = Math.round(difference_ms/one_day);
+          console.log(difference_ms);
+          if (difference_ms >= 2) {
+            currentStructure.destroy({
+              success: function() {
+                console.log("Just deleted an object!!!");
+              },
+              error: function(error) {
+                response.error(error);
+              }
+            });
+          };
+          if (i == structures.length - 1) {
+            response.success("Done!!!");
+          };
+        }
+        if (structures.length == 0) {
+          response.success("No objects to delete!!!");
+        };
+    },
+    error: function() {
+      response.error("Error.");
+    }
+  });
+});
+
 Parse.Cloud.afterSave("AlertStructure", function(request) {
   if (request.object.get("alertID") != null) {
     if (request.object.get("alertTime") == null && request.object.get("views") == 0) {
@@ -517,7 +522,7 @@ Parse.Cloud.define("registerUser", function(request, response) {
                 to: email,
                 from: "WildcatConnect <team@wildcatconnect.org>",
                 subject: "WildcatConnect Account Confirmation",
-                text: firstName + ", \n\nYour new WildcatConnect account has been approved! With your faculty account, you will now be able to log in to both the WildcatConnect iOS App and our web portal at http://www.wildcatconnect.org.\n\nUsername = " + username + "\nRegistration Key = " + key +"\n\nNOTE: All usernames, passwords and keys are case-sensitive.\n\nEnjoy posting and sharing with students, faculty and families!\n\nBest,\n\nWildcatConnect Development Team\n\nWeb: http://www.wildcatconnect.org\nSupport: support@wildcatconnect.org\nContact: team@wildcatconnect.org"
+                text: firstName + ", \n\nYour new WildcatConnect account has been approved! With your faculty account, you will now be able to log in to both the WildcatConnect iOS App and our web portal at http://www.wildcatconnect.org. For your first login, you will be required to enter the following credentials...\n\nUsername = " + username + "\nRegistration Key = " + key +"\n\nNOTE: All usernames, passwords and keys are case-sensitive.\n\nEnjoy posting and sharing with students, faculty and families!\n\nBest,\n\nWildcatConnect Development Team\n\nWeb: http://www.wildcatconnect.org\nSupport: support@wildcatconnect.org\nContact: team@wildcatconnect.org\n\n---\n\nIf you did not register an account and are receiving this e-mail in error, please contact us immediately at support@wildcatconnect.org. For security purposes, your registration key will expire in 48 hours, at which time you will need to re-register your account."
               }, {
                 success: function(httpResponse) {
                   response.success("Email sent!");
@@ -650,7 +655,7 @@ Parse.Cloud.define("recoverUser", function(request, response) {
 });
 
 Parse.Cloud.afterSave("NewsArticleStructure", function(request) {
-  if (request.object.get("articleID") != null && request.object.get("views") == 0) {
+  if (request.object.get("articleID") != null && request.object.get("views") == 0 && request.object.get("isApproved") == 1) {
     Parse.Push.send({
         channels: [ "allNews" ],
         data: {

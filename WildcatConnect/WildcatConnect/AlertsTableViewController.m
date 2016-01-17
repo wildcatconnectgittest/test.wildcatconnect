@@ -411,6 +411,7 @@
      if (! [theReadAlerts containsObject:self.selectedAlertStructure.alertID]) {
           [theReadAlerts addObject:self.selectedAlertStructure.alertID];
           [[NSUserDefaults standardUserDefaults] setObject:theReadAlerts forKey:@"readAlerts"];
+          self.readAlerts = theReadAlerts;
           [[NSUserDefaults standardUserDefaults] synchronize];
      }
 }

@@ -44,6 +44,8 @@
      NSString *breakfastString;
      NSString *lunchString;
      BOOL connected;
+     UIImageView *theImageView;
+     BOOL failed;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -65,225 +67,209 @@
      connected = (networkStatus != NotReachable);
      
      NSString *loadString = [[NSUserDefaults standardUserDefaults] objectForKey:@"reloadHomePage"];
-     if (! loadString || [loadString isEqual:@"1"]) {
-          if (connected == true) {
-               [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"reloadHomePage"];
-               [[NSUserDefaults standardUserDefaults] synchronize];
-               self.navigationController.navigationBar.translucent = NO;
+     if ((! loadString || [loadString isEqual:@"1"] == true) && connected == true) {
+          if (scrollView) {
+               [scrollView removeFromSuperview];
+          }
+          scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+          self.navigationController.navigationBar.translucent = NO;
+          
+          [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"reloadHomePage"];
+          [[NSUserDefaults standardUserDefaults] synchronize];
                
-               activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-               [activity setBackgroundColor:[UIColor clearColor]];
-               [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-               UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
-               self.navigationItem.rightBarButtonItem = barButtonItem;
-               [activity startAnimating];
-               [barButtonItem release];
-               
-               schoolDay = [[SchoolDayStructure alloc] init];
-               scheduleType = [[ScheduleType alloc] init];
-               imageData = [NSData data];
-               
-               breakfastString = [[NSString alloc] init];
-               lunchString = [[NSString alloc] init];
-               
-               if (scrollView) {
-                    [scrollView removeFromSuperview];
-               }
-               
-               scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-               [self getCurrentSchoolDayMethodWithCompletion:^(NSError *error, NSMutableArray *theDay) {
-                    if (error != nil) {
-                         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"Error fetching data from server. Please try again." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
-                         [alertView show];
-                         dispatch_async(dispatch_get_main_queue(), ^ {
-                              [activity stopAnimating];
-                              [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"reloadHomePage"];
-                              [[NSUserDefaults standardUserDefaults] synchronize];
-                              UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(viewWillAppear:)];
-                              self.navigationItem.rightBarButtonItem = barButtonItem;
-                              [activity startAnimating];
-                              [barButtonItem release];
-                         });
-                    } else {
-                         schoolDay.schoolDate = [[theDay objectAtIndex:0] objectForKey:@"schoolDate"];
-                         hasImage = [[theDay objectAtIndex:0] objectForKey:@"hasImage"];
-                         schoolDay.imageFile = [[theDay objectAtIndex:0] objectForKey:@"imageFile"];
-                         schoolDay.imageString = [[theDay objectAtIndex:0] objectForKey:@"imageString"];
-                         schoolDay.messageString = [[theDay objectAtIndex:0] objectForKey:@"messageString"];
-                         schoolDay.scheduleType = [[theDay objectAtIndex:0] objectForKey:@"scheduleType"];
-                         schoolDay.schoolDayID = [[theDay objectAtIndex:0] objectForKey:@"schoolDayID"];
-                         schoolDay.customSchedule = [[theDay objectAtIndex:0] objectForKey:@"customSchedule"];
-                         schoolDay.customString = [[theDay objectAtIndex:0] objectForKey:@"customString"];
-                         schoolDay.breakfastString = [[theDay objectAtIndex:0] objectForKey:@"breakfastString"];
-                         schoolDay.lunchString = [[theDay objectAtIndex:0] objectForKey:@"lunchString"];
+          activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+          [activity setBackgroundColor:[UIColor clearColor]];
+          [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+          UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
+          self.navigationItem.rightBarButtonItem = barButtonItem;
+          [activity startAnimating];
+          [barButtonItem release];
+          
+          schoolDay = [[SchoolDayStructure alloc] init];
+          scheduleType = [[ScheduleType alloc] init];
+          imageData = [NSData data];
+          
+          breakfastString = [[NSString alloc] init];
+          lunchString = [[NSString alloc] init];
+
+          [self getCurrentSchoolDayMethodWithCompletion:^(NSError *error, NSMutableArray *theDay) {
+               if (error != nil) {
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"Error fetching data from server. Tap refresh button to try again." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+                    [alertView show];
+                    dispatch_async(dispatch_get_main_queue(), ^ {
+                         [activity stopAnimating];
+                         [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"reloadHomePage"];
+                         [[NSUserDefaults standardUserDefaults] synchronize];
+                         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(viewWillAppear:)];
+                         self.navigationItem.rightBarButtonItem = barButtonItem;
+                         [activity startAnimating];
+                         [barButtonItem release];
+                         [self showBadImage];
+                    });
+               } else {
+                    schoolDay.schoolDate = [[theDay objectAtIndex:0] objectForKey:@"schoolDate"];
+                    hasImage = [[theDay objectAtIndex:0] objectForKey:@"hasImage"];
+                    schoolDay.imageFile = [[theDay objectAtIndex:0] objectForKey:@"imageFile"];
+                    schoolDay.imageString = [[theDay objectAtIndex:0] objectForKey:@"imageString"];
+                    schoolDay.messageString = [[theDay objectAtIndex:0] objectForKey:@"messageString"];
+                    schoolDay.scheduleType = [[theDay objectAtIndex:0] objectForKey:@"scheduleType"];
+                    schoolDay.schoolDayID = [[theDay objectAtIndex:0] objectForKey:@"schoolDayID"];
+                    schoolDay.customSchedule = [[theDay objectAtIndex:0] objectForKey:@"customSchedule"];
+                    schoolDay.customString = [[theDay objectAtIndex:0] objectForKey:@"customString"];
+                    schoolDay.breakfastString = [[theDay objectAtIndex:0] objectForKey:@"breakfastString"];
+                    schoolDay.lunchString = [[theDay objectAtIndex:0] objectForKey:@"lunchString"];
+                    
+                    if ([schoolDay.scheduleType isEqual:@"*"]) {
                          
-                         if ([schoolDay.scheduleType isEqual:@"*"]) {
-                              
-                              titleLabelB = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 0, 0)];
-                              NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
-                              [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
-                              [dateFormatter setDateFormat:@"EEEE"];
-                              NSString *currentDate = [dateFormatter stringFromDate:[NSDate date]];
-                              titleLabelB.text = [currentDate stringByAppendingString:@","];
-                              [titleLabelB setFont:[UIFont systemFontOfSize:32]];
-                              titleLabelB.lineBreakMode = NSLineBreakByWordWrapping;
-                              titleLabelB.numberOfLines = 0;
-                              [titleLabelB sizeToFit];
-                              [scrollView addSubview:titleLabelB];
-                              
-                              titleLabelC = [[UILabel alloc] initWithFrame:CGRectMake(10, titleLabelB.frame.origin.y + titleLabelB.frame.size.height, 0, 0)];
-                              [dateFormatter setDateFormat:@"MMMM dd, yyyy"];
-                              currentDate = [dateFormatter stringFromDate:[NSDate date]];
-                              titleLabelC.text = currentDate;
-                              [titleLabelC setFont:[UIFont systemFontOfSize:32]];
-                              titleLabelC.lineBreakMode = NSLineBreakByWordWrapping;
-                              titleLabelC.numberOfLines = 0;
-                              [titleLabelC sizeToFit];
-                              [scrollView addSubview:titleLabelC];
-                              
-                              UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(10, titleLabelC.frame.origin.y + titleLabelC.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
-                              separator.backgroundColor = [UIColor blackColor];
-                              [scrollView addSubview:separator];
-                              
-                              dayLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, separator.frame.origin.y + separator.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
-                              NSDateFormatter* day = [[NSDateFormatter alloc] init];
-                              [day setDateFormat: @"EEEE"];
-                              NSString *today = [day stringFromDate:[NSDate date]];
-                              dateFormatter = [[NSDateFormatter alloc] init];
-                                   // this is imporant - we set our input date format to match our input string
-                                   // if format doesn't match you'll get nil from your string, so be careful
-                              [dateFormatter setDateFormat:@"MM-dd-yyyy"];
-                              NSDate *dateFromString = [[NSDate alloc] init];
-                                   // voila!
-                              dateFromString = [dateFormatter dateFromString:schoolDay.schoolDate];
-                              NSString *actual = [day stringFromDate:dateFromString];
-                              if ([today isEqualToString:actual]) {
-                                   dayLabel.text = schoolDay.customString;
-                              } else {
-                                   dayLabel.text = [[actual stringByAppendingString:@" - "] stringByAppendingString:schoolDay.customString];
-                              }
-                              dayLabel.textColor = [UIColor redColor];
-                              [dayLabel setFont:[UIFont systemFontOfSize:22]];
-                              dayLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                              dayLabel.numberOfLines = 0;
-                              [dayLabel sizeToFit];
-                              [dayLabel setTextAlignment:UITextAlignmentCenter];
-                              dayLabel.frame = CGRectMake(self.view.frame.size.width / 2 - dayLabel.frame.size.width / 2, dayLabel.frame.origin.y, dayLabel.frame.size.width, dayLabel.frame.size.height);
-                              [scrollView addSubview:dayLabel];
-                              
-                              scheduleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, dayLabel.frame.origin.y + dayLabel.frame.size.height + 10, self.view.frame.size.width - 20, 120)];
-                              scheduleLabel.text = schoolDay.customSchedule;
-                              [scheduleLabel setFont:[UIFont systemFontOfSize:14]];
-                              scheduleLabel.numberOfLines = 0;
-                              [scheduleLabel sizeToFit];
-                              [scheduleLabel setTextAlignment:UITextAlignmentCenter];
-                              scheduleLabel.frame = CGRectMake(self.view.frame.size.width / 2 - scheduleLabel.frame.size.width / 2, scheduleLabel.frame.origin.y, scheduleLabel.frame.size.width, scheduleLabel.frame.size.height);
-                              [scrollView addSubview:scheduleLabel];
-                              
-                              separator = [[UIView alloc] initWithFrame:CGRectMake(10, scheduleLabel.frame.origin.y + scheduleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
-                              separator.backgroundColor = [UIColor blackColor];
-                              [scrollView addSubview:separator];
-                              
-                              messageLabelA = [[UILabel alloc] initWithFrame:CGRectMake(10, separator.frame.origin.y + separator.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
-                              UIFont *font = [UIFont systemFontOfSize:14];
-                              [messageLabelA setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
-                              messageLabelA.text = @"Today's Alerts";
-                              messageLabelA.lineBreakMode = NSLineBreakByWordWrapping;
-                              messageLabelA.numberOfLines = 0;
-                              [messageLabelA sizeToFit];
-                              messageLabelA.frame = CGRectMake(self.view.frame.size.width / 2 - messageLabelA.frame.size.width / 2, messageLabelA.frame.origin.y, messageLabelA.frame.size.width, messageLabelA.frame.size.height);
-                              [scrollView addSubview:messageLabelA];
-                              
-                              messageLabelB = [[UITextView alloc] initWithFrame:CGRectMake(10, messageLabelA.frame.origin.y + messageLabelA.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
-                              messageLabelB.text = schoolDay.messageString;
-                              messageLabelB.dataDetectorTypes = UIDataDetectorTypeLink;
-                              messageLabelB.editable = false;
-                              messageLabelB.scrollEnabled = false;
-                              [messageLabelB setFont:[UIFont systemFontOfSize:16]];
-                              [messageLabelB sizeToFit];
-                              [scrollView addSubview:messageLabelB];
-                              
-                              UIView *separatorX = [[UIView alloc] initWithFrame:CGRectMake(10, messageLabelB.frame.origin.y + messageLabelB.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
-                              separatorX.backgroundColor = [UIColor blackColor];
-                              [scrollView addSubview:separatorX];
-                              
-                              lunchLabelA = [[UILabel alloc] initWithFrame:CGRectMake(10, separatorX.frame.origin.y + separatorX.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
-                              [lunchLabelA setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
-                              lunchLabelA.text = @"Today's Food";
-                              lunchLabelA.lineBreakMode = NSLineBreakByWordWrapping;
-                              lunchLabelA.numberOfLines = 0;
-                              [lunchLabelA sizeToFit];
-                              lunchLabelA.frame = CGRectMake(self.view.frame.size.width / 2 - lunchLabelA.frame.size.width / 2, lunchLabelA.frame.origin.y, lunchLabelA.frame.size.width, lunchLabelA.frame.size.height);
-                              [scrollView addSubview:lunchLabelA];
-                              
-                              lunchLabelB = [[UITextView alloc] initWithFrame:CGRectMake(10, lunchLabelA.frame.origin.y + lunchLabelA.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
-                              NSString *lunch = @"Lunch: ";
-                              lunchLabelB.text = [@"Breakfast: " stringByAppendingString:[[[schoolDay.breakfastString stringByAppendingString:@"\n\n"] stringByAppendingString:lunch] stringByAppendingString:schoolDay.lunchString]];
-                              lunchLabelB.dataDetectorTypes = UIDataDetectorTypeLink;
-                              lunchLabelB.editable = false;
-                              lunchLabelB.scrollEnabled = false;
-                              [lunchLabelB setFont:[UIFont systemFontOfSize:16]];
-                              [lunchLabelB sizeToFit];
-                              [scrollView addSubview:lunchLabelB];
-                              
-                              if ([hasImage integerValue] == 1) {
-                                        //ADD IMAGE!!!
-                                   [self getImageDataMethodWithCompletion:^(NSError *error, NSMutableArray *returnData) {
-                                        
-                                        imageData = [returnData objectAtIndex:0];
-                                        UIImage *image = [[UIImage alloc] init];
-                                        
-                                        image = [UIImage imageWithData:imageData];
-                                        
-                                        UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(10, lunchLabelB.frame.origin.y + lunchLabelB.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
-                                        separator.backgroundColor = [UIColor blackColor];
-                                        [scrollView addSubview:separator];
-                                        
-                                        imageLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, separator.frame.origin.y + separator.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
-                                        UIFont *font = [UIFont systemFontOfSize:14];
-                                        [imageLabel setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
-                                        imageLabel.text = @"Picture of the Day";
-                                        imageLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                                        imageLabel.numberOfLines = 0;
-                                        [imageLabel sizeToFit];
-                                        imageLabel.frame = CGRectMake(self.view.frame.size.width / 2 - imageLabel.frame.size.width / 2, imageLabel.frame.origin.y, imageLabel.frame.size.width, imageLabel.frame.size.height);
-                                        [scrollView addSubview:imageLabel];
-                                        
-                                        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, 300)];
-                                        
-                                        if (image.size.width > self.view.frame.size.width - 20) {
-                                             image = [[AppManager getInstance] imageFromImage:image scaledToWidth:self.view.frame.size.width - 20];
-                                        }
-                                        imageView.image = image;
-                                        [imageView sizeToFit];
-                                        imageView.frame = CGRectMake(self.view.frame.size.width / 2 - imageView.frame.size.width / 2, imageLabel.frame.origin.y + imageLabel.frame.size.height + 10, imageView.frame.size.width, imageView.frame.size.height);
-                                        [scrollView addSubview:imageView];
-                                        
-                                        imageLabelB = [[UITextView alloc] initWithFrame:CGRectMake(10, imageView.frame.origin.y + imageView.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
-                                        [imageLabelB setFont:[UIFont systemFontOfSize:16]];
-                                        imageLabelB.text = schoolDay.imageString;
-                                        imageLabelB.editable = false;
-                                        imageLabelB.scrollEnabled = false;
-                                        imageLabelB.dataDetectorTypes = UIDataDetectorTypeLink;
-                                        [imageLabelB sizeToFit];
-                                        [scrollView addSubview:imageLabelB];
-                                        
-                                        self.automaticallyAdjustsScrollViewInsets = YES;
-                                        UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 120, 0);
-                                        scrollView.contentInset = adjustForTabbarInsets;
-                                        scrollView.scrollIndicatorInsets = adjustForTabbarInsets;
-                                        CGRect contentRect = CGRectZero;
-                                        for (UIView *view in scrollView.subviews) {
-                                             contentRect = CGRectUnion(contentRect, view.frame);
-                                        }
-                                        scrollView.contentSize = contentRect.size;
-                                        
-                                        [self.view addSubview:scrollView];
-                                        
-                                        [activity stopAnimating];
-                                   }];
-                              }
-                              else {
+                         titleLabelB = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 0, 0)];
+                         NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+                         [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
+                         [dateFormatter setDateFormat:@"EEEE"];
+                         NSString *currentDate = [dateFormatter stringFromDate:[NSDate date]];
+                         titleLabelB.text = [currentDate stringByAppendingString:@","];
+                         [titleLabelB setFont:[UIFont systemFontOfSize:32]];
+                         titleLabelB.lineBreakMode = NSLineBreakByWordWrapping;
+                         titleLabelB.numberOfLines = 0;
+                         [titleLabelB sizeToFit];
+                         [scrollView addSubview:titleLabelB];
+                         
+                         titleLabelC = [[UILabel alloc] initWithFrame:CGRectMake(10, titleLabelB.frame.origin.y + titleLabelB.frame.size.height, 0, 0)];
+                         [dateFormatter setDateFormat:@"MMMM dd, yyyy"];
+                         currentDate = [dateFormatter stringFromDate:[NSDate date]];
+                         titleLabelC.text = currentDate;
+                         [titleLabelC setFont:[UIFont systemFontOfSize:32]];
+                         titleLabelC.lineBreakMode = NSLineBreakByWordWrapping;
+                         titleLabelC.numberOfLines = 0;
+                         [titleLabelC sizeToFit];
+                         [scrollView addSubview:titleLabelC];
+                         
+                         UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(10, titleLabelC.frame.origin.y + titleLabelC.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+                         separator.backgroundColor = [UIColor blackColor];
+                         [scrollView addSubview:separator];
+                         
+                         dayLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, separator.frame.origin.y + separator.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
+                         NSDateFormatter* day = [[NSDateFormatter alloc] init];
+                         [day setDateFormat: @"EEEE"];
+                         NSString *today = [day stringFromDate:[NSDate date]];
+                         dateFormatter = [[NSDateFormatter alloc] init];
+                              // this is imporant - we set our input date format to match our input string
+                              // if format doesn't match you'll get nil from your string, so be careful
+                         [dateFormatter setDateFormat:@"MM-dd-yyyy"];
+                         NSDate *dateFromString = [[NSDate alloc] init];
+                              // voila!
+                         dateFromString = [dateFormatter dateFromString:schoolDay.schoolDate];
+                         NSString *actual = [day stringFromDate:dateFromString];
+                         if ([today isEqualToString:actual]) {
+                              dayLabel.text = schoolDay.customString;
+                         } else {
+                              dayLabel.text = [[actual stringByAppendingString:@" - "] stringByAppendingString:schoolDay.customString];
+                         }
+                         dayLabel.textColor = [UIColor redColor];
+                         [dayLabel setFont:[UIFont systemFontOfSize:22]];
+                         dayLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                         dayLabel.numberOfLines = 0;
+                         [dayLabel sizeToFit];
+                         [dayLabel setTextAlignment:UITextAlignmentCenter];
+                         dayLabel.frame = CGRectMake(self.view.frame.size.width / 2 - dayLabel.frame.size.width / 2, dayLabel.frame.origin.y, dayLabel.frame.size.width, dayLabel.frame.size.height);
+                         [scrollView addSubview:dayLabel];
+                         
+                         scheduleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, dayLabel.frame.origin.y + dayLabel.frame.size.height + 10, self.view.frame.size.width - 20, 120)];
+                         scheduleLabel.text = schoolDay.customSchedule;
+                         [scheduleLabel setFont:[UIFont systemFontOfSize:14]];
+                         scheduleLabel.numberOfLines = 0;
+                         [scheduleLabel sizeToFit];
+                         [scheduleLabel setTextAlignment:UITextAlignmentCenter];
+                         scheduleLabel.frame = CGRectMake(self.view.frame.size.width / 2 - scheduleLabel.frame.size.width / 2, scheduleLabel.frame.origin.y, scheduleLabel.frame.size.width, scheduleLabel.frame.size.height);
+                         [scrollView addSubview:scheduleLabel];
+                         
+                         separator = [[UIView alloc] initWithFrame:CGRectMake(10, scheduleLabel.frame.origin.y + scheduleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+                         separator.backgroundColor = [UIColor blackColor];
+                         [scrollView addSubview:separator];
+                         
+                         messageLabelA = [[UILabel alloc] initWithFrame:CGRectMake(10, separator.frame.origin.y + separator.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
+                         UIFont *font = [UIFont systemFontOfSize:14];
+                         [messageLabelA setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
+                         messageLabelA.text = @"Recent Alerts";
+                         messageLabelA.lineBreakMode = NSLineBreakByWordWrapping;
+                         messageLabelA.numberOfLines = 0;
+                         [messageLabelA sizeToFit];
+                         messageLabelA.frame = CGRectMake(self.view.frame.size.width / 2 - messageLabelA.frame.size.width / 2, messageLabelA.frame.origin.y, messageLabelA.frame.size.width, messageLabelA.frame.size.height);
+                         [scrollView addSubview:messageLabelA];
+                         
+                         messageLabelB = [[UITextView alloc] initWithFrame:CGRectMake(10, messageLabelA.frame.origin.y + messageLabelA.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
+                         messageLabelB.text = schoolDay.messageString;
+                         messageLabelB.dataDetectorTypes = UIDataDetectorTypeLink;
+                         messageLabelB.editable = false;
+                         messageLabelB.scrollEnabled = false;
+                         [messageLabelB setFont:[UIFont systemFontOfSize:16]];
+                         [messageLabelB sizeToFit];
+                         [scrollView addSubview:messageLabelB];
+                         
+                         UIView *separatorX = [[UIView alloc] initWithFrame:CGRectMake(10, messageLabelB.frame.origin.y + messageLabelB.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+                         separatorX.backgroundColor = [UIColor blackColor];
+                         [scrollView addSubview:separatorX];
+                         
+                         lunchLabelA = [[UILabel alloc] initWithFrame:CGRectMake(10, separatorX.frame.origin.y + separatorX.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
+                         [lunchLabelA setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
+                         lunchLabelA.text = @"Food";
+                         lunchLabelA.lineBreakMode = NSLineBreakByWordWrapping;
+                         lunchLabelA.numberOfLines = 0;
+                         [lunchLabelA sizeToFit];
+                         lunchLabelA.frame = CGRectMake(self.view.frame.size.width / 2 - lunchLabelA.frame.size.width / 2, lunchLabelA.frame.origin.y, lunchLabelA.frame.size.width, lunchLabelA.frame.size.height);
+                         [scrollView addSubview:lunchLabelA];
+                         
+                         lunchLabelB = [[UITextView alloc] initWithFrame:CGRectMake(10, lunchLabelA.frame.origin.y + lunchLabelA.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
+                         NSString *lunch = @"Lunch: ";
+                         lunchLabelB.text = [@"Breakfast: " stringByAppendingString:[[[schoolDay.breakfastString stringByAppendingString:@"\n\n"] stringByAppendingString:lunch] stringByAppendingString:schoolDay.lunchString]];
+                         lunchLabelB.dataDetectorTypes = UIDataDetectorTypeLink;
+                         lunchLabelB.editable = false;
+                         lunchLabelB.scrollEnabled = false;
+                         [lunchLabelB setFont:[UIFont systemFontOfSize:16]];
+                         [lunchLabelB sizeToFit];
+                         [scrollView addSubview:lunchLabelB];
+                         
+                         if ([hasImage integerValue] == 1) {
+                                   //ADD IMAGE!!!
+                              [self getImageDataMethodWithCompletion:^(NSError *error, NSMutableArray *returnData) {
+                                   
+                                   imageData = [returnData objectAtIndex:0];
+                                   UIImage *image = [[UIImage alloc] init];
+                                   
+                                   image = [UIImage imageWithData:imageData];
+                                   
+                                   UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(10, lunchLabelB.frame.origin.y + lunchLabelB.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+                                   separator.backgroundColor = [UIColor blackColor];
+                                   [scrollView addSubview:separator];
+                                   
+                                   imageLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, separator.frame.origin.y + separator.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
+                                   UIFont *font = [UIFont systemFontOfSize:14];
+                                   [imageLabel setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
+                                   imageLabel.text = @"Picture of the Day";
+                                   imageLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                                   imageLabel.numberOfLines = 0;
+                                   [imageLabel sizeToFit];
+                                   imageLabel.frame = CGRectMake(self.view.frame.size.width / 2 - imageLabel.frame.size.width / 2, imageLabel.frame.origin.y, imageLabel.frame.size.width, imageLabel.frame.size.height);
+                                   [scrollView addSubview:imageLabel];
+                                   
+                                   UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, 300)];
+                                   
+                                   if (image.size.width > self.view.frame.size.width - 20) {
+                                        image = [[AppManager getInstance] imageFromImage:image scaledToWidth:self.view.frame.size.width - 20];
+                                   }
+                                   imageView.image = image;
+                                   [imageView sizeToFit];
+                                   imageView.frame = CGRectMake(self.view.frame.size.width / 2 - imageView.frame.size.width / 2, imageLabel.frame.origin.y + imageLabel.frame.size.height + 10, imageView.frame.size.width, imageView.frame.size.height);
+                                   [scrollView addSubview:imageView];
+                                   
+                                   imageLabelB = [[UITextView alloc] initWithFrame:CGRectMake(10, imageView.frame.origin.y + imageView.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
+                                   [imageLabelB setFont:[UIFont systemFontOfSize:16]];
+                                   imageLabelB.text = schoolDay.imageString;
+                                   imageLabelB.editable = false;
+                                   imageLabelB.scrollEnabled = false;
+                                   imageLabelB.dataDetectorTypes = UIDataDetectorTypeLink;
+                                   [imageLabelB sizeToFit];
+                                   [scrollView addSubview:imageLabelB];
+                                   
                                    self.automaticallyAdjustsScrollViewInsets = YES;
                                    UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 120, 0);
                                    scrollView.contentInset = adjustForTabbarInsets;
@@ -297,194 +283,195 @@
                                    [self.view addSubview:scrollView];
                                    
                                    [activity stopAnimating];
+                              }];
+                         }
+                         else {
+                              self.automaticallyAdjustsScrollViewInsets = YES;
+                              UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 120, 0);
+                              scrollView.contentInset = adjustForTabbarInsets;
+                              scrollView.scrollIndicatorInsets = adjustForTabbarInsets;
+                              CGRect contentRect = CGRectZero;
+                              for (UIView *view in scrollView.subviews) {
+                                   contentRect = CGRectUnion(contentRect, view.frame);
                               }
-                         } else {
-                              [self getScheduleStringMethodWithCompletion:^(NSError *error, NSMutableArray *returnSchedule) {
-                                        //
-                                   if (error != nil) {
-                                        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"Error fetching data from server. Please try again." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
-                                        [alertView show];
-                                        dispatch_async(dispatch_get_main_queue(), ^ {
-                                             [activity stopAnimating];
-                                             [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"reloadHomePage"];
-                                             [[NSUserDefaults standardUserDefaults] synchronize];
-                                             UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(viewWillAppear:)];
-                                             self.navigationItem.rightBarButtonItem = barButtonItem;
-                                             [barButtonItem release];
-                                        });
+                              scrollView.contentSize = contentRect.size;
+                              
+                              [self.view addSubview:scrollView];
+                              
+                              [activity stopAnimating];
+                         }
+                    } else {
+                         [self getScheduleStringMethodWithCompletion:^(NSError *error, NSMutableArray *returnSchedule) {
+                                   //
+                              if (error != nil) {
+                                   UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"Error fetching data from server. Tap refresh button to try again.Please try again." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+                                   [alertView show];
+                                   dispatch_async(dispatch_get_main_queue(), ^ {
+                                        [activity stopAnimating];
+                                        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"reloadHomePage"];
+                                        [[NSUserDefaults standardUserDefaults] synchronize];
+                                        UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(viewWillAppear:)];
+                                        self.navigationItem.rightBarButtonItem = barButtonItem;
+                                        [barButtonItem release];
+                                        [self showBadImage];
+                                   });
+                              } else {
+                                   scheduleType = [returnSchedule objectAtIndex:0];
+                                   scheduleType.scheduleString = [[returnSchedule objectAtIndex:0] objectForKey:@"scheduleString"];
+                                   scheduleType.fullScheduleString = [[returnSchedule objectAtIndex:0] objectForKey:@"fullScheduleString"];
+                                   
+                                   titleLabelB = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 0, 0)];
+                                   NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+                                   [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
+                                   [dateFormatter setDateFormat:@"EEEE"];
+                                   NSString *currentDate = [dateFormatter stringFromDate:[NSDate date]];
+                                   titleLabelB.text = [currentDate stringByAppendingString:@","];
+                                   [titleLabelB setFont:[UIFont systemFontOfSize:32]];
+                                   titleLabelB.lineBreakMode = NSLineBreakByWordWrapping;
+                                   titleLabelB.numberOfLines = 0;
+                                   [titleLabelB sizeToFit];
+                                   [scrollView addSubview:titleLabelB];
+                                   
+                                   titleLabelC = [[UILabel alloc] initWithFrame:CGRectMake(10, titleLabelB.frame.origin.y + titleLabelB.frame.size.height, 0, 0)];
+                                   [dateFormatter setDateFormat:@"MMMM d, yyyy"];
+                                   currentDate = [dateFormatter stringFromDate:[NSDate date]];
+                                   titleLabelC.text = currentDate;
+                                   [titleLabelC setFont:[UIFont systemFontOfSize:32]];
+                                   titleLabelC.lineBreakMode = NSLineBreakByWordWrapping;
+                                   titleLabelC.numberOfLines = 0;
+                                   [titleLabelC sizeToFit];
+                                   [scrollView addSubview:titleLabelC];
+                                   
+                                   UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(10, titleLabelC.frame.origin.y + titleLabelC.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+                                   separator.backgroundColor = [UIColor blackColor];
+                                   [scrollView addSubview:separator];
+                                   
+                                   dayLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, separator.frame.origin.y + separator.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
+                                   NSDateFormatter* day = [[NSDateFormatter alloc] init];
+                                   [day setDateFormat: @"EEEE"];
+                                   dateFormatter = [[NSDateFormatter alloc] init];
+                                        // this is imporant - we set our input date format to match our input string
+                                        // if format doesn't match you'll get nil from your string, so be careful
+                                   [dateFormatter setDateFormat:@"MM-dd-yyyy"];
+                                   NSDate *dateFromString = [[NSDate alloc] init];
+                                        // voila!
+                                   dateFromString = [dateFormatter dateFromString:schoolDay.schoolDate];
+                                   NSString *thatDateString = [dateFormatter stringFromDate:dateFromString];
+                                   NSString *todayDateString = [dateFormatter stringFromDate:[NSDate date]];
+                                   NSString *actual = [day stringFromDate:dateFromString];
+                                   if ([todayDateString isEqualToString:thatDateString]) {
+                                        dayLabel.text = [@"Today is " stringByAppendingString:scheduleType.fullScheduleString];
                                    } else {
-                                        scheduleType = [returnSchedule objectAtIndex:0];
-                                        scheduleType.scheduleString = [[returnSchedule objectAtIndex:0] objectForKey:@"scheduleString"];
-                                        scheduleType.fullScheduleString = [[returnSchedule objectAtIndex:0] objectForKey:@"fullScheduleString"];
-                                        
-                                        titleLabelB = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 0, 0)];
-                                        NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
-                                        [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
-                                        [dateFormatter setDateFormat:@"EEEE"];
-                                        NSString *currentDate = [dateFormatter stringFromDate:[NSDate date]];
-                                        titleLabelB.text = [currentDate stringByAppendingString:@","];
-                                        [titleLabelB setFont:[UIFont systemFontOfSize:32]];
-                                        titleLabelB.lineBreakMode = NSLineBreakByWordWrapping;
-                                        titleLabelB.numberOfLines = 0;
-                                        [titleLabelB sizeToFit];
-                                        [scrollView addSubview:titleLabelB];
-                                        
-                                        titleLabelC = [[UILabel alloc] initWithFrame:CGRectMake(10, titleLabelB.frame.origin.y + titleLabelB.frame.size.height, 0, 0)];
-                                        [dateFormatter setDateFormat:@"MMMM d, yyyy"];
-                                        currentDate = [dateFormatter stringFromDate:[NSDate date]];
-                                        titleLabelC.text = currentDate;
-                                        [titleLabelC setFont:[UIFont systemFontOfSize:32]];
-                                        titleLabelC.lineBreakMode = NSLineBreakByWordWrapping;
-                                        titleLabelC.numberOfLines = 0;
-                                        [titleLabelC sizeToFit];
-                                        [scrollView addSubview:titleLabelC];
-                                        
-                                        UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(10, titleLabelC.frame.origin.y + titleLabelC.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
-                                        separator.backgroundColor = [UIColor blackColor];
-                                        [scrollView addSubview:separator];
-                                        
-                                        dayLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, separator.frame.origin.y + separator.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
-                                        NSDateFormatter* day = [[NSDateFormatter alloc] init];
-                                        [day setDateFormat: @"EEEE"];
-                                        dateFormatter = [[NSDateFormatter alloc] init];
-                                             // this is imporant - we set our input date format to match our input string
-                                             // if format doesn't match you'll get nil from your string, so be careful
-                                        [dateFormatter setDateFormat:@"MM-dd-yyyy"];
-                                        NSDate *dateFromString = [[NSDate alloc] init];
-                                             // voila!
-                                        dateFromString = [dateFormatter dateFromString:schoolDay.schoolDate];
-                                        NSString *thatDateString = [dateFormatter stringFromDate:dateFromString];
-                                        NSString *todayDateString = [dateFormatter stringFromDate:[NSDate date]];
-                                        NSString *actual = [day stringFromDate:dateFromString];
-                                        if ([todayDateString isEqualToString:thatDateString]) {
-                                             dayLabel.text = [@"Today is " stringByAppendingString:scheduleType.fullScheduleString];
-                                        } else {
-                                             dayLabel.text = [[[[actual stringByAppendingString:@" ("] stringByAppendingString:thatDateString] stringByAppendingString:@") - "] stringByAppendingString:scheduleType.fullScheduleString];
-                                        }
-                                        if (scheduleType.alertNeeded == YES) {
-                                             dayLabel.textColor = [UIColor redColor];
-                                        }
-                                        [dayLabel setFont:[UIFont systemFontOfSize:22]];
-                                        dayLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                                        dayLabel.numberOfLines = 0;
-                                        [dayLabel sizeToFit];
-                                        [dayLabel setTextAlignment:UITextAlignmentCenter];
-                                        dayLabel.frame = CGRectMake(self.view.frame.size.width / 2 - dayLabel.frame.size.width / 2, dayLabel.frame.origin.y, dayLabel.frame.size.width, dayLabel.frame.size.height);
-                                        [scrollView addSubview:dayLabel];
-                                        
-                                        scheduleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, dayLabel.frame.origin.y + dayLabel.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
-                                        scheduleLabel.text = scheduleType.scheduleString;
-                                        [scheduleLabel setFont:[UIFont systemFontOfSize:14]];
-                                        scheduleLabel.numberOfLines = 0;
-                                        [scheduleLabel sizeToFit];
-                                        [scheduleLabel setTextAlignment:UITextAlignmentCenter];
-                                        scheduleLabel.frame = CGRectMake(self.view.frame.size.width / 2 - scheduleLabel.frame.size.width / 2, scheduleLabel.frame.origin.y, scheduleLabel.frame.size.width, scheduleLabel.frame.size.height);
-                                        [scrollView addSubview:scheduleLabel];
-                                        
-                                        separator = [[UIView alloc] initWithFrame:CGRectMake(10, scheduleLabel.frame.origin.y + scheduleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
-                                        separator.backgroundColor = [UIColor blackColor];
-                                        [scrollView addSubview:separator];
-                                        
-                                        messageLabelA = [[UILabel alloc] initWithFrame:CGRectMake(10, separator.frame.origin.y + separator.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
-                                        UIFont *font = [UIFont systemFontOfSize:14];
-                                        [messageLabelA setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
-                                        messageLabelA.text = @"Today's Alerts";
-                                        messageLabelA.lineBreakMode = NSLineBreakByWordWrapping;
-                                        messageLabelA.numberOfLines = 0;
-                                        [messageLabelA sizeToFit];
-                                        messageLabelA.frame = CGRectMake(self.view.frame.size.width / 2 - messageLabelA.frame.size.width / 2, messageLabelA.frame.origin.y, messageLabelA.frame.size.width, messageLabelA.frame.size.height);
-                                        [scrollView addSubview:messageLabelA];
-                                        
-                                        messageLabelB = [[UITextView alloc] initWithFrame:CGRectMake(10, messageLabelA.frame.origin.y + messageLabelA.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
-                                        messageLabelB.text = schoolDay.messageString;
-                                        messageLabelB.dataDetectorTypes = UIDataDetectorTypeLink;
-                                        messageLabelB.editable = false;
-                                        messageLabelB.scrollEnabled = false;
-                                        [messageLabelB setFont:[UIFont systemFontOfSize:16]];
-                                        [messageLabelB sizeToFit];
-                                        [scrollView addSubview:messageLabelB];
-                                        
-                                        UIView *separatorX = [[UIView alloc] initWithFrame:CGRectMake(10, messageLabelB.frame.origin.y + messageLabelB.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
-                                        separatorX.backgroundColor = [UIColor blackColor];
-                                        [scrollView addSubview:separatorX];
-                                        
-                                        lunchLabelA = [[UILabel alloc] initWithFrame:CGRectMake(10, separatorX.frame.origin.y + separatorX.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
-                                        [lunchLabelA setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
-                                        lunchLabelA.text = @"Today's Food";
-                                        lunchLabelA.lineBreakMode = NSLineBreakByWordWrapping;
-                                        lunchLabelA.numberOfLines = 0;
-                                        [lunchLabelA sizeToFit];
-                                        lunchLabelA.frame = CGRectMake(self.view.frame.size.width / 2 - lunchLabelA.frame.size.width / 2, lunchLabelA.frame.origin.y, lunchLabelA.frame.size.width, lunchLabelA.frame.size.height);
-                                        [scrollView addSubview:lunchLabelA];
-                                        
-                                        lunchLabelB = [[UITextView alloc] initWithFrame:CGRectMake(10, lunchLabelA.frame.origin.y + lunchLabelA.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
-                                        NSString *lunch = @"Lunch: ";
-                                        lunchLabelB.text = [@"Breakfast: " stringByAppendingString:[[[schoolDay.breakfastString stringByAppendingString:@"\n\n"] stringByAppendingString:lunch] stringByAppendingString:schoolDay.lunchString]];
-                                        lunchLabelB.dataDetectorTypes = UIDataDetectorTypeLink;
-                                        lunchLabelB.editable = false;
-                                        lunchLabelB.scrollEnabled = false;
-                                        [lunchLabelB setFont:[UIFont systemFontOfSize:16]];
-                                        [lunchLabelB sizeToFit];
-                                        [scrollView addSubview:lunchLabelB];
-                                        
-                                        if ([hasImage integerValue] == 1) {
-                                                  //ADD IMAGE!!!
-                                             [self getImageDataMethodWithCompletion:^(NSError *error, NSMutableArray *returnData) {
-                                                  
-                                                  imageData = [returnData objectAtIndex:0];
-                                                  UIImage *image = [[UIImage alloc] init];
-                                                  
-                                                  image = [UIImage imageWithData:imageData];
-                                                  
-                                                  UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(10, lunchLabelB.frame.origin.y + lunchLabelB.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
-                                                  separator.backgroundColor = [UIColor blackColor];
-                                                  [scrollView addSubview:separator];
-                                                  
-                                                  imageLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, separator.frame.origin.y + separator.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
-                                                  UIFont *font = [UIFont systemFontOfSize:14];
-                                                  [imageLabel setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
-                                                  imageLabel.text = @"Picture of the Day";
-                                                  imageLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                                                  imageLabel.numberOfLines = 0;
-                                                  [imageLabel sizeToFit];
-                                                  imageLabel.frame = CGRectMake(self.view.frame.size.width / 2 - imageLabel.frame.size.width / 2, imageLabel.frame.origin.y, imageLabel.frame.size.width, imageLabel.frame.size.height);
-                                                  [scrollView addSubview:imageLabel];
-                                                  
-                                                  UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, 300)];
-                                                  
-                                                  if (image.size.width > self.view.frame.size.width - 20) {
-                                                       image = [[AppManager getInstance] imageFromImage:image scaledToWidth:self.view.frame.size.width - 20];
-                                                  }
-                                                  imageView.image = image;
-                                                  [imageView sizeToFit];
-                                                  imageView.frame = CGRectMake(self.view.frame.size.width / 2 - imageView.frame.size.width / 2, imageLabel.frame.origin.y + imageLabel.frame.size.height + 10, imageView.frame.size.width, imageView.frame.size.height);
-                                                  [scrollView addSubview:imageView];
-                                                  
-                                                  imageLabelB = [[UITextView alloc] initWithFrame:CGRectMake(10, imageView.frame.origin.y + imageView.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
-                                                  [imageLabelB setFont:[UIFont systemFontOfSize:16]];
-                                                  imageLabelB.text = schoolDay.imageString;
-                                                  imageLabelB.editable = false;
-                                                  imageLabelB.scrollEnabled = false;
-                                                  imageLabelB.dataDetectorTypes = UIDataDetectorTypeLink;
-                                                  [imageLabelB sizeToFit];
-                                                  [scrollView addSubview:imageLabelB];
-                                                  
-                                                  self.automaticallyAdjustsScrollViewInsets = YES;
-                                                  UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 120, 0);
-                                                  scrollView.contentInset = adjustForTabbarInsets;
-                                                  scrollView.scrollIndicatorInsets = adjustForTabbarInsets;
-                                                  CGRect contentRect = CGRectZero;
-                                                  for (UIView *view in scrollView.subviews) {
-                                                       contentRect = CGRectUnion(contentRect, view.frame);
-                                                  }
-                                                  scrollView.contentSize = contentRect.size;
-                                                  
-                                                  [self.view addSubview:scrollView];
-                                                  
-                                                  [activity stopAnimating];
-                                             }];
-                                        }
-                                        else {
+                                        dayLabel.text = [[[[actual stringByAppendingString:@" ("] stringByAppendingString:thatDateString] stringByAppendingString:@") - "] stringByAppendingString:scheduleType.fullScheduleString];
+                                   }
+                                   if (scheduleType.alertNeeded == YES) {
+                                        dayLabel.textColor = [UIColor redColor];
+                                   }
+                                   [dayLabel setFont:[UIFont systemFontOfSize:22]];
+                                   dayLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                                   dayLabel.numberOfLines = 0;
+                                   [dayLabel sizeToFit];
+                                   [dayLabel setTextAlignment:UITextAlignmentCenter];
+                                   dayLabel.frame = CGRectMake(self.view.frame.size.width / 2 - dayLabel.frame.size.width / 2, dayLabel.frame.origin.y, dayLabel.frame.size.width, dayLabel.frame.size.height);
+                                   [scrollView addSubview:dayLabel];
+                                   
+                                   scheduleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, dayLabel.frame.origin.y + dayLabel.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
+                                   scheduleLabel.text = scheduleType.scheduleString;
+                                   [scheduleLabel setFont:[UIFont systemFontOfSize:14]];
+                                   scheduleLabel.numberOfLines = 0;
+                                   [scheduleLabel sizeToFit];
+                                   [scheduleLabel setTextAlignment:UITextAlignmentCenter];
+                                   scheduleLabel.frame = CGRectMake(self.view.frame.size.width / 2 - scheduleLabel.frame.size.width / 2, scheduleLabel.frame.origin.y, scheduleLabel.frame.size.width, scheduleLabel.frame.size.height);
+                                   [scrollView addSubview:scheduleLabel];
+                                   
+                                   separator = [[UIView alloc] initWithFrame:CGRectMake(10, scheduleLabel.frame.origin.y + scheduleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+                                   separator.backgroundColor = [UIColor blackColor];
+                                   [scrollView addSubview:separator];
+                                   
+                                   messageLabelA = [[UILabel alloc] initWithFrame:CGRectMake(10, separator.frame.origin.y + separator.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
+                                   UIFont *font = [UIFont systemFontOfSize:14];
+                                   [messageLabelA setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
+                                   messageLabelA.text = @"Recent Alerts";
+                                   messageLabelA.lineBreakMode = NSLineBreakByWordWrapping;
+                                   messageLabelA.numberOfLines = 0;
+                                   [messageLabelA sizeToFit];
+                                   messageLabelA.frame = CGRectMake(self.view.frame.size.width / 2 - messageLabelA.frame.size.width / 2, messageLabelA.frame.origin.y, messageLabelA.frame.size.width, messageLabelA.frame.size.height);
+                                   [scrollView addSubview:messageLabelA];
+                                   
+                                   messageLabelB = [[UITextView alloc] initWithFrame:CGRectMake(10, messageLabelA.frame.origin.y + messageLabelA.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
+                                   messageLabelB.text = schoolDay.messageString;
+                                   messageLabelB.dataDetectorTypes = UIDataDetectorTypeLink;
+                                   messageLabelB.editable = false;
+                                   messageLabelB.scrollEnabled = false;
+                                   [messageLabelB setFont:[UIFont systemFontOfSize:16]];
+                                   [messageLabelB sizeToFit];
+                                   [scrollView addSubview:messageLabelB];
+                                   
+                                   UIView *separatorX = [[UIView alloc] initWithFrame:CGRectMake(10, messageLabelB.frame.origin.y + messageLabelB.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+                                   separatorX.backgroundColor = [UIColor blackColor];
+                                   [scrollView addSubview:separatorX];
+                                   
+                                   lunchLabelA = [[UILabel alloc] initWithFrame:CGRectMake(10, separatorX.frame.origin.y + separatorX.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
+                                   [lunchLabelA setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
+                                   lunchLabelA.text = @"Food";
+                                   lunchLabelA.lineBreakMode = NSLineBreakByWordWrapping;
+                                   lunchLabelA.numberOfLines = 0;
+                                   [lunchLabelA sizeToFit];
+                                   lunchLabelA.frame = CGRectMake(self.view.frame.size.width / 2 - lunchLabelA.frame.size.width / 2, lunchLabelA.frame.origin.y, lunchLabelA.frame.size.width, lunchLabelA.frame.size.height);
+                                   [scrollView addSubview:lunchLabelA];
+                                   
+                                   lunchLabelB = [[UITextView alloc] initWithFrame:CGRectMake(10, lunchLabelA.frame.origin.y + lunchLabelA.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
+                                   NSString *lunch = @"Lunch: ";
+                                   lunchLabelB.text = [@"Breakfast: " stringByAppendingString:[[[schoolDay.breakfastString stringByAppendingString:@"\n\n"] stringByAppendingString:lunch] stringByAppendingString:schoolDay.lunchString]];
+                                   lunchLabelB.dataDetectorTypes = UIDataDetectorTypeLink;
+                                   lunchLabelB.editable = false;
+                                   lunchLabelB.scrollEnabled = false;
+                                   [lunchLabelB setFont:[UIFont systemFontOfSize:16]];
+                                   [lunchLabelB sizeToFit];
+                                   [scrollView addSubview:lunchLabelB];
+                                   
+                                   if ([hasImage integerValue] == 1) {
+                                             //ADD IMAGE!!!
+                                        [self getImageDataMethodWithCompletion:^(NSError *error, NSMutableArray *returnData) {
+                                             
+                                             imageData = [returnData objectAtIndex:0];
+                                             UIImage *image = [[UIImage alloc] init];
+                                             
+                                             image = [UIImage imageWithData:imageData];
+                                             
+                                             UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(10, lunchLabelB.frame.origin.y + lunchLabelB.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+                                             separator.backgroundColor = [UIColor blackColor];
+                                             [scrollView addSubview:separator];
+                                             
+                                             imageLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, separator.frame.origin.y + separator.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
+                                             UIFont *font = [UIFont systemFontOfSize:14];
+                                             [imageLabel setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
+                                             imageLabel.text = @"Picture of the Day";
+                                             imageLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                                             imageLabel.numberOfLines = 0;
+                                             [imageLabel sizeToFit];
+                                             imageLabel.frame = CGRectMake(self.view.frame.size.width / 2 - imageLabel.frame.size.width / 2, imageLabel.frame.origin.y, imageLabel.frame.size.width, imageLabel.frame.size.height);
+                                             [scrollView addSubview:imageLabel];
+                                             
+                                             UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, 300)];
+                                             
+                                             if (image.size.width > self.view.frame.size.width - 20) {
+                                                  image = [[AppManager getInstance] imageFromImage:image scaledToWidth:self.view.frame.size.width - 20];
+                                             }
+                                             imageView.image = image;
+                                             [imageView sizeToFit];
+                                             imageView.frame = CGRectMake(self.view.frame.size.width / 2 - imageView.frame.size.width / 2, imageLabel.frame.origin.y + imageLabel.frame.size.height + 10, imageView.frame.size.width, imageView.frame.size.height);
+                                             [scrollView addSubview:imageView];
+                                             
+                                             imageLabelB = [[UITextView alloc] initWithFrame:CGRectMake(10, imageView.frame.origin.y + imageView.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
+                                             [imageLabelB setFont:[UIFont systemFontOfSize:16]];
+                                             imageLabelB.text = schoolDay.imageString;
+                                             imageLabelB.editable = false;
+                                             imageLabelB.scrollEnabled = false;
+                                             imageLabelB.dataDetectorTypes = UIDataDetectorTypeLink;
+                                             [imageLabelB sizeToFit];
+                                             [scrollView addSubview:imageLabelB];
+                                             
                                              self.automaticallyAdjustsScrollViewInsets = YES;
                                              UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 120, 0);
                                              scrollView.contentInset = adjustForTabbarInsets;
@@ -498,20 +485,69 @@
                                              [self.view addSubview:scrollView];
                                              
                                              [activity stopAnimating];
-                                        }
+                                        }];
                                    }
-                              } forType:schoolDay.scheduleType];
-                         }
+                                   else {
+                                        self.automaticallyAdjustsScrollViewInsets = YES;
+                                        UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 120, 0);
+                                        scrollView.contentInset = adjustForTabbarInsets;
+                                        scrollView.scrollIndicatorInsets = adjustForTabbarInsets;
+                                        CGRect contentRect = CGRectZero;
+                                        for (UIView *view in scrollView.subviews) {
+                                             contentRect = CGRectUnion(contentRect, view.frame);
+                                        }
+                                        scrollView.contentSize = contentRect.size;
+                                        
+                                        [self.view addSubview:scrollView];
+                                        
+                                        [activity stopAnimating];
+                                   }
+                              }
+                         } forType:schoolDay.scheduleType];
                     }
-               }];
-          } else {
-               UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"No network connection detected. Please try again." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-               [alertView show];
-               UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(viewWillAppear:)];
-               self.navigationItem.rightBarButtonItem = barButtonItem;
-               [barButtonItem release];
+               }
+          }];
+     } else if ((! loadString || [loadString isEqual:@"1"] == true) && connected == false) {
+          
+          if (scrollView) {
+               [scrollView removeFromSuperview];
           }
+          scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+          
+          self.navigationController.navigationBar.translucent = NO;
+          
+          UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"No network connection detected. Tap refresh button to try again. No network connection will prevent many app services from working properly." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+          [alertView show];
+          
+          UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(viewWillAppear:)];
+          self.navigationItem.rightBarButtonItem = barButtonItem;
+          [barButtonItem release];
+          
+          [self showBadImage];
      }
+}
+
+- (void)showBadImage {
+     
+     theImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, 300)];
+     
+     UIImage *image = [UIImage imageNamed:@"logoLarge.jpeg"];
+     
+     if (image.size.width > self.view.frame.size.width - 20) {
+          image = [[AppManager getInstance] imageFromImage:image scaledToWidth:self.view.frame.size.width - 20];
+     }
+     theImageView.image = image;
+     [theImageView sizeToFit];
+     theImageView.frame = CGRectMake(self.view.frame.size.width / 2 - theImageView.frame.size.width / 2, 10, theImageView.frame.size.width, theImageView.frame.size.height);
+     
+     [scrollView addSubview:theImageView];
+     
+     self.automaticallyAdjustsScrollViewInsets = YES;
+     UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 120, 0);
+     scrollView.contentInset = adjustForTabbarInsets;
+     scrollView.scrollIndicatorInsets = adjustForTabbarInsets;
+     
+     [self.view addSubview:scrollView];
 }
 
 - (void)getImageDataMethodWithCompletion:(void (^)(NSError *error, NSMutableArray *returnData))completion {
@@ -550,46 +586,48 @@
           self.navigationItem.rightBarButtonItem = barButtonItem;
      }
      
-     [self getCountMethodWithCompletion:^(NSInteger count) {
-          NSMutableArray *array = [[NSUserDefaults standardUserDefaults] objectForKey:@"readNewsArticles"];
-          NSInteger read = array.count;
-          NSNumber *number = [NSNumber numberWithInt:(count - read)];
-          [self getCountTwoMethodWithCompletion:^(NSInteger count2) {
-               NSNumber *updates = [NSNumber numberWithInt:count2];
-               NSNumber *updatesSeen = [[NSUserDefaults standardUserDefaults] objectForKey:@"ECviewed"];
-               if (updatesSeen) {
-                    if ([updatesSeen integerValue] >= [updates integerValue]) {
-                         updates = [NSNumber numberWithInt:0];
+     if (connected == true && connected) {
+          [self getCountMethodWithCompletion:^(NSInteger count) {
+               NSMutableArray *array = [[NSUserDefaults standardUserDefaults] objectForKey:@"readNewsArticles"];
+               NSInteger read = array.count;
+               NSNumber *number = [NSNumber numberWithInt:(count - read)];
+               [self getCountTwoMethodWithCompletion:^(NSInteger count2) {
+                    NSNumber *updates = [NSNumber numberWithInt:count2];
+                    NSNumber *updatesSeen = [[NSUserDefaults standardUserDefaults] objectForKey:@"ECviewed"];
+                    if (updatesSeen) {
+                         if ([updatesSeen integerValue] >= [updates integerValue]) {
+                              updates = [NSNumber numberWithInt:0];
+                         } else {
+                              updates = [NSNumber numberWithInt:[updates integerValue] - [updatesSeen integerValue]];
+                         }
                     } else {
                          updates = [NSNumber numberWithInt:[updates integerValue] - [updatesSeen integerValue]];
                     }
-               } else {
-                    updates = [NSNumber numberWithInt:[updates integerValue] - [updatesSeen integerValue]];
-               }
-               [self getCountThreeMethodWithCompletion:^(NSInteger count3) {
-                    NSMutableArray *SCarray = [[NSUserDefaults standardUserDefaults] objectForKey:@"answeredPolls"];
-                    NSInteger answered = SCarray.count;
-                    NSNumber *secondNumber = [NSNumber numberWithInt:(count3 - answered)];
-                    NSInteger final = [number integerValue] + [updates integerValue] + [secondNumber integerValue];
-                    if (final > 0) {
-                         [[self.tabBarController.viewControllers objectAtIndex:1] tabBarItem].badgeValue = [[NSNumber numberWithInt:final] stringValue];
-                    }
-                    else
-                         [[self.tabBarController.viewControllers objectAtIndex:1] tabBarItem].badgeValue = nil;
-                    [self getCountFourMethodWithCompletion:^(NSInteger count4) {
-                         NSMutableArray *alertsArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"readAlerts"];
-                         NSInteger read = alertsArray.count;
-                         NSNumber *readNumber = [NSNumber numberWithInt:(count4 - read)];
-                         if ([readNumber integerValue] > 0) {
-                              [[self.tabBarController.viewControllers objectAtIndex:2] tabBarItem].badgeValue = [readNumber stringValue];
+                    [self getCountThreeMethodWithCompletion:^(NSInteger count3) {
+                         NSMutableArray *SCarray = [[NSUserDefaults standardUserDefaults] objectForKey:@"answeredPolls"];
+                         NSInteger answered = SCarray.count;
+                         NSNumber *secondNumber = [NSNumber numberWithInt:(count3 - answered)];
+                         NSInteger final = [number integerValue] + [updates integerValue] + [secondNumber integerValue];
+                         if (final > 0) {
+                              [[self.tabBarController.viewControllers objectAtIndex:1] tabBarItem].badgeValue = [[NSNumber numberWithInt:final] stringValue];
                          }
                          else
-                              [[self.tabBarController.viewControllers objectAtIndex:2] tabBarItem].badgeValue = nil;
+                              [[self.tabBarController.viewControllers objectAtIndex:1] tabBarItem].badgeValue = nil;
+                         [self getCountFourMethodWithCompletion:^(NSInteger count4) {
+                              NSMutableArray *alertsArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"readAlerts"];
+                              NSInteger read = alertsArray.count;
+                              NSNumber *readNumber = [NSNumber numberWithInt:(count4 - read)];
+                              if ([readNumber integerValue] > 0) {
+                                   [[self.tabBarController.viewControllers objectAtIndex:2] tabBarItem].badgeValue = [readNumber stringValue];
+                              }
+                              else
+                                   [[self.tabBarController.viewControllers objectAtIndex:2] tabBarItem].badgeValue = nil;
+                         }];
                     }];
                }];
+               
           }];
-          
-     }];
+     }
 }
 
 - (void)postPicture {
@@ -734,6 +772,7 @@
      dispatch_group_t serviceGroup = dispatch_group_create();
      dispatch_group_enter(serviceGroup);
      PFQuery *query = [NewsArticleStructure query];
+     [query whereKey:@"isApproved" equalTo:[NSNumber numberWithInteger:1]];
      __block int count;
      [query countObjectsInBackgroundWithBlock:^(int number, NSError * _Nullable error) {
           count = number;

@@ -1,31 +1,32 @@
 //
-//  ComposeCommunityServiceViewController.m
-//  WildcatConnectGITTest
+//  ComposeEventViewController.m
+//  WildcatConnect
 //
-//  Created by Kevin Lyons on 10/16/15.
-//  Copyright © 2015 WildcatConnect. All rights reserved.
+//  Created by Kevin Lyons on 1/16/16.
+//  Copyright © 2016 WildcatConnect. All rights reserved.
 //
 
-#import "ComposeCommunityServiceViewController.h"
-#import "CommunityServiceStructure.h"
+#import "ComposeEventViewController.h"
+#import "EventStructure.h"
+#import <Parse/Parse.h>
 
-@interface ComposeCommunityServiceViewController ()
+@interface ComposeEventViewController ()
 
 @end
 
-@implementation ComposeCommunityServiceViewController {
+@implementation ComposeEventViewController {
+     BOOL hasChanged;
+     BOOL keyboardIsShown;
      UIScrollView *scrollView;
      UILabel *titleRemainingLabel;
      UITextView *titleTextView;
+     UITextView *locationTextView;
      UIDatePicker *startDatePicker;
-     UIDatePicker *endDatePicker;
-     UITextView *authorTextView;
+     UITextView *messageTextView;
      UILabel *summaryRemainingLabel;
-     BOOL hasChanged;
      UIView *separator;
      UIButton *postButton;
      UIAlertView *postAlertView;
-     BOOL keyboardIsShown;
 }
 
 - (void)viewDidLoad {
@@ -60,10 +61,23 @@
      scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
      scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
      
-     self.navigationItem.title = @"Community Service";
+     self.navigationItem.title = @"Event";
      self.navigationController.navigationBar.translucent = NO;
      
-     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, 50)];
+     UILabel *descriptionLabelC = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, 100)];
+     UIFont *font = [UIFont systemFontOfSize:12];
+     [descriptionLabelC setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
+     descriptionLabelC.text = @"NOTE: All Events will require administrative approval before they appear in the app.";
+     descriptionLabelC.lineBreakMode = NSLineBreakByWordWrapping;
+     descriptionLabelC.numberOfLines = 0;
+     [descriptionLabelC sizeToFit];
+     [scrollView addSubview:descriptionLabelC];
+     
+     UIView *separatorTwo = [[UIView alloc] initWithFrame:CGRectMake(10, descriptionLabelC.frame.origin.y + descriptionLabelC.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+     separatorTwo.backgroundColor = [UIColor blackColor];
+     [scrollView addSubview:separatorTwo];
+     
+     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, separatorTwo.frame.origin.y + separatorTwo.frame.size.height + 10, self.view.frame.size.width - 20, 50)];
      titleLabel.text = @"Title";
      [titleLabel setFont:[UIFont systemFontOfSize:16]];
      titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -87,17 +101,25 @@
      titleTextView.tag = 0;
      [scrollView addSubview:titleTextView];
      
-     UILabel *descriptionLabelB = [[UILabel alloc] initWithFrame:CGRectMake(10, titleTextView.frame.origin.y + titleTextView.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
-     UIFont *font = [UIFont systemFontOfSize:12];
-     [descriptionLabelB setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
-     descriptionLabelB.text = @"NOTE: If you are unsure of the exact start or end time for this opportunity, please leave adequate time in the dates below.";
-     descriptionLabelB.lineBreakMode = NSLineBreakByWordWrapping;
-     descriptionLabelB.numberOfLines = 0;
-     [descriptionLabelB sizeToFit];
-     [scrollView addSubview:descriptionLabelB];
+     UILabel *locationLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, titleTextView.frame.origin.y + titleTextView.frame.size.height + 10, self.view.frame.size.width - 20, 50)];
+     locationLabel.text = @"Location";
+     [locationLabel setFont:[UIFont systemFontOfSize:16]];
+     locationLabel.lineBreakMode = NSLineBreakByWordWrapping;
+     locationLabel.numberOfLines = 0;
+     [locationLabel sizeToFit];
+     [scrollView addSubview:locationLabel];
      
-     UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, descriptionLabelB.frame.origin.y + descriptionLabelB.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
-     dateLabel.text = @"Start Date";
+     locationTextView = [[UITextView alloc] initWithFrame:CGRectMake(locationLabel.frame.origin.x, locationLabel.frame.origin.y + titleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 110)];
+     [locationTextView setDelegate:self];
+     [locationTextView setFont:[UIFont systemFontOfSize:16]];
+     locationTextView.layer.borderWidth = 1.0f;
+     locationTextView.layer.borderColor = [[UIColor grayColor] CGColor];
+     locationTextView.scrollEnabled = false;
+     locationTextView.tag = 0;
+     [scrollView addSubview:locationTextView];
+     
+     UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, locationTextView.frame.origin.y + locationTextView.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
+     dateLabel.text = @"Event Date and Time";
      [dateLabel setFont:[UIFont systemFontOfSize:16]];
      dateLabel.lineBreakMode = NSLineBreakByWordWrapping;
      dateLabel.numberOfLines = 0;
@@ -106,22 +128,10 @@
      
      startDatePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(10, dateLabel.frame.origin.y + dateLabel.frame.size.height + 10, self.view.frame.size.width - 10, 120)];
      [startDatePicker addTarget:self action:@selector(dateIsChanged:) forControlEvents:UIControlEventValueChanged];
+     [startDatePicker setMinimumDate:[NSDate date]];
      [scrollView addSubview:startDatePicker];
      
-     UILabel *endDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, startDatePicker.frame.origin.y + startDatePicker.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
-     endDateLabel.text = @"End Date";
-     [endDateLabel setFont:[UIFont systemFontOfSize:16]];
-     endDateLabel.lineBreakMode = NSLineBreakByWordWrapping;
-     endDateLabel.numberOfLines = 0;
-     [endDateLabel sizeToFit];
-     [scrollView addSubview:endDateLabel];
-     
-     endDatePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(10, endDateLabel.frame.origin.y + endDateLabel.frame.size.height + 10, self.view.frame.size.width - 10, 120)];
-     [endDatePicker addTarget:self action:@selector(dateIsChanged:) forControlEvents:UIControlEventValueChanged];
-     [endDatePicker setMinimumDate:startDatePicker.date];
-     [scrollView addSubview:endDatePicker];
-     
-     UILabel *authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, endDatePicker.frame.origin.y + endDatePicker.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
+     UILabel *authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, startDatePicker.frame.origin.y + startDatePicker.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
      authorLabel.text = @"Message";
      [authorLabel setFont:[UIFont systemFontOfSize:16]];
      authorLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -129,14 +139,22 @@
      [authorLabel sizeToFit];
      [scrollView addSubview:authorLabel];
      
-     authorTextView = [[UITextView alloc] initWithFrame:CGRectMake(authorLabel.frame.origin.x, authorLabel.frame.origin.y + titleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 160)];
-     [authorTextView setDelegate:self];
-     [authorTextView setFont:[UIFont systemFontOfSize:16]];
-     authorTextView.layer.borderWidth = 1.0f;
-     authorTextView.layer.borderColor = [[UIColor grayColor] CGColor];
-     authorTextView.scrollEnabled = false;
-     authorTextView.tag = 1;
-     [scrollView addSubview:authorTextView];
+     UILabel *descriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, authorLabel.frame.origin.y + authorLabel.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
+     [descriptionLabel setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
+     descriptionLabel.text = @"(i.e. event reminders, ticket information, parking, etc.)";
+     descriptionLabel.lineBreakMode = NSLineBreakByWordWrapping;
+     descriptionLabel.numberOfLines = 0;
+     [descriptionLabel sizeToFit];
+     [scrollView addSubview:descriptionLabel];
+     
+     messageTextView = [[UITextView alloc] initWithFrame:CGRectMake(authorLabel.frame.origin.x, descriptionLabel.frame.origin.y + descriptionLabel.frame.size.height + 10, self.view.frame.size.width - 20, 160)];
+     [messageTextView setDelegate:self];
+     [messageTextView setFont:[UIFont systemFontOfSize:16]];
+     messageTextView.layer.borderWidth = 1.0f;
+     messageTextView.layer.borderColor = [[UIColor grayColor] CGColor];
+     messageTextView.scrollEnabled = false;
+     messageTextView.tag = 1;
+     [scrollView addSubview:messageTextView];
      
      summaryRemainingLabel = [[UILabel alloc] init];
      summaryRemainingLabel.text = @"300 characters remaining";
@@ -145,14 +163,14 @@
      summaryRemainingLabel.frame = CGRectMake((self.view.frame.size.width - summaryRemainingLabel.frame.size.width - 10), authorLabel.frame.origin.y, summaryRemainingLabel.frame.size.width, 20);
      [scrollView addSubview:summaryRemainingLabel];
      
-     separator = [[UIView alloc] initWithFrame:CGRectMake(10, authorTextView.frame.origin.y + authorTextView.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+     separator = [[UIView alloc] initWithFrame:CGRectMake(10, messageTextView.frame.origin.y + messageTextView.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
      separator.backgroundColor = [UIColor blackColor];
      [scrollView addSubview:separator];
      
      postButton = [UIButton buttonWithType:UIButtonTypeSystem];
-     [postButton setTitle:@"POST UPDATE" forState:UIControlStateNormal];
+     [postButton setTitle:@"SUBMIT FOR APPROVAL" forState:UIControlStateNormal];
      [postButton sizeToFit];
-     [postButton addTarget:self action:@selector(postUpdate) forControlEvents:UIControlEventTouchUpInside];
+     [postButton addTarget:self action:@selector(postEvent) forControlEvents:UIControlEventTouchUpInside];
      postButton.frame = CGRectMake((self.view.frame.size.width - postButton.frame.size.width - 10), separator.frame.origin.y + separator.frame.size.height + 10, postButton.frame.size.width, postButton.frame.size.height);
      [scrollView addSubview:postButton];
      
@@ -168,15 +186,166 @@
      [self.view addSubview:scrollView];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)postEvent {
+     if (! [self validateAllFields]) {
+          UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please ensure you have correctly filled out all fields!" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+          [alertView show];
+     } else {
+          postAlertView = [[UIAlertView alloc] initWithTitle:@"Confirmation" message:@"Are you sure you want to submit this event for administrative approval?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+          [postAlertView show];
+     }
+}
+
+- (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+          // the user clicked one of the OK/Cancel buttons
+     if (actionSheet == postAlertView) {
+          if (buttonIndex == 1) {
+               UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(10, postButton.frame.origin.y, 30, 30)];
+               [postButton removeFromSuperview];
+               [activity setBackgroundColor:[UIColor clearColor]];
+               [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+               [scrollView addSubview:activity];
+               [activity startAnimating];
+               [self postEventMethodWithCompletion:^(NSError *error) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                         [activity stopAnimating];
+                         NSMutableArray *array = [[NSUserDefaults standardUserDefaults] objectForKey:@"visitedPagesArray"];
+                         if ([array containsObject:[NSString stringWithFormat:@"%lu", (long)3]]) {
+                              NSMutableArray *newArray = [array mutableCopy];
+                              [newArray removeObject:[NSString stringWithFormat:@"%lu", (long)3]];
+                              [[NSUserDefaults standardUserDefaults] setObject:newArray forKey:@"visitedPagesArray"];
+                              [[NSUserDefaults standardUserDefaults] synchronize];
+                         }
+                         [self.navigationController popViewControllerAnimated:YES];
+                    });
+               }];
+          }
+          
+     } else {
+          if (buttonIndex == 1) {
+               [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2] animated:YES];
+          }
+     }
+}
+
+- (void)postEventMethodWithCompletion:(void (^)(NSError *error))completion {
+     dispatch_group_t serviceGroup = dispatch_group_create();
+     dispatch_group_enter(serviceGroup);
+     __block NSError *theError;
+     EventStructure *event = [[EventStructure alloc] init];
+     event.titleString = titleTextView.text;
+     event.locationString = locationTextView.text;
+     event.eventDate = startDatePicker.date;
+     event.messageString = messageTextView.text;
+     event.isApproved = [NSNumber numberWithInt:0];
+     NSString *firstName = [[PFUser currentUser] objectForKey:@"firstName"];
+     NSString *lastName = [[PFUser currentUser] objectForKey:@"lastName"];
+     event.userString = [[firstName stringByAppendingString:@" "] stringByAppendingString:lastName];
+     [event saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+          if (error) {
+               theError = error;
+          }
+          dispatch_group_leave(serviceGroup);
+     }];
+     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^{
+          completion(theError);
+     });
+}
+
+-(void)textViewDidChange:(UITextView *)textView
+{
+     hasChanged = true;
+     if (textView == titleTextView) {
+          int len = textView.text.length;
+          if (60 - len <= 10) {
+               if (60 - len == 1) {
+                    titleRemainingLabel.text= [[NSString stringWithFormat:@"%i",60-len] stringByAppendingString:@" character remaining"];
+               } else {
+                    
+                    titleRemainingLabel.text= [[NSString stringWithFormat:@"%i",60-len] stringByAppendingString:@" characters remaining"];
+               }
+               titleRemainingLabel.textColor = [UIColor redColor];
+               [titleRemainingLabel sizeToFit];
+               titleRemainingLabel.frame = CGRectMake((self.view.frame.size.width - titleRemainingLabel.frame.size.width - 10), titleRemainingLabel.frame.origin.y, titleRemainingLabel.frame.size.width, 20);
+          } else {
+               titleRemainingLabel.text= [[NSString stringWithFormat:@"%i",60-len] stringByAppendingString:@" characters remaining"];
+               titleRemainingLabel.textColor = [UIColor blackColor];
+               [titleRemainingLabel sizeToFit];
+               titleRemainingLabel.frame = CGRectMake((self.view.frame.size.width - titleRemainingLabel.frame.size.width - 10), titleRemainingLabel.frame.origin.y, titleRemainingLabel.frame.size.width, 20);
+          }
+     } else if (textView == messageTextView) {
+          int len = textView.text.length;
+          if (300 - len <= 10) {
+               if (300 - len == 1) {
+                    summaryRemainingLabel.text= [[NSString stringWithFormat:@"%i",300-len] stringByAppendingString:@" character remaining"];
+               } else {
+                    
+                    summaryRemainingLabel.text= [[NSString stringWithFormat:@"%i",300-len] stringByAppendingString:@" characters remaining"];
+               }
+               summaryRemainingLabel.textColor = [UIColor redColor];
+               [summaryRemainingLabel sizeToFit];
+               summaryRemainingLabel.frame = CGRectMake((self.view.frame.size.width - summaryRemainingLabel.frame.size.width - 10), summaryRemainingLabel.frame.origin.y, summaryRemainingLabel.frame.size.width, 20);
+          } else {
+               summaryRemainingLabel.text= [[NSString stringWithFormat:@"%i",300-len] stringByAppendingString:@" characters remaining"];
+               summaryRemainingLabel.textColor = [UIColor blackColor];
+               [summaryRemainingLabel sizeToFit];
+               summaryRemainingLabel.frame = CGRectMake((self.view.frame.size.width - summaryRemainingLabel.frame.size.width - 10), summaryRemainingLabel.frame.origin.y, summaryRemainingLabel.frame.size.width, 20);
+          }
+     }
+}
+
+- (BOOL)isAcceptableTextLength:(NSUInteger)length forMaximum:(NSUInteger)maximum existsMaximum:(BOOL)exists {
+     if (exists) {
+          return length <= maximum;
+     }
+     else return true;
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)string {
+     if (textView == titleTextView) {
+          if([string isEqualToString:@"\n"])
+          {
+               [textView resignFirstResponder];
+               
+               return NO;
+          } else
+               return [self isAcceptableTextLength:textView.text.length + string.length - range.length forMaximum:60 existsMaximum:YES];
+     }
+     else if (textView == messageTextView) {
+          return [self isAcceptableTextLength:textView.text.length + string.length - range.length forMaximum:300 existsMaximum:YES];
+     } else if (textView == locationTextView) {
+          if([string isEqualToString:@"\n"])
+          {
+               [textView resignFirstResponder];
+               
+               return NO;
+          } else
+               return [self isAcceptableTextLength:textView.text.length + string.length - range.length forMaximum:300 existsMaximum:NO];
+     }
+     else return nil;
+}
+
+- (BOOL)validateAllFields {
+     return (titleTextView.text.length > 0 && messageTextView.text.length > 0 && locationTextView.text.length > 0);
 }
 
 - (void)dateIsChanged:(id)sender {
      hasChanged = true;
-     if ((UIDatePicker *)(sender) == startDatePicker) {
-          endDatePicker.minimumDate = startDatePicker.date;
+     startDatePicker.minimumDate = [NSDate date];
+}
+
+- (void)goBack:(UIBarButtonItem *)sender
+{
+     if (hasChanged) {
+          UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Confirmation"
+                                                          message:@"Are you sure you want to go back? Any changes to this event will be lost."
+                                                         delegate:self
+                                                cancelButtonTitle:@"No"
+                                                otherButtonTitles:@"Yes", nil];
+          [alert show];
+     }
+     else {
+          [self.navigationController popViewControllerAnimated:YES];
      }
 }
 
@@ -223,189 +392,10 @@
      keyboardIsShown = YES;
 }
 
-- (void)postUpdate {
-     if (! [self validateAllFields]) {
-          UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please ensure you have correctly filled out all fields!" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
-          [alertView show];
-     } else {
-          postAlertView = [[UIAlertView alloc] initWithTitle:@"Confirmation" message:@"Are you sure you want to post this extracurricular update? It will be live to all app users." delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
-          [postAlertView show];
-     }
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
-
-- (void)postUpdateMethodWithCompletion:(void (^)(NSError *error))completion {
-     dispatch_group_t serviceGroup = dispatch_group_create();
-     dispatch_group_enter(serviceGroup);
-     __block NSError *theError;
-     CommunityServiceStructure *communityServiceStructure = [[CommunityServiceStructure alloc] init];
-     communityServiceStructure.commTitleString = titleTextView.text;
-     communityServiceStructure.commSummaryString = authorTextView.text;
-     communityServiceStructure.startDate = startDatePicker.date;
-     communityServiceStructure.endDate = endDatePicker.date;
-     PFQuery *query = [CommunityServiceStructure query];
-     [query orderByDescending:@"communityServiceID"];
-     [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
-          if (error) {
-               communityServiceStructure.communityServiceID = [NSNumber numberWithInt:0];
-               [communityServiceStructure saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
-                    if (error) {
-                         theError = error;
-                    }
-                    dispatch_group_leave(serviceGroup);
-               }];
-          } else {
-               CommunityServiceStructure *structure = (CommunityServiceStructure *)object;
-               if (structure) {
-                    communityServiceStructure.communityServiceID = [NSNumber numberWithInteger:[structure.communityServiceID integerValue] + 1];
-               } else {
-                    communityServiceStructure.communityServiceID = [NSNumber numberWithInteger:0];
-               }
-               [communityServiceStructure saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
-                    if (error) {
-                         theError = error;
-                    }
-                    dispatch_group_leave(serviceGroup);
-               }];
-          }
-     }];
-     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^{
-          completion(theError);
-     });
-}
-
-- (BOOL)validateAllFields {
-     return (titleTextView.text.length > 0 && authorTextView.text.length > 0);
-}
-
-- (void)goBack:(UIBarButtonItem *)sender
-{
-     if (hasChanged) {
-          UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Confirmation"
-                                                          message:@"Are you sure you want to go back? Any changes to this community service update will be lost."
-                                                         delegate:self
-                                                cancelButtonTitle:@"No"
-                                                otherButtonTitles:@"Yes", nil];
-          [alert show];
-     }
-     else {
-          [self.navigationController popViewControllerAnimated:YES];
-     }
-}
-
-- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
-     if (hasChanged) {
-          UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Confirmation"
-                                                          message:@"Are you sure you want to go back? Any changes to this community service update will be lost."
-                                                         delegate:self
-                                                cancelButtonTitle:@"No"
-                                                otherButtonTitles:@"Yes", nil];
-          [alert show];
-     }
-}
-
-- (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-          // the user clicked one of the OK/Cancel buttons
-     if (actionSheet == postAlertView) {
-          if (buttonIndex == 1) {
-               UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(10, postButton.frame.origin.y, 30, 30)];
-               [postButton removeFromSuperview];
-               [activity setBackgroundColor:[UIColor clearColor]];
-               [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-               [scrollView addSubview:activity];
-               [activity startAnimating];
-                    [self postUpdateMethodWithCompletion:^(NSError *error) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                         [activity stopAnimating];
-                         NSMutableArray *array = [[NSUserDefaults standardUserDefaults] objectForKey:@"visitedPagesArray"];
-                         if ([array containsObject:[NSString stringWithFormat:@"%lu", (long)0]]) {
-                              NSMutableArray *newArray = [array mutableCopy];
-                              [newArray removeObject:[NSString stringWithFormat:@"%lu", (long)0]];
-                              [[NSUserDefaults standardUserDefaults] setObject:newArray forKey:@"visitedPagesArray"];
-                              [[NSUserDefaults standardUserDefaults] synchronize];
-                         }
-                         [self.navigationController popViewControllerAnimated:YES];
-                    });
-               }];
-          }
-          
-     } else {
-          if (buttonIndex == 1) {
-               [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2] animated:YES];
-          }
-     }
-}
-
--(void)textViewDidChange:(UITextView *)textView
-{
-     hasChanged = true;
-     if (textView == titleTextView) {
-          int len = textView.text.length;
-          if (60 - len <= 10) {
-               if (60 - len == 1) {
-                    titleRemainingLabel.text= [[NSString stringWithFormat:@"%i",60-len] stringByAppendingString:@" character remaining"];
-               } else {
-                    
-                    titleRemainingLabel.text= [[NSString stringWithFormat:@"%i",60-len] stringByAppendingString:@" characters remaining"];
-               }
-               titleRemainingLabel.textColor = [UIColor redColor];
-               [titleRemainingLabel sizeToFit];
-               titleRemainingLabel.frame = CGRectMake((self.view.frame.size.width - titleRemainingLabel.frame.size.width - 10), titleRemainingLabel.frame.origin.y, titleRemainingLabel.frame.size.width, 20);
-          } else {
-               titleRemainingLabel.text= [[NSString stringWithFormat:@"%i",60-len] stringByAppendingString:@" characters remaining"];
-               titleRemainingLabel.textColor = [UIColor blackColor];
-               [titleRemainingLabel sizeToFit];
-               titleRemainingLabel.frame = CGRectMake((self.view.frame.size.width - titleRemainingLabel.frame.size.width - 10), titleRemainingLabel.frame.origin.y, titleRemainingLabel.frame.size.width, 20);
-          }
-     } else if (textView == authorTextView) {
-          int len = textView.text.length;
-          if (300 - len <= 10) {
-               if (300 - len == 1) {
-                    summaryRemainingLabel.text= [[NSString stringWithFormat:@"%i",300-len] stringByAppendingString:@" character remaining"];
-               } else {
-                    
-                    summaryRemainingLabel.text= [[NSString stringWithFormat:@"%i",300-len] stringByAppendingString:@" characters remaining"];
-               }
-               summaryRemainingLabel.textColor = [UIColor redColor];
-               [summaryRemainingLabel sizeToFit];
-               summaryRemainingLabel.frame = CGRectMake((self.view.frame.size.width - summaryRemainingLabel.frame.size.width - 10), summaryRemainingLabel.frame.origin.y, summaryRemainingLabel.frame.size.width, 20);
-          } else {
-               summaryRemainingLabel.text= [[NSString stringWithFormat:@"%i",300-len] stringByAppendingString:@" characters remaining"];
-               summaryRemainingLabel.textColor = [UIColor blackColor];
-               [summaryRemainingLabel sizeToFit];
-               summaryRemainingLabel.frame = CGRectMake((self.view.frame.size.width - summaryRemainingLabel.frame.size.width - 10), summaryRemainingLabel.frame.origin.y, summaryRemainingLabel.frame.size.width, 20);
-          }
-     }
-}
-
-- (BOOL)isAcceptableTextLength:(NSUInteger)length forMaximum:(NSUInteger)maximum existsMaximum:(BOOL)exists {
-     if (exists) {
-          return length <= maximum;
-     }
-     else return true;
-}
-
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)string {
-     if (textView == titleTextView) {
-          if([string isEqualToString:@"\n"])
-          {
-               [textView resignFirstResponder];
-               
-               return NO;
-          } else
-          return [self isAcceptableTextLength:textView.text.length + string.length - range.length forMaximum:60 existsMaximum:YES];
-     }
-     else if (textView == authorTextView) {
-          if([string isEqualToString:@"\n"])
-          {
-               [textView resignFirstResponder];
-               
-               return NO;
-          } else
-          return [self isAcceptableTextLength:textView.text.length + string.length - range.length forMaximum:300 existsMaximum:YES];
-     }
-     else return nil;
-}
-
 
 /*
 #pragma mark - Navigation

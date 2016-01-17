@@ -16,5 +16,6 @@
 @property NSString *infoString;
 @property NSString *deviceToken;
 @property NSString *username;
+@property NSString *version;
 
 @end

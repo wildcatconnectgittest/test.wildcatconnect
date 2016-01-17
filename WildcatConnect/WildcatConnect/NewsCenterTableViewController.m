@@ -24,6 +24,8 @@
     self.refreshControl= refreshControl;
      
      isReloading = false;
+     
+     self.navigationItem.title = @"Wildcat News";
     
     if (self.loadNumber == [NSNumber numberWithInt:1] || ! self.loadNumber) {
                [self refreshData];
@@ -344,6 +346,7 @@
      dispatch_group_enter(serviceGroup);
       NSMutableArray *returnArray = [[NSMutableArray alloc] init];
      PFQuery *query = [NewsArticleStructure query];
+     [query whereKey:@"isApproved" equalTo:[NSNumber numberWithInteger:1]];
      [query orderByDescending:@"articleID"];
      query.limit = 25;
      [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
@@ -491,6 +494,7 @@
           if (! [theReadNews containsObject:self.newsArticleSelected.articleID]) {
                [theReadNews addObject:self.newsArticleSelected.articleID];
                [[NSUserDefaults standardUserDefaults] setObject:theReadNews forKey:@"readNewsArticles"];
+               self.readNewsArticles = theReadNews;
                [[NSUserDefaults standardUserDefaults] synchronize];
           }
      }

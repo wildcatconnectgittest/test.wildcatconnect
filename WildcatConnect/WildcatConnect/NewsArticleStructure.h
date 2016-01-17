@@ -26,5 +26,6 @@
 @property NSNumber *articleID;
 @property NSNumber *likes;
 @property NSNumber *views;
+@property NSNumber *isApproved;
 
 @end
