@@ -142,6 +142,7 @@
      dateTextView.text = [dateFormatter stringFromDate:today];
      dateTextView.scrollEnabled = false;
      dateTextView.tag = 2;
+     dateTextView.editable = false;
      [scrollView addSubview:dateTextView];
      
      UILabel *summaryLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, dateTextView.frame.origin.y + dateTextView.frame.size.height + 10, self.view.frame.size.width - 20, 100)];

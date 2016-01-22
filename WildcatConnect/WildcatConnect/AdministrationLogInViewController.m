@@ -145,7 +145,7 @@
      
      regPasswordTextField = [[UITextField alloc] initWithFrame:CGRectMake(regUsernameTextField.frame.origin.x, regUsernameTextField.frame.origin.y + regUsernameTextField.frame.size.height + 10, self.view.frame.size.width - 20, 31)];
      regPasswordTextField.borderStyle = UITextBorderStyleRoundedRect;
-     regPasswordTextField.placeholder = @"Password";
+     regPasswordTextField.placeholder = @"Create Password";
      regPasswordTextField.secureTextEntry = YES;
      regPasswordTextField.tag = 7;
      [regPasswordTextField setDelegate:self];
@@ -260,10 +260,10 @@
      } else if (! [password isEqualToString:password]) {
           UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"Your passwords do not match!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
           [alertView show];
-     } else if (! [email containsString:@"weymouthschools.org"]) {
+     } /*else if (! [email containsString:@"weymouthschools.org"]) {
           UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"Your e-mail address is not a valid faculty address!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
           [alertView show];
-     } else if ([username containsString:@" "]) {
+     }*/ else if ([username containsString:@" "]) {
           UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"Your username cannot contain any spaces!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
           [alertView show];
      } else if ([password containsString:@" "]) {

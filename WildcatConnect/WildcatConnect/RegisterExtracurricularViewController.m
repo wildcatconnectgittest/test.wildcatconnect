@@ -115,7 +115,7 @@
      [scrollView addSubview:descriptionTextView];
      
      UILabel *meetingLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, descriptionTextView.frame.origin.y + descriptionTextView.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
-     meetingLabel.text = @"Meeting Days";
+     meetingLabel.text = @"Meeting Days (if applicable)";
      [meetingLabel setFont:[UIFont systemFontOfSize:16]];
      meetingLabel.lineBreakMode = NSLineBreakByWordWrapping;
      meetingLabel.numberOfLines = 0;

@@ -46,13 +46,13 @@
                               [self.tableView reloadData];
                               [activity stopAnimating];
                               [self refreshControl];
+                              UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Read All" style:UIBarButtonItemStylePlain target:self action:@selector(readAllMethod)];
+                              self.navigationItem.rightBarButtonItem = barButtonItem;
+                              [barButtonItem release];
                          });
                     }];
                }];
           }
-     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Read All" style:UIBarButtonItemStylePlain target:self action:@selector(readAllMethod)];
-     self.navigationItem.rightBarButtonItem = barButtonItem;
-     [barButtonItem release];
 }
 
 
@@ -71,6 +71,9 @@
 
 - (void)readAllMethod {
      NSMutableArray *readArray = [[[NSUserDefaults standardUserDefaults] objectForKey:@"readNewsArticles"] mutableCopy];
+     if (! readArray) {
+          readArray = [[NSMutableArray alloc] init];
+     }
      for (NewsArticleStructure *NA in self.newsArticles) {
           if (! [readArray containsObject:NA.articleID]) {
                [readArray addObject:[NSNumber numberWithInteger:[NA.articleID integerValue]]];
@@ -258,11 +261,11 @@
                                    [activity stopAnimating];
                                    [self.tableView reloadData];
                                    [self refreshControl];
+                                   UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Read All" style:UIBarButtonItemStylePlain target:self action:@selector(readAllMethod)];
+                                   self.navigationItem.rightBarButtonItem = barButtonItem;
+                                   [barButtonItem release];
                               });
                          }
-                         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Read All" style:UIBarButtonItemStylePlain target:self action:@selector(readAllMethod)];
-                         self.navigationItem.rightBarButtonItem = barButtonItem;
-                         [barButtonItem release];
                     } withArray:returnArrayA];
                } withArray:returnArrayA];
           }

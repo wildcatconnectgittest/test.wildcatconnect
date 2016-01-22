@@ -7,8 +7,9 @@
 //
 
 #import "StaffDirectoryBaseTableViewController.h"
+#import <MessageUI/MessageUI.h>
 
-@interface StaffDirectoryResultsTableViewController : StaffDirectoryBaseTableViewController
+@interface StaffDirectoryResultsTableViewController : StaffDirectoryBaseTableViewController <MFMailComposeViewControllerDelegate>
 
 @property (nonatomic, strong) NSArray *filteredStaffMembers;
 

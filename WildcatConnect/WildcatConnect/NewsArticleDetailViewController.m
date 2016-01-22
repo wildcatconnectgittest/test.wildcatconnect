@@ -37,13 +37,6 @@
      
      self.navigationController.navigationBar.translucent = NO;
      
-     activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-     [activity setBackgroundColor:[UIColor clearColor]];
-     [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
-     self.navigationItem.rightBarButtonItem = barButtonItem;
-     [activity startAnimating];
-     
      if ([self.NA.hasImage integerValue] == 0) {
           titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, 100)];
           titleLabel.text = self.NA.titleString;
@@ -124,7 +117,6 @@
           [self.view addSubview:scrollView];
           
           [self viewMethodWithCompletion:^(NSUInteger integer, NSError *error) {
-               [activity stopAnimating];
                if (self.showCloseButton == true) {
                     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleDone target:self action:@selector(dismissModalViewControllerAnimated:)];
                     self.navigationItem.rightBarButtonItem = barButtonItem;
@@ -185,7 +177,7 @@
                     [likesButton setTitle:@"Like this!" forState:UIControlStateNormal];
                     [likesButton sizeToFit];
                     CGFloat width = likesButton.frame.size.width;
-                    likesButton.frame = CGRectMake((self.view.frame.size.width - width - 10), likesLabel.frame.origin.y, likesButton.frame.size.width, 30);
+                    likesButton.frame = CGRectMake((self.view.frame.size.width - width - 10), likesLabel.frame.origin.y, likesButton.frame.size.width, likesButton.frame.size.height);
                     [scrollView addSubview:likesButton];
                }
           } else {
@@ -194,7 +186,8 @@
                [likesButton setTitle:@"Like this!" forState:UIControlStateNormal];
                [likesButton sizeToFit];
                CGFloat width = likesButton.frame.size.width;
-               likesButton.frame = CGRectMake((self.view.frame.size.width - width - 10), likesLabel.frame.origin.y, likesButton.frame.size.width, 30);
+               likesButton.frame = CGRectMake((self.view.frame.size.width - width - 10), (likesLabel.frame.origin.y + likesLabel.frame.size
+                                              .height / 2) - (likesButton.frame.size.height / 2), likesButton.frame.size.width, likesButton.frame.size.height);
                [scrollView addSubview:likesButton];
           }
           
@@ -330,8 +323,6 @@
 - (void)likeMethod {
      [likesButton removeFromSuperview];
      [likesLabel removeFromSuperview];
-     likesLabel = [[UILabel alloc] initWithFrame:CGRectMake(authorDateLabel.frame.origin.x, authorDateLabel.frame.origin.y + authorDateLabel.frame.size.height + 10, self.view.frame.size.width - 20, 30)];
-     [likesLabel setFont:[UIFont systemFontOfSize:16]];
      NSInteger likes = [self.NA.likes integerValue];
      NSNumber *newLikes = [NSNumber numberWithInt:likes + 1];
      self.NA.likes = newLikes;
@@ -340,6 +331,7 @@
      } else
           likesLabel.text = [[self.NA.likes stringValue] stringByAppendingString:@" likes"];
      [likesLabel sizeToFit];
+     likesLabel.frame = CGRectMake(10, authorDateLabel.frame.origin.y + authorDateLabel.frame.size.height + 10, likesLabel.frame.size.width, likesLabel.frame.size.height);
      [scrollView addSubview:likesLabel];
      UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
      [activity setBackgroundColor:[UIColor clearColor]];

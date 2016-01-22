@@ -59,11 +59,21 @@
                self.alerts = returnArray;
                dispatch_async(dispatch_get_main_queue(), ^ {
                     [self.tableView reloadData];
-                    [activity stopAnimating];
                     [self refreshControl];
-                    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Read All" style:UIBarButtonItemStylePlain target:self action:@selector(readAllMethod)];
-                    self.navigationItem.rightBarButtonItem = barButtonItem;
-                    [barButtonItem release];
+                    [self getCountFourMethodWithCompletion:^(NSInteger count4) {
+                         [activity stopAnimating];
+                         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Read All" style:UIBarButtonItemStylePlain target:self action:@selector(readAllMethod)];
+                         self.navigationItem.rightBarButtonItem = barButtonItem;
+                         [barButtonItem release];
+                         NSMutableArray *alertsArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"readAlerts"];
+                         NSInteger read = alertsArray.count;
+                         NSNumber *readNumber = [NSNumber numberWithInt:(count4 - read)];
+                         if ([readNumber integerValue] > 0) {
+                              [[self.tabBarController.viewControllers objectAtIndex:2] tabBarItem].badgeValue = [readNumber stringValue];
+                         } else {
+                              [[self.tabBarController.viewControllers objectAtIndex:2] tabBarItem].badgeValue = nil;
+                         }
+                    }];
                });
           }];
      }
@@ -71,12 +81,15 @@
 
 - (void)readAllMethod {
      NSMutableArray *readArray = [[[NSUserDefaults standardUserDefaults] objectForKey:@"readAlerts"] mutableCopy];
+     if (! readArray) {
+          readArray = [[NSMutableArray alloc] init];
+     }
      for (AlertStructure *NA in self.alerts) {
           if (! [readArray containsObject:NA.alertID]) {
                [readArray addObject:[NSNumber numberWithInteger:[NA.alertID integerValue]]];
           }
      }
-     [[NSUserDefaults standardUserDefaults] setObject:readArray forKey:@"readNewsArticles"];
+     [[NSUserDefaults standardUserDefaults] setObject:readArray forKey:@"readAlerts"];
      [[NSUserDefaults standardUserDefaults] synchronize];
      self.readAlerts = readArray;
      [self.tableView reloadData];
@@ -201,14 +214,22 @@
                     } else
                          self.readAlerts = [readArray mutableCopy];
                     [userDefaults synchronize];
-                    dispatch_async(dispatch_get_main_queue(), ^ {
-                         [activity stopAnimating];
-                         [self.tableView reloadData];
-                         [self refreshControl];
-                         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Read All" style:UIBarButtonItemStylePlain target:self action:@selector(readAllMethod)];
-                         self.navigationItem.rightBarButtonItem = barButtonItem;
-                         [barButtonItem release];
-                    });
+                    [self getCountFourMethodWithCompletion:^(NSInteger count4) {
+                         dispatch_async(dispatch_get_main_queue(), ^ {
+                              [activity stopAnimating];
+                              UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Read All" style:UIBarButtonItemStylePlain target:self action:@selector(readAllMethod)];
+                              self.navigationItem.rightBarButtonItem = barButtonItem;
+                              [barButtonItem release];
+                              NSMutableArray *alertsArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"readAlerts"];
+                              NSInteger read = alertsArray.count;
+                              NSNumber *readNumber = [NSNumber numberWithInt:(count4 - read)];
+                              if ([readNumber integerValue] > 0) {
+                                   [[self.tabBarController.viewControllers objectAtIndex:2] tabBarItem].badgeValue = [readNumber stringValue];
+                              } else {
+                                   [[self.tabBarController.viewControllers objectAtIndex:2] tabBarItem].badgeValue = nil;
+                              }
+                         });
+                    }];
                } withArray:returnArrayA];
           }
      }];
@@ -339,18 +360,10 @@
      }
      else {
           if (! isReloading || isReloading == false) {
-               activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-               [activity setBackgroundColor:[UIColor clearColor]];
-               [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-               UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
-               self.navigationItem.rightBarButtonItem = barButtonItem;
-               [activity startAnimating];
-               [barButtonItem release];
                [self getOldDataWithCompletion:^(NSMutableArray *returnArray) {
                     self.alerts = returnArray;
                     dispatch_async(dispatch_get_main_queue(), ^ {
                          [self.tableView reloadData];
-                         [activity stopAnimating];
                          [self refreshControl];
                     });
                }];
@@ -362,25 +375,18 @@
      } else
           self.readAlerts = [readArray mutableCopy];
      [self.tableView reloadData];
-     activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-     [activity setBackgroundColor:[UIColor clearColor]];
-     [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-     UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:activity];
-     self.navigationItem.rightBarButtonItem = barButton;
-     [activity startAnimating];
      [self getCountFourMethodWithCompletion:^(NSInteger count4) {
-          [activity stopAnimating];
-          UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Read All" style:UIBarButtonItemStylePlain target:self action:@selector(readAllMethod)];
-          self.navigationItem.rightBarButtonItem = barButtonItem;
-          [barButtonItem release];
-          NSMutableArray *alertsArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"readAlerts"];
-          NSInteger read = alertsArray.count;
-          NSNumber *readNumber = [NSNumber numberWithInt:(count4 - read)];
-          if ([readNumber integerValue] > 0) {
-               [[self.tabBarController.viewControllers objectAtIndex:2] tabBarItem].badgeValue = [readNumber stringValue];
-          } else {
-               [[self.tabBarController.viewControllers objectAtIndex:2] tabBarItem].badgeValue = nil;
-          }
+          dispatch_async(dispatch_get_main_queue(), ^ {
+               [activity stopAnimating];
+               NSMutableArray *alertsArray = self.readAlerts;
+               NSInteger read = alertsArray.count;
+               NSNumber *readNumber = [NSNumber numberWithInt:(count4 - read)];
+               if ([readNumber integerValue] > 0) {
+                    [[self.tabBarController.viewControllers objectAtIndex:2] tabBarItem].badgeValue = [readNumber stringValue];
+               } else {
+                    [[self.tabBarController.viewControllers objectAtIndex:2] tabBarItem].badgeValue = nil;
+               }
+          });
      }];
 }
 

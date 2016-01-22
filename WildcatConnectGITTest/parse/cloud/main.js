@@ -20,15 +20,21 @@ Parse.Cloud.job("schoolDayStructureDeletion", function(request, response) {
         query.ascending("schoolDayID");
         query.first({
           success: function(object) {
-            object.set("isActive", 0);
-            object.save(null, {
-              success: function(myObject) {
-                response.success("Yay!");
-              },
-              error: function(myObject, error) {
-                response.error(error);
-              }
-            });
+            var schoolDate = object.get("schoolDate");
+            var now = Moment().format("MM-DD-YYYY");
+            if (schoolDate === now) {
+              response.success("Date does not allow deletion at this time.");
+            } else {
+              object.set("isActive", 0);
+              object.save(null, {
+                success: function(myObject) {
+                  response.success("Yay!");
+                },
+                error: function(myObject, error) {
+                  response.error(error);
+                }
+              });
+            };
           },
           error: function(error) {
             alert("Error: " + error.code + " " + error.message);
@@ -64,7 +70,7 @@ Parse.Cloud.job("schoolDayStructureGeneration", function(request, response) {
               var newDateDate = oldDateDate.add('days', 3);
               var newDate = newDateDate.format("MM-DD-YYYY");
               var oldType = object.get("scheduleType");
-              var newType = "";
+              var newType = "*";
               if (oldType.indexOf("A") > -1) {
                 newType = "B1";
               } else if (oldType.indexOf("B") > -1) {
@@ -93,7 +99,7 @@ Parse.Cloud.job("schoolDayStructureGeneration", function(request, response) {
                 "imageUserFullString" : "None.",
                 "schoolDayID" : ID,
                 "isActive" : 1,
-                "customString" : "",
+                "customString" : "No custom set.",
                 "breakfastString" : "No breakfast yet.",
                 "lunch" : "No lunch yet."
               }, {
@@ -108,7 +114,7 @@ Parse.Cloud.job("schoolDayStructureGeneration", function(request, response) {
               var newDateDate = oldDateDate.add('days', 1);
               var newDate = newDateDate.format("MM-DD-YYYY");
               var oldType = object.get("scheduleType");
-              var newType = "";
+              var newType = "*";
               if (oldType.indexOf("A") > -1) {
                 newType = "B";
               } else if (oldType.indexOf("B") > -1) {
@@ -201,6 +207,42 @@ Parse.Cloud.job("communityServiceStructureDeletion", function(request, response)
 			response.error("Error.");
 		}
 	});
+});
+
+Parse.Cloud.job("eventStructureDeletion", function(request, response) {
+  var query = new Parse.Query("EventStructure");
+  query.ascending("eventDate");
+  query.find({
+    success: function(structures) {
+      for (var i = 0; i < structures.length; i++) {
+            var currentStructure = structures[i];
+            var thisDate = currentStructure.get("eventDate");
+            var now = new Date();
+          var date1_ms = thisDate.getTime();
+          var date2_ms = now.getTime();
+          var difference_ms = date2_ms - date1_ms;
+          if (difference_ms >= 0) {
+            currentStructure.destroy({
+              success: function() {
+                console.log("Just deleted an object!!!");
+              },
+              error: function(error) {
+                response.error(error);
+              }
+            });
+          };
+          if (i == structures.length - 1) {
+            response.success("Done!!!");
+          };
+        }
+        if (structures.length == 0) {
+          response.success("No objects to delete!!!");
+        };
+    },
+    error: function() {
+      response.error("Error.");
+    }
+  });
 });
 
 Parse.Cloud.job("pollStructureDeletion", function(request, response) {
@@ -453,6 +495,7 @@ Parse.Cloud.define("snowDay", function(request, response) {
           if (nextScheduleType === "*") {
             //Set the custom schedule as well!
             results[i].set("customSchedule", results[i + 1].get("customSchedule"));
+            esults[i].set("customString", results[i + 1].get("customString"));
           };
           results[i].set("scheduleType", nextScheduleType);
           array.push(results[i]);
@@ -561,6 +604,24 @@ Parse.Cloud.define("deleteUser", function(request, response) {
     return user.destroy();
   }).then(function(user) {
     response.success("User deleted!!!");
+  }), function(error) {
+    response.error(error);
+  };
+});
+
+Parse.Cloud.define("updateType", function(request, response) {
+  var username = request.params.username;
+  var type = request.params.type;
+
+  Parse.Cloud.useMasterKey();
+
+  var query = new Parse.Query("User");
+  query.equalTo("username", username);
+  query.first().then(function(user) {
+    user.set("userType", type);
+    return user.save();
+  }).then(function(user) {
+    response.success("User updated!!!");
   }), function(error) {
     response.error(error);
   };
@@ -765,6 +826,7 @@ Parse.Cloud.job("alertStatusUpdatingNight", function(request, response) {
                 // Execute any logic that should take place after the object is saved.
                 //alert('New object created with objectId: ' + gameScore.id);
                 var query = new Parse.Query("SchoolDayStructure");
+                query.equalTo("isActive", 1);
                 query.ascending("schoolDayID");
                 query.first({
                   success: function(structure) {
@@ -858,6 +920,7 @@ Parse.Cloud.job("alertStatusUpdating", function(request, response) {
                 // Execute any logic that should take place after the object is saved.
                 //alert('New object created with objectId: ' + gameScore.id);
                 var query = new Parse.Query("SchoolDayStructure");
+                query.equalTo("isActive", 1);
                 query.ascending("schoolDayID");
                 query.first({
                   success: function(structure) {

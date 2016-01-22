@@ -8,6 +8,11 @@
 
 #import "StaffDirectoryResultsTableViewController.h"
 #import "StaffMemberStructure.h"
+#import "EmailButton.h"
+
+@interface StaffDirectoryResultsTableViewController () <MFMailComposeViewControllerDelegate>
+
+@end
 
 @implementation StaffDirectoryResultsTableViewController
 
@@ -43,9 +48,40 @@
           UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
                                                          reuseIdentifier:@"cellID"];
           StaffMemberStructure *staffMemberStructure = self.filteredStaffMembers[indexPath.row];
-          [self configureCell:cell forStaffMemberStructure:staffMemberStructure];
+          cell.textLabel.text = [staffMemberStructure fullNameCommaString];
+          NSString *string = staffMemberStructure.staffMemberTitle;
+          cell.detailTextLabel.text = [[string stringByAppendingString:@" - "] stringByAppendingString: staffMemberStructure.staffMemberLocation];
+          cell.detailTextLabel.numberOfLines = 0;
+          cell.detailTextLabel.lineBreakMode = NSLineBreakByWordWrapping;
+          EmailButton *emailButton = [EmailButton buttonWithType:UIButtonTypeRoundedRect];
+          [emailButton setImage:[UIImage imageNamed:@"email@2x.png"] forState:UIControlStateNormal];
+          [emailButton setEnabled:YES];
+          [emailButton sizeToFit];
+          emailButton.staffMember = staffMemberStructure;
+          [emailButton addTarget:self
+                          action:@selector(buttonTouchUpInside:)
+                forControlEvents:UIControlEventTouchUpInside];
+          [emailButton setFrame:CGRectMake(0, 0, emailButton.frame.size.width, emailButton.frame.size.height)];
+          cell.accessoryView = emailButton;
+          [cell setNeedsLayout];
           return cell;
      }
+}
+
+- (IBAction) buttonTouchUpInside:(id)sender {
+     EmailButton *buttonClicked = (EmailButton *)sender;
+     if ([MFMailComposeViewController canSendMail]) {
+          MFMailComposeViewController *composeViewController = [[MFMailComposeViewController alloc] initWithNibName:nil bundle:nil];
+          [composeViewController setMailComposeDelegate:self];
+          [composeViewController setToRecipients:@[buttonClicked.staffMember.staffMemberEMail]];
+          
+          [self presentViewController:composeViewController animated:YES completion:nil];
+     }
+}
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
+{
+     [controller dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

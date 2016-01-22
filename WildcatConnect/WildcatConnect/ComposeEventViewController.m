@@ -141,7 +141,7 @@
      
      UILabel *descriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, authorLabel.frame.origin.y + authorLabel.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
      [descriptionLabel setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
-     descriptionLabel.text = @"(i.e. event reminders, ticket information, parking, etc.)";
+     descriptionLabel.text = @"(i.e. event reminders, ticket information, parking, etc.) - NOTE: You can embed links in the event content below and they will appear as hyperlinks in the iOS app. (i.e \"http://www.wildcatconnect.org\")";
      descriptionLabel.lineBreakMode = NSLineBreakByWordWrapping;
      descriptionLabel.numberOfLines = 0;
      [descriptionLabel sizeToFit];

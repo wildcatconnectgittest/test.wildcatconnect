@@ -29,6 +29,7 @@
      int numberOfRows;
      UIDatePicker *datePicker;
      UILabel *articleLabel;
+     UILabel *descriptionLabelB;
 }
 
 - (void)viewDidLoad {
@@ -111,6 +112,7 @@
      NSString *firstName = [[PFUser currentUser] objectForKey:@"firstName"];
      NSString *authorString = [[firstName stringByAppendingString:@" "] stringByAppendingString:lastName];
      authorTextView.text = authorString;
+     authorTextView.editable = false;
      [scrollView addSubview:authorTextView];
      
      UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, authorTextView.frame.origin.y + authorTextView.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
@@ -135,7 +137,16 @@
      [articleLabel sizeToFit];
      [scrollView addSubview:articleLabel];
      
-     alertTextView = [[UITextView alloc] initWithFrame:CGRectMake(articleLabel.frame.origin.x, articleLabel.frame.origin.y + articleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 200)];
+     descriptionLabelB = [[UILabel alloc] initWithFrame:CGRectMake(10, articleLabel.frame.origin.y + articleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
+     UIFont *font = [UIFont systemFontOfSize:12];
+     [descriptionLabelB setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
+     descriptionLabelB.text = @"NOTE: You can embed links in the alert content below and they will appear as hyperlinks in the iOS app. (i.e 'http://www.wildcatconnect.org')";
+     descriptionLabelB.lineBreakMode = NSLineBreakByWordWrapping;
+     descriptionLabelB.numberOfLines = 0;
+     [descriptionLabelB sizeToFit];
+     [scrollView addSubview:descriptionLabelB];
+     
+     alertTextView = [[UITextView alloc] initWithFrame:CGRectMake(descriptionLabelB.frame.origin.x, descriptionLabelB.frame.origin.y + descriptionLabelB.frame.size.height + 10, self.view.frame.size.width - 20, 200)];
      [alertTextView setDelegate:self];
      [alertTextView setFont:[UIFont systemFontOfSize:16]];
      alertTextView.layer.borderWidth = 1.0f;
@@ -191,7 +202,9 @@
                     articleLabel.frame = CGRectMake(10, theTableView.frame.origin.y + theTableView.frame.size.height + 10, self.view.frame.size.width - 20, 100);
                     [articleLabel sizeToFit];
                     
-                    alertTextView.frame = CGRectMake(articleLabel.frame.origin.x, articleLabel.frame.origin.y + articleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 200);
+                    descriptionLabelB.frame = CGRectMake(10, articleLabel.frame.origin.y + articleLabel.frame.size.height + 10, self.view.frame.size.width - 20, descriptionLabelB.frame.size.height);
+                    
+                    alertTextView.frame = CGRectMake(descriptionLabelB.frame.origin.x, descriptionLabelB.frame.origin.y + descriptionLabelB.frame.size.height + 10, self.view.frame.size.width - 20, 200);
                     
                     separator.frame = CGRectMake(10, alertTextView.frame.origin.y + alertTextView.frame.size.height + 10, self.view.frame.size.width - 20, 1);
                     
@@ -220,7 +233,9 @@
                     articleLabel.frame = CGRectMake(10, datePicker.frame.origin.y + datePicker.frame.size.height + 10, self.view.frame.size.width - 20, 100);
                     [articleLabel sizeToFit];
                     
-                    alertTextView.frame = CGRectMake(articleLabel.frame.origin.x, articleLabel.frame.origin.y + articleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 200);
+                    descriptionLabelB.frame = CGRectMake(10, articleLabel.frame.origin.y + articleLabel.frame.size.height + 10, self.view.frame.size.width - 20, descriptionLabelB.frame.size.height);
+                    
+                    alertTextView.frame = CGRectMake(descriptionLabelB.frame.origin.x, descriptionLabelB.frame.origin.y + descriptionLabelB.frame.size.height + 10, self.view.frame.size.width - 20, 200);
                     
                     separator.frame = CGRectMake(10, alertTextView.frame.origin.y + alertTextView.frame.size.height + 10, self.view.frame.size.width - 20, 1);
                     

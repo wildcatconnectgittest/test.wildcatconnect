@@ -26,6 +26,13 @@ NSString *const kTableCellNibName = @"TableCell";
      [self.tableView setScrollIndicatorInsets:UIEdgeInsetsMake(0, 0, bottom, 0)];
      self.tableView.contentInset = UIEdgeInsetsMake(0, 0, bottom, 0);
      self.extendedLayoutIncludesOpaqueBars = YES;
+     self.navigationItem.title = @"All Groups";
+}
+
+-(instancetype)init {
+     [super init];
+     self.navigationItem.title = @"All Groups";
+     return self;
 }
 
 - (UITableViewCell *)configureCell:(UITableViewCell *)cell forStaffMemberStructure:(StaffMemberStructure *)staffMemberStructure {

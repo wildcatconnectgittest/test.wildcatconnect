@@ -132,6 +132,13 @@
                          [[NSUserDefaults standardUserDefaults] setObject:theArray forKey:@"answeredPolls"];
                          [[NSUserDefaults standardUserDefaults] synchronize];
                     }
+                    NSMutableArray *array = [[NSUserDefaults standardUserDefaults] objectForKey:@"visitedPagesArray"];
+                    if ([array containsObject:[NSString stringWithFormat:@"%lu", (long)4]]) {
+                         NSMutableArray *newArray = [array mutableCopy];
+                         [newArray removeObject:[NSString stringWithFormat:@"%lu", (long)4]];
+                         [[NSUserDefaults standardUserDefaults] setObject:newArray forKey:@"visitedPagesArray"];
+                         [[NSUserDefaults standardUserDefaults] synchronize];
+                    }
                     dispatch_async(dispatch_get_main_queue(), ^ {
                          [activity stopAnimating];
                          [thank setText:@"THANK YOU FOR VOTING!"];

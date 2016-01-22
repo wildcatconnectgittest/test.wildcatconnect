@@ -101,6 +101,11 @@
      }
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+     [super viewWillAppear:animated];
+     self.navigationItem.rightBarButtonItem = nil;
+}
+
 - (void)viewMethodWithCompletion:(void (^)(NSUInteger integer, NSError *error))completion forID:(NSString *)objectID {
      dispatch_group_t serviceGroup = dispatch_group_create();
      dispatch_group_enter(serviceGroup);

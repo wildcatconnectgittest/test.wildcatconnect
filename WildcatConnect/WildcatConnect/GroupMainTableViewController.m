@@ -1,35 +1,41 @@
 //
-//  StaffDirectoryMainTableViewController.m
-//  WildcatConnectGITTest
+//  GroupMainTableViewController.m
+//  WildcatConnect
 //
-//  Created by Kevin Lyons on 8/14/15.
-//  Copyright (c) 2015 WildcatConnect. All rights reserved.
+//  Created by Kevin Lyons on 1/21/16.
+//  Copyright © 2016 WildcatConnect. All rights reserved.
 //
 
-#import "StaffDirectoryMainTableViewController.h"
-#import "StaffDirectoryResultsTableViewController.h"
-#import "StaffMemberStructure.h"
-#import "AppManager.h"
-#import "ApplicationManager.h"
+#import "GroupMainTableViewController.h"
+#import "GroupResultsTableViewController.h"
+#import "ExtracurricularStructure.h"
+#import <Parse/Parse.h>
 
-@interface StaffDirectoryMainTableViewController () <UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating>
+@interface GroupMainTableViewController () <UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating>
 
 @property (nonatomic, strong) UISearchController *searchController;
 
-@property (nonatomic, strong) StaffDirectoryResultsTableViewController *resultsTableController;
+@property (nonatomic, strong) GroupResultsTableViewController *resultsTableController;
 
 @property BOOL searchControllerWasActive;
 @property BOOL searchControllerSearchFieldWasFirstResponder;
 
 @end
 
-@implementation StaffDirectoryMainTableViewController {
+@implementation GroupMainTableViewController {
      UIActivityIndicatorView *activity;
      BOOL isActive;
 }
 
+-(instancetype)init {
+     [super init];
+     self.navigationItem.title = @"All Groups";
+     return self;
+}
+
 - (void)viewDidLoad {
-     [super viewDidLoad];
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
      
      isActive = false;
      
@@ -37,13 +43,13 @@
                                                                             green:183.0f/255.0f
                                                                              blue:23.0f/255.0f
                                                                             alpha:0.5f];
-     _resultsTableController = [[StaffDirectoryResultsTableViewController alloc] init];
+     _resultsTableController = [[GroupResultsTableViewController alloc] init];
      _searchController = [[UISearchController alloc] initWithSearchResultsController:self.resultsTableController];
      self.searchController.searchResultsUpdater = self;
      [self.searchController.searchBar sizeToFit];
      self.tableView.tableHeaderView = self.searchController.searchBar;
      
-     // we want to be the delegate for our filtered table so didSelectRowAtIndexPath is called for both tables
+          // we want to be the delegate for our filtered table so didSelectRowAtIndexPath is called for both tables
      
      self.resultsTableController.tableView.delegate = self;
      self.searchController.delegate = self;
@@ -56,55 +62,22 @@
           //
      
      self.definesPresentationContext = YES;
-     if (self.loadNumber == [NSNumber numberWithInt:1]) {
-          [self refreshData];
-     } else {
-          activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-          [activity setBackgroundColor:[UIColor clearColor]];
-          [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-          UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:activity];
-          self.navigationItem.rightBarButtonItem = barButton;
-          [activity startAnimating];
-          [self getOldDataWithCompletion:^(NSMutableArray *returnArray) {
-                    //save the data
-               self.staffMembers = returnArray;
-               [self testMethodTwoWithCompletion:^(NSError *error, NSMutableArray *dictionaryReturnArray) {
-                    [self removeUnusedLettersWithCompletion:^(NSError *error, NSMutableArray *returnArray) {
-                         self.dictionaryArray = returnArray;
-                         dispatch_async(dispatch_get_main_queue(), ^ {
-                              [activity stopAnimating];
-                              [self.tableView reloadData];
-                              self.navigationItem.rightBarButtonItem = nil;
-                         });
-                    } withArray:dictionaryReturnArray];
-               } withArray:returnArray];
-          }];
-     }
+     [self refreshData];
 }
 
-- (void)getOldDataWithCompletion:(void (^)(NSMutableArray *returnArray))completion {
-     dispatch_group_t serviceGroup = dispatch_group_create();
-          //Start the first service
-     dispatch_group_enter(serviceGroup);
-     StaffMemberStructure *staffMemberStructure;
-     NSMutableArray *array = [[NSMutableArray alloc] init];
-     NSMutableArray *theArrayToSearch = [[NSUserDefaults standardUserDefaults] objectForKey:@"staffMembers"];
-     NSDictionary *object;
-     for (int i = 0; i < theArrayToSearch.count; i ++) {
-          object = theArrayToSearch[i];
-          staffMemberStructure = [[StaffMemberStructure alloc] init];
-          staffMemberStructure.staffMemberEMail = [object objectForKey:@"staffMemberEMail"];
-          staffMemberStructure.staffMemberFirstName = [object objectForKey:@"staffMemberFirstName"];
-          staffMemberStructure.staffMemberLastName = [object objectForKey:@"staffMemberLastName"];
-          staffMemberStructure.staffMemberLocation = [object objectForKey:@"staffMemberLocation"];
-          staffMemberStructure.staffMemberTitle = [object objectForKey:@"staffMemberTitle"];
-          [array addObject:staffMemberStructure];
-          if (i == theArrayToSearch.count - 1)
-               dispatch_group_leave(serviceGroup);
+- (void)viewDidAppear:(BOOL)animated {
+     [super viewDidAppear:animated];
+     
+          // restore the searchController's active state
+     if (self.searchControllerWasActive) {
+          self.searchController.active = self.searchControllerWasActive;
+          _searchControllerWasActive = NO;
+          
+          if (self.searchControllerSearchFieldWasFirstResponder) {
+               [self.searchController.searchBar becomeFirstResponder];
+               _searchControllerSearchFieldWasFirstResponder = NO;
+          }
      }
-     dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^{
-          completion(array);
-     });
 }
 
 - (void)refreshData {
@@ -115,21 +88,7 @@
      self.navigationItem.rightBarButtonItem = barButton;
      [activity startAnimating];
      [self testMethodWithCompletion:^(NSError *error, NSMutableArray *returnArrayA) {
-          self.staffMembers = returnArrayA;
-          NSMutableArray *itemsToSave = [NSMutableArray array];
-          for (StaffMemberStructure *s in returnArrayA) {
-               [itemsToSave addObject:@{ @"staffMemberEMail"     : s.staffMemberEMail,
-                                         @"staffMemberFirstName"    : s.staffMemberFirstName,
-                                         @"staffMemberLastName" : s.staffMemberLastName,
-                                         
-                                         @"staffMemberLocation" : s.staffMemberLocation,
-                                         
-                                         @"staffMemberTitle" : s.staffMemberTitle
-                                         
-                                         }];
-          }
-          NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-          [userDefaults setObject:itemsToSave forKey:@"staffMembers"];
+          self.groups = returnArrayA;
           [self testMethodTwoWithCompletion:^(NSError *error, NSMutableArray *dictionaryReturnArray) {
                [self removeUnusedLettersWithCompletion:^(NSError *error, NSMutableArray *returnArray) {
                     self.dictionaryArray = returnArray;
@@ -148,8 +107,8 @@
      dispatch_group_t serviceGroup = dispatch_group_create();
      dispatch_group_enter(serviceGroup);
      NSMutableArray *returnArray = [[NSMutableArray alloc] init];
-     PFQuery *query = [StaffMemberStructure query];
-     [query orderByAscending:@"staffMemberLastName"];
+     PFQuery *query = [ExtracurricularStructure query];
+     [query orderByAscending:@"titleString"];
      query.limit = 500;
      [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
           [returnArray addObjectsFromArray:objects];
@@ -173,12 +132,12 @@
      for (char a = 'A'; a <= 'Z'; a++) {
           NSMutableDictionary *row = [[NSMutableDictionary alloc] init];
           NSMutableArray *words = [[NSMutableArray alloc] init];
-          StaffMemberStructure *staffMemberStructure;
+          ExtracurricularStructure *group;
           for (int i = 0; i < currentArrayLeft.count; i++) {
-               staffMemberStructure = currentArrayLeft[i];
-               if (staffMemberStructure) {
-                    if ([[staffMemberStructure.staffMemberLastName substringToIndex:1] isEqualToString:[NSString stringWithFormat:@"%c", a]]) {
-                         [words addObject:staffMemberStructure];
+               group = currentArrayLeft[i];
+               if (group) {
+                    if ([[[group.titleString substringToIndex:1] lowercaseString] isEqualToString:[[NSString stringWithFormat:@"%c", a] lowercaseString]]) {
+                         [words addObject:group];
                     }
                }
           }
@@ -193,8 +152,6 @@
           completion(theError, array);
      });
 }
-
-     //- (void)testMethodTwoWithCompletion:(void (^)(NSError *error, NSMutableArray *dictionaryReturnArray))
 
 - (void)removeUnusedLettersWithCompletion:(void (^)(NSError *error, NSMutableArray *returnArray))completion withArray:(NSMutableArray *)inputArray {
      __block NSError *theError = nil;
@@ -218,40 +175,9 @@
      });
 }
 
-- (NSArray *)generateSectionsArray {
-     NSMutableArray *currentArrayLeft = (NSMutableArray *)staffMembers;
-     NSMutableArray *array = [NSMutableArray new];
-     for (char a = 'A'; a <= 'Z'; a++) {
-          NSMutableDictionary *row = [[NSMutableDictionary alloc] init];
-          NSMutableArray *words = [[NSMutableArray alloc] init];
-          StaffMemberStructure *staffMemberStructure;
-          for (int i = 0; i < currentArrayLeft.count; i++) {
-               staffMemberStructure = [currentArrayLeft objectAtIndex:i];
-               if ([[staffMemberStructure.staffMemberLastName substringToIndex:1] isEqualToString:[NSString stringWithFormat:@"%c", a]]) {
-                    [words addObject:staffMemberStructure];
-                    [currentArrayLeft removeObjectAtIndex:i];
-               }
-          }
-          [row setValue:words forKey:@"rowValues"];
-          [row setValue:[NSString stringWithFormat:@"%c", a] forKey:@"headerTitle"];
-          [array addObject:row];
-     }
-     return array;
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-     [super viewDidAppear:animated];
-     
-          // restore the searchController's active state
-     if (self.searchControllerWasActive) {
-          self.searchController.active = self.searchControllerWasActive;
-          _searchControllerWasActive = NO;
-          
-          if (self.searchControllerSearchFieldWasFirstResponder) {
-               [self.searchController.searchBar becomeFirstResponder];
-               _searchControllerSearchFieldWasFirstResponder = NO;
-          }
-     }
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - UISearchBarDelegate
@@ -319,21 +245,14 @@
           UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
                                                          reuseIdentifier:@"cellID"];
           NSArray *array = ((NSArray *)[[self.dictionaryArray objectAtIndex:[indexPath section]] objectForKey:@"rowValues"]);
-          StaffMemberStructure *staffMemberStructure = (tableView == self.tableView) ? array[indexPath.row] : self.resultsTableController.filteredStaffMembers[indexPath.row];
-          cell = [self configureCell:cell forStaffMemberStructure:staffMemberStructure];
+          ExtracurricularStructure *groupStructure = (tableView == self.tableView) ? array[indexPath.row] : self.resultsTableController.filteredGroups[indexPath.row];
+          cell = [self configureCell:cell forGroup:groupStructure];
           return cell;
      }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-     return 70;
-}
-
-- (instancetype)initWithLoadNumber:(NSNumber *)theLoadNumber {
-     self = [super init];
-     self.loadNumber = theLoadNumber;
-     self.navigationItem.title = @"Staff Directory";
-     return self;
+     return 120;
 }
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
@@ -375,7 +294,7 @@
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
           //udpate the filtered array based on the search text
      NSString *searchText = searchController.searchBar.text;
-     NSMutableArray *searchResults = [self.staffMembers mutableCopy];
+     NSMutableArray *searchResults = [self.groups mutableCopy];
           //strip out all the leading and trailing spaces
      NSString *strippedString = [searchText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
           //break up the search terms (separated by spaces)
@@ -390,19 +309,14 @@
           NSMutableArray *searchItemsPredicate = [NSMutableArray array];
                //Below we use NSExpression to represent expressions in our predicates.
                //Last name field matching
-          NSExpression *lhs = [NSExpression expressionForKeyPath:@"staffMemberLastName"];
+          NSExpression *lhs = [NSExpression expressionForKeyPath:@"titleString"];
           NSExpression *rhs = [NSExpression expressionForConstantValue:searchString];
           NSPredicate *finalPredicate = [NSComparisonPredicate predicateWithLeftExpression:lhs rightExpression:rhs modifier:NSDirectPredicateModifier type:NSBeginsWithPredicateOperatorType options:NSCaseInsensitivePredicateOption];
           [searchItemsPredicate addObject:finalPredicate];
                //First name field matching
-          lhs = [NSExpression expressionForKeyPath:@"staffMemberFirstName"];
+          lhs = [NSExpression expressionForKeyPath:@"descriptionString"];
           rhs = [NSExpression expressionForConstantValue:searchString];
           finalPredicate = [NSComparisonPredicate predicateWithLeftExpression:lhs rightExpression:rhs modifier:NSDirectPredicateModifier type:NSBeginsWithPredicateOperatorType options:NSCaseInsensitivePredicateOption];
-          [searchItemsPredicate addObject:finalPredicate];
-               //Title field matching
-          lhs = [NSExpression expressionForKeyPath:@"staffMemberTitle"];
-          rhs = [NSExpression expressionForConstantValue:searchString];
-          finalPredicate = [NSComparisonPredicate predicateWithLeftExpression:lhs rightExpression:rhs modifier:NSDirectPredicateModifier type:NSContainsPredicateOperatorType options:NSCaseInsensitivePredicateOption];
           [searchItemsPredicate addObject:finalPredicate];
                //add this OR predicate to our master AND predicate
           NSCompoundPredicate *orMatchPredicates = [NSCompoundPredicate orPredicateWithSubpredicates:searchItemsPredicate];
@@ -412,8 +326,8 @@
      NSCompoundPredicate *finalCompoundPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:andMatchPredicates];
      searchResults = [[searchResults filteredArrayUsingPredicate:finalCompoundPredicate] mutableCopy];
           //hand over the filtered results to our search results table
-     StaffDirectoryResultsTableViewController *tableController = (StaffDirectoryResultsTableViewController *)self.searchController.searchResultsController;
-     tableController.filteredStaffMembers = searchResults;
+     GroupResultsTableViewController *tableController = (GroupResultsTableViewController *)self.searchController.searchResultsController;
+     tableController.filteredGroups = searchResults;
      [tableController.tableView reloadData];
 }
 
@@ -424,39 +338,39 @@
      //  2) search text,
      //  3) first responder
 
-NSString *const ViewControllerTitleKey = @"ViewControllerTitleKey";
-NSString *const SearchControllerIsActiveKey = @"SearchControllerIsActiveKey";
-NSString *const SearchBarTextKey = @"SearchBarTextKey";
-NSString *const SearchBarIsFirstResponderKey = @"SearchBarIsFirstResponderKey";
+     //NSString *const ViewControllerTitleKey = @"ViewControllerTitleKey";
+     //NSString *const SearchControllerIsActiveKey = @"SearchControllerIsActiveKey";
+     //NSString *const SearchBarTextKey = @"SearchBarTextKey";
+     //NSString *const SearchBarIsFirstResponderKey = @"SearchBarIsFirstResponderKey";
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
      [super encodeRestorableStateWithCoder:coder];
           //encode the view state so it can be restored later
           //encode the title
-     [coder encodeObject:self.title forKey:ViewControllerTitleKey];
+     [coder encodeObject:self.title forKey:@"ViewControllerTitleKey"];
      UISearchController *searchController = self.searchController;
           //encode the searchController's active state
      BOOL searchDisplayControllerIsActive = searchController.isActive;
-     [coder encodeBool:searchDisplayControllerIsActive forKey:SearchControllerIsActiveKey];
+     [coder encodeBool:searchDisplayControllerIsActive forKey:@"SearchControllerIsActiveKey"];
           //encode the first responder status
      if (searchDisplayControllerIsActive) {
-          [coder encodeBool:[searchController.searchBar isFirstResponder] forKey:SearchBarIsFirstResponderKey];
+          [coder encodeBool:[searchController.searchBar isFirstResponder] forKey:@"SearchBarIsFirstResponderKey"];
      }
           //encode the search bar text
-     [coder encodeObject:searchController.searchBar.text forKey:SearchBarTextKey];
+     [coder encodeObject:searchController.searchBar.text forKey:@"SearchBarTextKey"];
 }
 
 - (void)decodeRestorableStateWithCoder:(NSCoder *)coder {
      [super decodeRestorableStateWithCoder:coder];
           //restore the title
-     self.title = [coder decodeObjectForKey:ViewControllerTitleKey];
+     self.title = [coder decodeObjectForKey:@"ViewControllerTitleKey"];
           //restore the active state
           //we cna't make the searchController active here since it's not part of the view hierarchy yet, instead we will do it in viewWillAppear
-     _searchControllerWasActive = [coder decodeBoolForKey:SearchControllerIsActiveKey];
+     _searchControllerWasActive = [coder decodeBoolForKey:@"SearchControllerIsActiveKey"];
           //restore the first responder status
-     _searchControllerSearchFieldWasFirstResponder = [coder decodeBoolForKey:SearchBarIsFirstResponderKey];
+     _searchControllerSearchFieldWasFirstResponder = [coder decodeBoolForKey:@"SearchBarIsFirstResponderKey"];
           //restore the text in the search text field
-     self.searchController.searchBar.text  = [coder decodeObjectForKey:SearchBarTextKey];
+     self.searchController.searchBar.text  = [coder decodeObjectForKey:@"SearchBarTextKey"];
 }
 
 @end

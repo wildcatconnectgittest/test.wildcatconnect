@@ -8,7 +8,6 @@
 
 #import "AboutTableViewController.h"
 #import <Parse/Parse.h>
-#import "DisclaimerViewController.h"
 #import "CapstoneViewController.h"
 
 @interface AboutTableViewController ()
@@ -159,8 +158,8 @@
      [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
           //Change logic here for new options...
      if (indexPath.section == 3) {
-          DisclaimerViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"DisclaimerView"];
-          [self.navigationController pushViewController:controller animated:YES];
+          [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.wildcatconnect.org/a/disclaimer"]];
+          [tableView deselectRowAtIndexPath:indexPath animated:YES];
      } else if (indexPath.section == 2) {
           CapstoneViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"CapstoneView"];
           [self.navigationController pushViewController:controller animated:YES];

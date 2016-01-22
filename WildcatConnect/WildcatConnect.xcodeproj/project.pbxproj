@@ -21,11 +21,14 @@
 		0A634C651C4AC4FB00210D33 /* events@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A634C641C4AC4FB00210D33 /* events@2x.png */; };
 		0A634C681C4B442500210D33 /* EventDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A634C671C4B442500210D33 /* EventDetailViewController.m */; };
 		0A634C6B1C4B4BA900210D33 /* ComposeEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A634C6A1C4B4BA900210D33 /* ComposeEventViewController.m */; };
+		0A634C711C5159C300210D33 /* GroupBaseTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A634C701C5159C300210D33 /* GroupBaseTableViewController.m */; };
+		0A634C741C515BBF00210D33 /* AddGroupButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A634C731C515BBF00210D33 /* AddGroupButton.m */; };
+		0A634C771C515C7100210D33 /* GroupMainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A634C761C515C7100210D33 /* GroupMainTableViewController.m */; };
+		0A634C7A1C515CAE00210D33 /* GroupResultsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A634C791C515CAE00210D33 /* GroupResultsTableViewController.m */; };
 		0A7028D91C1BE26F0053E56D /* settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A7028D81C1BE26F0053E56D /* settings@2x.png */; };
 		0A7028DC1C1BE2E30053E56D /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A7028DB1C1BE2E30053E56D /* SettingsTableViewController.m */; };
 		0A7AA7941C32260C0012671E /* SpecialKeyStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A7AA7931C32260C0012671E /* SpecialKeyStructure.m */; };
 		0A8261641C1D32A300574208 /* PushSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A8261631C1D32A300574208 /* PushSettingsTableViewController.m */; };
-		0AA5C8E91C331B6700C42892 /* DisclaimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AA5C8E81C331B6700C42892 /* DisclaimerViewController.m */; };
 		0AA5C8EC1C331E7B00C42892 /* CapstoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AA5C8EB1C331E7B00C42892 /* CapstoneViewController.m */; };
 		0AA5C8F01C331FF700C42892 /* push@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AA5C8EF1C331FF700C42892 /* push@2x.png */; };
 		0AA5C8F21C33209400C42892 /* news@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AA5C8F11C33209400C42892 /* news@2x.png */; };
@@ -84,7 +87,6 @@
 		0ADBEEE91C0ABDE100E946F6 /* ExtracurricularStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBEEBA1C0ABDE100E946F6 /* ExtracurricularStructure.m */; };
 		0ADBEEEA1C0ABDE100E946F6 /* StaffMemberStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBEEBD1C0ABDE100E946F6 /* StaffMemberStructure.m */; };
 		0ADBEEEB1C0ABDE100E946F6 /* EmailButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBEEC11C0ABDE100E946F6 /* EmailButton.m */; };
-		0ADBEEEC1C0ABDE100E946F6 /* Staff DirectoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBEEC21C0ABDE100E946F6 /* Staff DirectoryTableViewController.m */; };
 		0ADBEEED1C0ABDE100E946F6 /* UsefulLinkArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBEEC41C0ABDE100E946F6 /* UsefulLinkArray.m */; };
 		0ADBEEEE1C0ABDE100E946F6 /* ApplicationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBEEC61C0ABDE100E946F6 /* ApplicationManager.m */; };
 		0ADBEEEF1C0ABDE100E946F6 /* LunchMenusStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBEEC71C0ABDE100E946F6 /* LunchMenusStructure.m */; };
@@ -92,7 +94,6 @@
 		0ADBEEF11C0ABDE100E946F6 /* StudentCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBEED11C0ABDE100E946F6 /* StudentCenterViewController.m */; };
 		0ADBEEF31C0ABDE100E946F6 /* AppManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBEED41C0ABDE100E946F6 /* AppManager.m */; };
 		0ADBEEF41C0ABDE100E946F6 /* MainTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBEED61C0ABDE100E946F6 /* MainTabBarController.m */; };
-		0ADBEEF51C0ABDE100E946F6 /* StaffDirectoryDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBEEDA1C0ABDE100E946F6 /* StaffDirectoryDetailViewController.m */; };
 		0ADBEEF61C0ABDE100E946F6 /* TestStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBEEDC1C0ABDE100E946F6 /* TestStructure.m */; };
 		0ADBEEF91C0ABDFA00E946F6 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0ADBEEF81C0ABDFA00E946F6 /* Info.plist */; };
 		0ADBEEFD1C0ABE5200E946F6 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0ADBEEFB1C0ABE5200E946F6 /* Bolts.framework */; };
@@ -168,6 +169,14 @@
 		0A634C671C4B442500210D33 /* EventDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventDetailViewController.m; sourceTree = "<group>"; };
 		0A634C691C4B4BA900210D33 /* ComposeEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComposeEventViewController.h; sourceTree = "<group>"; };
 		0A634C6A1C4B4BA900210D33 /* ComposeEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComposeEventViewController.m; sourceTree = "<group>"; };
+		0A634C6F1C5159C300210D33 /* GroupBaseTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupBaseTableViewController.h; sourceTree = "<group>"; };
+		0A634C701C5159C300210D33 /* GroupBaseTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupBaseTableViewController.m; sourceTree = "<group>"; };
+		0A634C721C515BBF00210D33 /* AddGroupButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddGroupButton.h; sourceTree = "<group>"; };
+		0A634C731C515BBF00210D33 /* AddGroupButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddGroupButton.m; sourceTree = "<group>"; };
+		0A634C751C515C7100210D33 /* GroupMainTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupMainTableViewController.h; sourceTree = "<group>"; };
+		0A634C761C515C7100210D33 /* GroupMainTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupMainTableViewController.m; sourceTree = "<group>"; };
+		0A634C781C515CAE00210D33 /* GroupResultsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupResultsTableViewController.h; sourceTree = "<group>"; };
+		0A634C791C515CAE00210D33 /* GroupResultsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupResultsTableViewController.m; sourceTree = "<group>"; };
 		0A7028D81C1BE26F0053E56D /* settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "settings@2x.png"; path = "../settings@2x.png"; sourceTree = "<group>"; };
 		0A7028DA1C1BE2E30053E56D /* SettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsTableViewController.h; sourceTree = "<group>"; };
 		0A7028DB1C1BE2E30053E56D /* SettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTableViewController.m; sourceTree = "<group>"; };
@@ -175,8 +184,6 @@
 		0A7AA7931C32260C0012671E /* SpecialKeyStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SpecialKeyStructure.m; path = ../SpecialKeyStructure.m; sourceTree = "<group>"; };
 		0A8261621C1D32A300574208 /* PushSettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushSettingsTableViewController.h; sourceTree = "<group>"; };
 		0A8261631C1D32A300574208 /* PushSettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PushSettingsTableViewController.m; sourceTree = "<group>"; };
-		0AA5C8E71C331B6700C42892 /* DisclaimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisclaimerViewController.h; sourceTree = "<group>"; };
-		0AA5C8E81C331B6700C42892 /* DisclaimerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisclaimerViewController.m; sourceTree = "<group>"; };
 		0AA5C8EA1C331E7B00C42892 /* CapstoneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CapstoneViewController.h; sourceTree = "<group>"; };
 		0AA5C8EB1C331E7B00C42892 /* CapstoneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CapstoneViewController.m; sourceTree = "<group>"; };
 		0AA5C8EF1C331FF700C42892 /* push@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "push@2x.png"; path = "../push@2x.png"; sourceTree = "<group>"; };
@@ -271,7 +278,6 @@
 		0ADBEEBF1C0ABDE100E946F6 /* LunchMenusStructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LunchMenusStructure.h; sourceTree = "<group>"; };
 		0ADBEEC01C0ABDE100E946F6 /* EmailButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmailButton.h; sourceTree = "<group>"; };
 		0ADBEEC11C0ABDE100E946F6 /* EmailButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmailButton.m; sourceTree = "<group>"; };
-		0ADBEEC21C0ABDE100E946F6 /* Staff DirectoryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Staff DirectoryTableViewController.m"; sourceTree = "<group>"; };
 		0ADBEEC31C0ABDE100E946F6 /* UsefulLinksTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsefulLinksTableViewController.h; sourceTree = "<group>"; };
 		0ADBEEC41C0ABDE100E946F6 /* UsefulLinkArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsefulLinkArray.m; sourceTree = "<group>"; };
 		0ADBEEC51C0ABDE100E946F6 /* UsefulLinkArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsefulLinkArray.h; sourceTree = "<group>"; };
@@ -291,10 +297,7 @@
 		0ADBEED41C0ABDE100E946F6 /* AppManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppManager.m; sourceTree = "<group>"; };
 		0ADBEED51C0ABDE100E946F6 /* MainTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainTabBarController.h; sourceTree = "<group>"; };
 		0ADBEED61C0ABDE100E946F6 /* MainTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainTabBarController.m; sourceTree = "<group>"; };
-		0ADBEED71C0ABDE100E946F6 /* Staff DirectoryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Staff DirectoryTableViewController.h"; sourceTree = "<group>"; };
 		0ADBEED81C0ABDE100E946F6 /* StaffDirectoryBaseTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaffDirectoryBaseTableViewController.h; sourceTree = "<group>"; };
-		0ADBEED91C0ABDE100E946F6 /* StaffDirectoryDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaffDirectoryDetailViewController.h; sourceTree = "<group>"; };
-		0ADBEEDA1C0ABDE100E946F6 /* StaffDirectoryDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StaffDirectoryDetailViewController.m; sourceTree = "<group>"; };
 		0ADBEEDB1C0ABDE100E946F6 /* StaffDirectoryResultsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaffDirectoryResultsTableViewController.h; sourceTree = "<group>"; };
 		0ADBEEDC1C0ABDE100E946F6 /* TestStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestStructure.m; sourceTree = "<group>"; };
 		0ADBEEF81C0ABDFA00E946F6 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -462,8 +465,6 @@
 				0ADBEEB61C0ABDE100E946F6 /* CustomLoginSegue.m */,
 				0A2DDCDA1C28826700662F94 /* CustomScheduleViewController.h */,
 				0A2DDCDB1C28826700662F94 /* CustomScheduleViewController.m */,
-				0AA5C8E71C331B6700C42892 /* DisclaimerViewController.h */,
-				0AA5C8E81C331B6700C42892 /* DisclaimerViewController.m */,
 				0A2DDCD51C23282E00662F94 /* EC@2x.png */,
 				0ADBEE7E1C0ABD8400E946F6 /* EditMessagesViewController.h */,
 				0ADBEE7C1C0ABD8400E946F6 /* EditMessagesViewController.m */,
@@ -546,15 +547,19 @@
 				0A7AA7931C32260C0012671E /* SpecialKeyStructure.m */,
 				0ADBEEC81C0ABDE100E946F6 /* SplashScreenViewController.h */,
 				0ADBEEA51C0ABDE100E946F6 /* SplashScreenViewController.m */,
-				0ADBEED71C0ABDE100E946F6 /* Staff DirectoryTableViewController.h */,
-				0ADBEEC21C0ABDE100E946F6 /* Staff DirectoryTableViewController.m */,
 				0AA5C8FB1C33222400C42892 /* staffDirectory@2x.png */,
+				0A634C6F1C5159C300210D33 /* GroupBaseTableViewController.h */,
+				0A634C701C5159C300210D33 /* GroupBaseTableViewController.m */,
 				0ADBEED81C0ABDE100E946F6 /* StaffDirectoryBaseTableViewController.h */,
 				0ADBEE691C0ABD8400E946F6 /* StaffDirectoryBaseTableViewController.m */,
-				0ADBEED91C0ABDE100E946F6 /* StaffDirectoryDetailViewController.h */,
-				0ADBEEDA1C0ABDE100E946F6 /* StaffDirectoryDetailViewController.m */,
+				0A634C721C515BBF00210D33 /* AddGroupButton.h */,
+				0A634C731C515BBF00210D33 /* AddGroupButton.m */,
 				0ADBEECC1C0ABDE100E946F6 /* StaffDirectoryMainTableViewController.h */,
 				0ADBEE771C0ABD8400E946F6 /* StaffDirectoryMainTableViewController.m */,
+				0A634C751C515C7100210D33 /* GroupMainTableViewController.h */,
+				0A634C761C515C7100210D33 /* GroupMainTableViewController.m */,
+				0A634C781C515CAE00210D33 /* GroupResultsTableViewController.h */,
+				0A634C791C515CAE00210D33 /* GroupResultsTableViewController.m */,
 				0ADBEEDB1C0ABDE100E946F6 /* StaffDirectoryResultsTableViewController.h */,
 				0ADBEE781C0ABD8400E946F6 /* StaffDirectoryResultsTableViewController.m */,
 				0ADBEEBE1C0ABDE100E946F6 /* StaffMemberStructure.h */,
@@ -786,6 +791,7 @@
 				0ADBEEEF1C0ABDE100E946F6 /* LunchMenusStructure.m in Sources */,
 				0ADBEEE41C0ABDE100E946F6 /* PollDetailViewController.m in Sources */,
 				0AA5C8EC1C331E7B00C42892 /* CapstoneViewController.m in Sources */,
+				0A634C711C5159C300210D33 /* GroupBaseTableViewController.m in Sources */,
 				0ADBEE941C0ABD8400E946F6 /* CommunityServiceTableViewController.m in Sources */,
 				0ADBEE961C0ABD8400E946F6 /* CommunityServiceStructure.m in Sources */,
 				0ADBEE9D1C0ABD8400E946F6 /* EditMessagesViewController.m in Sources */,
@@ -799,7 +805,6 @@
 				0ADBEE9B1C0ABD8400E946F6 /* StaffDirectoryResultsTableViewController.m in Sources */,
 				0ADBEEE21C0ABDE100E946F6 /* ComposeExtracurricularUpdateViewController.m in Sources */,
 				0ADBEE9E1C0ABD8400E946F6 /* ComposePollViewController.m in Sources */,
-				0AA5C8E91C331B6700C42892 /* DisclaimerViewController.m in Sources */,
 				0A0AFC771C0B383B0094A2D2 /* ComposeNewsArticleViewController.m in Sources */,
 				0A634C5D1C496C6900210D33 /* Reachability.m in Sources */,
 				0ADBEE981C0ABD8400E946F6 /* LunchMenusViewController.m in Sources */,
@@ -815,13 +820,12 @@
 				0A634C601C4AC05400210D33 /* EventStructure.m in Sources */,
 				0A634C681C4B442500210D33 /* EventDetailViewController.m in Sources */,
 				0ADBEEEB1C0ABDE100E946F6 /* EmailButton.m in Sources */,
-				0ADBEEEC1C0ABDE100E946F6 /* Staff DirectoryTableViewController.m in Sources */,
+				0A634C741C515BBF00210D33 /* AddGroupButton.m in Sources */,
 				0ADBEEE11C0ABDE100E946F6 /* SplashScreenViewController.m in Sources */,
 				0ADBEE8D1C0ABD8400E946F6 /* AdministrationMainTableViewController.m in Sources */,
 				0ADBEE9A1C0ABD8400E946F6 /* StaffDirectoryMainTableViewController.m in Sources */,
 				0ADBEE931C0ABD8400E946F6 /* NewsCenterTableViewController.m in Sources */,
 				0ADBEE911C0ABD8400E946F6 /* FirstViewController.m in Sources */,
-				0ADBEEF51C0ABDE100E946F6 /* StaffDirectoryDetailViewController.m in Sources */,
 				0ADBEEE91C0ABDE100E946F6 /* ExtracurricularStructure.m in Sources */,
 				0A634C5A1C49651000210D33 /* ErrorStructure.m in Sources */,
 				0ADBEEF31C0ABDE100E946F6 /* AppManager.m in Sources */,
@@ -830,6 +834,7 @@
 				0AD53D5C1C208B4D007E5184 /* RegisterExtracurricularViewController.m in Sources */,
 				0A2DDCD91C232EE700662F94 /* EditScheduleViewController.m in Sources */,
 				0ADBEE921C0ABD8400E946F6 /* AlertStructure.m in Sources */,
+				0A634C771C515C7100210D33 /* GroupMainTableViewController.m in Sources */,
 				0ADBEEEA1C0ABDE100E946F6 /* StaffMemberStructure.m in Sources */,
 				0ADBEE971C0ABD8400E946F6 /* EditPictureDayViewController.m in Sources */,
 				0ADBEEF41C0ABDE100E946F6 /* MainTabBarController.m in Sources */,
@@ -840,6 +845,7 @@
 				0A8261641C1D32A300574208 /* PushSettingsTableViewController.m in Sources */,
 				0ADBEEED1C0ABDE100E946F6 /* UsefulLinkArray.m in Sources */,
 				0ADBEE2A1C0ABD5E00E946F6 /* main.m in Sources */,
+				0A634C7A1C515CAE00210D33 /* GroupResultsTableViewController.m in Sources */,
 				0ADBEE861C0ABD8400E946F6 /* AppDelegate.m in Sources */,
 				0ADBEEE61C0ABDE100E946F6 /* NewsArticleStructure.m in Sources */,
 				0ADBEEA11C0ABD8400E946F6 /* AboutTableViewController.m in Sources */,

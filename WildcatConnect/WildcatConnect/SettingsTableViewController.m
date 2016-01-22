@@ -92,7 +92,7 @@
                if (! deviceToken) {
                     deviceToken = @"Not available.";
                }
-               NSString *bodyString = [[[@"Version = " stringByAppendingString:majorVersion] stringByAppendingString:@"\n\nDeviceToken = "] stringByAppendingString:deviceToken];
+               NSString *bodyString = [[[[@"Please do not edit the folowing information.\n\nVersion = " stringByAppendingString:majorVersion] stringByAppendingString:@"\n\nDeviceToken = "] stringByAppendingString:deviceToken] stringByAppendingString:@"\n\nPlease describe your app issue below.\n\n"];
                
                [composeViewController setMessageBody:bodyString isHTML:NO];
                

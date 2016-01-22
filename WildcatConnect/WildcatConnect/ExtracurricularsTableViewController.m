@@ -10,6 +10,7 @@
 #import "ExtracurricularStructure.h"
 #import "ExtracurricularUpdateStructure.h"
 #import "AppManager.h"
+#import "GroupMainTableViewController.h"
 
 @interface ExtracurricularsTableViewController ()
 
@@ -21,22 +22,9 @@
      UIAlertView *subscribeAlertView;
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    
-     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:248.0f/255.0f
-                                                                            green:183.0f/255.0f
-                                                                             blue:23.0f/255.0f
-                                                                            alpha:0.5f];
-    
-    UIRefreshControl *refreshControl= [[UIRefreshControl alloc] init];
-    [refreshControl addTarget:self action:@selector(refreshView:) forControlEvents:UIControlEventValueChanged];
-     refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"PULL TO REFRESH"];
-    self.refreshControl= refreshControl;
-    
-     self.navigationItem.title = @"Groups";
-    
+- (void)viewWillAppear:(BOOL)animated {
+     [super viewWillAppear:animated];
+     
      if (self.loadNumber == [NSNumber numberWithInt:1] || ! self.loadNumber) {
           [self refreshData];
      } else {
@@ -61,6 +49,23 @@
                }];
           }];
      }
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    
+     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:248.0f/255.0f
+                                                                            green:183.0f/255.0f
+                                                                             blue:23.0f/255.0f
+                                                                            alpha:0.5f];
+    
+    UIRefreshControl *refreshControl= [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(refreshView:) forControlEvents:UIControlEventValueChanged];
+     refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"PULL TO REFRESH"];
+    self.refreshControl= refreshControl;
+    
+     self.navigationItem.title = @"Groups";
 }
 
 -(void)refreshView:(UIRefreshControl *)refresh {
@@ -406,7 +411,9 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-     return 100;
+     if (indexPath.section == 0) {
+          return 150;
+     } else return 70;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -417,10 +424,7 @@
           } else
                return self.updatesArray.count;
      } else if (section == 1) {
-          if (self.extracurricularsArray.count == 0) {
-               return 1;
-          } else
-               return self.extracurricularsArray.count;
+          return 1;
      }
      else return nil;
 }
@@ -454,7 +458,8 @@
                UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
                cell.textLabel.text = EC.titleString;
                cell.detailTextLabel.text = extracurricularUpdateStructure.messageString;
-               cell.detailTextLabel.numberOfLines = 4;
+               cell.detailTextLabel.numberOfLines = 0;
+               cell.detailTextLabel.lineBreakMode = UILineBreakModeWordWrap;
                UIButton *unreadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
                [unreadButton setImage:[UIImage imageNamed:@"minus@2x.png"] forState:UIControlStateNormal];
                [unreadButton setTintColor:[UIColor redColor]];
@@ -466,24 +471,10 @@
                return cell;
           }
      } else if (indexPath.section == 1) {
-          if (self.extracurricularsArray.count == 0) {
-               UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
-               cell.textLabel.text = @"No data to display.";
-               return  cell;
-          } else {
-               ExtracurricularStructure *extracurricularStructure = ((ExtracurricularStructure *)[self.extracurricularsArray objectAtIndex:indexPath.row]);
-               UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
-               cell.textLabel.text = extracurricularStructure.titleString;
-               cell.detailTextLabel.text = extracurricularStructure.descriptionString;
-               cell.detailTextLabel.numberOfLines = 4;
-               UIButton *unreadButton = [UIButton buttonWithType:UIButtonTypeContactAdd];
-               [unreadButton addTarget:self action:@selector(addGroup:) forControlEvents:UIControlEventTouchUpInside];
-               [unreadButton sizeToFit];
-               [unreadButton setTag:indexPath.row];
-               cell.accessoryView = unreadButton;
-               [cell setNeedsLayout];
-               return cell;
-          }
+          UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
+          cell.textLabel.text = @"View All Groups";
+          cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+          return cell;
      }
      else return nil;
 }
@@ -583,6 +574,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
      [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+     if (indexPath.section == 1) {
+          GroupMainTableViewController *controller = [[GroupMainTableViewController alloc] init];
+          [self.navigationController pushViewController:controller animated:YES];
+     }
 }
 
 /*
