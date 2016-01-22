@@ -97,6 +97,9 @@
                [composeViewController setMessageBody:bodyString isHTML:NO];
                
                [self presentViewController:composeViewController animated:YES completion:nil];
+          } else {
+               UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Mail Error" message:@"You do not seem to have e-mail configured on your device." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+               [alertView show];
           }
      } else if (indexPath.section == 2) {
                //Team mail
@@ -106,6 +109,9 @@
                [composeViewController setToRecipients:@[@"team@wildcatconnect.org"]];
                
                [self presentViewController:composeViewController animated:YES completion:nil];
+          } else {
+               UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Mail Error" message:@"You do not seem to have e-mail configured on your device." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+               [alertView show];
           }
      } else if (indexPath.section == 3) {
                //About

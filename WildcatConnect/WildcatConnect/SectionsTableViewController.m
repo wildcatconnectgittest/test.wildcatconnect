@@ -131,6 +131,9 @@
                                              NSMutableArray *arrayTwo = [[NSUserDefaults standardUserDefaults] objectForKey:@"answeredPolls"];
                                              NSInteger answeredInt = arrayTwo.count;
                                              NSNumber *answered = [NSNumber numberWithInt:(count3 - answeredInt)];
+                                             if ([answered integerValue] < 0) {
+                                                  answered = [NSNumber numberWithInteger:0];
+                                             }
                                              [returnArray addObject:answered];
                                              self.sectionsNumbersArray = returnArray;
                                              [activity stopAnimating];

@@ -76,6 +76,9 @@
           [composeViewController setToRecipients:@[buttonClicked.staffMember.staffMemberEMail]];
           
           [self presentViewController:composeViewController animated:YES completion:nil];
+     } else {
+          UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Mail Error" message:@"You do not seem to have e-mail configured on your device." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+          [alertView show];
      }
 }
 

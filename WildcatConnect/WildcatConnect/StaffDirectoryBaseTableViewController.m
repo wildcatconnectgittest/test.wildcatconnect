@@ -26,13 +26,6 @@ NSString *const kTableCellNibName = @"TableCell";
      [self.tableView setScrollIndicatorInsets:UIEdgeInsetsMake(0, 0, bottom, 0)];
      self.tableView.contentInset = UIEdgeInsetsMake(0, 0, bottom, 0);
      self.extendedLayoutIncludesOpaqueBars = YES;
-     self.navigationItem.title = @"All Groups";
-}
-
--(instancetype)init {
-     [super init];
-     self.navigationItem.title = @"All Groups";
-     return self;
 }
 
 - (UITableViewCell *)configureCell:(UITableViewCell *)cell forStaffMemberStructure:(StaffMemberStructure *)staffMemberStructure {
@@ -68,6 +61,9 @@ NSString *const kTableCellNibName = @"TableCell";
           [composeViewController setToRecipients:@[buttonClicked.staffMember.staffMemberEMail]];
           
           [self presentViewController:composeViewController animated:YES completion:nil];
+     } else {
+          UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Mail Error" message:@"You do not seem to have e-mail configured on your device." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+          [alertView show];
      }
 }
 
