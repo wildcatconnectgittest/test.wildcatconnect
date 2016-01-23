@@ -298,6 +298,9 @@
 }
 
 - (BOOL)validateAllFields {
+     if (self.meetingString.length == 0) {
+          self.meetingString = @"None.";
+     }
      return (titleTextView.text.length > 0 && descriptionTextView.text.length > 0 && self.meetingString.length > 0);
 }
 

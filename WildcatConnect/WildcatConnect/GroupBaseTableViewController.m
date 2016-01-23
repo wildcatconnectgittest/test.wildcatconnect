@@ -38,6 +38,8 @@
 
 - (UITableViewCell *)configureCell:(UITableViewCell *)cell forGroup:(ExtracurricularStructure *)groupStructure {
      cell.textLabel.text = groupStructure.titleString;
+     cell.textLabel.numberOfLines = 0;
+     cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
      cell.detailTextLabel.text = groupStructure.descriptionString;
      cell.detailTextLabel.numberOfLines = 0;
      cell.detailTextLabel.lineBreakMode = NSLineBreakByWordWrapping;

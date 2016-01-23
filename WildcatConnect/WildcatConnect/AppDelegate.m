@@ -71,7 +71,7 @@ void uncaughtExceptionHandler(NSException *exception) {
      NSMutableArray *errorsArray = [[[NSUserDefaults standardUserDefaults] objectForKey:@"errorsArray"] mutableCopy];
      if (! errorsArray) {
           errorsArray = [NSMutableArray array];
-     } else if (errorsArray.count > 0) {
+     } else if (errorsArray.count > 0 && connected == true) {
           NSMutableArray *copyArray = [errorsArray mutableCopy];
           for (NSObject *object in errorsArray) {
                [copyArray removeObject:object];

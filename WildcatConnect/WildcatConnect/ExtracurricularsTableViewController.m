@@ -126,8 +126,7 @@
                               [moreItems addObject:@{ @"titleString"     : e.titleString,
                                                       @"descriptionString"    : e.descriptionString,
                                                       @"hasImage" :e.hasImage,
-                                                      @"extracurricularID" : e.extracurricularID,
-                                                      @"meetingIDs" : e.meetingIDs
+                                                      @"extracurricularID" : e.extracurricularID
                                                       }];
                          }
                          [userDefaults setObject:moreItems forKey:@"ECArray"];
@@ -203,7 +202,6 @@
           ECStructure.descriptionString = [object objectForKey:@"descriptionString"];
           ECStructure.hasImage = [object objectForKey:@"hasImage"];
           ECStructure.extracurricularID = [object objectForKey:@"extracurricularID"];
-          ECStructure.meetingIDs = [object objectForKey:@"meetingIDs"];
           [array addObject:ECStructure];
           if (i == theArrayToSearch.count - 1)
                dispatch_group_leave(serviceGroup);
@@ -346,7 +344,7 @@
      dispatch_group_enter(theServiceGroup);
      NSMutableArray *theReturnArray = [[NSMutableArray alloc] init];
      PFQuery *query = [ExtracurricularStructure query];
-     [query orderByAscending:@"meetingIDs"];
+     [query orderByAscending:@"titleString"];
      [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
           [theReturnArray addObjectsFromArray:objects];
           theError = error;
