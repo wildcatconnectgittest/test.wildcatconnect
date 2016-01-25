@@ -666,14 +666,6 @@
      
           //Only run on actual device
      
-     CFArrayRef myArray = CNCopySupportedInterfaces();
-     CFDictionaryRef myDict = CNCopyCurrentNetworkInfo(CFArrayGetValueAtIndex(myArray, 0));
-     NSString *networkName = CFDictionaryGetValue(myDict, kCNNetworkInfoKeySSID);
-     if ([networkName isEqualToString:@"WeymouthCWP"] == true || [networkName isEqualToString:@"Weymouth1x"] == true) {
-          UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Network Alert" message:@"We have detected you are running the app on the school's WiFi network. Please note that loading times may be slightly longer." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-          [alertView show];
-     }
-     
 #endif
      
      NSString *loadString = [[NSUserDefaults standardUserDefaults] objectForKey:@"reloadHomePage"];
