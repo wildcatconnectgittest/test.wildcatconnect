@@ -119,6 +119,7 @@
                          [activity stopAnimating];
                          
                          [scrollView removeFromSuperview];
+                         [titleLabel removeFromSuperview];
                          titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, 50)];
                          titleLabel.text = @"You are not the owner of any Extracurricular groups. However, you can register a new group, where you will be able to send push notifications to users who subscribe.";
                          [titleLabel setFont:[UIFont systemFontOfSize:16]];
@@ -143,6 +144,8 @@
                               contentRect = CGRectUnion(contentRect, view.frame);
                          }
                          scrollView.contentSize = contentRect.size;
+                         
+                         [self.view addSubview:scrollView];
                     });
                } else {
                     self.ECarray = returnArray;

@@ -97,7 +97,7 @@
                return 2; // Change password, new extracurricular group...
      } else {
           if (section == 0)
-               return self.sectionsArray.count - 3;
+               return 3;
           else
                return 2; // Change password, new extracurricular group...
      }
@@ -164,7 +164,6 @@
                }
           }
      }
-     
      cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
      return cell;
 }
