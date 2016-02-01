@@ -185,6 +185,7 @@
                });
           } else {
                self.alerts = returnArrayA;
+               [self.tableView reloadData];
                [self removeOldArrayObjectsWithCompletion:^(NSUInteger integer) {
                     NSMutableArray *itemsToSave = [NSMutableArray array];
                     for (AlertStructure *a in returnArrayA) {
@@ -406,20 +407,23 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-     self.selectedAlertStructure = self.alerts[indexPath.row];
-     AlertDetailViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"AlertDetail"];
-     controller.alert = self.selectedAlertStructure;
-     [self.navigationController pushViewController:controller animated:YES];
-     NSMutableArray *theReadAlerts = [[[NSUserDefaults standardUserDefaults] objectForKey:@"readAlerts"] mutableCopy];
-     if (! theReadAlerts) {
-          theReadAlerts = [[NSMutableArray alloc] init];
+     if (self.alerts.count > 0) {
+          self.selectedAlertStructure = self.alerts[indexPath.row];
+          AlertDetailViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"AlertDetail"];
+          controller.alert = self.selectedAlertStructure;
+          [self.navigationController pushViewController:controller animated:YES];
+          NSMutableArray *theReadAlerts = [[[NSUserDefaults standardUserDefaults] objectForKey:@"readAlerts"] mutableCopy];
+          if (! theReadAlerts) {
+               theReadAlerts = [[NSMutableArray alloc] init];
+          }
+          if (! [theReadAlerts containsObject:self.selectedAlertStructure.alertID]) {
+               [theReadAlerts addObject:self.selectedAlertStructure.alertID];
+               [[NSUserDefaults standardUserDefaults] setObject:theReadAlerts forKey:@"readAlerts"];
+               self.readAlerts = theReadAlerts;
+               [[NSUserDefaults standardUserDefaults] synchronize];
+          }
      }
-     if (! [theReadAlerts containsObject:self.selectedAlertStructure.alertID]) {
-          [theReadAlerts addObject:self.selectedAlertStructure.alertID];
-          [[NSUserDefaults standardUserDefaults] setObject:theReadAlerts forKey:@"readAlerts"];
-          self.readAlerts = theReadAlerts;
-          [[NSUserDefaults standardUserDefaults] synchronize];
-     }
+     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 

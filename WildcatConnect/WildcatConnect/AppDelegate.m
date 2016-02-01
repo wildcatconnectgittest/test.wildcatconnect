@@ -739,8 +739,10 @@ void uncaughtExceptionHandler(NSException *exception) {
      PFInstallation *currentInstallation = [PFInstallation currentInstallation];
      if (currentInstallation.badge != 0) {
           currentInstallation.badge = 0;
-          [currentInstallation saveInBackground];
      }
+     NSString *versionString = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+     [currentInstallation setValue:versionString forKey:@"version"];
+     [currentInstallation saveInBackground];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
