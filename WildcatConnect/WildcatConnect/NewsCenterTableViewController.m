@@ -475,7 +475,9 @@
                      [cell setNeedsLayout];
                 }
            if (integerNumber == 1 && self.newsArticleImages.count > 0)
-                cell.imageView.image = (UIImage *)[self.newsArticleImages objectAtIndex:indexPath.row];
+                if ([[self.newsArticleImages objectAtIndex:indexPath.row] class] == [UIImage class]) {
+                     cell.imageView.image = (UIImage *)[self.newsArticleImages objectAtIndex:indexPath.row];
+                }
            return cell;
       }
  }
