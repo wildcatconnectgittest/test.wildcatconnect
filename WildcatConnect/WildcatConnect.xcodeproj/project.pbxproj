@@ -126,6 +126,7 @@
 		0ADBEF4C1C0AC61F00E946F6 /* AlertsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBEF4B1C0AC61F00E946F6 /* AlertsTableViewController.m */; };
 		0ADBEF4E1C0ACC4900E946F6 /* admin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0ADBEF4D1C0ACC4900E946F6 /* admin@2x.png */; };
 		0AF9D3351C43E9C400618042 /* minus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AF9D3341C43E9C400618042 /* minus@2x.png */; };
+		F750A8391C5EE00900A2E235 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F750A8381C5EE00900A2E235 /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -336,6 +337,7 @@
 		0ADBEF4B1C0AC61F00E946F6 /* AlertsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertsTableViewController.m; sourceTree = "<group>"; };
 		0ADBEF4D1C0ACC4900E946F6 /* admin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "admin@2x.png"; sourceTree = "<group>"; };
 		0AF9D3341C43E9C400618042 /* minus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "minus@2x.png"; path = "../minus@2x.png"; sourceTree = "<group>"; };
+		F750A8381C5EE00900A2E235 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -439,6 +441,7 @@
 				0ADBEECF1C0ABDE100E946F6 /* AppManager.h */,
 				0ADBEED41C0ABDE100E946F6 /* AppManager.m */,
 				0ADBEE371C0ABD5E00E946F6 /* Assets.xcassets */,
+				F750A8381C5EE00900A2E235 /* Default-568h@2x.png */,
 				0ADBEE621C0ABD8400E946F6 /* Base.lproj */,
 				0ADBEEFB1C0ABE5200E946F6 /* Bolts.framework */,
 				0ADBEF241C0AC57200E946F6 /* calendar@2x.png */,
@@ -755,6 +758,7 @@
 				0ADBEE361C0ABD5E00E946F6 /* Main.storyboard in Resources */,
 				0ADBEF461C0AC57200E946F6 /* unread@2x.png in Resources */,
 				0ADBEF3A1C0AC57200E946F6 /* home.png in Resources */,
+				F750A8391C5EE00900A2E235 /* Default-568h@2x.png in Resources */,
 				0ADBEEE01C0ABDE100E946F6 /* wildcat.jpeg in Resources */,
 				0ADBEEDF1C0ABDE100E946F6 /* wildcatLogo.png in Resources */,
 				0A0AFC791C0B597B0094A2D2 /* logoLarge.jpeg in Resources */,
