@@ -297,7 +297,7 @@ Parse.Cloud.job("extracurricularUpdateStructureDeletion", function(request, resp
           var date2_ms = now.getTime();
           var difference_ms = date2_ms - date1_ms;
           difference_ms = Math.round(difference_ms/one_day);
-          if (difference_ms > 3) {
+          if (difference_ms >= 3) {
             currentStructure.destroy({
               success: function() {
                 console.log("Just deleted an object!!!");
@@ -733,7 +733,7 @@ Parse.Cloud.beforeSave("ExtracurricularUpdateStructure", function(request, respo
     if (request.object.get("extracurricularID") >= 0) {
       response.success();
     } else {
-      response.error()
+      response.error();
     };
 });
 
@@ -759,6 +759,39 @@ Parse.Cloud.afterSave("ExtracurricularUpdateStructure", function(request) {
       }
     });
   };
+});
+
+Parse.Cloud.afterDelete("ExtracurricularStructure", function(request) {
+  var ID = request.object.get("extracurricularID");
+  var channelString = "E" + ID.toString();
+  Parse.Cloud.useMasterKey();
+  var query = new Parse.Query(Parse.Installation);
+  var finalArray = new Array();
+  query.find({
+    success: function(users) {
+      console.log(users);
+      for (var i = 0; i < users.length; i++) {
+        var array = users[i].get("channels");
+        var index = array.indexOf(channelString);
+        if (index > -1) {
+          array.splice(index, 1);
+          users[i].set("channels", array);
+          finalArray.push(users[i]);
+        };
+      }
+      Parse.Object.saveAll(finalArray, {
+        success: function(savedObjects) {
+          //
+        },
+        error: function(error) {
+          //
+        }
+      });
+    }, error: function(error) {
+      //
+    }
+  });
+
 });
 
 Parse.Cloud.afterSave("CommunityServiceStructure", function(request) {
