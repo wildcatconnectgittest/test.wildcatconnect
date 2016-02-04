@@ -138,9 +138,25 @@
                          [scrollView addSubview:titleLabelB];
                          
                          titleLabelC = [[UILabel alloc] initWithFrame:CGRectMake(10, titleLabelB.frame.origin.y + titleLabelB.frame.size.height, 0, 0)];
-                         [dateFormatter setDateFormat:@"MMMM dd, yyyy"];
+                         [dateFormatter setDateFormat:@", yyyy"];
                          currentDate = [dateFormatter stringFromDate:[NSDate date]];
-                         titleLabelC.text = currentDate;
+                         
+                         NSDate *date = [NSDate date];
+                         NSDateFormatter *prefixDateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+                         [prefixDateFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
+                         [prefixDateFormatter setDateFormat:@"MMMM d"];
+                         NSString *prefixDateString = [prefixDateFormatter stringFromDate:date];
+                         
+                         NSDateFormatter *monthDayFormatter = [[[NSDateFormatter alloc] init] autorelease];
+                         [monthDayFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
+                         [monthDayFormatter setDateFormat:@"d"];
+                         int date_day = [[monthDayFormatter stringFromDate:[NSDate date]] intValue];
+                         NSString *suffix_string = @"|st|nd|rd|th|th|th|th|th|th|th|th|th|th|th|th|th|th|th|th|th|st|nd|rd|th|th|th|th|th|th|th|st";
+                         NSArray *suffixes = [suffix_string componentsSeparatedByString: @"|"];
+                         NSString *suffix = [suffixes objectAtIndex:date_day];
+                         NSString *dateString = [prefixDateString stringByAppendingString:suffix];
+                         
+                         titleLabelC.text = dateString;
                          [titleLabelC setFont:[UIFont systemFontOfSize:32]];
                          titleLabelC.lineBreakMode = NSLineBreakByWordWrapping;
                          titleLabelC.numberOfLines = 0;
@@ -377,9 +393,25 @@
                                    [scrollView addSubview:titleLabelB];
                                    
                                    titleLabelC = [[UILabel alloc] initWithFrame:CGRectMake(10, titleLabelB.frame.origin.y + titleLabelB.frame.size.height, 0, 0)];
-                                   [dateFormatter setDateFormat:@"MMMM d, yyyy"];
+                                   [dateFormatter setDateFormat:@", yyyy"];
                                    currentDate = [dateFormatter stringFromDate:[NSDate date]];
-                                   titleLabelC.text = currentDate;
+                                   
+                                   NSDate *date = [NSDate date];
+                                   NSDateFormatter *prefixDateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+                                   [prefixDateFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
+                                   [prefixDateFormatter setDateFormat:@"MMMM d"];
+                                   NSString *prefixDateString = [prefixDateFormatter stringFromDate:date];
+                                   
+                                   NSDateFormatter *monthDayFormatter = [[[NSDateFormatter alloc] init] autorelease];
+                                   [monthDayFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
+                                   [monthDayFormatter setDateFormat:@"d"];
+                                   int date_day = [[monthDayFormatter stringFromDate:[NSDate date]] intValue];
+                                   NSString *suffix_string = @"|st|nd|rd|th|th|th|th|th|th|th|th|th|th|th|th|th|th|th|th|th|st|nd|rd|th|th|th|th|th|th|th|st";
+                                   NSArray *suffixes = [suffix_string componentsSeparatedByString: @"|"];
+                                   NSString *suffix = [suffixes objectAtIndex:date_day];
+                                   NSString *dateString = [[prefixDateString stringByAppendingString:suffix] stringByAppendingString:currentDate];
+                                   
+                                   titleLabelC.text = dateString;
                                    [titleLabelC setFont:[UIFont systemFontOfSize:32]];
                                    titleLabelC.lineBreakMode = NSLineBreakByWordWrapping;
                                    titleLabelC.numberOfLines = 0;
@@ -657,6 +689,28 @@
           }
           completion(overallError, array);
      });
+}
+
+-(NSString *)addSuffixToNumber:(int) number
+{
+     NSString *suffix;
+     int ones = number % 10;
+     int tens = (number/10) % 10;
+     
+     if (tens ==1) {
+          suffix = @"th";
+     } else if (ones ==1){
+          suffix = @"st";
+     } else if (ones ==2){
+          suffix = @"nd";
+     } else if (ones ==3){
+          suffix = @"rd";
+     } else {
+          suffix = @"th";
+     }
+     
+     NSString * completeAsString = [NSString stringWithFormat:@"%d%@", number, suffix];
+     return completeAsString;
 }
 
 - (void)viewDidLoad {

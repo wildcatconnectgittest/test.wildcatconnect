@@ -388,30 +388,86 @@
           if (self.checkedIndexPath.row == 0) {
                alertStructure.hasTime = [NSNumber numberWithInt:0];
                NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-               [formatter setDateFormat:@"MMMM dd, h:mm a"];
-               alertStructure.dateString = [formatter stringFromDate:[NSDate date]];
+               [formatter setDateFormat:@"MMMM d"];
+               NSString *firstString = [formatter stringFromDate:[NSDate date]];
+               
+               NSDateFormatter *monthDayFormatter = [[[NSDateFormatter alloc] init] autorelease];
+               [monthDayFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
+               [monthDayFormatter setDateFormat:@"d"];
+               int date_day = [[monthDayFormatter stringFromDate:[NSDate date]] intValue];
+               NSString *suffix_string = @"|st|nd|rd|th|th|th|th|th|th|th|th|th|th|th|th|th|th|th|th|th|st|nd|rd|th|th|th|th|th|th|th|st";
+               NSArray *suffixes = [suffix_string componentsSeparatedByString: @"|"];
+               NSString *suffix = [suffixes objectAtIndex:date_day];
+               NSString *dateString = [firstString stringByAppendingString:suffix];
+               
+               [formatter setDateFormat:@", h:mm a"];
+               NSString *secondString = [formatter stringFromDate:[NSDate date]];
+               
+               alertStructure.dateString = [dateString stringByAppendingString:secondString];
                alertStructure.isReady = [NSNumber numberWithInt:1];
           } else if (self.checkedIndexPath.row == 1) {
                if ([datePicker.date timeIntervalSinceNow] < 0) {
                     alertStructure.hasTime = [NSNumber numberWithInt:0];
                     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-                    [formatter setDateFormat:@"MMMM dd, h:mm a"];
-                    alertStructure.dateString = [formatter stringFromDate:[NSDate date]];
+                    [formatter setDateFormat:@"MMMM d"];
+                    NSString *firstString = [formatter stringFromDate:[NSDate date]];
+                    
+                    NSDateFormatter *monthDayFormatter = [[[NSDateFormatter alloc] init] autorelease];
+                    [monthDayFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
+                    [monthDayFormatter setDateFormat:@"d"];
+                    int date_day = [[monthDayFormatter stringFromDate:[NSDate date]] intValue];
+                    NSString *suffix_string = @"|st|nd|rd|th|th|th|th|th|th|th|th|th|th|th|th|th|th|th|th|th|st|nd|rd|th|th|th|th|th|th|th|st";
+                    NSArray *suffixes = [suffix_string componentsSeparatedByString: @"|"];
+                    NSString *suffix = [suffixes objectAtIndex:date_day];
+                    NSString *dateString = [firstString stringByAppendingString:suffix];
+                    
+                    [formatter setDateFormat:@", h:mm a"];
+                    NSString *secondString = [formatter stringFromDate:[NSDate date]];
+                    
+                    alertStructure.dateString = [dateString stringByAppendingString:secondString];
                     alertStructure.isReady = [NSNumber numberWithInt:1];
                } else {
                     alertStructure.hasTime = [NSNumber numberWithInt:1];
                     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-                    [formatter setDateFormat:@"MMMM dd, h:mm a"];
-                    alertStructure.alertTime = datePicker.date;
-                    alertStructure.dateString = [formatter stringFromDate:datePicker.date];
+                    [formatter setDateFormat:@"MMMM d"];
+                    NSString *firstString = [formatter stringFromDate:[NSDate date]];
+                    
+                    NSDateFormatter *monthDayFormatter = [[[NSDateFormatter alloc] init] autorelease];
+                    [monthDayFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
+                    [monthDayFormatter setDateFormat:@"d"];
+                    int date_day = [[monthDayFormatter stringFromDate:[NSDate date]] intValue];
+                    NSString *suffix_string = @"|st|nd|rd|th|th|th|th|th|th|th|th|th|th|th|th|th|th|th|th|th|st|nd|rd|th|th|th|th|th|th|th|st";
+                    NSArray *suffixes = [suffix_string componentsSeparatedByString: @"|"];
+                    NSString *suffix = [suffixes objectAtIndex:date_day];
+                    NSString *dateString = [firstString stringByAppendingString:suffix];
+                    
+                    [formatter setDateFormat:@", h:mm a"];
+                    NSString *secondString = [formatter stringFromDate:[NSDate date]];
+                    
+                    alertStructure.dateString = [dateString stringByAppendingString:secondString];
                     alertStructure.isReady = [NSNumber numberWithInt:0];
                }
           }
      } else {
           alertStructure.hasTime = [NSNumber numberWithInt:0];
+          
           NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-          [formatter setDateFormat:@"MMMM dd, h:mm a"];
-          alertStructure.dateString = [formatter stringFromDate:[NSDate date]];
+          [formatter setDateFormat:@"MMMM d"];
+          NSString *firstString = [formatter stringFromDate:[NSDate date]];
+          
+          NSDateFormatter *monthDayFormatter = [[[NSDateFormatter alloc] init] autorelease];
+          [monthDayFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
+          [monthDayFormatter setDateFormat:@"d"];
+          int date_day = [[monthDayFormatter stringFromDate:[NSDate date]] intValue];
+          NSString *suffix_string = @"|st|nd|rd|th|th|th|th|th|th|th|th|th|th|th|th|th|th|th|th|th|st|nd|rd|th|th|th|th|th|th|th|st";
+          NSArray *suffixes = [suffix_string componentsSeparatedByString: @"|"];
+          NSString *suffix = [suffixes objectAtIndex:date_day];
+          NSString *dateString = [firstString stringByAppendingString:suffix];
+          
+          [formatter setDateFormat:@", h:mm a"];
+          NSString *secondString = [formatter stringFromDate:[NSDate date]];
+          
+          alertStructure.dateString = [dateString stringByAppendingString:secondString];
           alertStructure.isReady = [NSNumber numberWithInt:1];
      }
      alertStructure.contentString = alertTextView.text;
