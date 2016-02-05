@@ -440,7 +440,7 @@
                                    if ([todayDateString isEqualToString:thatDateString]) {
                                         dayLabel.text = [@"Today is " stringByAppendingString:scheduleType.fullScheduleString];
                                    } else {
-                                        dayLabel.text = [[actual stringByAppendingString:@" ("] stringByAppendingString:scheduleType.fullScheduleString];
+                                        dayLabel.text = [[actual stringByAppendingString:@" - "] stringByAppendingString:scheduleType.fullScheduleString];
                                    }
                                    if (scheduleType.alertNeeded == YES) {
                                         dayLabel.textColor = [UIColor redColor];
