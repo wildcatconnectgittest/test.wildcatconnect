@@ -62,7 +62,7 @@
           cell.textLabel.text = @"App Support";
           cell.imageView.image = [UIImage imageNamed:@"email@2x.png"];
      } else if (indexPath.section == 2) {
-          cell.textLabel.text = @"Feeback/Join WildcatConnect";
+          cell.textLabel.text = @"Feedback/Join WildcatConnect";
           cell.imageView.image = [UIImage imageNamed:@"email@2x.png"];
      } else if (indexPath.section == 3) {
           cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

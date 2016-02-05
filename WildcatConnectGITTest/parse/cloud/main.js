@@ -99,9 +99,9 @@ Parse.Cloud.job("schoolDayStructureGeneration", function(request, response) {
                 "imageUserFullString" : "None.",
                 "schoolDayID" : ID,
                 "isActive" : 1,
-                "customString" : "No custom set.",
+                "customString" : "",
                 "breakfastString" : "No breakfast yet.",
-                "lunch" : "No lunch yet."
+                "lunchString" : "No lunch yet."
               }, {
                 success: function(savedObject) {
                   response.success("New day created.");
@@ -439,8 +439,9 @@ Parse.Cloud.job("userRegisterStructureDeletion", function(request, response) {
 
 Parse.Cloud.afterSave("AlertStructure", function(request) {
   if (request.object.get("alertID") != null) {
-    if (request.object.get("alertTime") == null && request.object.get("views") == 0) {
+    if (request.object.get("isReady") == 1 && request.object.get("views") == 0) {
       var query = new Parse.Query("SchoolDayStructure");
+      query.equalTo("isActive", 1);
       query.ascending("schoolDayID");
       query.first({
         success: function(structure) {
