@@ -856,7 +856,7 @@
      __block NSString *theString;
      PFQuery *query = [AlertStructure query];
      [query whereKey:@"isReady" equalTo:[NSNumber numberWithInteger:1]];
-     [query orderByAscending:@"createdAt"];
+     [query orderByDescending:@"createdAt"];
      [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
           theError = error;
           NSString *eventString = @"No recent alerts.";
