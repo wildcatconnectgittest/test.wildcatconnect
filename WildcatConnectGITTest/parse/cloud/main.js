@@ -15,32 +15,40 @@ Parse.Cloud.job("schoolDayStructureDeletion", function(request, response) {
       var date = new Date();
       if (object.get("value") === "NORMAL" && date.getDay() != 0 && date.getDay() != 1) {
         //Continue...
-        var query = new Parse.Query("SchoolDayStructure");
-        query.equalTo("isActive", 1);
-        query.ascending("schoolDayID");
-        query.first({
-          success: function(object) {
-            var schoolDate = object.get("schoolDate");
-            var now = Moment().format("MM-DD-YYYY");
-            if (schoolDate === now) {
-              response.success("Date does not allow deletion at this time.");
-            } else {
-              object.set("isActive", 0);
-              object.save(null, {
-                success: function(myObject) {
-                  response.success("Yay!");
-                },
-                error: function(myObject, error) {
-                  response.error(error);
-                }
-              });
-            };
-          },
-          error: function(error) {
-            alert("Error: " + error.code + " " + error.message);
-            response.error("No!");
-          }
-       });
+        var firstQuery = new Parse.Query("SchoolDayStructure");
+        firstQuery.equalTo("isActive", 0);
+        firstQuery.descending("schoolDayID");
+        firstQuery.find().then(function(day) {
+          if (day.get("isSnow") == 0) {
+            //Wasn't a snow day the day before...you can delete this one
+            var query = new Parse.Query("SchoolDayStructure");
+            query.equalTo("isActive", 1);
+            query.ascending("schoolDayID");
+            query.first({
+              success: function(object) {
+                var schoolDate = object.get("schoolDate");
+                var now = Moment().format("MM-DD-YYYY");
+                if (schoolDate === now) {
+                  response.success("Date does not allow deletion at this time.");
+                } else {
+                  object.set("isActive", 0);
+                  object.save(null, {
+                    success: function(myObject) {
+                      response.success("Yay!");
+                    },
+                    error: function(myObject, error) {
+                      response.error(error);
+                    }
+                  });
+                };
+              },
+              error: function(error) {
+                alert("Error: " + error.code + " " + error.message);
+                response.error("No!");
+              }
+           });
+          };
+        });
       } else {
         response.success("Schedule mode does not allow deletion at this time.");
       };
@@ -101,7 +109,8 @@ Parse.Cloud.job("schoolDayStructureGeneration", function(request, response) {
                 "isActive" : 1,
                 "customString" : "",
                 "breakfastString" : "No breakfast yet.",
-                "lunchString" : "No lunch yet."
+                "lunchString" : "No lunch yet.",
+                "isSnow" : 0
               }, {
                 success: function(savedObject) {
                   response.success("New day created.");
@@ -496,12 +505,13 @@ Parse.Cloud.define("snowDay", function(request, response) {
           if (nextScheduleType === "*") {
             //Set the custom schedule as well!
             results[i].set("customSchedule", results[i + 1].get("customSchedule"));
-            esults[i].set("customString", results[i + 1].get("customString"));
+            results[i].set("customString", results[i + 1].get("customString"));
           };
           results[i].set("scheduleType", nextScheduleType);
           array.push(results[i]);
         } else if (results[i].get("schoolDayID") === ID) {
           results[i].set("isActive", 0);
+          results[i].set("isSnow", 1);
           results[i].save(null, {
             success: function(myObject) {
               //No response yet...
