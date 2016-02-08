@@ -248,7 +248,7 @@
                                         messageLabelC = [[UILabel alloc] initWithFrame:CGRectMake(10, separatorX.frame.origin.y + separatorX.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
                                         UIFont *font = [UIFont systemFontOfSize:14];
                                         [messageLabelC setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
-                                        messageLabelC.text = @"Today's Events";
+                                        messageLabelC.text = @"Upcoming Events";
                                         messageLabelC.lineBreakMode = NSLineBreakByWordWrapping;
                                         messageLabelC.numberOfLines = 0;
                                         [messageLabelC sizeToFit];
@@ -508,7 +508,7 @@
                                                   messageLabelC = [[UILabel alloc] initWithFrame:CGRectMake(10, separatorX.frame.origin.y + separatorX.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
                                                   UIFont *font = [UIFont systemFontOfSize:14];
                                                   [messageLabelC setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
-                                                  messageLabelC.text = @"Today's Events";
+                                                  messageLabelC.text = @"Upcoming Events";
                                                   messageLabelC.lineBreakMode = NSLineBreakByWordWrapping;
                                                   messageLabelC.numberOfLines = 0;
                                                   [messageLabelC sizeToFit];
@@ -820,15 +820,15 @@
      [query orderByAscending:@"eventDate"];
      [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
           theError = error;
-          NSString *eventString = @"No events today.";
+          NSString *eventString = @"No upcoming events.";
           if (objects.count == 0) {
                theString = [eventString copy];
                dispatch_group_leave(serviceGroup);
           } else {
                for (int i = 0; i < objects.count; i++) {
                     EventStructure *event = (EventStructure *)[objects objectAtIndex:i];
-                    if ([self daysBetweenDate:[NSDate date] andDate:event.eventDate] == 0) {
-                         if ([eventString isEqualToString:@"No events today."]) {
+                    if ([self daysBetweenDate:[NSDate date] andDate:event.eventDate] <= 5) {
+                         if ([eventString isEqualToString:@"No upcoming events."]) {
                               eventString = [event.titleString copy];
                          } else
                               eventString = [[eventString stringByAppendingString:@"\n\n"] stringByAppendingString:event.titleString];
