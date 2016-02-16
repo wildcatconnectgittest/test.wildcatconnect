@@ -240,7 +240,7 @@
           UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please ensure you have correctly filled out all fields!" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
           [alertView show];
      } else {
-          postAlertView = [[UIAlertView alloc] initWithTitle:@"Confirmation" message:@"Are you sure you want to post this extracurricular update? It will be live to all app users." delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+          postAlertView = [[UIAlertView alloc] initWithTitle:@"Confirmation" message:@"Are you sure you want to submit this community service opportunity for administrative approval?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
           [postAlertView show];
      }
 }
@@ -254,6 +254,15 @@
      communityServiceStructure.commSummaryString = authorTextView.text;
      communityServiceStructure.startDate = startDatePicker.date;
      communityServiceStructure.endDate = endDatePicker.date;
+     NSString *firstName = [[PFUser currentUser] objectForKey:@"firstName"];
+     NSString *lastName = [[PFUser currentUser] objectForKey:@"lastName"];
+     communityServiceStructure.userString = [[firstName stringByAppendingString:@" "] stringByAppendingString:lastName];
+     communityServiceStructure.email = [[PFUser currentUser] objectForKey:@"email"];
+     if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administration"]) {
+          communityServiceStructure.isApproved = [NSNumber numberWithInteger:1];
+     } else {
+          communityServiceStructure.isApproved = [NSNumber numberWithInteger:0];
+     }
      PFQuery *query = [CommunityServiceStructure query];
      [query orderByDescending:@"communityServiceID"];
      [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {

@@ -214,6 +214,10 @@
      EC.descriptionString = descriptionTextView.text;
      EC.titleString = titleTextView.text;
      EC.meetingIDs = self.meetingString;
+     NSString *firstName = [[PFUser currentUser] objectForKey:@"firstName"];
+     NSString *lastName = [[PFUser currentUser] objectForKey:@"lastName"];
+     
+     EC.userString = [[lastName stringByAppendingString:@", "] stringByAppendingString:firstName];
      PFQuery *query = [ExtracurricularStructure query];
      [query orderByDescending:@"extracurricularID"];
      [query whereKey:@"titleString" equalTo:EC.titleString];

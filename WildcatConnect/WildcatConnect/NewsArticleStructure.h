@@ -27,5 +27,7 @@
 @property NSNumber *likes;
 @property NSNumber *views;
 @property NSNumber *isApproved;
+@property NSString *userString;
+@property NSString *email;
 
 @end

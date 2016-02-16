@@ -68,6 +68,10 @@ void uncaughtExceptionHandler(NSException *exception) {
      NetworkStatus networkStatus = [reachability currentReachabilityStatus];
      connected = (networkStatus != NotReachable);
      
+     if (connected && [PFInstallation currentInstallation]) {
+          [[PFInstallation currentInstallation] fetchIfNeededInBackground];
+     }
+     
      NSMutableArray *errorsArray = [[[NSUserDefaults standardUserDefaults] objectForKey:@"errorsArray"] mutableCopy];
      if (! errorsArray) {
           errorsArray = [NSMutableArray array];

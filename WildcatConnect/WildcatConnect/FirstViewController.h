@@ -13,5 +13,7 @@
      
 }
 
+@property (nonatomic,strong) NSString *vacationString;
+
 @end
 

@@ -18,5 +18,6 @@
 @property NSString *messageString;
 @property NSNumber *isApproved;
 @property NSString *userString;
+@property NSString *email;
 
 @end

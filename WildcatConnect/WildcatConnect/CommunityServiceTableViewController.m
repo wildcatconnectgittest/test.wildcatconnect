@@ -9,6 +9,8 @@
 #import "CommunityServiceTableViewController.h"
 #import "CommunityServiceStructure.h"
 #import "AppManager.h"
+#import "CommunityServiceDetailViewController.h"
+
 @interface CommunityServiceTableViewController ()
 
 @end
@@ -217,12 +219,7 @@
         cell.textLabel.text = commServiceStructure.commTitleString;
         cell.textLabel.numberOfLines = 0;
         cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"MM-dd-yyyy @ hh:mm a"];
-        NSString *startString = [dateFormatter stringFromDate:commServiceStructure.startDate];
-        NSString *endString = [dateFormatter stringFromDate:commServiceStructure.endDate];
-        cell.detailTextLabel.text = [[[[commServiceStructure.commSummaryString stringByAppendingString:@" ... STARTS "] stringByAppendingString:startString] stringByAppendingString:@" ... ENDS "] stringByAppendingString:endString];
-        cell.detailTextLabel.numberOfLines = 10;
+         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         return cell;
     }
     return nil;
@@ -230,6 +227,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
      [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+     CommunityServiceDetailViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"CSDetail"];
+     CommunityServiceStructure *CS = ((CommunityServiceStructure *)[self.allOpps objectAtIndex:indexPath.row]);
+     controller.CS = CS;
+     [self.navigationController pushViewController:controller animated:YES];
 }
 
 
@@ -248,11 +249,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-     if (self.allOpps.count == 0)
-          return 60;
-     else
-          return 220;
-
+     return 60;
 }
 
 

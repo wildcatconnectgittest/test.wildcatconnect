@@ -15,6 +15,7 @@
 @dynamic endDate;
 @dynamic commSummaryString;
 @dynamic commTitleString;
+@dynamic isApproved;
 
 + (void)load {
     [self registerSubclass];

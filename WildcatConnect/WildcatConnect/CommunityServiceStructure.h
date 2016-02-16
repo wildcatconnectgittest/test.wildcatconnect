@@ -19,5 +19,8 @@
 @property NSDate *endDate;
 @property NSString *commSummaryString;
 @property NSNumber *communityServiceID;
-//0=no, old 1 = yes, new
+@property NSNumber *isApproved;
+@property NSString *userString;
+@property NSString *email;
+
 @end

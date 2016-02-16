@@ -42,7 +42,16 @@
      [titleLabel sizeToFit];
      [scrollView addSubview:titleLabel];
      
-     UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(10, titleLabel.frame.origin.y + titleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+     UILabel *summaryLabel = [[UILabel alloc] initWithFrame:CGRectMake(titleLabel.frame.origin.x, titleLabel.frame.origin.y + titleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
+     summaryLabel.text = self.EC.userString;
+     UIFont *font = [UIFont fontWithName:@"Helvetica Neue" size:16];
+     [summaryLabel setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
+     summaryLabel.lineBreakMode = NSLineBreakByWordWrapping;
+     summaryLabel.numberOfLines = 0;
+     [summaryLabel sizeToFit];
+     [scrollView addSubview:summaryLabel];
+     
+     UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(10, summaryLabel.frame.origin.y + summaryLabel.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
      separator.backgroundColor = [UIColor blackColor];
      [scrollView addSubview:separator];
      

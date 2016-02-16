@@ -435,7 +435,15 @@
      newsArticleStructure.contentURLString = articleTextView.text;
      newsArticleStructure.likes = [NSNumber numberWithInt:0];
      newsArticleStructure.views = [NSNumber numberWithInt:0];
-     newsArticleStructure.isApproved = [NSNumber numberWithInt:0];
+     NSString *firstName = [[PFUser currentUser] objectForKey:@"firstName"];
+     NSString *lastName = [[PFUser currentUser] objectForKey:@"lastName"];
+     newsArticleStructure.userString = [[firstName stringByAppendingString:@" "] stringByAppendingString:lastName];
+     newsArticleStructure.email = [[PFUser currentUser] objectForKey:@"email"];
+     if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administration"]) {
+          newsArticleStructure.isApproved = [NSNumber numberWithInteger:1];
+     } else {
+          newsArticleStructure.isApproved = [NSNumber numberWithInteger:0];
+     }
      PFQuery *query = [NewsArticleStructure query];
      [query orderByDescending:@"articleID"];
      [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {

@@ -237,10 +237,15 @@
      event.locationString = locationTextView.text;
      event.eventDate = startDatePicker.date;
      event.messageString = messageTextView.text;
-     event.isApproved = [NSNumber numberWithInt:0];
      NSString *firstName = [[PFUser currentUser] objectForKey:@"firstName"];
      NSString *lastName = [[PFUser currentUser] objectForKey:@"lastName"];
      event.userString = [[firstName stringByAppendingString:@" "] stringByAppendingString:lastName];
+     event.email = [[PFUser currentUser] objectForKey:@"email"];
+     if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administration"]) {
+          event.isApproved = [NSNumber numberWithInteger:1];
+     } else {
+          event.isApproved = [NSNumber numberWithInteger:0];
+     }
      [event saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
           if (error) {
                theError = error;
