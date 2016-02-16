@@ -335,7 +335,7 @@
           cell.textLabel.numberOfLines = 0;
           cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
           cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-          if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administrator"]) {
+          if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administration"]) {
                     //Show the views...
                cell.detailTextLabel.text = [[[alertStructure.authorString stringByAppendingString:@" - "] stringByAppendingString:[alertStructure.views stringValue]] stringByAppendingString:@" VIEWS"];
           }

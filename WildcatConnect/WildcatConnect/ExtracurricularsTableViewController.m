@@ -493,45 +493,6 @@
      [unsubscribeAlertView show];
 }
 
-- (void)alertView:(UIAlertView *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-          // the user clicked one of the OK/Cancel buttons
-     if (actionSheet == unsubscribeAlertView) {
-          if (buttonIndex == 1) {
-                    //Yes
-               NSInteger index = actionSheet.tag;
-               ExtracurricularStructure *EC = [self.extracurricularsArray objectAtIndex:[self getIndexofStructureWithID:[[self.updatesArray objectAtIndex:index] objectForKey:@"extracurricularID"]]];
-               activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-               [activity setBackgroundColor:[UIColor clearColor]];
-               [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-               UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
-               self.navigationItem.rightBarButtonItem = barButtonItem;
-               [activity startAnimating];
-               [self changeGroupMethodWithCompletion:^(NSError *error) {
-                    [activity stopAnimating];
-                    [self refreshData];
-               } forID:[@"E" stringByAppendingString:[EC.extracurricularID stringValue]] forAction:0];
-          }
-          
-     } else if (actionSheet == subscribeAlertView) {
-          if (buttonIndex == 1) {
-                    //Yes
-               NSInteger index = actionSheet.tag;
-               ExtracurricularStructure *EC = [self.extracurricularsArray objectAtIndex:index];
-               activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-               [activity setBackgroundColor:[UIColor clearColor]];
-               [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-               UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
-               self.navigationItem.rightBarButtonItem = barButtonItem;
-               [activity startAnimating];
-               [self changeGroupMethodWithCompletion:^(NSError *error) {
-                    [activity stopAnimating];
-                    [self refreshData];
-               } forID:[@"E" stringByAppendingString:[EC.extracurricularID stringValue]] forAction:1];
-          }
-          
-     }
-}
-
 - (void)changeGroupMethodWithCompletion:(void (^)(NSError *error))completion forID:(NSString *)channel forAction:(NSInteger)action {
      dispatch_group_t serviceGroup = dispatch_group_create();
      dispatch_group_enter(serviceGroup);

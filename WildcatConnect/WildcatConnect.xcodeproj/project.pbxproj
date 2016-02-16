@@ -125,6 +125,7 @@
 		0ADBEF461C0AC57200E946F6 /* unread@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0ADBEF341C0AC57200E946F6 /* unread@2x.png */; };
 		0ADBEF4C1C0AC61F00E946F6 /* AlertsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBEF4B1C0AC61F00E946F6 /* AlertsTableViewController.m */; };
 		0ADBEF4E1C0ACC4900E946F6 /* admin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0ADBEF4D1C0ACC4900E946F6 /* admin@2x.png */; };
+		0AEE8AF01C72D95900959533 /* GroupDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE8AEF1C72D95900959533 /* GroupDetailViewController.m */; };
 		0AF9D3351C43E9C400618042 /* minus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AF9D3341C43E9C400618042 /* minus@2x.png */; };
 		F750A8391C5EE00900A2E235 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F750A8381C5EE00900A2E235 /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
@@ -336,6 +337,8 @@
 		0ADBEF4A1C0AC61F00E946F6 /* AlertsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertsTableViewController.h; sourceTree = "<group>"; };
 		0ADBEF4B1C0AC61F00E946F6 /* AlertsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertsTableViewController.m; sourceTree = "<group>"; };
 		0ADBEF4D1C0ACC4900E946F6 /* admin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "admin@2x.png"; sourceTree = "<group>"; };
+		0AEE8AEE1C72D95900959533 /* GroupDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupDetailViewController.h; sourceTree = "<group>"; };
+		0AEE8AEF1C72D95900959533 /* GroupDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupDetailViewController.m; sourceTree = "<group>"; };
 		0AF9D3341C43E9C400618042 /* minus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "minus@2x.png"; path = "../minus@2x.png"; sourceTree = "<group>"; };
 		F750A8381C5EE00900A2E235 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -486,6 +489,8 @@
 				0A634C621C4AC1A300210D33 /* EventsTableViewController.m */,
 				0A634C661C4B442500210D33 /* EventDetailViewController.h */,
 				0A634C671C4B442500210D33 /* EventDetailViewController.m */,
+				0AEE8AEE1C72D95900959533 /* GroupDetailViewController.h */,
+				0AEE8AEF1C72D95900959533 /* GroupDetailViewController.m */,
 				0ADBEF271C0AC57200E946F6 /* extracurriculars@2x.png */,
 				0ADBEECB1C0ABDE100E946F6 /* ExtracurricularsTableViewController.h */,
 				0ADBEE801C0ABD8400E946F6 /* ExtracurricularsTableViewController.m */,
@@ -811,6 +816,7 @@
 				0ADBEE9E1C0ABD8400E946F6 /* ComposePollViewController.m in Sources */,
 				0A0AFC771C0B383B0094A2D2 /* ComposeNewsArticleViewController.m in Sources */,
 				0A634C5D1C496C6900210D33 /* Reachability.m in Sources */,
+				0AEE8AF01C72D95900959533 /* GroupDetailViewController.m in Sources */,
 				0ADBEE981C0ABD8400E946F6 /* LunchMenusViewController.m in Sources */,
 				0ADBEE891C0ABD8400E946F6 /* UsefulLinksTableViewController.m in Sources */,
 				0ADBEE8E1C0ABD8400E946F6 /* AlertDetailViewController.m in Sources */,

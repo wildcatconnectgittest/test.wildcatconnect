@@ -461,7 +461,7 @@
            cell.detailTextLabel.text = newsArticleStructure.summaryString;
            cell.detailTextLabel.numberOfLines = 4;
            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-           if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administrator"]) {
+           if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administration"]) {
                      //Show the views...
                 cell.detailTextLabel.text = [[[newsArticleStructure.summaryString stringByAppendingString:@" - "] stringByAppendingString:[newsArticleStructure.views stringValue]] stringByAppendingString:@" VIEWS"];
            }

@@ -40,10 +40,8 @@
      cell.textLabel.text = groupStructure.titleString;
      cell.textLabel.numberOfLines = 0;
      cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
-     cell.detailTextLabel.text = groupStructure.descriptionString;
-     cell.detailTextLabel.numberOfLines = 0;
-     cell.detailTextLabel.lineBreakMode = NSLineBreakByWordWrapping;
-     AddGroupButton *addButton = [AddGroupButton buttonWithType:UIButtonTypeContactAdd];
+     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+     /*AddGroupButton *addButton = [AddGroupButton buttonWithType:UIButtonTypeContactAdd];
      [addButton setEnabled:YES];
      [addButton sizeToFit];
      addButton.group = groupStructure;
@@ -52,7 +50,7 @@
            forControlEvents:UIControlEventTouchUpInside];
      [addButton setFrame:CGRectMake(0, 0, addButton.frame.size.width, addButton.frame.size.height)];
      cell.accessoryView = addButton;
-     [cell setNeedsLayout];
+     [cell setNeedsLayout];*/
      return cell;
 }
 

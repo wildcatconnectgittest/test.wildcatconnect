@@ -16,10 +16,11 @@ Parse.Cloud.job("schoolDayStructureDeletion", function(request, response) {
       if (object.get("value") === "NORMAL" && date.getDay() != 0 && date.getDay() != 1) {
         //Continue...
         var firstQuery = new Parse.Query("SchoolDayStructure");
-        firstQuery.equalTo("isActive", 0);
-        firstQuery.descending("schoolDayID");
-        firstQuery.find().then(function(day) {
-          if (day.get("isSnow") == 0) {
+        firstQuery.equalTo("isActive", 1);
+        firstQuery.ascending("schoolDayID");
+        firstQuery.first().then(function(day) {
+          console.log(day);
+          if (day.get("isSnow") === 0) {
             //Wasn't a snow day the day before...you can delete this one
             var query = new Parse.Query("SchoolDayStructure");
             query.equalTo("isActive", 1);
@@ -47,6 +48,8 @@ Parse.Cloud.job("schoolDayStructureDeletion", function(request, response) {
                 response.error("No!");
               }
            });
+          } else {
+            response.error("Nope!");
           };
         });
       } else {
@@ -154,7 +157,8 @@ Parse.Cloud.job("schoolDayStructureGeneration", function(request, response) {
                 "isActive" : 1,
                 "customString" : "",
                 "breakfastString" : "No breakfast data.",
-                "lunchString" : "No lunch data."
+                "lunchString" : "No lunch data.",
+                "isSnow" : 0
               }, {
                 success: function(savedObject) {
                   response.success("New day created.");
@@ -337,7 +341,7 @@ Parse.Cloud.job("newsArticleStructureDeletion", function(request, response) {
     success: function(structures) {
       for (var i = 0; i < structures.length; i++) {
             var currentStructure = structures[i];
-            var thisDate = currentStructure.get("updatedAt");
+            var thisDate = currentStructure.get("createdAt");
             var now = new Date();
             var one_day=1000*60*60*24;
           var date1_ms = thisDate.getTime();

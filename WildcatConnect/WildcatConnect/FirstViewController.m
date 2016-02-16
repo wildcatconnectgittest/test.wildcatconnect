@@ -264,29 +264,6 @@
                                         [messageLabelD sizeToFit];
                                         [scrollView addSubview:messageLabelD];
                                         
-                                        UIView *separatorY = [[UIView alloc] initWithFrame:CGRectMake(10, messageLabelD.frame.origin.y + messageLabelD.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
-                                        separatorY.backgroundColor = [UIColor blackColor];
-                                        [scrollView addSubview:separatorY];
-                                        
-                                        lunchLabelA = [[UILabel alloc] initWithFrame:CGRectMake(10, separatorY.frame.origin.y + separatorY.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
-                                        [lunchLabelA setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
-                                        lunchLabelA.text = @"Food";
-                                        lunchLabelA.lineBreakMode = NSLineBreakByWordWrapping;
-                                        lunchLabelA.numberOfLines = 0;
-                                        [lunchLabelA sizeToFit];
-                                        lunchLabelA.frame = CGRectMake(self.view.frame.size.width / 2 - lunchLabelA.frame.size.width / 2, lunchLabelA.frame.origin.y, lunchLabelA.frame.size.width, lunchLabelA.frame.size.height);
-                                        [scrollView addSubview:lunchLabelA];
-                                        
-                                        lunchLabelB = [[UITextView alloc] initWithFrame:CGRectMake(10, lunchLabelA.frame.origin.y + lunchLabelA.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
-                                        NSString *lunch = @"Lunch: ";
-                                        lunchLabelB.text = [@"Breakfast: " stringByAppendingString:[[[schoolDay.breakfastString stringByAppendingString:@"\n\n"] stringByAppendingString:lunch] stringByAppendingString:schoolDay.lunchString]];
-                                        lunchLabelB.dataDetectorTypes = UIDataDetectorTypeLink;
-                                        lunchLabelB.editable = false;
-                                        lunchLabelB.scrollEnabled = false;
-                                        [lunchLabelB setFont:[UIFont systemFontOfSize:16]];
-                                        [lunchLabelB sizeToFit];
-                                        [scrollView addSubview:lunchLabelB];
-                                        
                                         if ([hasImage integerValue] == 1) {
                                                   //ADD IMAGE!!!
                                              [self getImageDataMethodWithCompletion:^(NSError *error, NSMutableArray *returnData) {
@@ -296,7 +273,7 @@
                                                   
                                                   image = [UIImage imageWithData:imageData];
                                                   
-                                                  UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(10, lunchLabelB.frame.origin.y + lunchLabelB.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+                                                  UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(10, messageLabelD.frame.origin.y + messageLabelD.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
                                                   separator.backgroundColor = [UIColor blackColor];
                                                   [scrollView addSubview:separator];
                                                   
@@ -329,6 +306,29 @@
                                                   [imageLabelB sizeToFit];
                                                   [scrollView addSubview:imageLabelB];
                                                   
+                                                  UIView *separatorY = [[UIView alloc] initWithFrame:CGRectMake(10, imageLabelB.frame.origin.y + imageLabelB.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+                                                  separatorY.backgroundColor = [UIColor blackColor];
+                                                  [scrollView addSubview:separatorY];
+                                                  
+                                                  lunchLabelA = [[UILabel alloc] initWithFrame:CGRectMake(10, separatorY.frame.origin.y + separatorY.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
+                                                  [lunchLabelA setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
+                                                  lunchLabelA.text = @"Food";
+                                                  lunchLabelA.lineBreakMode = NSLineBreakByWordWrapping;
+                                                  lunchLabelA.numberOfLines = 0;
+                                                  [lunchLabelA sizeToFit];
+                                                  lunchLabelA.frame = CGRectMake(self.view.frame.size.width / 2 - lunchLabelA.frame.size.width / 2, lunchLabelA.frame.origin.y, lunchLabelA.frame.size.width, lunchLabelA.frame.size.height);
+                                                  [scrollView addSubview:lunchLabelA];
+                                                  
+                                                  lunchLabelB = [[UITextView alloc] initWithFrame:CGRectMake(10, lunchLabelA.frame.origin.y + lunchLabelA.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
+                                                  NSString *lunch = @"Lunch: ";
+                                                  lunchLabelB.text = [@"Breakfast: " stringByAppendingString:[[[schoolDay.breakfastString stringByAppendingString:@"\n\n"] stringByAppendingString:lunch] stringByAppendingString:schoolDay.lunchString]];
+                                                  lunchLabelB.dataDetectorTypes = UIDataDetectorTypeLink;
+                                                  lunchLabelB.editable = false;
+                                                  lunchLabelB.scrollEnabled = false;
+                                                  [lunchLabelB setFont:[UIFont systemFontOfSize:16]];
+                                                  [lunchLabelB sizeToFit];
+                                                  [scrollView addSubview:lunchLabelB];
+                                                  
                                                   self.automaticallyAdjustsScrollViewInsets = NO;
                                                   UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 120, 0);
                                                   scrollView.contentInset = adjustForTabbarInsets;
@@ -345,6 +345,30 @@
                                              }];
                                         }
                                         else {
+                                             
+                                             UIView *separatorY = [[UIView alloc] initWithFrame:CGRectMake(10, messageLabelD.frame.origin.y + messageLabelD.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+                                             separatorY.backgroundColor = [UIColor blackColor];
+                                             [scrollView addSubview:separatorY];
+                                             
+                                             lunchLabelA = [[UILabel alloc] initWithFrame:CGRectMake(10, separatorY.frame.origin.y + separatorY.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
+                                             [lunchLabelA setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
+                                             lunchLabelA.text = @"Food";
+                                             lunchLabelA.lineBreakMode = NSLineBreakByWordWrapping;
+                                             lunchLabelA.numberOfLines = 0;
+                                             [lunchLabelA sizeToFit];
+                                             lunchLabelA.frame = CGRectMake(self.view.frame.size.width / 2 - lunchLabelA.frame.size.width / 2, lunchLabelA.frame.origin.y, lunchLabelA.frame.size.width, lunchLabelA.frame.size.height);
+                                             [scrollView addSubview:lunchLabelA];
+                                             
+                                             lunchLabelB = [[UITextView alloc] initWithFrame:CGRectMake(10, lunchLabelA.frame.origin.y + lunchLabelA.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
+                                             NSString *lunch = @"Lunch: ";
+                                             lunchLabelB.text = [@"Breakfast: " stringByAppendingString:[[[schoolDay.breakfastString stringByAppendingString:@"\n\n"] stringByAppendingString:lunch] stringByAppendingString:schoolDay.lunchString]];
+                                             lunchLabelB.dataDetectorTypes = UIDataDetectorTypeLink;
+                                             lunchLabelB.editable = false;
+                                             lunchLabelB.scrollEnabled = false;
+                                             [lunchLabelB setFont:[UIFont systemFontOfSize:16]];
+                                             [lunchLabelB sizeToFit];
+                                             [scrollView addSubview:lunchLabelB];
+                                             
                                              self.automaticallyAdjustsScrollViewInsets = NO;
                                              UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 120, 0);
                                              scrollView.contentInset = adjustForTabbarInsets;
@@ -524,29 +548,6 @@
                                                   [messageLabelD sizeToFit];
                                                   [scrollView addSubview:messageLabelD];
                                                   
-                                                  UIView *separatorY = [[UIView alloc] initWithFrame:CGRectMake(10, messageLabelD.frame.origin.y + messageLabelD.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
-                                                  separatorY.backgroundColor = [UIColor blackColor];
-                                                  [scrollView addSubview:separatorY];
-                                                  
-                                                  lunchLabelA = [[UILabel alloc] initWithFrame:CGRectMake(10, separatorY.frame.origin.y + separatorY.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
-                                                  [lunchLabelA setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
-                                                  lunchLabelA.text = @"Food";
-                                                  lunchLabelA.lineBreakMode = NSLineBreakByWordWrapping;
-                                                  lunchLabelA.numberOfLines = 0;
-                                                  [lunchLabelA sizeToFit];
-                                                  lunchLabelA.frame = CGRectMake(self.view.frame.size.width / 2 - lunchLabelA.frame.size.width / 2, lunchLabelA.frame.origin.y, lunchLabelA.frame.size.width, lunchLabelA.frame.size.height);
-                                                  [scrollView addSubview:lunchLabelA];
-                                                  
-                                                  lunchLabelB = [[UITextView alloc] initWithFrame:CGRectMake(10, lunchLabelA.frame.origin.y + lunchLabelA.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
-                                                  NSString *lunch = @"Lunch: ";
-                                                  lunchLabelB.text = [@"Breakfast: " stringByAppendingString:[[[schoolDay.breakfastString stringByAppendingString:@"\n\n"] stringByAppendingString:lunch] stringByAppendingString:schoolDay.lunchString]];
-                                                  lunchLabelB.dataDetectorTypes = UIDataDetectorTypeLink;
-                                                  lunchLabelB.editable = false;
-                                                  lunchLabelB.scrollEnabled = false;
-                                                  [lunchLabelB setFont:[UIFont systemFontOfSize:16]];
-                                                  [lunchLabelB sizeToFit];
-                                                  [scrollView addSubview:lunchLabelB];
-                                                  
                                                   if ([hasImage integerValue] == 1) {
                                                             //ADD IMAGE!!!
                                                        [self getImageDataMethodWithCompletion:^(NSError *error, NSMutableArray *returnData) {
@@ -556,7 +557,7 @@
                                                             
                                                             image = [UIImage imageWithData:imageData];
                                                             
-                                                            UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(10, lunchLabelB.frame.origin.y + lunchLabelB.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+                                                            UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(10, messageLabelD.frame.origin.y + messageLabelD.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
                                                             separator.backgroundColor = [UIColor blackColor];
                                                             [scrollView addSubview:separator];
                                                             
@@ -589,6 +590,29 @@
                                                             [imageLabelB sizeToFit];
                                                             [scrollView addSubview:imageLabelB];
                                                             
+                                                            UIView *separatorY = [[UIView alloc] initWithFrame:CGRectMake(10, imageLabelB.frame.origin.y + imageLabelB.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+                                                            separatorY.backgroundColor = [UIColor blackColor];
+                                                            [scrollView addSubview:separatorY];
+                                                            
+                                                            lunchLabelA = [[UILabel alloc] initWithFrame:CGRectMake(10, separatorY.frame.origin.y + separatorY.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
+                                                            [lunchLabelA setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
+                                                            lunchLabelA.text = @"Food";
+                                                            lunchLabelA.lineBreakMode = NSLineBreakByWordWrapping;
+                                                            lunchLabelA.numberOfLines = 0;
+                                                            [lunchLabelA sizeToFit];
+                                                            lunchLabelA.frame = CGRectMake(self.view.frame.size.width / 2 - lunchLabelA.frame.size.width / 2, lunchLabelA.frame.origin.y, lunchLabelA.frame.size.width, lunchLabelA.frame.size.height);
+                                                            [scrollView addSubview:lunchLabelA];
+                                                            
+                                                            lunchLabelB = [[UITextView alloc] initWithFrame:CGRectMake(10, lunchLabelA.frame.origin.y + lunchLabelA.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
+                                                            NSString *lunch = @"Lunch: ";
+                                                            lunchLabelB.text = [@"Breakfast: " stringByAppendingString:[[[schoolDay.breakfastString stringByAppendingString:@"\n\n"] stringByAppendingString:lunch] stringByAppendingString:schoolDay.lunchString]];
+                                                            lunchLabelB.dataDetectorTypes = UIDataDetectorTypeLink;
+                                                            lunchLabelB.editable = false;
+                                                            lunchLabelB.scrollEnabled = false;
+                                                            [lunchLabelB setFont:[UIFont systemFontOfSize:16]];
+                                                            [lunchLabelB sizeToFit];
+                                                            [scrollView addSubview:lunchLabelB];
+                                                            
                                                             self.automaticallyAdjustsScrollViewInsets = NO;
                                                             UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 120, 0);
                                                             scrollView.contentInset = adjustForTabbarInsets;
@@ -605,6 +629,30 @@
                                                        }];
                                                   }
                                                   else {
+                                                       
+                                                       UIView *separatorY = [[UIView alloc] initWithFrame:CGRectMake(10, messageLabelD.frame.origin.y + messageLabelD.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+                                                       separatorY.backgroundColor = [UIColor blackColor];
+                                                       [scrollView addSubview:separatorY];
+                                                       
+                                                       lunchLabelA = [[UILabel alloc] initWithFrame:CGRectMake(10, separatorY.frame.origin.y + separatorY.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
+                                                       [lunchLabelA setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
+                                                       lunchLabelA.text = @"Food";
+                                                       lunchLabelA.lineBreakMode = NSLineBreakByWordWrapping;
+                                                       lunchLabelA.numberOfLines = 0;
+                                                       [lunchLabelA sizeToFit];
+                                                       lunchLabelA.frame = CGRectMake(self.view.frame.size.width / 2 - lunchLabelA.frame.size.width / 2, lunchLabelA.frame.origin.y, lunchLabelA.frame.size.width, lunchLabelA.frame.size.height);
+                                                       [scrollView addSubview:lunchLabelA];
+                                                       
+                                                       lunchLabelB = [[UITextView alloc] initWithFrame:CGRectMake(10, lunchLabelA.frame.origin.y + lunchLabelA.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
+                                                       NSString *lunch = @"Lunch: ";
+                                                       lunchLabelB.text = [@"Breakfast: " stringByAppendingString:[[[schoolDay.breakfastString stringByAppendingString:@"\n\n"] stringByAppendingString:lunch] stringByAppendingString:schoolDay.lunchString]];
+                                                       lunchLabelB.dataDetectorTypes = UIDataDetectorTypeLink;
+                                                       lunchLabelB.editable = false;
+                                                       lunchLabelB.scrollEnabled = false;
+                                                       [lunchLabelB setFont:[UIFont systemFontOfSize:16]];
+                                                       [lunchLabelB sizeToFit];
+                                                       [scrollView addSubview:lunchLabelB];
+                                                       
                                                        self.automaticallyAdjustsScrollViewInsets = NO;
                                                        UIEdgeInsets adjustForTabbarInsets = UIEdgeInsetsMake(0, 0, 120, 0);
                                                        scrollView.contentInset = adjustForTabbarInsets;
@@ -827,7 +875,7 @@
           } else {
                for (int i = 0; i < objects.count; i++) {
                     EventStructure *event = (EventStructure *)[objects objectAtIndex:i];
-                    if ([self daysBetweenDate:[NSDate date] andDate:event.eventDate] <= 5) {
+                    if ([self daysBetweenDate:[NSDate date] andDate:event.eventDate] <= 3) {
                          if ([eventString isEqualToString:@"No upcoming events."]) {
                               eventString = [event.titleString copy];
                          } else
@@ -866,7 +914,7 @@
           } else {
                for (int i = 0; i < objects.count; i++) {
                     AlertStructure *alert = (AlertStructure *)[objects objectAtIndex:i];
-                    if ([self daysBetweenDate:alert.createdAt andDate:[NSDate date]] <= 1) {
+                    if ([self daysBetweenDate:alert.createdAt andDate:[NSDate date]] <= 3) {
                          if ([eventString isEqualToString:@"No recent alerts."]) {
                               eventString = [alert.titleString copy];
                          } else

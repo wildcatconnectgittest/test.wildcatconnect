@@ -63,7 +63,20 @@
      self.navigationItem.title = @"Community Service";
      self.navigationController.navigationBar.translucent = NO;
      
-     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, 50)];
+     UILabel *descriptionLabelC = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, 100)];
+     UIFont *font = [UIFont systemFontOfSize:12];
+     [descriptionLabelC setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
+     descriptionLabelC.text = @"NOTE: All community service opportunities will require administrative approval before they appear in the app.";
+     descriptionLabelC.lineBreakMode = NSLineBreakByWordWrapping;
+     descriptionLabelC.numberOfLines = 0;
+     [descriptionLabelC sizeToFit];
+     [scrollView addSubview:descriptionLabelC];
+     
+     UIView *separatorTwo = [[UIView alloc] initWithFrame:CGRectMake(10, descriptionLabelC.frame.origin.y + descriptionLabelC.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+     separatorTwo.backgroundColor = [UIColor blackColor];
+     [scrollView addSubview:separatorTwo];
+     
+     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, separatorTwo.frame.origin.y + separatorTwo.frame.size.height + 10, self.view.frame.size.width - 20, 50)];
      titleLabel.text = @"Title";
      [titleLabel setFont:[UIFont systemFontOfSize:16]];
      titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -88,7 +101,6 @@
      [scrollView addSubview:titleTextView];
      
      UILabel *descriptionLabelB = [[UILabel alloc] initWithFrame:CGRectMake(10, titleTextView.frame.origin.y + titleTextView.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
-     UIFont *font = [UIFont systemFontOfSize:12];
      [descriptionLabelB setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
      descriptionLabelB.text = @"NOTE: If you are unsure of the exact start or end time for this opportunity, please leave adequate time in the dates below.";
      descriptionLabelB.lineBreakMode = NSLineBreakByWordWrapping;
@@ -150,7 +162,7 @@
      [scrollView addSubview:separator];
      
      postButton = [UIButton buttonWithType:UIButtonTypeSystem];
-     [postButton setTitle:@"POST UPDATE" forState:UIControlStateNormal];
+     [postButton setTitle:@"SUBMIT FOR APPROVAL" forState:UIControlStateNormal];
      [postButton sizeToFit];
      [postButton addTarget:self action:@selector(postUpdate) forControlEvents:UIControlEventTouchUpInside];
      postButton.frame = CGRectMake((self.view.frame.size.width - postButton.frame.size.width - 10), separator.frame.origin.y + separator.frame.size.height + 10, postButton.frame.size.width, postButton.frame.size.height);

@@ -107,7 +107,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-     if (indexPath.section == 0) {
+     if (indexPath.section == 3) {
           if (indexPath.row == 0) {
                return self.cellHeight;
           }
@@ -119,7 +119,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
      UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
-     if (indexPath.section == 0) {
+     if (indexPath.section == 3) {
                //List out developers...
           if (self.developerArray) {
                cell.textLabel.numberOfLines = self.developerArray.count + 3;
@@ -137,16 +137,16 @@
                cell.textLabel.text = @"No list available.";
           }
           return cell;
-     } else if (indexPath.section == 1) {
+     } else if (indexPath.section == 0) {
                //Version
           cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CellIdentifier"];
           cell.textLabel.text = @"Version";
           cell.detailTextLabel.text = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-     } else if (indexPath.section == 2) {
+     } else if (indexPath.section == 1) {
                //Capstone
           cell.textLabel.text = @"Capstone Information";
           cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-     } else if (indexPath.section == 3) {
+     } else if (indexPath.section == 2) {
                //Disclaimer
           cell.textLabel.text = @"Disclaimer";
           cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -157,10 +157,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
      [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
           //Change logic here for new options...
-     if (indexPath.section == 3) {
+     if (indexPath.section == 2) {
           [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.wildcatconnect.org/a/disclaimer"]];
           [tableView deselectRowAtIndexPath:indexPath animated:YES];
-     } else if (indexPath.section == 2) {
+     } else if (indexPath.section == 1) {
           CapstoneViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"CapstoneView"];
           [self.navigationController pushViewController:controller animated:YES];
      }

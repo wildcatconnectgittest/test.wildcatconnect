@@ -10,6 +10,7 @@
 #import "GroupResultsTableViewController.h"
 #import "ExtracurricularStructure.h"
 #import <Parse/Parse.h>
+#import "GroupDetailViewController.h"
 
 @interface GroupMainTableViewController () <UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating>
 
@@ -252,7 +253,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-     return 120;
+     return 60;
 }
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
@@ -286,7 +287,12 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+     GroupDetailViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"GroupDetail"];
+     NSArray *array = ((NSArray *)[[self.dictionaryArray objectAtIndex:[indexPath section]] objectForKey:@"rowValues"]);
+     ExtracurricularStructure *groupStructure = (tableView == self.tableView) ? array[indexPath.row] : self.resultsTableController.filteredGroups[indexPath.row];
+     controller.EC = groupStructure;
+     [self.navigationController pushViewController:controller animated:YES];
 }
 
 #pragma mark - UISearchResultsUpdating

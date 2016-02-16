@@ -490,7 +490,7 @@
      dispatch_group_enter(serviceGroup);
      __block NSError *theError;
      NSMutableArray *returnArray = [NSMutableArray array];
-     if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administrator"]) {
+     if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administration"]) {
           PFQuery *query = [ExtracurricularStructure query];
           [query orderByAscending:@"titleString"];
           [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {

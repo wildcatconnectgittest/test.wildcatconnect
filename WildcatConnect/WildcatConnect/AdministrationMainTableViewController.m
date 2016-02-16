@@ -42,10 +42,9 @@
      
      self.topBar.topItem.title = [[lastName stringByAppendingString:@", "] stringByAppendingString:firstName];
      
-     self.sectionsArray = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"Wildcat News Story", @"Group Update", @"Event", nil]];
+     self.sectionsArray = [[NSMutableArray alloc] initWithArray:[NSArray arrayWithObjects:@"Wildcat News Story", @"Group Update", @"Event", @"Community Service Update", nil]];
      
-     if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administrator"]) {
-          [self.sectionsArray addObject:@"Community Service Update"];
+     if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administration"]) {
           [self.sectionsArray addObject:@"User Poll"];
           [self.sectionsArray addObject:@"Alert"];
      }
@@ -54,9 +53,9 @@
      [self.sectionsImagesArray addObject:@"news@2x.png"];
      [self.sectionsImagesArray addObject:@"EC@2x.png"];
      [self.sectionsImagesArray addObject:@"events@2x.png"];
+     [self.sectionsImagesArray addObject:@"communityService@2x.png"];
      
-     if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administrator"]) {
-          [self.sectionsImagesArray addObject:@"communityService@2x.png"];
+     if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administration"]) {
           [self.sectionsImagesArray addObject:@"studentCenter@2x.png"];
           [self.sectionsImagesArray addObject:@"alerts@2x.png"];
      }
@@ -82,29 +81,29 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-     if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administrator"]) {
+     if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administration"]) {
           return 3;
      } else return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-     if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administrator"]) {
+     if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administration"]) {
           if (section == 0) {
-               return 4;
+               return 3;
           } else if (section == 1)
-               return self.sectionsArray.count - 3;
+               return self.sectionsArray.count - 2;
           else
                return 2; // Change password, new extracurricular group...
      } else {
           if (section == 0)
-               return 3;
+               return 4;
           else
                return 2; // Change password, new extracurricular group...
      }
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-     if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administrator"]) {
+     if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administration"]) {
           if (section == 0) {
                return @"ADMINISTRATIVE TOOLS";
           } else if (section == 1)
@@ -129,14 +128,14 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
      UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier" forIndexPath:indexPath];
-     if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administrator"]) {
+     if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administration"]) {
           if (indexPath.section == 0) {
                if (indexPath.row == 0) {
                     cell.textLabel.text = @"Picture of the Day";
                     cell.imageView.image = [UIImage imageNamed:@"picture@2x.png"];
                } else {
-                    cell.textLabel.text = self.sectionsArray[indexPath.row + 2];
-                    cell.imageView.image = [UIImage imageNamed:self.sectionsImagesArray[indexPath.row + 2]];
+                    cell.textLabel.text = self.sectionsArray[indexPath.row + 3];
+                    cell.imageView.image = [UIImage imageNamed:self.sectionsImagesArray[indexPath.row + 3]];
                }
           } else if (indexPath.section == 1) {
                cell.textLabel.text = self.sectionsArray[indexPath.row];
@@ -170,18 +169,15 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
      [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-     if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administrator"]) {
+     if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administration"]) {
           if (indexPath.section == 0) {
                if (indexPath.row == 0) {
                     EditPictureDayViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"EditPicture"];
                     [self.navigationController pushViewController:controller animated:YES];
                } else if (indexPath.row == 1) {
-                    ComposeCommunityServiceViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"ComposeCommunity"];
-                    [self.navigationController pushViewController:controller animated:YES];
-               } else if (indexPath.row == 2) {
                     ComposePollViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"ComposePoll"];
                     [self.navigationController pushViewController:controller animated:YES];
-               } else if (indexPath.row == 3) {
+               } else if (indexPath.row == 2) {
                     ComposeAlertViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"ComposeAlert"];
                     [self.navigationController pushViewController:controller animated:YES];
                }
@@ -194,6 +190,9 @@
                     [self.navigationController pushViewController:controller animated:YES];
                } else if (indexPath.row == 2) {
                     ComposeEventViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"ComposeEvent"];
+                    [self.navigationController pushViewController:controller animated:YES];
+               } else if (indexPath.row == 3) {
+                    ComposeCommunityServiceViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"ComposeCommunity"];
                     [self.navigationController pushViewController:controller animated:YES];
                }
           } else if (indexPath.section == 2) {
@@ -212,6 +211,12 @@
                     [self.navigationController pushViewController:controller animated:YES];
                } else if (indexPath.row == 1) {
                     ComposeExtracurricularUpdateViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"ComposeExtracurricular"];
+                    [self.navigationController pushViewController:controller animated:YES];
+               } else if (indexPath.row == 2) {
+                    ComposeEventViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"ComposeEvent"];
+                    [self.navigationController pushViewController:controller animated:YES];
+               } else if (indexPath.row == 3) {
+                    ComposeCommunityServiceViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"ComposeCommunity"];
                     [self.navigationController pushViewController:controller animated:YES];
                }
           } else if (indexPath.section == 1) {

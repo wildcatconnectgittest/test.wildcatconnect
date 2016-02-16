@@ -91,7 +91,7 @@
      [scrollView addSubview:descriptionLabel];
      
      messageRemainingLabel = [[UILabel alloc] init];
-     messageRemainingLabel.text = @"140 characters remaining";
+     messageRemainingLabel.text = @"400 characters remaining";
      [messageRemainingLabel setFont:[UIFont systemFontOfSize:10]];
      [messageRemainingLabel sizeToFit];
      messageRemainingLabel.frame = CGRectMake((self.view.frame.size.width - messageRemainingLabel.frame.size.width - 10), descriptionLabel.frame.origin.y, messageRemainingLabel.frame.size.width, 20);
@@ -111,7 +111,7 @@
      [descriptionTextView setFont:[UIFont systemFontOfSize:16]];
      descriptionTextView.layer.borderWidth = 1.0f;
      descriptionTextView.layer.borderColor = [[UIColor grayColor] CGColor];
-     descriptionTextView.scrollEnabled = false;
+     descriptionTextView.scrollEnabled = true;
      [scrollView addSubview:descriptionTextView];
      
      UILabel *meetingLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, descriptionTextView.frame.origin.y + descriptionTextView.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
@@ -372,17 +372,17 @@
      hasChanged = true;
      if (textView == descriptionTextView) {
           int len = textView.text.length;
-          if (140 - len <= 10) {
-               if (140 - len == 1) {
-                    messageRemainingLabel.text= [[NSString stringWithFormat:@"%i",140-len] stringByAppendingString:@" character remaining"];
+          if (400 - len <= 10) {
+               if (400 - len == 1) {
+                    messageRemainingLabel.text= [[NSString stringWithFormat:@"%i",400-len] stringByAppendingString:@" character remaining"];
                } else {
-                    messageRemainingLabel.text= [[NSString stringWithFormat:@"%i",140-len] stringByAppendingString:@" characters remaining"];
+                    messageRemainingLabel.text= [[NSString stringWithFormat:@"%i",400-len] stringByAppendingString:@" characters remaining"];
                }
                messageRemainingLabel.textColor = [UIColor redColor];
                [messageRemainingLabel sizeToFit];
                messageRemainingLabel.frame = CGRectMake((self.view.frame.size.width - messageRemainingLabel.frame.size.width - 10), messageRemainingLabel.frame.origin.y, messageRemainingLabel.frame.size.width, 20);
           } else {
-               messageRemainingLabel.text= [[NSString stringWithFormat:@"%i",140-len] stringByAppendingString:@" characters remaining"];
+               messageRemainingLabel.text= [[NSString stringWithFormat:@"%i",400-len] stringByAppendingString:@" characters remaining"];
                messageRemainingLabel.textColor = [UIColor blackColor];
                [messageRemainingLabel sizeToFit];
                messageRemainingLabel.frame = CGRectMake((self.view.frame.size.width - messageRemainingLabel.frame.size.width - 10), messageRemainingLabel.frame.origin.y, messageRemainingLabel.frame.size.width, 20);
@@ -413,7 +413,7 @@
                
                return NO;
           } else
-               return [self isAcceptableTextLength:textView.text.length + string.length - range.length forMaximum:140 existsMaximum:YES];
+               return [self isAcceptableTextLength:textView.text.length + string.length - range.length forMaximum:400 existsMaximum:YES];
      }
      else return nil;
 }
