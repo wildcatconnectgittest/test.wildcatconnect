@@ -11,6 +11,7 @@
 #import "ExtracurricularUpdateStructure.h"
 #import "AppManager.h"
 #import "GroupMainTableViewController.h"
+#import "ECUDetailViewController.h"
 
 @interface ExtracurricularsTableViewController ()
 
@@ -409,9 +410,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-     if (indexPath.section == 0) {
-          return 150;
-     } else return 70;
+     return 70;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -438,7 +437,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
      if (section == 0)
-          return @"MY GROUPS";
+          return @"MY UPDATES";
      else if (section == 1)
           return @"ALL GROUPS";
      else return nil;
@@ -456,16 +455,7 @@
                UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
                cell.textLabel.text = EC.titleString;
                cell.detailTextLabel.text = extracurricularUpdateStructure.messageString;
-               cell.detailTextLabel.numberOfLines = 0;
-               cell.detailTextLabel.lineBreakMode = UILineBreakModeWordWrap;
-               UIButton *unreadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-               [unreadButton setImage:[UIImage imageNamed:@"minus@2x.png"] forState:UIControlStateNormal];
-               [unreadButton setTintColor:[UIColor redColor]];
-               [unreadButton addTarget:self action:@selector(removeGroup:) forControlEvents:UIControlEventTouchUpInside];
-               [unreadButton sizeToFit];
-               [unreadButton setTag:indexPath.row];
-               cell.accessoryView = unreadButton;
-               [cell setNeedsLayout];
+               cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                return cell;
           }
      } else if (indexPath.section == 1) {
@@ -533,7 +523,17 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
      [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-     if (indexPath.section == 1) {
+     if (indexPath.section == 0) {
+          if (self.updatesArray.count > 0) {
+               ECUDetailViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"ECUDetail"];
+               ExtracurricularUpdateStructure *ECU = [self.updatesArray objectAtIndex:indexPath.row];
+               controller.ECU = [self.updatesArray objectAtIndex:indexPath.row];
+               ExtracurricularStructure *EC = [ECU getStructureForUpdate:ECU withArray:[self.extracurricularsArray copy]];
+               controller.titleString = EC.titleString;
+               [self.navigationController pushViewController:controller animated:YES];
+
+          }
+     } else if (indexPath.section == 1) {
           GroupMainTableViewController *controller = [[GroupMainTableViewController alloc] init];
           [self.navigationController pushViewController:controller animated:YES];
      }

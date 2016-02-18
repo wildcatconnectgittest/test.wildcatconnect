@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SchoolDayStructure.h"
 
-@interface FirstViewController : UIViewController {
+@interface FirstViewController : UIViewController <UIAlertViewDelegate> {
      
 }
 

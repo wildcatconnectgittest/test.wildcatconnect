@@ -1,21 +1,20 @@
 //
-//  CommunityServiceDetailViewController.m
+//  ECUDetailViewController.m
 //  WildcatConnect
 //
-//  Created by Kevin Lyons on 2/16/16.
+//  Created by Kevin Lyons on 2/18/16.
 //  Copyright © 2016 WildcatConnect. All rights reserved.
 //
 
-#import "CommunityServiceDetailViewController.h"
+#import "ECUDetailViewController.h"
 
-@interface CommunityServiceDetailViewController ()
+@interface ECUDetailViewController ()
 
 @end
 
-@implementation CommunityServiceDetailViewController {
+@implementation ECUDetailViewController {
      UILabel *titleLabel;
      UILabel *dateLabel;
-     UILabel *dateLabelB;
      UITextView *messageLabel;
 }
 
@@ -33,39 +32,19 @@
      UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
      
      titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, 100)];
-     titleLabel.text = self.CS.commTitleString;
+     titleLabel.text = self.titleString;
      [titleLabel setFont:[UIFont systemFontOfSize:24]];
      titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
      titleLabel.numberOfLines = 0;
      [titleLabel sizeToFit];
      [scrollView addSubview:titleLabel];
      
-     dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, titleLabel.frame.origin.y + titleLabel.frame.size.height + 5, self.view.frame.size.width - 20, 100)];
-     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-     [dateFormatter setDateFormat:@"EEEE, MMMM d, YYYY @ h:mm a"];
-     NSString *dateString = [dateFormatter stringFromDate:self.CS.startDate];
-     dateLabel.text = [@"Starts - " stringByAppendingString:dateString];
-     [dateLabel setFont:[UIFont systemFontOfSize:18]];
-     dateLabel.lineBreakMode = NSLineBreakByWordWrapping;
-     dateLabel.numberOfLines = 0;
-     [dateLabel sizeToFit];
-     [scrollView addSubview:dateLabel];
-     
-     dateLabelB = [[UILabel alloc] initWithFrame:CGRectMake(10, dateLabel.frame.origin.y + dateLabel.frame.size.height + 5, self.view.frame.size.width - 20, 100)];
-     NSString *theDate = [dateFormatter stringFromDate:self.CS.endDate];
-     dateLabelB.text = [@"Ends - " stringByAppendingString:theDate];
-     [dateLabelB setFont:[UIFont systemFontOfSize:18]];
-     dateLabelB.lineBreakMode = NSLineBreakByWordWrapping;
-     dateLabelB.numberOfLines = 0;
-     [dateLabelB sizeToFit];
-     [scrollView addSubview:dateLabelB];
-     
-     UIView * separator = [[UIView alloc] initWithFrame:CGRectMake(10, dateLabelB.frame.origin.y + dateLabelB.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+     UIView * separator = [[UIView alloc] initWithFrame:CGRectMake(10, titleLabel.frame.origin.y + titleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
      separator.backgroundColor = [UIColor blackColor];
      [scrollView addSubview:separator];
      
      messageLabel = [[UITextView alloc] initWithFrame:CGRectMake(10, separator.frame.origin.y + separator.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
-     messageLabel.text = self.CS.commSummaryString;
+     messageLabel.text = self.ECU.messageString;
      messageLabel.dataDetectorTypes = UIDataDetectorTypeLink;
      messageLabel.editable = false;
      messageLabel.scrollEnabled = false;
