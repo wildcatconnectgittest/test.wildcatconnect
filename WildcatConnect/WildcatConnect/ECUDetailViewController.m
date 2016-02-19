@@ -39,12 +39,20 @@
      [titleLabel sizeToFit];
      [scrollView addSubview:titleLabel];
      
-     UIView * separator = [[UIView alloc] initWithFrame:CGRectMake(10, titleLabel.frame.origin.y + titleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+     dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, titleLabel.frame.origin.y + titleLabel.frame.size.height + 5, self.view.frame.size.width - 20, 100)];
+     dateLabel.text = [@"Posted " stringByAppendingString:self.dateString];
+     [dateLabel setFont:[UIFont systemFontOfSize:14]];
+     dateLabel.lineBreakMode = NSLineBreakByWordWrapping;
+     dateLabel.numberOfLines = 0;
+     [dateLabel sizeToFit];
+     [scrollView addSubview:dateLabel];
+     
+     UIView * separator = [[UIView alloc] initWithFrame:CGRectMake(10, dateLabel.frame.origin.y + dateLabel.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
      separator.backgroundColor = [UIColor blackColor];
      [scrollView addSubview:separator];
      
      messageLabel = [[UITextView alloc] initWithFrame:CGRectMake(10, separator.frame.origin.y + separator.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
-     messageLabel.text = self.ECU.messageString;
+     messageLabel.text = self.messageString;
      messageLabel.dataDetectorTypes = UIDataDetectorTypeLink;
      messageLabel.editable = false;
      messageLabel.scrollEnabled = false;

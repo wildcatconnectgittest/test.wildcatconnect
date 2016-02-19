@@ -124,7 +124,7 @@
      [scrollView addSubview:authorTextView];
      
      UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, authorTextView.frame.origin.y + authorTextView.frame.size.height + 10, self.view.frame.size.width - 20, 100)];
-     dateLabel.text = @"Date (MM-dd-YYYY)";
+     dateLabel.text = @"Date";
      [dateLabel setFont:[UIFont systemFontOfSize:16]];
      dateLabel.lineBreakMode = NSLineBreakByWordWrapping;
      dateLabel.numberOfLines = 0;
@@ -137,7 +137,7 @@
      dateTextView.layer.borderWidth = 1.0f;
      dateTextView.layer.borderColor = [[UIColor grayColor] CGColor];
      NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-     [dateFormatter setDateFormat:@"MM-dd-yyyy"];
+     [dateFormatter setDateFormat:@"M-d-yyyy"];
      NSDate *today = [NSDate date];
      dateTextView.text = [dateFormatter stringFromDate:today];
      dateTextView.scrollEnabled = false;

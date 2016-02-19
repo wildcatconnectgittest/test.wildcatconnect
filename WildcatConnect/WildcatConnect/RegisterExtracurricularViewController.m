@@ -216,8 +216,7 @@
      EC.meetingIDs = self.meetingString;
      NSString *firstName = [[PFUser currentUser] objectForKey:@"firstName"];
      NSString *lastName = [[PFUser currentUser] objectForKey:@"lastName"];
-     
-     EC.userString = [[lastName stringByAppendingString:@", "] stringByAppendingString:firstName];
+     EC.userString = [[firstName stringByAppendingString:@" "] stringByAppendingString:lastName];
      PFQuery *query = [ExtracurricularStructure query];
      [query orderByDescending:@"extracurricularID"];
      [query whereKey:@"titleString" equalTo:EC.titleString];
@@ -228,7 +227,7 @@
           } else {
                PFQuery *queryTwo = [ExtracurricularStructure query];
                [queryTwo orderByDescending:@"extracurricularID"];
-               [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+               [queryTwo getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
                     ExtracurricularStructure *structure = (ExtracurricularStructure *)object;
                     if (structure) {
                          EC.extracurricularID = [NSNumber numberWithInteger:[structure.extracurricularID integerValue] + 1];

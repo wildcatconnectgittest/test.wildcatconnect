@@ -114,7 +114,8 @@
                for (ExtracurricularUpdateStructure *e in returnArray) {
                     [itemsToSave addObject:@{ @"extracurricularID"     : e.extracurricularID,
                                               @"messageString"    : e.messageString,
-                                              @"extracurricularUpdateID" :e.extracurricularUpdateID
+                                              @"extracurricularUpdateID" :e.extracurricularUpdateID,
+                                              @"postDate" : e.postDate
                                               }];
                }
                NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -255,6 +256,7 @@
           ECUpdateStructure.extracurricularID = [object objectForKey:@"extracurricularID"];
           ECUpdateStructure.messageString = [object objectForKey:@"messageString"];
           ECUpdateStructure.extracurricularUpdateID = [object objectForKey:@"extracurricularUpdateID"];
+          ECUpdateStructure.postDate = [object objectForKey:@"postDate"];
           [array addObject:ECUpdateStructure];
           if (i == theArrayToSearch.count - 1)
                dispatch_group_leave(serviceGroup);
@@ -527,9 +529,12 @@
           if (self.updatesArray.count > 0) {
                ECUDetailViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"ECUDetail"];
                ExtracurricularUpdateStructure *ECU = [self.updatesArray objectAtIndex:indexPath.row];
-               controller.ECU = [self.updatesArray objectAtIndex:indexPath.row];
                ExtracurricularStructure *EC = [ECU getStructureForUpdate:ECU withArray:[self.extracurricularsArray copy]];
                controller.titleString = EC.titleString;
+               controller.messageString = ECU.messageString;
+               NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+               [dateFormatter setDateFormat:@"EEEE, MMMM d, YYYY @ h:mm a"];
+               controller.dateString = [dateFormatter stringFromDate:ECU.postDate];
                [self.navigationController pushViewController:controller animated:YES];
 
           }

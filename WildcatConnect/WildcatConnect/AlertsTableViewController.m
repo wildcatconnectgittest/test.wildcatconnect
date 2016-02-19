@@ -60,20 +60,6 @@
                dispatch_async(dispatch_get_main_queue(), ^ {
                     [self.tableView reloadData];
                     [self refreshControl];
-                    [self getCountFourMethodWithCompletion:^(NSInteger count4) {
-                         [activity stopAnimating];
-                         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Read All" style:UIBarButtonItemStylePlain target:self action:@selector(readAllMethod)];
-                         self.navigationItem.rightBarButtonItem = barButtonItem;
-                         [barButtonItem release];
-                         NSMutableArray *alertsArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"readAlerts"];
-                         NSInteger read = alertsArray.count;
-                         NSNumber *readNumber = [NSNumber numberWithInt:(count4 - read)];
-                         if ([readNumber integerValue] > 0) {
-                              [[self.tabBarController.viewControllers objectAtIndex:2] tabBarItem].badgeValue = [readNumber stringValue];
-                         } else {
-                              [[self.tabBarController.viewControllers objectAtIndex:2] tabBarItem].badgeValue = nil;
-                         }
-                    }];
                });
           }];
      }
@@ -378,7 +364,6 @@
      [self.tableView reloadData];
      [self getCountFourMethodWithCompletion:^(NSInteger count4) {
           dispatch_async(dispatch_get_main_queue(), ^ {
-               [activity stopAnimating];
                NSMutableArray *alertsArray = self.readAlerts;
                NSInteger read = alertsArray.count;
                NSNumber *readNumber = [NSNumber numberWithInt:(count4 - read)];

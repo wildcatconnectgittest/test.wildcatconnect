@@ -68,6 +68,7 @@
           [self getOldDataWithCompletion:^(NSMutableArray *returnArray) {
                     //save the data
                self.staffMembers = returnArray;
+               self.searchController.searchBar.placeholder = [[@"Search " stringByAppendingString:[NSString stringWithFormat:@"%lu", self.staffMembers.count]] stringByAppendingString:@" Staff Members"];
                [self testMethodTwoWithCompletion:^(NSError *error, NSMutableArray *dictionaryReturnArray) {
                     [self removeUnusedLettersWithCompletion:^(NSError *error, NSMutableArray *returnArray) {
                          self.dictionaryArray = returnArray;

@@ -14,6 +14,7 @@
 @dynamic extracurricularID;
 @dynamic messageString;
 @dynamic extracurricularUpdateID;
+@dynamic postDate;
 
 + (void)load {
      [self registerSubclass];

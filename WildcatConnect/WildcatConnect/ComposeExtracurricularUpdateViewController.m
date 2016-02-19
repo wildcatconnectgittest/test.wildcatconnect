@@ -310,6 +310,7 @@
                extracurricularUpdateStructure.extracurricularID = [self.groupArray objectAtIndex:i];
                extracurricularUpdateStructure.messageString = messageTextView.text;
                extracurricularUpdateStructure.extracurricularUpdateID = [NSNumber numberWithInteger:firstIndex + 1 + i];
+               extracurricularUpdateStructure.postDate = [NSDate date];
                [finalArray addObject:extracurricularUpdateStructure];
           }
           [PFObject saveAllInBackground:finalArray block:^(BOOL succeeded, NSError * _Nullable error) {
@@ -329,7 +330,7 @@
           UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please ensure you have correctly filled out all fields!" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
           [alertView show];
      } else {
-          postAlertView = [[UIAlertView alloc] initWithTitle:@"Confirmation" message:@"Are you sure you want to post this extracurricular update? It will be live to all app users." delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+          postAlertView = [[UIAlertView alloc] initWithTitle:@"Confirmation" message:@"Are you sure you want to post this group update? It will be live to all subscribed users." delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
           [postAlertView show];
      }
 }

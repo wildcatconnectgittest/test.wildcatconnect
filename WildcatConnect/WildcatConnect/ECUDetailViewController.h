@@ -14,5 +14,7 @@
 @property (nonatomic, strong) ExtracurricularUpdateStructure *ECU;
 
 @property (nonatomic, strong) NSString *titleString;
+@property (nonatomic, strong) NSString *messageString;
+@property (nonatomic, strong) NSString *dateString;
 
 @end

@@ -90,6 +90,7 @@
      [activity startAnimating];
      [self testMethodWithCompletion:^(NSError *error, NSMutableArray *returnArrayA) {
           self.groups = returnArrayA;
+          self.searchController.searchBar.placeholder = [[@"Search " stringByAppendingString:[NSString stringWithFormat:@"%lu", self.groups.count]] stringByAppendingString:@" Groups"];
           [self testMethodTwoWithCompletion:^(NSError *error, NSMutableArray *dictionaryReturnArray) {
                [self removeUnusedLettersWithCompletion:^(NSError *error, NSMutableArray *returnArray) {
                     self.dictionaryArray = returnArray;
@@ -320,10 +321,6 @@
           NSPredicate *finalPredicate = [NSComparisonPredicate predicateWithLeftExpression:lhs rightExpression:rhs modifier:NSDirectPredicateModifier type:NSBeginsWithPredicateOperatorType options:NSCaseInsensitivePredicateOption];
           [searchItemsPredicate addObject:finalPredicate];
                //First name field matching
-          lhs = [NSExpression expressionForKeyPath:@"descriptionString"];
-          rhs = [NSExpression expressionForConstantValue:searchString];
-          finalPredicate = [NSComparisonPredicate predicateWithLeftExpression:lhs rightExpression:rhs modifier:NSDirectPredicateModifier type:NSBeginsWithPredicateOperatorType options:NSCaseInsensitivePredicateOption];
-          [searchItemsPredicate addObject:finalPredicate];
                //add this OR predicate to our master AND predicate
           NSCompoundPredicate *orMatchPredicates = [NSCompoundPredicate orPredicateWithSubpredicates:searchItemsPredicate];
           [andMatchPredicates addObject:orMatchPredicates];

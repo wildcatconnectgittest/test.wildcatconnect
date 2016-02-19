@@ -453,44 +453,26 @@ Parse.Cloud.job("userRegisterStructureDeletion", function(request, response) {
 Parse.Cloud.afterSave("AlertStructure", function(request) {
   if (request.object.get("alertID") != null) {
     if (request.object.get("isReady") == 1 && request.object.get("views") == 0) {
-      var query = new Parse.Query("SchoolDayStructure");
-      query.equalTo("isActive", 1);
-      query.ascending("schoolDayID");
+      var query = new Parse.Query("SpecialKeyStructure");
+      query.equalTo("key", "appActive");
       query.first({
         success: function(structure) {
-          var messageString = structure.get("messageString");
-          if (messageString === "No alerts yet.") {
-            messageString = request.object.get("titleString");
-          } else {
-            messageString = messageString + "\n\n" + request.object.get("titleString");
+          if (structure.get("value") === "1") {
+            Parse.Push.send({
+              channels: [ "global" ],
+              data: {
+                title: "WildcatConnect",
+                alert: request.object.get("titleString"),
+                a: request.object.get("alertID"),
+                badge: "Increment"
+              }
+            });
           };
-          structure.set("messageString", messageString);
-          structure.save(null, {
-            success: function(structure) {
-              // Execute any logic that should take place after the object is saved.
-              //alert('New object created with objectId: ' + gameScore.id);
-            },
-            error: function(error) {
-              // Execute any logic that should take place if the save fails.
-              // error is a Parse.Error with an error code and message.
-              //alert('Failed to create new object, with error code: ' + error.message);
-            }
-          });
         },
         error: function(errorTwo) {
           response.error("Error.");
         }
       });
-      Parse.Push.send({
-        channels: [ "global" ],
-        data: {
-          title: "WildcatConnect",
-          alert: request.object.get("titleString"),
-          a: request.object.get("alertID"),
-          badge: "Increment"
-        }
-      });
-      console.log("Push sent from iOS API.");
     };
   };
 });
@@ -886,6 +868,24 @@ Parse.Cloud.afterDelete("ExtracurricularStructure", function(request) {
           //
         }
       });
+    },
+    error: function(error) {
+      //
+    }
+  });
+
+  var queryThree = new Parse.Query("ExtracurricularUpdateStructure");
+  queryThree.equalTo("extracurricularID", ID);
+  queryThree.find({
+    success: function(updates) {
+      Parse.Object.destroyAll(updates, {
+        success: function(deletedObjects) {
+
+        },
+        error: function(error) {
+
+        }
+      })
     },
     error: function(error) {
       //

@@ -18,6 +18,7 @@
 @property NSNumber *extracurricularID;
 @property NSString *messageString;
 @property NSNumber *extracurricularUpdateID;
+@property NSDate *postDate;
 
 - (ExtracurricularStructure *)getStructureForUpdate:(ExtracurricularUpdateStructure *) update withArray:(NSMutableArray *)array;
 
