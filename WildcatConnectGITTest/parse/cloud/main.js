@@ -514,7 +514,14 @@ Parse.Cloud.define("snowDay", function(request, response) {
       response.success();*/
       Parse.Object.saveAll(array, {
         success: function() {
-          response.success();
+          Parse.Cloud.run("SDSgen", null, {
+            success: function() {
+              response.success("Done!");
+            },
+            error: function(error) {
+              response.error(error);
+            }
+          });
         },
         error: function(objects, error) {
           response.error(error);
@@ -525,6 +532,114 @@ Parse.Cloud.define("snowDay", function(request, response) {
       response.error(error);
     }
   });
+});
+
+Parse.Cloud.define("SDSgen", function(request, response) {
+  var query = new Parse.Query("SchoolDayStructure");
+  query.descending("schoolDayID");
+  query.first({
+    success: function(object) {
+      var ID = object.get("schoolDayID") + 1;
+      var oldDate = object.get("schoolDate");
+      var oldDateDate =  Moment(oldDate, "MM-DD-YYYY");
+      var thatDay = oldDateDate.day();
+      if (thatDay === 5) {
+        var newDateDate = oldDateDate.add('days', 3);
+        var newDate = newDateDate.format("MM-DD-YYYY");
+        var oldType = object.get("scheduleType");
+        var newType = "*";
+        if (oldType.indexOf("A") > -1) {
+          newType = "B1";
+        } else if (oldType.indexOf("B") > -1) {
+          newType = "C1";
+        } else if (oldType.indexOf("C") > -1) {
+          newType = "D1";
+        } else if (oldType.indexOf("D") > -1) {
+          newType = "E1";
+        } else if (oldType.indexOf("E") > -1) {
+          newType = "F1";
+        } else if (oldType.indexOf("F") > -1) {
+          newType = "G1";
+        } else if (oldType.indexOf("G") > -1) {
+          newType = "A1";
+        };
+        var SchoolDayStructure = Parse.Object.extend("SchoolDayStructure");
+        var newDay = new SchoolDayStructure();
+        newDay.save({
+          "hasImage": 0,
+          "imageString" : "None.",
+          "messageString" : "No alerts yet.",
+          "scheduleType" : newType,
+          "schoolDate" : newDate,
+          "imageUser" : "None.",
+          "customSchedule" : "None",
+          "imageUserFullString" : "None.",
+          "schoolDayID" : ID,
+          "isActive" : 1,
+          "customString" : "",
+          "breakfastString" : "No breakfast yet.",
+          "lunchString" : "No lunch yet.",
+          "isSnow" : 0
+        }, {
+          success: function(savedObject) {
+            response.success("New day created.");
+          },
+          error: function(savedObject, error) {
+            response.error(error.code + " - " + error.message);
+          }
+        });
+      } else {
+        var newDateDate = oldDateDate.add('days', 1);
+        var newDate = newDateDate.format("MM-DD-YYYY");
+        var oldType = object.get("scheduleType");
+        var newType = "*";
+        if (oldType.indexOf("A") > -1) {
+          newType = "B";
+        } else if (oldType.indexOf("B") > -1) {
+          newType = "C";
+        } else if (oldType.indexOf("C") > -1) {
+          newType = "D";
+        } else if (oldType.indexOf("D") > -1) {
+          newType = "E";
+        } else if (oldType.indexOf("E") > -1) {
+          newType = "F";
+        } else if (oldType.indexOf("F") > -1) {
+          newType = "G";
+        } else if (oldType.indexOf("G") > -1) {
+          newType = "A";
+        };
+        var SchoolDayStructure = Parse.Object.extend("SchoolDayStructure");
+        var newDay = new SchoolDayStructure();
+        newDay.save({
+          "hasImage": 0,
+          "imageString" : "None.",
+          "messageString" : "No alerts yet.",
+          "scheduleType" : newType,
+          "schoolDate" : newDate,
+          "imageUser" : "None.",
+          "customSchedule" : "None",
+          "imageUserFullString" : "None.",
+          "schoolDayID" : ID,
+          "isActive" : 1,
+          "customString" : "",
+          "breakfastString" : "No breakfast data.",
+          "lunchString" : "No lunch data.",
+          "isSnow" : 0
+        }, {
+          success: function(savedObject) {
+            response.success("New day created.");
+          },
+          error: function(savedObject, error) {
+            response.error(error.code + " - " + error.message);
+          }
+        });
+      };
+    },
+    error: function(error) {
+//alert("Error: " + error.code + " " + error.message);
+      response.error("No!");
+    }
+ });
 });
 
 Parse.Cloud.define("registerUser", function(request, response) {
