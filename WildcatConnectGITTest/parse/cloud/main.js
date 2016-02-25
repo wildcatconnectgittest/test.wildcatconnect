@@ -477,6 +477,19 @@ Parse.Cloud.afterSave("AlertStructure", function(request) {
   };
 });
 
+Parse.Cloud.define("countInstallations", function(request, response) {
+  Parse.Cloud.useMasterKey();
+  var query = new Parse.Query("_Installation");
+  query.count({
+    success: function(count) {
+      response.success(count);
+    },
+    error: function(error) {
+      response.error(error);
+    }
+  });
+});
+
 Parse.Cloud.define("snowDay", function(request, response) {
   var array = [];
   var ID = request.params.ID;
