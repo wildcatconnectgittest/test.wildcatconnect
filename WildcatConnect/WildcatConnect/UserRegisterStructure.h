@@ -17,5 +17,6 @@
 @property NSString *email;
 @property NSString *username;
 @property NSString *password;
+@property NSString *key;
 
 @end

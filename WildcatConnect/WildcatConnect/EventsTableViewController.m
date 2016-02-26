@@ -257,7 +257,7 @@
           NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
           [dateFormatter setDateFormat:@"EEEE, MMMM d, YYYY @ h:mm a"];
           NSString *startString = [dateFormatter stringFromDate:event.eventDate];
-          cell.detailTextLabel.text = [[[startString stringByAppendingString:@" - "] stringByAppendingString:event.locationString] stringByAppendingString:@" - Tap to view details..."];
+          cell.detailTextLabel.text = [[startString stringByAppendingString:@" - "] stringByAppendingString:event.locationString];
           cell.detailTextLabel.numberOfLines = 8;
           return cell;
      }

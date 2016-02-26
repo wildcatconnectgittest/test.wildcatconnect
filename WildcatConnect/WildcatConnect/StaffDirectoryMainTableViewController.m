@@ -138,6 +138,7 @@
                          [activity stopAnimating];
                          [self.tableView reloadData];
                          self.navigationItem.rightBarButtonItem = nil;
+                         self.searchController.searchBar.placeholder = [[@"Search " stringByAppendingString:[NSString stringWithFormat:@"%lu", self.staffMembers.count]] stringByAppendingString:@" Staff Members"];
                     });
                } withArray:dictionaryReturnArray];
           } withArray:returnArrayA];

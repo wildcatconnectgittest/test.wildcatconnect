@@ -98,8 +98,9 @@
                
                [self presentViewController:composeViewController animated:YES completion:nil];
           } else {
-               UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Mail Error" message:@"You do not seem to have e-mail configured on your device." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-               [alertView show];
+               NSString *URLEMail = @"mailto:support@wildcatconnect.org?subject=WildcatConnect App Support";
+               NSString *url = [URLEMail stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding ];
+               [[UIApplication sharedApplication]  openURL: [NSURL URLWithString: url]];
           }
      } else if (indexPath.section == 2) {
                //Team mail
@@ -110,8 +111,9 @@
                
                [self presentViewController:composeViewController animated:YES completion:nil];
           } else {
-               UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Mail Error" message:@"You do not seem to have e-mail configured on your device." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-               [alertView show];
+               NSString *URLEMail = @"mailto:team@wildcatconnect.org?subject=WildcatConnect App Support";
+               NSString *url = [URLEMail stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding ];
+               [[UIApplication sharedApplication]  openURL: [NSURL URLWithString: url]];
           }
      } else if (indexPath.section == 3) {
                //About

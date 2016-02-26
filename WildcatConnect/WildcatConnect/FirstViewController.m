@@ -252,17 +252,25 @@
                                              [self showBadImage];
                                         });
                                    } else {
-                                        schoolDay.schoolDate = [[theDay objectAtIndex:0] objectForKey:@"schoolDate"];
-                                        hasImage = [[theDay objectAtIndex:0] objectForKey:@"hasImage"];
-                                        schoolDay.imageFile = [[theDay objectAtIndex:0] objectForKey:@"imageFile"];
-                                        schoolDay.imageString = [[theDay objectAtIndex:0] objectForKey:@"imageString"];
-                                        schoolDay.messageString = [[theDay objectAtIndex:0] objectForKey:@"messageString"];
-                                        schoolDay.scheduleType = [[theDay objectAtIndex:0] objectForKey:@"scheduleType"];
-                                        schoolDay.schoolDayID = [[theDay objectAtIndex:0] objectForKey:@"schoolDayID"];
-                                        schoolDay.customSchedule = [[theDay objectAtIndex:0] objectForKey:@"customSchedule"];
-                                        schoolDay.customString = [[theDay objectAtIndex:0] objectForKey:@"customString"];
-                                        schoolDay.breakfastString = [[theDay objectAtIndex:0] objectForKey:@"breakfastString"];
-                                        schoolDay.lunchString = [[theDay objectAtIndex:0] objectForKey:@"lunchString"];
+                                        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                                        [dateFormatter setDateFormat:@"H"];
+                                        NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
+                                        NSInteger hour = [dateString integerValue];
+                                        NSInteger index = 0;
+                                        if (hour >= 19) {
+                                             index = 1;
+                                        }
+                                        schoolDay.schoolDate = [[theDay objectAtIndex:index] objectForKey:@"schoolDate"];
+                                        hasImage = [[theDay objectAtIndex:index] objectForKey:@"hasImage"];
+                                        schoolDay.imageFile = [[theDay objectAtIndex:index] objectForKey:@"imageFile"];
+                                        schoolDay.imageString = [[theDay objectAtIndex:index] objectForKey:@"imageString"];
+                                        schoolDay.messageString = [[theDay objectAtIndex:index] objectForKey:@"messageString"];
+                                        schoolDay.scheduleType = [[theDay objectAtIndex:index] objectForKey:@"scheduleType"];
+                                        schoolDay.schoolDayID = [[theDay objectAtIndex:index] objectForKey:@"schoolDayID"];
+                                        schoolDay.customSchedule = [[theDay objectAtIndex:index] objectForKey:@"customSchedule"];
+                                        schoolDay.customString = [[theDay objectAtIndex:index] objectForKey:@"customString"];
+                                        schoolDay.breakfastString = [[theDay objectAtIndex:index] objectForKey:@"breakfastString"];
+                                        schoolDay.lunchString = [[theDay objectAtIndex:index] objectForKey:@"lunchString"];
                                         
                                         if ([schoolDay.scheduleType isEqual:@"*"]) {
                                              
@@ -566,6 +574,7 @@
                                                             dayLabel.text = [@"Today is " stringByAppendingString:scheduleType.fullScheduleString];
                                                        } else {
                                                             dayLabel.text = [self.vacationString stringByAppendingString:[[actual stringByAppendingString:@" - "] stringByAppendingString:scheduleType.fullScheduleString]];
+                                                            dayLabel.textColor = [UIColor redColor];
                                                        }
                                                        if (scheduleType.alertNeeded == YES) {
                                                             dayLabel.textColor = [UIColor redColor];

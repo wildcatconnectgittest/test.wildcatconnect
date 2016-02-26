@@ -10,6 +10,7 @@
 #import <Parse/Parse.h>
 #import "AdministrationMainTableViewController.h"
 #import "UserRegisterStructure.h"
+#include <stdlib.h>
 
 @interface AdministrationLogInViewController ()
 
@@ -351,6 +352,7 @@
                     URS.email = [dictionary objectForKey:@"email"];
                     URS.username = [dictionary objectForKey:@"username"];
                     URS.password = object;
+                    URS.key =  [self randomStringWithLength:11];
                     [URS saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable errorTwo) {
                          if (errorTwo != nil) {
                               theError = errorTwo;
@@ -365,6 +367,19 @@
      dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^{
           completion(theError, response);
      });
+}
+
+NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+-(NSString *) randomStringWithLength: (int) len {
+     
+     NSMutableString *randomString = [NSMutableString stringWithCapacity: len];
+     
+     for (int i=0; i<len; i++) {
+          [randomString appendFormat: @"%C", [letters characterAtIndex: arc4random_uniform([letters length])]];
+     }
+     
+     return randomString;
 }
 
 - (void)logIn {

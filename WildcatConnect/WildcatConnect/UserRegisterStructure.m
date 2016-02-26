@@ -17,6 +17,7 @@
 @dynamic email;
 @dynamic username;
 @dynamic password;
+@dynamic key;
 
 + (void)load {
      [self registerSubclass];
