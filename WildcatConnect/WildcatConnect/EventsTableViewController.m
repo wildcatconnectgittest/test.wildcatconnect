@@ -130,6 +130,7 @@
                     }
                }
                self.allEvents = copyArray;
+               NSLog(@"%@", self.allEvents);
                dispatch_async(dispatch_get_main_queue(), ^ {
                     [activity stopAnimating];
                     [self.tableView reloadData];
@@ -223,7 +224,7 @@
           if (self.upcomingEvents.count == 0) {
                return 1;
           } else return self.upcomingEvents.count;
-     } else if (section == 0) {
+     } else if (section == 2) {
           if (self.allEvents.count == 0) {
                return 1;
           } else return self.allEvents.count;

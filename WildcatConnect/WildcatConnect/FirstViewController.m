@@ -101,6 +101,9 @@
                                                                              blue:23.0f/255.0f
                                                                             alpha:0.5f];
      
+     [self.tabBarController.tabBar setBackgroundColor:[UIColor colorWithRed:248.0f/255.0f green:183.0f/255.0f blue:23.0f/255.0f alpha:0.5f]];
+     [self.tabBarController.tabBar setTranslucent:NO]; 
+     
      Reachability *reachability = [Reachability reachabilityForInternetConnection];
      NetworkStatus networkStatus = [reachability currentReachabilityStatus];
      connected = (networkStatus != NotReachable);
