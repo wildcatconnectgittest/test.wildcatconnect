@@ -52,6 +52,8 @@
      schoolDayID = [[NSString alloc] init];
      imageUserFullString = [[NSString alloc] init];
      
+     self.dayString = [[NSString alloc] init];
+     
      UIBarButtonItem *bbtnBack = [[UIBarButtonItem alloc] initWithTitle:@"Back"
                                                                   style:UIBarButtonItemStylePlain
                                                                  target:self
@@ -110,6 +112,7 @@
           } else {
                     hasImage = [[schoolDay objectAtIndex:0] objectForKey:@"hasImage"];
                     schoolDayID = [[schoolDay objectAtIndex:0] objectForKey:@"schoolDayID"];
+               self.dayString = [[[schoolDay objectAtIndex:0] objectForKey:@"schoolDayID"] copy];
                     imageUser = [[schoolDay objectAtIndex:0] objectForKey:@"imageUser"];
                imageUserFullString = [[schoolDay objectAtIndex:0] objectForKey:@"imageUserFullString"];
                captionString = [[schoolDay objectAtIndex:0] objectForKey:@"imageString"];
@@ -470,7 +473,7 @@
      dispatch_group_enter(serviceGroup);
      __block NSError *theError;
      PFQuery *query = [SchoolDayStructure query];
-     [query whereKey:@"schoolDayID" equalTo:schoolDayID];
+     [query whereKey:@"schoolDayID" equalTo:self.dayString];
      [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
           SchoolDayStructure *structure = (SchoolDayStructure *)object;
           if (hasImage) {

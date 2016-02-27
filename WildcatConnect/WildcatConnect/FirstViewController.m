@@ -798,6 +798,13 @@
                     
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message" message:messageString delegate:nil cancelButtonTitle:@"Got it!" otherButtonTitles: nil];
                     [alert show];
+               } else {
+                    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+                    NSString *version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+                    if (! [version isEqualToString:@"1.5"]) {
+                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message" message:@"Make sure you update to the latest version of WildcatConnect in the App Store!" delegate:nil cancelButtonTitle:@"Got it!" otherButtonTitles: nil];
+                         [alert show];
+                    }
                }
           }];
           

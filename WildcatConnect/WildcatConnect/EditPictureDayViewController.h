@@ -10,4 +10,6 @@
 
 @interface EditPictureDayViewController : UIViewController <UIActionSheetDelegate, UIImagePickerControllerDelegate, UIAlertViewDelegate, UITextViewDelegate>
 
+@property (nonatomic, strong) NSString *dayString;
+
 @end

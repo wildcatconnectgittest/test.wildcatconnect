@@ -848,10 +848,12 @@ Parse.Cloud.define("denyStructure", function(request, response) {
   var message = request.params.message;
   var title = request.params.title;
   var admin = request.params.admin;
+  var adminMail = request.params.adminMail;
   if (type === "news") {
     Mailgun.sendEmail({
       to: email,
       from: "WildcatConnect <team@wildcatconnect.org>",
+      bcc: ["WildcatConnect <team@wildcatconnect.org", admin + "<" + adminMail + ">"],
       subject: "Wildcat News Story Denial",
       text: name + ",\n\nUnfortunately, your recent Wildcat News Story has been denied by a member of administration. Please see below for details.\n\nArticle Title - " + title + "\nDenial Message - " + message + "\nAdministrative User - " + admin + "\n\nIf you would like, you can recreate the article and resubmit for approval. Thank you for your understanding.\n\nBest,\n\nWildcatConnect App Team"
     }, {
@@ -867,6 +869,7 @@ Parse.Cloud.define("denyStructure", function(request, response) {
     Mailgun.sendEmail({
       to: email,
       from: "WildcatConnect <team@wildcatconnect.org>",
+      bcc: ["WildcatConnect <team@wildcatconnect.org", admin + "<" + adminMail + ">"],
       subject: "Event Denial",
       text: name + ",\n\nUnfortunately, your recent event has been denied by a member of administration. Please see below for details.\n\nEvent Title - " + title + "\nDenial Message - " + message + "\nAdministrative User - " + admin + "\n\nIf you would like, you can recreate the event and resubmit for approval. Thank you for your understanding.\n\nBest,\n\nWildcatConnect App Team"
     }, {
@@ -882,6 +885,7 @@ Parse.Cloud.define("denyStructure", function(request, response) {
     Mailgun.sendEmail({
       to: email,
       from: "WildcatConnect <team@wildcatconnect.org>",
+      bcc: ["WildcatConnect <team@wildcatconnect.org", admin + "<" + adminMail + ">"],
       subject: "Community Service Denial",
       text: name + ",\n\nUnfortunately, your recent community service opportunity has been denied by a member of administration. Please see below for details.\n\nOpportunity Title - " + title + "\nDenial Message - " + message + "\nAdministrative User - " + admin + "\n\nIf you would like, you can recreate the opportunity and resubmit for approval. Thank you for your understanding.\n\nBest,\n\nWildcatConnect App Team"
     }, {
