@@ -101,9 +101,6 @@
                                                                              blue:23.0f/255.0f
                                                                             alpha:0.5f];
      
-     [self.tabBarController.tabBar setBackgroundColor:[UIColor colorWithRed:248.0f/255.0f green:183.0f/255.0f blue:23.0f/255.0f alpha:0.5f]];
-     [self.tabBarController.tabBar setTranslucent:NO]; 
-     
      Reachability *reachability = [Reachability reachabilityForInternetConnection];
      NetworkStatus networkStatus = [reachability currentReachabilityStatus];
      connected = (networkStatus != NotReachable);
@@ -801,7 +798,7 @@
                } else {
                     NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
                     NSString *version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
-                    if (! [version isEqualToString:@"1.5"]) {
+                    if (! [version isEqualToString:@"1.6"]) {
                          UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message" message:@"Make sure you update to the latest version of WildcatConnect in the App Store!" delegate:nil cancelButtonTitle:@"Got it!" otherButtonTitles: nil];
                          [alert show];
                     }

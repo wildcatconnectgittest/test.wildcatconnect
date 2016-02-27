@@ -81,38 +81,6 @@
             endingLineNumber = "134"
             landmarkName = "-refreshData"
             landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__40-[EventsTableViewController refreshData]_block_invoke"
-                  moduleName = "WildcatConnect"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/Kevin/Desktop/test.wildcatconnect/test.wildcatconnect/WildcatConnect/WildcatConnect/EventsTableViewController.m"
-                  timestampString = "478293852.449154"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "134"
-                  endingLineNumber = "134"
-                  offsetFromSymbolStart = "2092">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__40-[EventsTableViewController refreshData]_block_invoke157"
-                  moduleName = "WildcatConnect"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/Kevin/Desktop/test.wildcatconnect/test.wildcatconnect/WildcatConnect/WildcatConnect/EventsTableViewController.m"
-                  timestampString = "478293852.449453"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "134"
-                  endingLineNumber = "134"
-                  offsetFromSymbolStart = "32">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -266,11 +234,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WildcatConnect/FirstViewController.m"
-            timestampString = "478291231.893988"
+            timestampString = "478302576.438958"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1117"
-            endingLineNumber = "1117"
+            startingLineNumber = "1114"
+            endingLineNumber = "1114"
             landmarkName = "-getEventStringMethodWithCompletion:"
             landmarkType = "5">
          </BreakpointContent>
@@ -788,11 +756,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WildcatConnect/FirstViewController.m"
-            timestampString = "478291231.893988"
+            timestampString = "478302576.438958"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1156"
-            endingLineNumber = "1156"
+            startingLineNumber = "1153"
+            endingLineNumber = "1153"
             landmarkName = "-getAlertStringMethodWithCompletion:"
             landmarkType = "5">
          </BreakpointContent>
@@ -804,11 +772,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WildcatConnect/FirstViewController.m"
-            timestampString = "478291231.893988"
+            timestampString = "478302576.438958"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1138"
-            endingLineNumber = "1138"
+            startingLineNumber = "1135"
+            endingLineNumber = "1135"
             landmarkName = "-getAlertStringMethodWithCompletion:"
             landmarkType = "5">
          </BreakpointContent>
@@ -900,11 +868,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WildcatConnect/FirstViewController.m"
-            timestampString = "478201809.239276"
+            timestampString = "478302576.438958"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "131"
-            endingLineNumber = "131"
+            startingLineNumber = "128"
+            endingLineNumber = "128"
             landmarkName = "-viewWillAppear:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1012,11 +980,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WildcatConnect/FirstViewController.m"
-            timestampString = "478201809.239276"
+            timestampString = "478302576.438958"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "263"
-            endingLineNumber = "263"
+            startingLineNumber = "260"
+            endingLineNumber = "260"
             landmarkName = "-viewWillAppear:"
             landmarkType = "5">
          </BreakpointContent>
