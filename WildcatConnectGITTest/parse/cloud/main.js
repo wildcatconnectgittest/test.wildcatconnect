@@ -849,11 +849,12 @@ Parse.Cloud.define("denyStructure", function(request, response) {
   var title = request.params.title;
   var admin = request.params.admin;
   var adminMail = request.params.adminMail;
+  var adminMailString = admin + "<" + adminMail + ">";
   if (type === "news") {
     Mailgun.sendEmail({
       to: email,
       from: "WildcatConnect <team@wildcatconnect.org>",
-      bcc: ["WildcatConnect <team@wildcatconnect.org", admin + "<" + adminMail + ">"],
+      bcc: adminMailString,
       subject: "Wildcat News Story Denial",
       text: name + ",\n\nUnfortunately, your recent Wildcat News Story has been denied by a member of administration. Please see below for details.\n\nArticle Title - " + title + "\nDenial Message - " + message + "\nAdministrative User - " + admin + "\n\nIf you would like, you can recreate the article and resubmit for approval. Thank you for your understanding.\n\nBest,\n\nWildcatConnect App Team"
     }, {
@@ -865,11 +866,40 @@ Parse.Cloud.define("denyStructure", function(request, response) {
         response.error("Uh oh, something went wrong");
       }
     });
+    Mailgun.sendEmail({
+      to: "WildcatConnect <support@wildcatconnect.org>",
+      from: "WildcatConnect <team@wildcatconnect.org>",
+      subject: "Wildcat News Story Denial",
+      text: name + ",\n\nUnfortunately, your recent Wildcat News Story has been denied by a member of administration. Please see below for details.\n\nArticle Title - " + title + "\nDenial Message - " + message + "\nAdministrative User - " + admin + "\n\nIf you would like, you can recreate the article and resubmit for approval. Thank you for your understanding.\n\nBest,\n\nWildcatConnect App Team"
+    }, {
+      success: function(httpResponse) {
+        //response.success("Email sent!");
+      },
+      error: function(httpResponse) {
+        console.error(httpResponse);
+        response.error("Uh oh, something went wrong");
+      }
+    });
   } else if (type === "event") {
     Mailgun.sendEmail({
       to: email,
       from: "WildcatConnect <team@wildcatconnect.org>",
-      bcc: ["WildcatConnect <team@wildcatconnect.org", admin + "<" + adminMail + ">"],
+      bcc: adminMailString,
+      subject: "Event Denial",
+      text: name + ",\n\nUnfortunately, your recent event has been denied by a member of administration. Please see below for details.\n\nEvent Title - " + title + "\nDenial Message - " + message + "\nAdministrative User - " + admin + "\n\nIf you would like, you can recreate the event and resubmit for approval. Thank you for your understanding.\n\nBest,\n\nWildcatConnect App Team"
+    }, {
+      success: function(httpResponse) {
+        //response.success("Email sent!");
+      },
+      error: function(httpResponse) {
+        console.error(httpResponse);
+        response.error("Uh oh, something went wrong");
+      }
+    });
+    Mailgun.sendEmail({
+      to: "WildcatConnect <support@wildcatconnect.org>",
+      from: "WildcatConnect <team@wildcatconnect.org>",
+      bcc: adminMailString,
       subject: "Event Denial",
       text: name + ",\n\nUnfortunately, your recent event has been denied by a member of administration. Please see below for details.\n\nEvent Title - " + title + "\nDenial Message - " + message + "\nAdministrative User - " + admin + "\n\nIf you would like, you can recreate the event and resubmit for approval. Thank you for your understanding.\n\nBest,\n\nWildcatConnect App Team"
     }, {
@@ -883,9 +913,24 @@ Parse.Cloud.define("denyStructure", function(request, response) {
     });
   } else if (type === "comm") {
     Mailgun.sendEmail({
+      to: "WildcatConnect <support@wildcatconnect.org>",
+      from: "WildcatConnect <team@wildcatconnect.org>", 
+      bcc: adminMailString,
+      subject: "Community Service Denial",
+      text: name + ",\n\nUnfortunately, your recent community service opportunity has been denied by a member of administration. Please see below for details.\n\nOpportunity Title - " + title + "\nDenial Message - " + message + "\nAdministrative User - " + admin + "\n\nIf you would like, you can recreate the opportunity and resubmit for approval. Thank you for your understanding.\n\nBest,\n\nWildcatConnect App Team"
+    }, {
+      success: function(httpResponse) {
+        //response.success("Email sent!");
+      },
+      error: function(httpResponse) {
+        console.error(httpResponse);
+        response.error("Uh oh, something went wrong");
+      }
+    });
+    Mailgun.sendEmail({
       to: email,
-      from: "WildcatConnect <team@wildcatconnect.org>",
-      bcc: ["WildcatConnect <team@wildcatconnect.org", admin + "<" + adminMail + ">"],
+      from: "WildcatConnect <team@wildcatconnect.org>", 
+      bcc: adminMailString,
       subject: "Community Service Denial",
       text: name + ",\n\nUnfortunately, your recent community service opportunity has been denied by a member of administration. Please see below for details.\n\nOpportunity Title - " + title + "\nDenial Message - " + message + "\nAdministrative User - " + admin + "\n\nIf you would like, you can recreate the opportunity and resubmit for approval. Thank you for your understanding.\n\nBest,\n\nWildcatConnect App Team"
     }, {
