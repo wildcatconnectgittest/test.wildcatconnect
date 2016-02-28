@@ -252,13 +252,19 @@
                                              [self showBadImage];
                                         });
                                    } else {
+                                             //If after 7 PM ON the school day, then need to change...
                                         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                                        [dateFormatter setDateFormat:@"H"];
+                                        [dateFormatter setDateFormat:@"MM-dd-yyyy"];
                                         NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
-                                        NSInteger hour = [dateString integerValue];
+                                        NSString *potentialString = [dateFormatter stringFromDate:[[theDay objectAtIndex:0] objectForKey:@"schoolDate"]];
                                         NSInteger index = 0;
-                                        if (hour >= 19) {
-                                             index = 1;
+                                        if ([dateString isEqualToString:potentialString]) {
+                                             [dateFormatter setDateFormat:@"MM-dd-yyyy"];
+                                             dateString = [dateFormatter stringFromDate:[NSDate date]];
+                                             NSInteger hour = [dateString integerValue];
+                                             if (hour >= 19) {
+                                                  index = 1;
+                                             }
                                         }
                                         schoolDay.schoolDate = [[theDay objectAtIndex:index] objectForKey:@"schoolDate"];
                                         hasImage = [[theDay objectAtIndex:index] objectForKey:@"hasImage"];
@@ -795,13 +801,6 @@
                     
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message" message:messageString delegate:nil cancelButtonTitle:@"Got it!" otherButtonTitles: nil];
                     [alert show];
-               } else {
-                    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
-                    NSString *version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
-                    if (! [version isEqualToString:@"1.6"]) {
-                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message" message:@"Make sure you update to the latest version of WildcatConnect in the App Store!" delegate:nil cancelButtonTitle:@"Got it!" otherButtonTitles: nil];
-                         [alert show];
-                    }
                }
           }];
           
