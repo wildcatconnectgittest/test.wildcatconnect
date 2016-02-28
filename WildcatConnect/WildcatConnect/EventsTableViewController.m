@@ -130,7 +130,6 @@
                     }
                }
                self.allEvents = copyArray;
-               NSLog(@"%@", self.allEvents);
                dispatch_async(dispatch_get_main_queue(), ^ {
                     [activity stopAnimating];
                     [self.tableView reloadData];
