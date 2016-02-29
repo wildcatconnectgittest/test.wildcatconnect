@@ -198,7 +198,7 @@ Parse.Cloud.job("communityServiceStructureDeletion", function(request, response)
   				var date2_ms = now.getTime();
   				var difference_ms = date2_ms - date1_ms;
           difference_ms = Math.round(difference_ms/one_day);
-  				if (difference_ms > 3) {
+  				if (difference_ms >= 0) {
   					currentStructure.destroy({
   						success: function() {
   							console.log("Just deleted an object!!!");
@@ -348,7 +348,7 @@ Parse.Cloud.job("newsArticleStructureDeletion", function(request, response) {
           var date2_ms = now.getTime();
           var difference_ms = date2_ms - date1_ms;
           difference_ms = Math.round(difference_ms/one_day);
-          if (difference_ms > 10) {
+          if (difference_ms >= 10) {
             currentStructure.destroy({
               success: function() {
                 console.log("Just deleted an object!!!");
