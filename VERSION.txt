@@ -11,3 +11,9 @@ Please note the new format…
 - Fix for mail composer copying issue, as reported by D. Stevenson and S. Alfaro.
 - Upgrades to POTC native editing service, including date formatting and developer override for security.
 - Changes “7PM” feature to “3PM” feature on both iOS and Web clients.
+
+2.0
+
+- Fixes a bug with text view in EditPictureDayViewController.
+- Fixes scrolling issues in some compose views.
+- Validation final for release.

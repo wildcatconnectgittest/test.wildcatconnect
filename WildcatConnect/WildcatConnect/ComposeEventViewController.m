@@ -152,7 +152,6 @@
      [messageTextView setFont:[UIFont systemFontOfSize:16]];
      messageTextView.layer.borderWidth = 1.0f;
      messageTextView.layer.borderColor = [[UIColor grayColor] CGColor];
-     messageTextView.scrollEnabled = false;
      messageTextView.tag = 1;
      [scrollView addSubview:messageTextView];
      
@@ -319,13 +318,7 @@
      else if (textView == messageTextView) {
           return [self isAcceptableTextLength:textView.text.length + string.length - range.length forMaximum:300 existsMaximum:YES];
      } else if (textView == locationTextView) {
-          if([string isEqualToString:@"\n"])
-          {
-               [textView resignFirstResponder];
-               
-               return NO;
-          } else
-               return [self isAcceptableTextLength:textView.text.length + string.length - range.length forMaximum:300 existsMaximum:NO];
+          return [self isAcceptableTextLength:textView.text.length + string.length - range.length forMaximum:300 existsMaximum:NO];
      }
      else return nil;
 }

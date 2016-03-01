@@ -154,12 +154,13 @@
                          [imageView sizeToFit];
                          imageView.frame = CGRectMake(self.view.frame.size.width / 2 - imageView.frame.size.width / 2, titleLabel.frame.origin.y + titleLabel.frame.size.height + 10, imageView.frame.size.width, imageView.frame.size.height);
                          [scrollView addSubview:imageView];
+                         
                               imageLabelB = [[UILabel alloc] initWithFrame:CGRectMake(10, imageView.frame.origin.y + imageView.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
                               [imageLabelB setFont:[UIFont systemFontOfSize:16]];
                          
                          imageLabelB.text = fullPostString;
                          [imageLabelB sizeToFit];
-                              [scrollView addSubview:imageLabelB];
+                         [scrollView addSubview:imageLabelB];
                          
                          NSString *myUserString = [[[[PFUser currentUser] objectForKey:@"lastName"] stringByAppendingString:@", "] stringByAppendingString:[[PFUser currentUser] objectForKey:@"firstName"]];
                          
@@ -205,6 +206,9 @@
                               scrollView.contentSize = contentRect.size;
                               [self.view addSubview:scrollView];
                          } else {
+                              
+                              imageLabelB = [[UILabel alloc] initWithFrame:CGRectMake(10, imageView.frame.origin.y + imageView.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
+                              [imageLabelB setFont:[UIFont systemFontOfSize:16]];
                               imageLabelB.text = [imageLabelB.text stringByAppendingString:@" - Contact this user to change the Picture of the Day."];
                               imageLabelB.lineBreakMode = NSLineBreakByWordWrapping;
                               imageLabelB.numberOfLines = 0;

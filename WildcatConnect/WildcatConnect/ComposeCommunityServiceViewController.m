@@ -146,7 +146,6 @@
      [authorTextView setFont:[UIFont systemFontOfSize:16]];
      authorTextView.layer.borderWidth = 1.0f;
      authorTextView.layer.borderColor = [[UIColor grayColor] CGColor];
-     authorTextView.scrollEnabled = false;
      authorTextView.tag = 1;
      [scrollView addSubview:authorTextView];
      
@@ -416,12 +415,6 @@
           return [self isAcceptableTextLength:textView.text.length + string.length - range.length forMaximum:60 existsMaximum:YES];
      }
      else if (textView == authorTextView) {
-          if([string isEqualToString:@"\n"])
-          {
-               [textView resignFirstResponder];
-               
-               return NO;
-          } else
           return [self isAcceptableTextLength:textView.text.length + string.length - range.length forMaximum:300 existsMaximum:YES];
      }
      else return nil;
