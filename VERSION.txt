@@ -6,7 +6,7 @@
 
 Please note the new format…
 
-1.8
+1.9
 
 - Fix for mail composer copying issue, as reported by D. Stevenson and S. Alfaro.
 - Upgrades to POTC native editing service, including date formatting and developer override for security.
