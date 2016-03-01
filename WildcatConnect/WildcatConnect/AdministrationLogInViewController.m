@@ -30,6 +30,7 @@
      UITextField *regPasswordTextField;
      UITextField *confirmRegPasswordTextField;
      UIButton *logButton;
+     UIButton *forgotButton;
      UIButton *signButton;
      UIAlertView *av;
 }
@@ -62,15 +63,16 @@
      self.navigationItem.title = @"Account";
      self.navigationController.navigationBar.translucent = NO;
      
-     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, 50)];
+     UILabel *titleLabel = [[UILabel alloc] init];
      titleLabel.text = @"Log In";
      [titleLabel setFont:[UIFont systemFontOfSize:16]];
      titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
      titleLabel.numberOfLines = 0;
      [titleLabel sizeToFit];
+     titleLabel.frame = CGRectMake((self.view.frame.size.width / 2 - titleLabel.frame.size.width / 2), 10, titleLabel.frame.size.width, titleLabel.frame.size.height);
      [scrollView addSubview:titleLabel];
      
-     usernameTextField = [[UITextField alloc] initWithFrame:CGRectMake(titleLabel.frame.origin.x, titleLabel.frame.origin.y + titleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 31)];
+     usernameTextField = [[UITextField alloc] initWithFrame:CGRectMake(10, titleLabel.frame.origin.y + titleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 31)];
      usernameTextField.borderStyle = UITextBorderStyleRoundedRect;
      usernameTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
      usernameTextField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -92,32 +94,43 @@
      [logButton sizeToFit];
      [logButton addTarget:self action:@selector(logIn) forControlEvents:UIControlEventTouchUpInside];
      logButton.frame = CGRectMake((self.view.frame.size.width / 2 - logButton.frame.size.width / 2), passwordTextField.frame.origin.y + passwordTextField.frame.size.height + 10, logButton.frame.size.width, logButton.frame.size.height);
-     [usernameTextField setDelegate:self];
      [scrollView addSubview:logButton];
      
-     UILabel *signLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, logButton.frame.origin.y + logButton.frame.size.height + 10, self.view.frame.size.width - 20, 50)];
+     forgotButton = [UIButton buttonWithType:UIButtonTypeSystem];
+     [forgotButton setTitle:@"FORGOT USERNAME/PASSWORD" forState:UIControlStateNormal];
+     [forgotButton sizeToFit];
+     [forgotButton addTarget:self action:@selector(forgot) forControlEvents:UIControlEventTouchUpInside];
+     forgotButton.frame = CGRectMake((self.view.frame.size.width / 2 - forgotButton.frame.size.width / 2), logButton.frame.origin.y + logButton.frame.size.height, forgotButton.frame.size.width, forgotButton.frame.size.height);
+     [scrollView addSubview:forgotButton];
+     
+     UIView * separator = [[UIView alloc] initWithFrame:CGRectMake(10, forgotButton.frame.origin.y + forgotButton.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+     separator.backgroundColor = [UIColor blackColor];
+     [scrollView addSubview:separator];
+     
+     UILabel *signLabel = [[UILabel alloc] init];
      signLabel.text = @"Register an Account (Faculty Only)";
      [signLabel setFont:[UIFont systemFontOfSize:16]];
      signLabel.lineBreakMode = NSLineBreakByWordWrapping;
      signLabel.numberOfLines = 0;
      [signLabel sizeToFit];
+     signLabel.frame = CGRectMake((self.view.frame.size.width / 2 - signLabel.frame.size.width / 2), separator.frame.origin.y + separator.frame.size.height + 10, signLabel.frame.size.width, signLabel.frame.size.height);
      [scrollView addSubview:signLabel];
      
-     firstNameTextField = [[UITextField alloc] initWithFrame:CGRectMake(signLabel.frame.origin.x, signLabel.frame.origin.y + signLabel.frame.size.height + 10, self.view.frame.size.width - 20, 31)];
+     firstNameTextField = [[UITextField alloc] initWithFrame:CGRectMake(10, signLabel.frame.origin.y + signLabel.frame.size.height + 10, self.view.frame.size.width - 20, 31)];
      firstNameTextField.borderStyle = UITextBorderStyleRoundedRect;
      firstNameTextField.placeholder = @"First Name";
      firstNameTextField.tag = 2;
      [firstNameTextField setDelegate:self];
      [scrollView addSubview:firstNameTextField];
      
-     lastNameTextField = [[UITextField alloc] initWithFrame:CGRectMake(signLabel.frame.origin.x, firstNameTextField.frame.origin.y + firstNameTextField.frame.size.height + 10, self.view.frame.size.width - 20, 31)];
+     lastNameTextField = [[UITextField alloc] initWithFrame:CGRectMake(10, firstNameTextField.frame.origin.y + firstNameTextField.frame.size.height + 10, self.view.frame.size.width - 20, 31)];
      lastNameTextField.borderStyle = UITextBorderStyleRoundedRect;
      lastNameTextField.placeholder = @"Last Name";
      lastNameTextField.tag = 3;
      [lastNameTextField setDelegate:self];
      [scrollView addSubview:lastNameTextField];
      
-     emailTextField = [[UITextField alloc] initWithFrame:CGRectMake(signLabel.frame.origin.x, lastNameTextField.frame.origin.y + lastNameTextField.frame.size.height + 10, self.view.frame.size.width - 20, 31)];
+     emailTextField = [[UITextField alloc] initWithFrame:CGRectMake(10, lastNameTextField.frame.origin.y + lastNameTextField.frame.size.height + 10, self.view.frame.size.width - 20, 31)];
      emailTextField.borderStyle = UITextBorderStyleRoundedRect;
      emailTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
      emailTextField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -126,7 +139,7 @@
      [emailTextField setDelegate:self];
      [scrollView addSubview:emailTextField];
      
-     confirmEmailTextField = [[UITextField alloc] initWithFrame:CGRectMake(signLabel.frame.origin.x, emailTextField.frame.origin.y + emailTextField.frame.size.height + 10, self.view.frame.size.width - 20, 31)];
+     confirmEmailTextField = [[UITextField alloc] initWithFrame:CGRectMake(10, emailTextField.frame.origin.y + emailTextField.frame.size.height + 10, self.view.frame.size.width - 20, 31)];
      confirmEmailTextField.borderStyle = UITextBorderStyleRoundedRect;
      confirmEmailTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
      confirmEmailTextField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -135,7 +148,7 @@
      [confirmEmailTextField setDelegate:self];
      [scrollView addSubview:confirmEmailTextField];
      
-     regUsernameTextField = [[UITextField alloc] initWithFrame:CGRectMake(titleLabel.frame.origin.x, confirmEmailTextField.frame.origin.y + confirmEmailTextField.frame.size.height + 10, self.view.frame.size.width - 20, 31)];
+     regUsernameTextField = [[UITextField alloc] initWithFrame:CGRectMake(10, confirmEmailTextField.frame.origin.y + confirmEmailTextField.frame.size.height + 10, self.view.frame.size.width - 20, 31)];
      regUsernameTextField.borderStyle = UITextBorderStyleRoundedRect;
      regUsernameTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
      regUsernameTextField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -177,6 +190,14 @@
      }
      scrollView.contentSize = contentRect.size;
      [self.view addSubview:scrollView];
+}
+
+- (void)forgot {
+     UIAlertView *theAlert = [[UIAlertView alloc]initWithTitle:@"Account Recovery" message:@"Please enter the e-mail address associated with your account." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Recover", nil];
+     theAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
+     [theAlert textFieldAtIndex:0].delegate = self;
+     [theAlert setDelegate:self];
+     [theAlert show];
 }
 
 - (BOOL) validateEmail: (NSString *) candidate {
@@ -445,6 +466,31 @@ NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345
                }
           }
           [self.view endEditing:YES];
+     } else {
+          NSString *email = [actionSheet textFieldAtIndex:0].text;
+          if ([self validateEmail:email] == true) {
+               if (buttonIndex == 1) {
+                    UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+                    [activity setBackgroundColor:[UIColor clearColor]];
+                    [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+                    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
+                    self.navigationItem.rightBarButtonItem = barButtonItem;
+                    [activity startAnimating];
+                    [PFUser requestPasswordResetForEmailInBackground:email block:^(BOOL succeeded, NSError * _Nullable error) {
+                         [activity stopAnimating];
+                         if (error != nil) {
+                              UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Whoops. An error occurred in attempting to recover this account. Contact Application Support if you need further assistance." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
+                              [alert show];
+                         } else {
+                              UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Success" message:[[@"A recovery link has been sent to you at " stringByAppendingString:email] stringByAppendingString:@". Please contact Application Support if you need further assistance."] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
+                              [alert show];
+                         }
+                    }];
+               }
+          } else {
+               UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Invalid e-mail address. Please try again." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok", nil];
+               [alert show];
+          }
      }
 }
 

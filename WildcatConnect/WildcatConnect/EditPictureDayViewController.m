@@ -110,6 +110,19 @@
                     [activity startAnimating];
                });
           } else {
+               NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+               [dateFormatter setDateFormat:@"MM-dd-yyyy"];
+               NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
+               NSString *potentialString = [[schoolDay objectAtIndex:0] objectForKey:@"schoolDate"];
+               NSInteger index = 0;
+               if ([dateString isEqualToString:potentialString]) {
+                    [dateFormatter setDateFormat:@"H"];
+                    dateString = [dateFormatter stringFromDate:[NSDate date]];
+                    NSInteger hour = [dateString integerValue];
+                    if (hour >= 15) {
+                         index = 1;
+                    }
+               }
                     hasImage = [[schoolDay objectAtIndex:0] objectForKey:@"hasImage"];
                     schoolDayID = [[schoolDay objectAtIndex:0] objectForKey:@"schoolDayID"];
                self.dayString = [[[schoolDay objectAtIndex:0] objectForKey:@"schoolDayID"] copy];
@@ -124,7 +137,12 @@
                          
                          image = [UIImage imageWithData:imageData];
                          
-                         titleLabel.text = @"Today's Image";
+                         [dateFormatter setDateFormat:@"MM-dd-yyyy"];
+                         NSDate *theDate = [dateFormatter dateFromString:[[schoolDay objectAtIndex:index] objectForKey:@"schoolDate"]];
+                         [dateFormatter setDateFormat:@"EEEE"];
+                         NSString *theString = [dateFormatter stringFromDate:theDate];
+                         
+                         titleLabel.text = [theString stringByAppendingString:@"'s Picture"];
                          [titleLabel sizeToFit];
                          
                          imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, 300)];
@@ -145,7 +163,7 @@
                          
                          NSString *myUserString = [[[[PFUser currentUser] objectForKey:@"lastName"] stringByAppendingString:@", "] stringByAppendingString:[[PFUser currentUser] objectForKey:@"firstName"]];
                          
-                         if ([myUserString isEqual:returnString]) {
+                         if ([myUserString isEqual:returnString] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"]) {
                               
                               separatorTwo = [[UIView alloc] initWithFrame:CGRectMake(10, imageLabelB.frame.origin.y + imageLabelB.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
                               separatorTwo.backgroundColor = [UIColor blackColor];
@@ -216,8 +234,14 @@
                          }
                     } forString:imageUser forCaption:captionString forFullString:imageUserFullString];
                } else {
+                    
                     [activity stopAnimating];
-                    titleLabel.text = @"Today's Image";
+                    [dateFormatter setDateFormat:@"MM-dd-yyyy"];
+                    NSDate *theDate = [dateFormatter dateFromString:[[schoolDay objectAtIndex:index] objectForKey:@"schoolDate"]];
+                    [dateFormatter setDateFormat:@"EEEE"];
+                    NSString *theString = [dateFormatter stringFromDate:theDate];
+                    
+                    titleLabel.text = [theString stringByAppendingString:@"'s Picture"];
                     [titleLabel sizeToFit];
                     imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, self.view.frame.size.width - 20, 300)];
                     imageView.image = [UIImage imageNamed:@"noPicture@2x.png"];
@@ -226,7 +250,7 @@
                     [scrollView addSubview:imageView];
                     
                     imageLabelB = [[UILabel alloc] initWithFrame:CGRectMake(10, imageView.frame.origin.y + imageView.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
-                    imageLabelB.text = @"NO IMAGE";
+                    imageLabelB.text = @"NO PICTURE";
                     [imageLabelB sizeToFit];
                     [scrollView addSubview:imageLabelB];
                     

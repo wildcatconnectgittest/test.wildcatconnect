@@ -899,7 +899,6 @@ Parse.Cloud.define("denyStructure", function(request, response) {
     Mailgun.sendEmail({
       to: "WildcatConnect <support@wildcatconnect.org>",
       from: "WildcatConnect <team@wildcatconnect.org>",
-      bcc: adminMailString,
       subject: "Event Denial",
       text: name + ",\n\nUnfortunately, your recent event has been denied by a member of administration. Please see below for details.\n\nEvent Title - " + title + "\nDenial Message - " + message + "\nAdministrative User - " + admin + "\n\nIf you would like, you can recreate the event and resubmit for approval. Thank you for your understanding.\n\nBest,\n\nWildcatConnect App Team"
     }, {
@@ -929,8 +928,7 @@ Parse.Cloud.define("denyStructure", function(request, response) {
     });
     Mailgun.sendEmail({
       to: email,
-      from: "WildcatConnect <team@wildcatconnect.org>", 
-      bcc: adminMailString,
+      from: "WildcatConnect <team@wildcatconnect.org>",
       subject: "Community Service Denial",
       text: name + ",\n\nUnfortunately, your recent community service opportunity has been denied by a member of administration. Please see below for details.\n\nOpportunity Title - " + title + "\nDenial Message - " + message + "\nAdministrative User - " + admin + "\n\nIf you would like, you can recreate the opportunity and resubmit for approval. Thank you for your understanding.\n\nBest,\n\nWildcatConnect App Team"
     }, {

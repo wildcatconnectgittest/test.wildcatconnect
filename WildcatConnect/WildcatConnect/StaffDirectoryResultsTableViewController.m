@@ -70,18 +70,10 @@
 
 - (IBAction) buttonTouchUpInside:(id)sender {
      EmailButton *buttonClicked = (EmailButton *)sender;
-     if ([MFMailComposeViewController canSendMail]) {
-          MFMailComposeViewController *composeViewController = [[MFMailComposeViewController alloc] initWithNibName:nil bundle:nil];
-          [composeViewController setMailComposeDelegate:self];
-          [composeViewController setToRecipients:@[buttonClicked.staffMember.staffMemberEMail]];
-          
-          [self presentViewController:composeViewController animated:YES completion:nil];
-     } else {
-          NSString *mail = buttonClicked.staffMember.staffMemberEMail;
-          NSString *URLEMail = [[@"mailto:" stringByAppendingString:mail] stringByAppendingString:@"?subject=WildcatConnect App Support"];
-          NSString *url = [URLEMail stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding ];
-          [[UIApplication sharedApplication]  openURL: [NSURL URLWithString: url]];
-     }
+     NSString *mail = buttonClicked.staffMember.staffMemberEMail;
+     NSString *URLEMail = [@"mailto:" stringByAppendingString:mail];
+     NSString *url = [URLEMail stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding ];
+     [[UIApplication sharedApplication]  openURL: [NSURL URLWithString: url]];
 }
 
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error

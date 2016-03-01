@@ -3,3 +3,11 @@
 1.2 - Alert string change on home page, event string now covers “upcoming” events within the next 3 days, better group detail view and unsubscribe functionality, fixes “Administration” text string bug, rearranging some table views for user roles, moves lunch to bottom of home page to force better user scrolling.
 1.3 - Slight changes to groups table, adding appActive and appMessage functionality, ECU detail view, handling longer strings in tables, minor Capstone text adjustment, adding Developer override feature for app lockdown, devPass123!
 1.7 - Bug fix where events would appear in backwards order, adds the KEY functionality for user registration, new “7PM” scheduling feature, better e-mail support for users without iOS mail configured, new login support for key registration, tab bar fix, 7 PM day skipping bug fix.
+
+Please note the new format…
+
+1.8
+
+- Fix for mail composer copying issue, as reported by D. Stevenson and S. Alfaro.
+- Upgrades to POTC native editing service, including date formatting and developer override for security.
+- Changes “7PM” feature to “3PM” feature on both iOS and Web clients.

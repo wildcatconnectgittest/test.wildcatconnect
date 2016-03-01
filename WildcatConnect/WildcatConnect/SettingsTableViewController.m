@@ -62,7 +62,7 @@
           cell.textLabel.text = @"App Support";
           cell.imageView.image = [UIImage imageNamed:@"email@2x.png"];
      } else if (indexPath.section == 2) {
-          cell.textLabel.text = @"Feedback/Join WildcatConnect";
+          cell.textLabel.text = @"Feedback/Join the Team";
           cell.imageView.image = [UIImage imageNamed:@"email@2x.png"];
      } else if (indexPath.section == 3) {
           cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -81,7 +81,7 @@
           [self.navigationController pushViewController:controller animated:YES];
      } else if (indexPath.section == 1) {
                //Support mail
-          if ([MFMailComposeViewController canSendMail]) {
+          /*if ([MFMailComposeViewController canSendMail]) {
                MFMailComposeViewController *composeViewController = [[MFMailComposeViewController alloc] initWithNibName:nil bundle:nil];
                [composeViewController setMailComposeDelegate:self];
                [composeViewController setToRecipients:@[@"support@wildcatconnect.org"]];
@@ -98,23 +98,27 @@
                
                [self presentViewController:composeViewController animated:YES completion:nil];
           } else {
-               NSString *URLEMail = @"mailto:support@wildcatconnect.org?subject=WildcatConnect App Support";
+               NSString *URLEMail = @"mailto:support@wildcatconnect.org?subject=WildcatConnect App Support?body=Test Body";
                NSString *url = [URLEMail stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding ];
                [[UIApplication sharedApplication]  openURL: [NSURL URLWithString: url]];
+          }*/
+          
+          NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+          NSString *majorVersion = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+          NSString *deviceToken = [[PFInstallation currentInstallation] deviceToken];
+          if (! deviceToken) {
+               deviceToken = @"Not available.";
           }
+          NSString *bodyString = [[[[@"Please do not edit the folowing information.\n\nVersion = " stringByAppendingString:majorVersion] stringByAppendingString:@"\n\nDeviceToken = "] stringByAppendingString:deviceToken] stringByAppendingString:@"\n\nPlease describe your app issue below. Include as much detail as possible for what you were doing in the application, etc.\n\n"];
+          
+          NSString *URLEMail = [@"mailto:support@wildcatconnect.org?subject=WildcatConnect App Support&body=" stringByAppendingString:bodyString];
+          NSString *url = [URLEMail stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding ];
+          [[UIApplication sharedApplication]  openURL: [NSURL URLWithString: url]];
      } else if (indexPath.section == 2) {
                //Team mail
-          if ([MFMailComposeViewController canSendMail]) {
-               MFMailComposeViewController *composeViewController = [[MFMailComposeViewController alloc] initWithNibName:nil bundle:nil];
-               [composeViewController setMailComposeDelegate:self];
-               [composeViewController setToRecipients:@[@"team@wildcatconnect.org"]];
-               
-               [self presentViewController:composeViewController animated:YES completion:nil];
-          } else {
-               NSString *URLEMail = @"mailto:team@wildcatconnect.org?subject=WildcatConnect App Support";
-               NSString *url = [URLEMail stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding ];
-               [[UIApplication sharedApplication]  openURL: [NSURL URLWithString: url]];
-          }
+          NSString *URLEMail = @"mailto:team@wildcatconnect.org";
+          NSString *url = [URLEMail stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding ];
+          [[UIApplication sharedApplication]  openURL: [NSURL URLWithString: url]];
      } else if (indexPath.section == 3) {
                //About
           AboutTableViewController *controller = [[AboutTableViewController alloc] init];

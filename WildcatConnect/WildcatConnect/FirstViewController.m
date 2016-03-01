@@ -256,13 +256,13 @@
                                         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
                                         [dateFormatter setDateFormat:@"MM-dd-yyyy"];
                                         NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
-                                        NSString *potentialString = [dateFormatter stringFromDate:[[theDay objectAtIndex:0] objectForKey:@"schoolDate"]];
+                                        NSString *potentialString = [[theDay objectAtIndex:0] objectForKey:@"schoolDate"];
                                         NSInteger index = 0;
                                         if ([dateString isEqualToString:potentialString]) {
-                                             [dateFormatter setDateFormat:@"MM-dd-yyyy"];
+                                             [dateFormatter setDateFormat:@"H"];
                                              dateString = [dateFormatter stringFromDate:[NSDate date]];
                                              NSInteger hour = [dateString integerValue];
-                                             if (hour >= 19) {
+                                             if (hour >= 15) {
                                                   index = 1;
                                              }
                                         }
