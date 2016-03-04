@@ -12,20 +12,16 @@
 #import "ExtracurricularUpdateStructure.h"
 #import "CommunityServiceStructure.h"
 #import "NewsArticleStructure.h"
-#import "LunchMenusStructure.h"
-#import "UsefulLinkArray.h"
 #import "AlertStructure.h"
-#import "PollStructure.h"
 #import "SchoolDayStructure.h"
 #import "ScheduleType.h"
 #import "AlertDetailViewController.h"
 #import "NewsArticleDetailViewController.h"
-#import "UserRegisterStructure.h"
 #import "SpecialKeyStructure.h"
 #import "ErrorStructure.h"
 #import <SystemConfiguration/SystemConfiguration.h>
 #import "Reachability.h"
-#import "EventStructure.h"
+#import "ScholarshipStructure.h"
 
 @implementation AppDelegate {
      BOOL connected;
@@ -471,6 +467,14 @@ void uncaughtExceptionHandler(NSException *exception) {
      event.messageString = @"Be sure to bring your tickets!";
      event.eventDate = [NSDate date];
      [event saveInBackground];*/
+     
+     /*ScholarshipStructure *schol = [[ScholarshipStructure alloc] init];
+     schol.titleString = @"Test Scholarship";
+     schol.dueDate = [NSDate date];
+     schol.messageString = @"Apply now!";
+     schol.userString = @"Kevin Lyons";
+     schol.email = @"team@wildcatconnect.org";
+     [schol saveInBackground];*/
      
     return YES;
 }

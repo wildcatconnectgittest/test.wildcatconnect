@@ -129,6 +129,7 @@
 		0ADBEF4E1C0ACC4900E946F6 /* admin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0ADBEF4D1C0ACC4900E946F6 /* admin@2x.png */; };
 		0AEE8AF01C72D95900959533 /* GroupDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE8AEF1C72D95900959533 /* GroupDetailViewController.m */; };
 		0AF9D3351C43E9C400618042 /* minus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AF9D3341C43E9C400618042 /* minus@2x.png */; };
+		0AFCD9A71C8921A20079D91E /* ScholarshipStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AFCD9A61C8921A20079D91E /* ScholarshipStructure.m */; };
 		F750A8391C5EE00900A2E235 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F750A8381C5EE00900A2E235 /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
@@ -346,6 +347,8 @@
 		0AEE8AEE1C72D95900959533 /* GroupDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupDetailViewController.h; sourceTree = "<group>"; };
 		0AEE8AEF1C72D95900959533 /* GroupDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupDetailViewController.m; sourceTree = "<group>"; };
 		0AF9D3341C43E9C400618042 /* minus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "minus@2x.png"; path = "../minus@2x.png"; sourceTree = "<group>"; };
+		0AFCD9A51C8921A20079D91E /* ScholarshipStructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScholarshipStructure.h; sourceTree = "<group>"; };
+		0AFCD9A61C8921A20079D91E /* ScholarshipStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScholarshipStructure.m; sourceTree = "<group>"; };
 		F750A8381C5EE00900A2E235 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -491,6 +494,8 @@
 				0A634C591C49651000210D33 /* ErrorStructure.m */,
 				0A634C5E1C4AC05400210D33 /* EventStructure.h */,
 				0A634C5F1C4AC05400210D33 /* EventStructure.m */,
+				0AFCD9A51C8921A20079D91E /* ScholarshipStructure.h */,
+				0AFCD9A61C8921A20079D91E /* ScholarshipStructure.m */,
 				0A634C611C4AC1A300210D33 /* EventsTableViewController.h */,
 				0A634C621C4AC1A300210D33 /* EventsTableViewController.m */,
 				0A634C661C4B442500210D33 /* EventDetailViewController.h */,
@@ -838,6 +843,7 @@
 				0A634C6B1C4B4BA900210D33 /* ComposeEventViewController.m in Sources */,
 				0ADBEE881C0ABD8400E946F6 /* ComposeAlertViewController.m in Sources */,
 				0AAA54A51C735BAC009A7ABF /* CommunityServiceDetailViewController.m in Sources */,
+				0AFCD9A71C8921A20079D91E /* ScholarshipStructure.m in Sources */,
 				0A634C601C4AC05400210D33 /* EventStructure.m in Sources */,
 				0A634C681C4B442500210D33 /* EventDetailViewController.m in Sources */,
 				0ADBEEEB1C0ABDE100E946F6 /* EmailButton.m in Sources */,

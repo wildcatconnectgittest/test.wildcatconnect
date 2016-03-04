@@ -119,16 +119,16 @@
                     [dateFormatter setDateFormat:@"H"];
                     dateString = [dateFormatter stringFromDate:[NSDate date]];
                     NSInteger hour = [dateString integerValue];
-                    if (hour >= 15) {
+                    if (hour >= 21) {
                          index = 1;
                     }
                }
-                    hasImage = [[schoolDay objectAtIndex:0] objectForKey:@"hasImage"];
-                    schoolDayID = [[schoolDay objectAtIndex:0] objectForKey:@"schoolDayID"];
-               self.dayString = [[[schoolDay objectAtIndex:0] objectForKey:@"schoolDayID"] copy];
-                    imageUser = [[schoolDay objectAtIndex:0] objectForKey:@"imageUser"];
-               imageUserFullString = [[schoolDay objectAtIndex:0] objectForKey:@"imageUserFullString"];
-               captionString = [[schoolDay objectAtIndex:0] objectForKey:@"imageString"];
+                    hasImage = [[schoolDay objectAtIndex:index] objectForKey:@"hasImage"];
+                    schoolDayID = [[schoolDay objectAtIndex:index] objectForKey:@"schoolDayID"];
+               self.dayString = [[[schoolDay objectAtIndex:index] objectForKey:@"schoolDayID"] copy];
+                    imageUser = [[schoolDay objectAtIndex:index] objectForKey:@"imageUser"];
+               imageUserFullString = [[schoolDay objectAtIndex:index] objectForKey:@"imageUserFullString"];
+               captionString = [[schoolDay objectAtIndex:index] objectForKey:@"imageString"];
                if ([hasImage integerValue] == 1) {
                     [self getImageDataMethodWithCompletion:^(NSError *error, NSMutableArray *returnData, NSString *returnString, NSString *returnImageString, NSString *fullPostString) {
                          [activity stopAnimating];

@@ -17,3 +17,10 @@ Please note the new format…
 - Fixes a bug with text view in EditPictureDayViewController.
 - Fixes scrolling issues in some compose views.
 - Validation final for release.
+
+2.1
+
+- Adds ScholarshipStructure.
+- Fixes bug where it would update yesterday’s picture.
+- Back to 9 PM functionality.
+- [GOAL] Complete v2.1 Tues/Wed!

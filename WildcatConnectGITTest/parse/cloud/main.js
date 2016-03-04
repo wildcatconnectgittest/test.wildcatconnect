@@ -379,7 +379,7 @@ Parse.Cloud.job("alertStructureDeletion", function(request, response) {
     success: function(structures) {
       for (var i = 0; i < structures.length; i++) {
             var currentStructure = structures[i];
-            var thisDate = currentStructure.get("updatedAt");
+            var thisDate = currentStructure.get("createdAt");
             var now = new Date();
             var one_day=1000*60*60*24;
           var date1_ms = thisDate.getTime();
@@ -411,6 +411,58 @@ Parse.Cloud.job("alertStructureDeletion", function(request, response) {
   });
 });
 
+Parse.Cloud.job("userDeletion", function(request, response) {
+  Parse.Cloud.useMasterKey();
+  var query = new Parse.Query("_User");
+  query.equalTo("verified", 0);
+  query.find({
+    success: function(structures) {
+      for (var i = 0; i < structures.length; i++) {
+        var object = structures[i];
+        var firstName = structures[i].get("firstName");
+        var email = structures[i].get("email");
+        var currentStructure = structures[i];
+        var thisDate = currentStructure.get("createdAt");
+        var now = new Date();
+        var one_day=1000*60*60*24;
+        var date1_ms = thisDate.getTime();
+        var date2_ms = now.getTime();
+        var difference_ms = date2_ms - date1_ms;
+        difference_ms = Math.round(difference_ms/one_day);
+        if (difference_ms > 3) {
+          object.destroy({
+            success: function() {
+              Mailgun.sendEmail({
+                to: email,
+                from: "WildcatConnect <team@wildcatconnect.org>",
+                bcc: "WildcatConnect <team@wildcatconnect.org>",
+                subject: "WildcatConnect Account Deletion",
+                text: firstName + ", \n\nFor security purposes, we have deleted the WildcatConnect account you recently created.  A member of administration confirmed your account over 3 days ago at this point and you have not taken any action to verify your account.\n\nWe request that you attempt to make another account on our Web Portal at http://www.wildcatconnect.org.\n\nIf you have any additional questions about your account, do not hesitate to contact us.\n\nThank you,\n\nWildcatConnect App Team\nteam@wildcatconnect.org"
+              }, {
+                success: function(httpResponse) {
+                  if (i == structures.length - 1) {
+                    response.success("Done!");
+                  };
+                },
+                error: function(httpResponse) {
+                  console.error(httpResponse);
+                  response.error("Uh oh, something went wrong");
+                }
+              });
+            },
+            error: function(error) {
+              response.error(error);
+            }
+          });
+        };
+      };
+    },
+    error: function(error) {
+      response.error("Error occurred...");
+    }
+  });
+});
+
 Parse.Cloud.job("userRegisterStructureDeletion", function(request, response) {
   var query = new Parse.Query("UserRegisterStructure");
   query.ascending("createdAt");
@@ -426,7 +478,7 @@ Parse.Cloud.job("userRegisterStructureDeletion", function(request, response) {
           var difference_ms = date2_ms - date1_ms;
           difference_ms = Math.round(difference_ms/one_day);
           console.log(difference_ms);
-          if (difference_ms >= 2) {
+          if (difference_ms >= 3) {
             currentStructure.destroy({
               success: function() {
                 console.log("Just deleted an object!!!");
@@ -691,7 +743,7 @@ Parse.Cloud.define("registerUser", function(request, response) {
                 from: "WildcatConnect <team@wildcatconnect.org>",
                 bcc: "WildcatConnect <team@wildcatconnect.org>",
                 subject: "WildcatConnect Account Confirmation",
-                text: firstName + ", \n\nYour new WildcatConnect account has been approved! With your faculty account, you will now be able to log in to both the WildcatConnect iOS App and our web portal at http://www.wildcatconnect.org. For your first login, you will be required to enter the following credentials...\n\nUsername = " + username + "\nRegistration Key = " + key +"\n\nNOTE: All usernames, passwords and keys are case-sensitive.\n\nEnjoy posting and sharing with students, faculty and families!\n\nBest,\n\nWildcatConnect Development Team\n\nWeb: http://www.wildcatconnect.org\nSupport: support@wildcatconnect.org\nContact: team@wildcatconnect.org\n\n---\n\nIf you did not register an account and are receiving this e-mail in error, please contact us immediately at support@wildcatconnect.org. For security purposes, your registration key will expire in 48 hours, at which time you will need to re-register your account.\n"
+                text: firstName + ", \n\nYour new WildcatConnect account has been approved! With your faculty account, you will now be able to log in to both the WildcatConnect iOS App and our web portal at http://www.wildcatconnect.org. For your first login, you will be required to enter the following credentials...\n\nUsername = " + username + "\nPassword = The password you created during registration...\n\n***Registration Key = " + key +"\n\nNOTE: All usernames, passwords and keys are case-sensitive.\n\nEnjoy posting and sharing with students, faculty and families!\n\nBest,\n\nWildcatConnect Development Team\n\nWeb: http://www.wildcatconnect.org\nSupport: support@wildcatconnect.org\nContact: team@wildcatconnect.org\n\n---\n\nIf you did not register an account and are receiving this e-mail in error, please contact us immediately at support@wildcatconnect.org. For security purposes, your registration key will expire in 72 hours, at which time you will need to re-register your account.\n"
               }, {
                 success: function(httpResponse) {
                   response.success("Email sent!");
