@@ -245,11 +245,19 @@
      } else {
           event.isApproved = [NSNumber numberWithInteger:0];
      }
-     [event saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
-          if (error) {
-               theError = error;
-          }
-          dispatch_group_leave(serviceGroup);
+     PFQuery *query = [EventStructure query];
+     [query orderByDescending:@"ID"];
+     [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+          if (object) {
+               event.ID = [NSNumber numberWithInteger:([((EventStructure *)object).ID integerValue] + 1)];
+          } else
+               event.ID = [NSNumber numberWithInteger:0];
+          [event saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+               if (error) {
+                    theError = error;
+               }
+               dispatch_group_leave(serviceGroup);
+          }];
      }];
      dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^{
           completion(theError);

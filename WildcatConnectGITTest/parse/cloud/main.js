@@ -184,6 +184,33 @@ Parse.Cloud.job("schoolDayStructureGeneration", function(request, response) {
   });
  });
 
+Parse.Cloud.job("scholarshipDeletion", function(request, response) {
+  var query = new Parse.Query("ScholarshipStructure");
+  query.ascending("dueDate");
+  var array = new Array();
+  query.find().then(function(objects) {
+    var now = new Date();
+    for (var i = 0; i < objects.length; i++) {
+      var currentStructure = objects[i];
+      var thisDate = currentStructure.get("dueDate");
+      var now = new Date();
+      var one_day=1000*60*60*24;
+      var date1_ms = thisDate.getTime();
+      var date2_ms = now.getTime();
+      var difference_ms = date2_ms - date1_ms;
+      difference_ms = Math.round(difference_ms/one_day);
+      if (difference_ms >= 0) {
+        array.push(currentStructure);
+      };
+    };
+    return Parse.Object.destroyAll(array);
+  }).then(function(objectsGone){
+    response.success("Done!");
+  }), function(error) {
+    response.error(error);
+  }
+});
+
 Parse.Cloud.job("communityServiceStructureDeletion", function(request, response) {
 	var query = new Parse.Query("CommunityServiceStructure");
 	query.ascending("communityServiceID");
@@ -526,6 +553,44 @@ Parse.Cloud.afterSave("AlertStructure", function(request) {
         }
       });
     };
+  };
+});
+
+Parse.Cloud.define("createArchiveStructure", function(request, response) {
+  var ID = request.params.ID;
+  var query = new Parse.Query("NewsArticleStructure");
+  query.equalTo("articleID", ID);
+  var array = new Array();
+  query.first().then(function(article) {
+    var NewsArchiveStructure = Parse.Object.extend("NewsArchiveStructure");
+    var archive = new NewsArchiveStructure();
+    archive.set("titleString", article.get("titleString"));
+    archive.set("authorString", article.get("authorString"));
+    archive.set("dateString", article.get("dateString"));
+    archive.set("hasImage", article.get("hasImage"));
+    archive.set("imageFile", article.get("imageFile"));
+    archive.set("likes", article.get("likes"));
+    archive.set("summaryString", article.get("summaryString"));
+    archive.set("contentString", article.get("contentURLString"));
+    array.push(article);
+    array.push(archive);
+    return Parse.Object.saveAll(array);
+  }).then(function(savedObjects) {
+    if (savedObjects[0].get("contentURLString")) {
+      var article = savedObjects[0];
+      var archive = savedObjects[1];
+      article.set("archiveURL", "http://www.wildcatconnect.org/a/article.php?ID=" + archive.id);
+      return article.save();
+    } else {
+      var article = savedObjects[1];
+      var archive = savedObjects[0];
+      article.set("archiveURL", "http://www.wildcatconnect.org/a/article.php?ID=" + archive.id);
+      return article.save();
+    };
+  }).then(function() {
+    response.success();
+  }), function(error) {
+    response.error(error);
   };
 });
 
@@ -902,6 +967,7 @@ Parse.Cloud.define("denyStructure", function(request, response) {
   var admin = request.params.admin;
   var adminMail = request.params.adminMail;
   var adminMailString = admin + "<" + adminMail + ">";
+  var fullText = request.params.fullText;
   if (type === "news") {
     Mailgun.sendEmail({
       to: email,
@@ -964,8 +1030,8 @@ Parse.Cloud.define("denyStructure", function(request, response) {
     });
   } else if (type === "comm") {
     Mailgun.sendEmail({
-      to: "WildcatConnect <support@wildcatconnect.org>",
-      from: "WildcatConnect <team@wildcatconnect.org>", 
+      to: email,
+      from: "WildcatConnect <team@wildcatconnect.org>",
       bcc: adminMailString,
       subject: "Community Service Denial",
       text: name + ",\n\nUnfortunately, your recent community service opportunity has been denied by a member of administration. Please see below for details.\n\nOpportunity Title - " + title + "\nDenial Message - " + message + "\nAdministrative User - " + admin + "\n\nIf you would like, you can recreate the opportunity and resubmit for approval. Thank you for your understanding.\n\nBest,\n\nWildcatConnect App Team"
@@ -979,10 +1045,40 @@ Parse.Cloud.define("denyStructure", function(request, response) {
       }
     });
     Mailgun.sendEmail({
-      to: email,
+      to: "WildcatConnect <support@wildcatconnect.org>",
       from: "WildcatConnect <team@wildcatconnect.org>",
       subject: "Community Service Denial",
       text: name + ",\n\nUnfortunately, your recent community service opportunity has been denied by a member of administration. Please see below for details.\n\nOpportunity Title - " + title + "\nDenial Message - " + message + "\nAdministrative User - " + admin + "\n\nIf you would like, you can recreate the opportunity and resubmit for approval. Thank you for your understanding.\n\nBest,\n\nWildcatConnect App Team"
+    }, {
+      success: function(httpResponse) {
+        response.success("Email sent!");
+      },
+      error: function(httpResponse) {
+        console.error(httpResponse);
+        response.error("Uh oh, something went wrong");
+      }
+    });
+  } else if (type === "ILT") {
+    Mailgun.sendEmail({
+      to: email,
+      from: "WildcatConnect <team@wildcatconnect.org>",
+      bcc: adminMailString,
+      subject: "Community Service ILT Decision",
+      text: name + ",\n\nYour recent community service opportunity has been sent to the Instructional Leadership Team for further discussion and review. Please see below for details.\n\nOpportunity Title - " + title + "\nDetails - " + fullText + "\n Message - " + message + "\nAdministrative User - " + admin + "\n\nBest,\n\nWildcatConnect App Team"
+    }, {
+      success: function(httpResponse) {
+        //response.success("Email sent!");
+      },
+      error: function(httpResponse) {
+        console.error(httpResponse);
+        response.error("Uh oh, something went wrong");
+      }
+    });
+    Mailgun.sendEmail({
+      to: "WildcatConnect <support@wildcatconnect.org>",
+      from: "WildcatConnect <team@wildcatconnect.org>",
+      subject: "Community Service Denial",
+      text: name + ",\n\nYour recent community service opportunity has been sent to the Instructional Leadership Team for further discussion and review. Please see below for details.\n\nOpportunity Title - " + title + "\nDetails - " + fullText + "\n Message - " + message + "\nAdministrative User - " + admin + "\n\nBest,\n\nWildcatConnect App Team"
     }, {
       success: function(httpResponse) {
         response.success("Email sent!");
@@ -996,7 +1092,7 @@ Parse.Cloud.define("denyStructure", function(request, response) {
 });
 
 Parse.Cloud.afterSave("NewsArticleStructure", function(request) {
-  if (request.object.get("articleID") != null && request.object.get("views") == 0 && request.object.get("isApproved") == 1) {
+  if (request.object.get("articleID") != null && request.object.get("views") == 0 && request.object.get("isApproved") == 1 && request.object.get("archiveURL") === null) {
     Parse.Push.send({
         channels: [ "allNews" ],
         data: {
@@ -1005,7 +1101,12 @@ Parse.Cloud.afterSave("NewsArticleStructure", function(request) {
           n: request.object.get("articleID"),
           badge: "Increment"
         }
-      });
+    });
+    Parse.Cloud.run("createArchiveStructure", {"ID":request.object.get("articleID")}).then(function(response) {
+          //
+    }), function(error) {
+        //
+    };
   };
 });
 

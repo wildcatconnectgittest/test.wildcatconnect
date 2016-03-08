@@ -24,3 +24,7 @@ Please note the new format…
 - Fixes bug where it would update yesterday’s picture.
 - Back to 9 PM functionality.
 - [GOAL] Complete v2.1 Tues/Wed!
+- Implements ScholarshipTableViewController and Detail as well.
+- Loads CS by startDate, not simply ID.
+- Fixes bug with pushArray being nil.
+- Cannot subscribe to stuff w/o push enabled app wide.

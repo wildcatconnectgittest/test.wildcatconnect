@@ -148,7 +148,7 @@
     dispatch_group_enter(serviceGroup);
     NSMutableArray *returnArray = [[NSMutableArray alloc] init];
     PFQuery *query = [CommunityServiceStructure query];
-    [query orderByDescending:@"communityServiceID"];
+    [query orderByAscending:@"startDate"];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         [returnArray addObjectsFromArray:objects];
         firstError = error;

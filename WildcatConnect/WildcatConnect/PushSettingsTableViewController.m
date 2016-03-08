@@ -18,6 +18,7 @@
      BOOL hasChanged;
      UIActivityIndicatorView *activity;
      UIAlertView *postAlertView;
+     UIAlertView *noAlertView;
 }
 
 - (void)viewDidLoad {
@@ -41,19 +42,22 @@
      
      self.navigationItem.leftBarButtonItem = bbtnBack;
      
-     
-     activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-     [activity setBackgroundColor:[UIColor clearColor]];
-     [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
-     self.navigationItem.rightBarButtonItem = barButtonItem;
-     [activity startAnimating];
-     
-     [[PFInstallation currentInstallation] fetchIfNeededInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
-          self.pushArray = [NSMutableArray arrayWithArray:((PFInstallation *)object).channels];
-          [activity stopAnimating];
-          [self.tableView reloadData];
-     }];
+     if (! [[UIApplication sharedApplication] isRegisteredForRemoteNotifications]) {
+          noAlertView = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"You have not enabled push notifications for this device. Please turn on notifications in your iPhone settings, close the app and try again." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+     } else {
+          activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+          [activity setBackgroundColor:[UIColor clearColor]];
+          [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+          UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
+          self.navigationItem.rightBarButtonItem = barButtonItem;
+          [activity startAnimating];
+          
+          [[PFInstallation currentInstallation] fetchIfNeededInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+               self.pushArray = [NSMutableArray arrayWithArray:((PFInstallation *)object).channels];
+               [activity stopAnimating];
+               [self.tableView reloadData];
+          }];
+     }
 }
 
 - (void)getChannelsMethodWithCompletion:(void (^)(NSMutableArray *returnArray, NSError *error))completion {
@@ -228,6 +232,8 @@
                     });
                }];
           }
+     } else if (actionSheet == noAlertView) {
+          [self.navigationController popViewControllerAnimated:YES];
      } else {
           if (buttonIndex == 1) {
                [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2] animated:YES];
@@ -240,11 +246,15 @@
      dispatch_group_enter(serviceGroup);
      __block NSError *theError;
      PFInstallation *currentInstallation = [PFInstallation currentInstallation];
-     [currentInstallation setObject:self.pushArray forKey:@"channels"];
-     [currentInstallation saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
-          theError = error;
+     if (self.pushArray.count > 0) {
+          [currentInstallation setObject:self.pushArray forKey:@"channels"];
+          [currentInstallation saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+               theError = error;
+               dispatch_group_leave(serviceGroup);
+          }];
+     } else {
           dispatch_group_leave(serviceGroup);
-     }];
+     }
      dispatch_group_notify(serviceGroup, dispatch_get_main_queue(), ^{
           completion(theError);
      });

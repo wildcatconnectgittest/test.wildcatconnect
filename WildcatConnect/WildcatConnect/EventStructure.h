@@ -19,5 +19,6 @@
 @property NSNumber *isApproved;
 @property NSString *userString;
 @property NSString *email;
+@property NSNumber *ID;
 
 @end

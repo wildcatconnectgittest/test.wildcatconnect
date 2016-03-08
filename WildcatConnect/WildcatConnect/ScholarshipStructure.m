@@ -15,6 +15,7 @@
 @dynamic messageString;
 @dynamic userString;
 @dynamic email;
+@dynamic ID;
 
 + (void)load {
      [self registerSubclass];

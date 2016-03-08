@@ -153,7 +153,7 @@
                         </navigationBar>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="CellIdentifier" selectionStyle="default" indentationWidth="10" reuseIdentifier="CellIdentifier" id="6U0-Dq-Axa">
-                                <rect key="frame" x="0.0" y="93.5" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="157.5" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6U0-Dq-Axa" id="ahF-cF-BtX">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
@@ -565,10 +565,10 @@
             </objects>
             <point key="canvasLocation" x="2060" y="385"/>
         </scene>
-        <!--Lunch Menu-->
+        <!--Scholarships-->
         <scene sceneID="HVM-pF-uAe">
             <objects>
-                <tableViewController id="ezL-L0-4Mr" customClass="LunchMenusViewController" sceneMemberID="viewController">
+                <tableViewController id="ezL-L0-4Mr" customClass="ScholarshipTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="cHL-Eh-RRt">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -588,11 +588,29 @@
                             <outlet property="delegate" destination="ezL-L0-4Mr" id="npe-zy-Sgk"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Lunch Menu" id="Qa0-mi-jOK"/>
+                    <navigationItem key="navigationItem" title="Scholarships" id="Qa0-mi-jOK"/>
+                    <connections>
+                        <segue destination="xC4-i5-Wc4" kind="push" id="o97-fQ-AXB"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x9K-2D-Z3J" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3100" y="193"/>
+            <point key="canvasLocation" x="3824" y="-279"/>
+        </scene>
+        <!--Details-->
+        <scene sceneID="eQQ-fW-3AG">
+            <objects>
+                <viewController storyboardIdentifier="ScholDetail" useStoryboardIdentifierAsRestorationIdentifier="YES" id="xC4-i5-Wc4" customClass="ScholarshipDetailViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="N7N-xg-eaZ">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Details" id="dDp-W6-lm6"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wvb-8i-jal" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3981" y="-286"/>
         </scene>
         <!--Details-->
         <scene sceneID="X8U-Z2-C6t">
@@ -679,7 +697,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="CellIdentifier" selectionStyle="default" indentationWidth="10" id="3Tp-lB-UpO">
-                                <rect key="frame" x="0.0" y="28" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="92" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3Tp-lB-UpO" id="rOy-n0-MWD">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>

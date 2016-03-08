@@ -263,6 +263,13 @@
      
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+     [super viewWillDisappear:animated];
+     NSNumber *count = [NSNumber numberWithInteger:self.pollArray.count];
+     [[NSUserDefaults standardUserDefaults] setObject:count forKey:@"pollsViewed"];
+     [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
      [super viewWillAppear:animated];
      NSMutableArray *readArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"answeredPolls"];

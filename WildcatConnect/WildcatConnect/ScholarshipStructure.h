@@ -17,5 +17,6 @@
 @property NSString *messageString;
 @property NSString *userString;
 @property NSString *email;
+@property NSNumber *ID;
 
 @end
