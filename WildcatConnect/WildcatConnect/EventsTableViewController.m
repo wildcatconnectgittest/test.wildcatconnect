@@ -238,7 +238,7 @@
      
      if ((indexPath.section == 0 && self.todayEvents.count == 0) || (indexPath.section == 1 && self.upcomingEvents.count == 0) || (indexPath.section == 2 && self.allEvents.count == 0)) {
           UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
-          cell.textLabel.text = @"No data to display.";
+          cell.textLabel.text = @"No events here.";
           return  cell;
      } else {
           EventStructure *event;

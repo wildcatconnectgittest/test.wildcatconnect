@@ -9,6 +9,7 @@
 #import "NewsArticleDetailViewController.h"
 #import "NewsCenterTableViewController.h"
 #import "AppManager.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface NewsArticleDetailViewController ()
 
@@ -76,23 +77,41 @@
                if (! [liked containsObject:self.NA.articleID]) {
                     likesButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
                     [likesButton addTarget:self action:@selector(likeMethod) forControlEvents:UIControlEventTouchUpInside];
-                    [likesButton setTitle:@"Like this!" forState:UIControlStateNormal];
+                    [likesButton setImage:[[UIImage imageNamed:@"like@2x.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
                     [likesButton sizeToFit];
                     CGFloat width = likesButton.frame.size.width;
-                    likesButton.frame = CGRectMake((self.view.frame.size.width - width - 10), likesLabel.frame.origin.y, likesButton.frame.size.width, 30);
+                    likesButton.frame = CGRectMake((self.view.frame.size.width - width - 20), likesLabel.frame.origin.y, likesButton.frame.size.width, likesButton.frame.size.height);
+                    [scrollView addSubview:likesButton];
+                    [self runSpinAnimationOnView:likesButton duration:2 rotations:1 repeat:0];
+               } else {
+                    likesButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                    [likesButton addTarget:self action:@selector(likeMethod) forControlEvents:UIControlEventTouchUpInside];
+                    [likesButton setImage:[[UIImage imageNamed:@"done@2x.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
+                    [likesButton sizeToFit];
+                    [likesButton setEnabled:false];
+                    CGFloat width = likesButton.frame.size.width;
+                    likesButton.frame = CGRectMake((self.view.frame.size.width - width - 20), likesLabel.frame.origin.y, likesButton.frame.size.width, likesButton.frame.size.height);
                     [scrollView addSubview:likesButton];
                }
           } else {
                likesButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
                [likesButton addTarget:self action:@selector(likeMethod) forControlEvents:UIControlEventTouchUpInside];
-               [likesButton setTitle:@"Like this!" forState:UIControlStateNormal];
+               [likesButton setImage:[[UIImage imageNamed:@"like@2x.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
                [likesButton sizeToFit];
                CGFloat width = likesButton.frame.size.width;
-               likesButton.frame = CGRectMake((self.view.frame.size.width - width - 10), likesLabel.frame.origin.y, likesButton.frame.size.width, 30);
+               likesButton.frame = CGRectMake((self.view.frame.size.width - width - 20), likesLabel.frame.origin.y, likesButton.frame.size.width, likesButton.frame.size.height);
                [scrollView addSubview:likesButton];
+               [self runSpinAnimationOnView:likesButton duration:2 rotations:1 repeat:0];
           }
           
-          UIView * separator = [[UIView alloc] initWithFrame:CGRectMake(10, likesLabel.frame.origin.y + likesLabel.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+          CGFloat height = 0;
+          if (likesButton != nil) {
+               height = likesButton.frame.origin.y + likesButton.frame.size.height + 10;
+          } else {
+               height = likesLabel.frame.origin.y + likesLabel.frame.size.height + 10;
+          }
+          
+          UIView * separator = [[UIView alloc] initWithFrame:CGRectMake(10, height, self.view.frame.size.width - 20, 1)];
           separator.backgroundColor = [UIColor blackColor];
           [scrollView addSubview:separator];
           
@@ -116,12 +135,29 @@
           scrollView.contentSize = contentRect.size;
           [self.view addSubview:scrollView];
           
-          [self viewMethodWithCompletion:^(NSUInteger integer, NSError *error) {
-               if (self.showCloseButton == true) {
-                    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleDone target:self action:@selector(dismissModalViewControllerAnimated:)];
-                    self.navigationItem.rightBarButtonItem = barButtonItem;
-                    [barButtonItem release];
-               }
+          [self getLikesMethodWithCompletion:^(NSInteger integer, NSError *error) {
+               
+               self.NA.likes = [NSNumber numberWithInteger:integer];
+               
+               [likesLabel removeFromSuperview];
+               likesLabel = [[UILabel alloc] initWithFrame:CGRectMake(authorDateLabel.frame.origin.x, authorDateLabel.frame.origin.y + authorDateLabel.frame.size.height + 10, self.view.frame.size.width - 20, 30)];
+               if ([self.NA.likes integerValue] == 1) {
+                    likesLabel.text = [[self.NA.likes stringValue] stringByAppendingString:@" like"];
+               } else
+                    likesLabel.text = [[self.NA.likes stringValue] stringByAppendingString:@" likes"];
+               [likesLabel setFont:[UIFont systemFontOfSize:16]];
+               [likesLabel sizeToFit];
+               [scrollView addSubview:likesLabel];
+               
+               [self viewMethodWithCompletion:^(NSUInteger integer, NSError *error) {
+                    [activity stopAnimating];
+                    if (self.showCloseButton == true) {
+                         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleDone target:self action:@selector(dismissModalViewControllerAnimated:)];
+                         self.navigationItem.rightBarButtonItem = barButtonItem;
+                         [barButtonItem release];
+                    }
+               } forID:self.NA.objectId];
+               
           } forID:self.NA.objectId];
           
      } else {
@@ -174,24 +210,40 @@
                if (! [liked containsObject:self.NA.articleID]) {
                     likesButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
                     [likesButton addTarget:self action:@selector(likeMethod) forControlEvents:UIControlEventTouchUpInside];
-                    [likesButton setTitle:@"Like this!" forState:UIControlStateNormal];
+                    [likesButton setImage:[[UIImage imageNamed:@"like@2x.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
                     [likesButton sizeToFit];
                     CGFloat width = likesButton.frame.size.width;
-                    likesButton.frame = CGRectMake((self.view.frame.size.width - width - 10), likesLabel.frame.origin.y, likesButton.frame.size.width, likesButton.frame.size.height);
+                    likesButton.frame = CGRectMake((self.view.frame.size.width - width - 20), likesLabel.frame.origin.y, likesButton.frame.size.width, likesButton.frame.size.height);
+                    [scrollView addSubview:likesButton];
+                    [self runSpinAnimationOnView:likesButton duration:2 rotations:1 repeat:0];
+               } else {
+                    likesButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                    [likesButton addTarget:self action:@selector(likeMethod) forControlEvents:UIControlEventTouchUpInside];
+                    [likesButton setImage:[[UIImage imageNamed:@"done@2x.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
+                    [likesButton sizeToFit];
+                    [likesButton setEnabled:false];
+                    CGFloat width = likesButton.frame.size.width;
+                    likesButton.frame = CGRectMake((self.view.frame.size.width - width - 20), likesLabel.frame.origin.y, likesButton.frame.size.width, likesButton.frame.size.height);
                     [scrollView addSubview:likesButton];
                }
           } else {
                likesButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
                [likesButton addTarget:self action:@selector(likeMethod) forControlEvents:UIControlEventTouchUpInside];
-               [likesButton setTitle:@"Like this!" forState:UIControlStateNormal];
-               [likesButton sizeToFit];
+               [likesButton setImage:[[UIImage imageNamed:@"like@2x.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];               [likesButton sizeToFit];
                CGFloat width = likesButton.frame.size.width;
-               likesButton.frame = CGRectMake((self.view.frame.size.width - width - 10), (likesLabel.frame.origin.y + likesLabel.frame.size
-                                              .height / 2) - (likesButton.frame.size.height / 2), likesButton.frame.size.width, likesButton.frame.size.height);
+               likesButton.frame = CGRectMake((self.view.frame.size.width - width - 20), likesLabel.frame.origin.y, likesButton.frame.size.width, likesButton.frame.size.height);
                [scrollView addSubview:likesButton];
+               [self runSpinAnimationOnView:likesButton duration:2 rotations:1 repeat:0];
           }
           
-          UIView * separator = [[UIView alloc] initWithFrame:CGRectMake(10, likesLabel.frame.origin.y + likesLabel.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+          CGFloat height = 0;
+          if (likesButton != nil) {
+               height = likesButton.frame.origin.y + likesButton.frame.size.height + 10;
+          } else {
+               height = likesLabel.frame.origin.y + likesLabel.frame.size.height + 10;
+          }
+          
+          UIView * separator = [[UIView alloc] initWithFrame:CGRectMake(10, height, self.view.frame.size.width - 20, 1)];
           separator.backgroundColor = [UIColor blackColor];
           [scrollView addSubview:separator];
           
@@ -240,6 +292,18 @@
                
           } forID:self.NA.objectId];
      }
+}
+
+- (void)runSpinAnimationOnView:(UIView*)view duration:(CGFloat)duration rotations:(CGFloat)rotations repeat:(float)repeat;
+{
+     CABasicAnimation* rotationAnimation;
+     rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+     rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI * 2.0 /* full rotation*/ * rotations * duration ];
+     rotationAnimation.duration = duration;
+     rotationAnimation.cumulative = YES;
+     rotationAnimation.repeatCount = repeat;
+     
+     [view.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"];
 }
 
 - (void)viewMethodWithCompletion:(void (^)(NSUInteger integer, NSError *error))completion forID:(NSString *)objectID {
@@ -321,7 +385,9 @@
 }
 
 - (void)likeMethod {
-     [likesButton removeFromSuperview];
+     [likesButton setImage:[[UIImage imageNamed:@"done@2x.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
+     [likesButton sizeToFit];
+     [likesButton setEnabled:false];
      [likesLabel removeFromSuperview];
      NSInteger likes = [self.NA.likes integerValue];
      NSNumber *newLikes = [NSNumber numberWithInt:likes + 1];

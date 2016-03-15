@@ -28,3 +28,12 @@ Please note the new format…
 - Loads CS by startDate, not simply ID.
 - Fixes bug with pushArray being nil.
 - Cannot subscribe to stuff w/o push enabled app wide.
+
+2.2
+
+- Fixes bug where polls can be skewed with improper data refresh.
+- Fixes scholarship number count on Sections main page.
+- No longer allows for push notifications to come into play if not subscribed with deviceToken.
+- Fixes bug with channelString not properly registering for ID >= 10.
+- Adds new like features that enhance UI experience.
+- Accounts for new polling ‘isActive’ parameter.

@@ -450,7 +450,7 @@
  // Configure the cell...
       if (self.newsArticles.count == 0) {
            UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
-           cell.textLabel.text = @"No data to display.";
+           cell.textLabel.text = @"Loading your data...";
            return  cell;
       } else {
            NewsArticleStructure *newsArticleStructure = ((NewsArticleStructure *)[self.newsArticles objectAtIndex:indexPath.row]);

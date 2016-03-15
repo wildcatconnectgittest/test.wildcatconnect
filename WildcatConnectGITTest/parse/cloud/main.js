@@ -199,7 +199,7 @@ Parse.Cloud.job("scholarshipDeletion", function(request, response) {
       var date2_ms = now.getTime();
       var difference_ms = date2_ms - date1_ms;
       difference_ms = Math.round(difference_ms/one_day);
-      if (difference_ms >= 0) {
+      if (difference_ms >= 2) {
         array.push(currentStructure);
       };
     };
@@ -300,9 +300,11 @@ Parse.Cloud.job("pollStructureDeletion", function(request, response) {
           var difference_ms = date2_ms - date1_ms;
           difference_ms = Math.round(difference_ms/one_day);
           if (difference_ms >= currentStructure.get("daysActive")) {
-            currentStructure.destroy({
+            currentStructure.save({
+              "isActive" : 0
+            }, {
               success: function() {
-                console.log("Just deleted an object!!!");
+                console.log("Just updated an object!!!");
               },
               error: function(error) {
                 response.error(error);
@@ -406,7 +408,7 @@ Parse.Cloud.job("alertStructureDeletion", function(request, response) {
     success: function(structures) {
       for (var i = 0; i < structures.length; i++) {
             var currentStructure = structures[i];
-            var thisDate = currentStructure.get("createdAt");
+            var thisDate = currentStructure.createdAt;
             var now = new Date();
             var one_day=1000*60*60*24;
           var date1_ms = thisDate.getTime();
@@ -483,6 +485,9 @@ Parse.Cloud.job("userDeletion", function(request, response) {
           });
         };
       };
+      if (structures.length == 0) {
+        response.success("Done!");
+      };
     },
     error: function(error) {
       response.error("Error occurred...");
@@ -556,13 +561,16 @@ Parse.Cloud.afterSave("AlertStructure", function(request) {
   };
 });
 
+var NewsArchiveStructure = Parse.Object.extend("NewsArchiveStructure");
+
 Parse.Cloud.define("createArchiveStructure", function(request, response) {
+  console.log("HERE");
   var ID = request.params.ID;
+  console.log("HERE - " + ID);
   var query = new Parse.Query("NewsArticleStructure");
   query.equalTo("articleID", ID);
   var array = new Array();
   query.first().then(function(article) {
-    var NewsArchiveStructure = Parse.Object.extend("NewsArchiveStructure");
     var archive = new NewsArchiveStructure();
     archive.set("titleString", article.get("titleString"));
     archive.set("authorString", article.get("authorString"));
@@ -572,26 +580,50 @@ Parse.Cloud.define("createArchiveStructure", function(request, response) {
     archive.set("likes", article.get("likes"));
     archive.set("summaryString", article.get("summaryString"));
     archive.set("contentString", article.get("contentURLString"));
+    article.set("doPush", 1);
     array.push(article);
     array.push(archive);
-    return Parse.Object.saveAll(array);
-  }).then(function(savedObjects) {
-    if (savedObjects[0].get("contentURLString")) {
-      var article = savedObjects[0];
-      var archive = savedObjects[1];
-      article.set("archiveURL", "http://www.wildcatconnect.org/a/article.php?ID=" + archive.id);
-      return article.save();
-    } else {
-      var article = savedObjects[1];
-      var archive = savedObjects[0];
-      article.set("archiveURL", "http://www.wildcatconnect.org/a/article.php?ID=" + archive.id);
-      return article.save();
-    };
-  }).then(function() {
-    response.success();
-  }), function(error) {
-    response.error(error);
-  };
+    Parse.Object.saveAll(array, {
+      success: function(savedObjects) {
+        var article;
+        var archive;
+        if (savedObjects[0].get("contentURLString")) {
+          article = savedObjects[0];
+          archive = savedObjects[1];
+          article.set("archiveURL", "http://www.wildcatconnect.org/a/article.php?ID=" + archive.id);
+        } else {
+          article = savedObjects[1];
+          archive = savedObjects[0];
+          article.set("archiveURL", "http://www.wildcatconnect.org/a/article.php?ID=" + archive.id);
+        };
+        article.save(null, {
+          success: function() {
+            Parse.Push.send({
+            channels: [ "allNews" ],
+            data: {
+              title: "WildcatConnect",
+              alert: "NEWS - " + article.get("titleString"),
+              n: article.get("articleID"),
+              badge: "Increment"
+            }
+        }, {
+          success: function() {
+              response.success("");
+            },
+            error: function(error) {
+              console.log(error);
+              response.error(error);
+            }
+        });
+          }, error: function(error) {
+            response.error(error);
+          }
+        });
+      }, error: function(error) {
+        response.error(error);
+      }
+    });
+  });
 });
 
 Parse.Cloud.define("countInstallations", function(request, response) {
@@ -1092,21 +1124,15 @@ Parse.Cloud.define("denyStructure", function(request, response) {
 });
 
 Parse.Cloud.afterSave("NewsArticleStructure", function(request) {
-  if (request.object.get("articleID") != null && request.object.get("views") == 0 && request.object.get("isApproved") == 1 && request.object.get("archiveURL") === null) {
-    Parse.Push.send({
-        channels: [ "allNews" ],
-        data: {
-          title: "WildcatConnect",
-          alert: "NEWS - " + request.object.get("titleString"),
-          n: request.object.get("articleID"),
-          badge: "Increment"
+  console.log("HERE!!!0");
+  if (request.object.get("articleID") != null && request.object.get("views") == 0 && request.object.get("isApproved") === 1 && article.get("doPush") === null) {
+    Parse.Cloud.run("createArchiveStructure", {"ID":request.object.get("articleID")}, {
+        success: function() {
+          console.log("HERE!!!3");
+        }, error: function(error) {
+          console.log(error);
         }
-    });
-    Parse.Cloud.run("createArchiveStructure", {"ID":request.object.get("articleID")}).then(function(response) {
-          //
-    }), function(error) {
-        //
-    };
+      });
   };
 });
 

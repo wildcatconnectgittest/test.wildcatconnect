@@ -161,7 +161,7 @@
           // Configure the cell...
      if (self.scholarships.count == 0) {
           UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
-          cell.textLabel.text = @"No data to display.";
+          cell.textLabel.text = @"Loading your data...";
           return  cell;
      } else {
           ScholarshipStructure *structure = ((ScholarshipStructure *)[self.scholarships objectAtIndex:indexPath.row]);

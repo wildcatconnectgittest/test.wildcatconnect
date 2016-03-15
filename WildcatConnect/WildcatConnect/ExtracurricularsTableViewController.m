@@ -372,7 +372,7 @@
           //Return array will be updatesArray
      NSMutableArray *myArray = [[[PFInstallation currentInstallation] objectForKey:@"channels"] mutableCopy];
      for (int i = 0; i < myArray.count; i++) {
-          if ([myArray[i] length] == 2) {
+          if ([myArray[i] length] >= 2) {
                myArray[i] = [NSNumber numberWithInteger:[((NSString *)[myArray[i] substringFromIndex:1]) integerValue]];
           }
      }

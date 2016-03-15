@@ -375,6 +375,7 @@
      pollStructure.pollQuestion = summaryTextView.text;
      pollStructure.totalResponses = @"0";
      pollStructure.daysActive = [NSNumber numberWithInteger:[daysTextView.text integerValue]];
+     pollStructure.isActive = [NSNumber numberWithInteger:1];
      NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
      for (NSString *choice in self.choicesArray) {
           [dictionary setObject:@"0" forKey:choice];

@@ -19,6 +19,7 @@
      UIActivityIndicatorView *activity;
      UIAlertView *subscribeAlertView;
      UIAlertView *unsubscribeAlertView;
+     UIAlertView *noAlertView;
 }
 
 - (void)viewDidLoad {
@@ -131,33 +132,49 @@
      if (actionSheet == unsubscribeAlertView) {
           if (buttonIndex == 1) {
                     //Yes
-               activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-               [activity setBackgroundColor:[UIColor clearColor]];
-               [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-               UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
-               self.navigationItem.rightBarButtonItem = barButtonItem;
-               [activity startAnimating];
-               [self changeGroupMethodWithCompletion:^(NSError *error) {
-                    [activity stopAnimating];
-                    [theTableView reloadData];
-               } forID:[@"E" stringByAppendingString:[self.EC.extracurricularID stringValue]] forAction:0];
+               NSString *string = [[PFInstallation currentInstallation] objectForKey:@"deviceToken"];
+               
+               if (string == nil) {
+                    noAlertView = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"You have not enabled push notifications for this device. Please turn on notifications in your iPhone settings, close the app and try to subscribe again." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                    [noAlertView show];
+               } else {
+                    activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+                    [activity setBackgroundColor:[UIColor clearColor]];
+                    [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+                    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
+                    self.navigationItem.rightBarButtonItem = barButtonItem;
+                    [activity startAnimating];
+                    [self changeGroupMethodWithCompletion:^(NSError *error) {
+                         [activity stopAnimating];
+                         [theTableView reloadData];
+                    } forID:[@"E" stringByAppendingString:[self.EC.extracurricularID stringValue]] forAction:0];
+               }
           }
           
      } else if (actionSheet == subscribeAlertView) {
           if (buttonIndex == 1) {
-                    //Yes
-               activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-               [activity setBackgroundColor:[UIColor clearColor]];
-               [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-               UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
-               self.navigationItem.rightBarButtonItem = barButtonItem;
-               [activity startAnimating];
-               [self changeGroupMethodWithCompletion:^(NSError *error) {
-                    [activity stopAnimating];
-                    [theTableView reloadData];
-               } forID:[@"E" stringByAppendingString:[self.EC.extracurricularID stringValue]] forAction:1];
+               NSString *string = [[PFInstallation currentInstallation] objectForKey:@"deviceToken"];
+               
+               if (string == nil) {
+                    noAlertView = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"You have not enabled push notifications for this device. Please turn on notifications in your iPhone settings, close the app and try to subscribe again." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                    [noAlertView show];
+               } else {
+                         //Yes
+                    activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+                    [activity setBackgroundColor:[UIColor clearColor]];
+                    [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+                    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
+                    self.navigationItem.rightBarButtonItem = barButtonItem;
+                    [activity startAnimating];
+                    [self changeGroupMethodWithCompletion:^(NSError *error) {
+                         [activity stopAnimating];
+                         [theTableView reloadData];
+                    } forID:[@"E" stringByAppendingString:[self.EC.extracurricularID stringValue]] forAction:1];
+               }
           }
           
+     } else if (actionSheet == noAlertView) {
+          [self.navigationController popViewControllerAnimated:YES];
      }
 }
 

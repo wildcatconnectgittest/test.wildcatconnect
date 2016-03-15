@@ -211,7 +211,7 @@
     // Configure the cell...
     if (self.allOpps.count == 0) {
         UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
-        cell.textLabel.text = @"No data to display.";
+        cell.textLabel.text = @"Loading your data...";
         return  cell;
     } else {
         CommunityServiceStructure *commServiceStructure = ((CommunityServiceStructure *)[self.allOpps objectAtIndex:indexPath.row]);

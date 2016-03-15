@@ -319,8 +319,8 @@
           else if (integer == 0) {
                cell.accessoryView = nil;
           }
-     } else if (indexPath.row == 4) {
-          NSNumber *number = [self.sectionsNumbersArray objectAtIndex:indexPath.row - 1];
+     } else if (indexPath.row == 5) {
+          NSNumber *number = [self.sectionsNumbersArray objectAtIndex:indexPath.row - 2];
           NSInteger integer = [number integerValue];
           if (integer > 0) {
                UIButton *downloadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];

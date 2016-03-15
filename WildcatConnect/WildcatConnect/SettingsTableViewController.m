@@ -109,7 +109,7 @@
           if (! deviceToken) {
                deviceToken = @"Not available.";
           }
-          NSString *bodyString = [[[[@"Please do not edit the folowing information.\n\nVersion = " stringByAppendingString:majorVersion] stringByAppendingString:@"\n\nDeviceToken = "] stringByAppendingString:deviceToken] stringByAppendingString:@"\n\nPlease describe your app issue below. Include as much detail as possible for what you were doing in the application, etc.\n\n"];
+          NSString *bodyString = [[[[@"Please do not edit the following information.\n\nVersion = " stringByAppendingString:majorVersion] stringByAppendingString:@"\n\nDeviceToken = "] stringByAppendingString:deviceToken] stringByAppendingString:@"\n\nPlease describe your app issue below. Include as much detail as possible for what you were doing in the application, etc.\n\n"];
           
           NSString *URLEMail = [@"mailto:support@wildcatconnect.org?subject=WildcatConnect App Support&body=" stringByAppendingString:bodyString];
           NSString *url = [URLEMail stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding ];

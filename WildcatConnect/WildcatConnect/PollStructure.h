@@ -18,5 +18,6 @@
 @property NSString *pollID;
 @property NSString *totalResponses;
 @property NSNumber *daysActive;
+@property NSNumber *isActive;
 
 @end

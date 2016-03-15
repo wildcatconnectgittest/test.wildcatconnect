@@ -314,7 +314,7 @@
      if (self.dictionaryArray.count == 0) {
           UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
                                                          reuseIdentifier:@"cellID"];
-          cell.textLabel.text = @"No data to display yet.";
+          cell.textLabel.text = @"Loading your data...";
           return cell;
      }
      else {

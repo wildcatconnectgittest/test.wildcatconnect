@@ -313,7 +313,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
      UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
      if (self.alerts.count == 0) {
-          cell.textLabel.text = @"No data to display.";
+          cell.textLabel.text = @"Loading your data...";
      } else {
           AlertStructure *alertStructure = (AlertStructure *)[self.alerts objectAtIndex:indexPath.row];
           cell.textLabel.text = alertStructure.titleString;

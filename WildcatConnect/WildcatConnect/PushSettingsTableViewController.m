@@ -42,8 +42,11 @@
      
      self.navigationItem.leftBarButtonItem = bbtnBack;
      
-     if (! [[UIApplication sharedApplication] isRegisteredForRemoteNotifications]) {
+     NSString *string = [[PFInstallation currentInstallation] objectForKey:@"deviceToken"];
+     
+     if (string == nil) {
           noAlertView = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"You have not enabled push notifications for this device. Please turn on notifications in your iPhone settings, close the app and try again." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+          [noAlertView show];
      } else {
           activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
           [activity setBackgroundColor:[UIColor clearColor]];

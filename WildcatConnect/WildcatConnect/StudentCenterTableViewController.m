@@ -40,25 +40,7 @@
      
      self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];
      
-     if (self.loadNumber == [NSNumber numberWithInt:1] || ! self.loadNumber) {
-          [self refreshData];
-     } else {
-          activity = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-          [activity setBackgroundColor:[UIColor clearColor]];
-          [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-          UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activity];
-          self.navigationItem.rightBarButtonItem = barButtonItem;
-          [activity startAnimating];
-          [self getOldPollsMethodWithCompletion:^(NSMutableArray *returnArray) {
-               self.pollArray = returnArray;
-               dispatch_async(dispatch_get_main_queue(), ^ {
-                    [self.tableView reloadData];
-                    [activity stopAnimating];
-                    [self refreshControl];
-                    [self.refreshControl endRefreshing];
-               });
-          }];
-     }
+     [self refreshData];
 }
 
 -(void)refreshView:(UIRefreshControl *)refresh {
@@ -190,6 +172,7 @@
      NSMutableArray *returnArray = [[NSMutableArray alloc] init];
      PFQuery *query = [PollStructure query];
      [query orderByDescending:@"pollID"];
+     [query whereKey:@"isActive" equalTo:[NSNumber numberWithInteger:1]];
      query.limit = 10;
      [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
           [returnArray addObjectsFromArray:objects];
@@ -237,14 +220,12 @@
      UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
     
      if (self.pollArray.count == 0) {
-          cell.textLabel.text = @"No data to display.";
+          cell.textLabel.text = @"Loading your data...";
      } else {
           PollStructure *pollStructure = (PollStructure *)[self.pollArray objectAtIndex:indexPath.row];
           cell.textLabel.text = pollStructure.pollTitle;
           cell.textLabel.numberOfLines = 0;
           cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
-          cell.detailTextLabel.text = pollStructure.pollQuestion;
-          cell.detailTextLabel.numberOfLines = 4;
           cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
           if (! [self.answeredPolls containsObject:pollStructure.pollID]) {
                UIButton *unreadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
