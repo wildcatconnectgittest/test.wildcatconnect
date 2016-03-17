@@ -561,68 +561,22 @@ Parse.Cloud.afterSave("AlertStructure", function(request) {
   };
 });
 
-var NewsArchiveStructure = Parse.Object.extend("NewsArchiveStructure");
-
-Parse.Cloud.define("createArchiveStructure", function(request, response) {
-  console.log("HERE");
-  var ID = request.params.ID;
-  console.log("HERE - " + ID);
-  var query = new Parse.Query("NewsArticleStructure");
-  query.equalTo("articleID", ID);
-  var array = new Array();
-  query.first().then(function(article) {
-    var archive = new NewsArchiveStructure();
-    archive.set("titleString", article.get("titleString"));
-    archive.set("authorString", article.get("authorString"));
-    archive.set("dateString", article.get("dateString"));
-    archive.set("hasImage", article.get("hasImage"));
-    archive.set("imageFile", article.get("imageFile"));
-    archive.set("likes", article.get("likes"));
-    archive.set("summaryString", article.get("summaryString"));
-    archive.set("contentString", article.get("contentURLString"));
-    article.set("doPush", 1);
-    array.push(article);
-    array.push(archive);
-    Parse.Object.saveAll(array, {
-      success: function(savedObjects) {
-        var article;
-        var archive;
-        if (savedObjects[0].get("contentURLString")) {
-          article = savedObjects[0];
-          archive = savedObjects[1];
-          article.set("archiveURL", "http://www.wildcatconnect.org/a/article.php?ID=" + archive.id);
-        } else {
-          article = savedObjects[1];
-          archive = savedObjects[0];
-          article.set("archiveURL", "http://www.wildcatconnect.org/a/article.php?ID=" + archive.id);
-        };
-        article.save(null, {
-          success: function() {
-            Parse.Push.send({
-            channels: [ "allNews" ],
-            data: {
-              title: "WildcatConnect",
-              alert: "NEWS - " + article.get("titleString"),
-              n: article.get("articleID"),
-              badge: "Increment"
-            }
-        }, {
-          success: function() {
-              response.success("");
-            },
-            error: function(error) {
-              console.log(error);
-              response.error(error);
-            }
-        });
-          }, error: function(error) {
-            response.error(error);
-          }
-        });
-      }, error: function(error) {
-        response.error(error);
-      }
-    });
+Parse.Cloud.define("getMemberCounts", function(request, response) {
+  Parse.Cloud.useMasterKey();
+  var skip = request.params.skip;
+  var query = new Parse.Query("_Installation");
+  query.notEqualTo("channels", ["global"]);
+  var queryTwo = new Parse.Query("_Installation");
+  var newQuery = Parse.Query.or(query, queryTwo);
+  newQuery.notEqualTo("channels", null);
+  newQuery.skip(skip);
+  newQuery.limit(1000);
+  newQuery.find({
+    success: function(objects) {
+      response.success(objects);
+    }, error: function(error) {
+      response.error(error);
+    }
   });
 });
 
@@ -1123,16 +1077,46 @@ Parse.Cloud.define("denyStructure", function(request, response) {
   };
 });
 
-Parse.Cloud.afterSave("NewsArticleStructure", function(request) {
-  console.log("HERE!!!0");
-  if (request.object.get("articleID") != null && request.object.get("views") == 0 && request.object.get("isApproved") === 1 && article.get("doPush") === null) {
-    Parse.Cloud.run("createArchiveStructure", {"ID":request.object.get("articleID")}, {
-        success: function() {
-          console.log("HERE!!!3");
-        }, error: function(error) {
-          console.log(error);
+var NewsArchiveStructure = Parse.Object.extend("NewsArchiveStructure");
+
+Parse.Cloud.beforeSave("NewsArticleStructure", function(request, response) {
+  if (request.object.get("articleID") != null && request.object.get("views") == 0 && request.object.get("isApproved") === 1) {
+    Parse.Push.send({
+        channels: [ "allNews" ],
+        data: {
+          title: "WildcatConnect",
+          alert: "NEWS - " + request.object.get("titleString"),
+          n: request.object.get("articleID"),
+          badge: "Increment"
         }
-      });
+    }, {
+        success: function() {
+          var archive = new NewsArchiveStructure();
+          archive.set("titleString", request.object.get("titleString"));
+          archive.set("authorString", request.object.get("authorString"));
+          archive.set("dateString", request.object.get("dateString"));
+          archive.set("hasImage", request.object.get("hasImage"));
+          archive.set("imageFile", request.object.get("imageFile"));
+          archive.set("likes", request.object.get("likes"));
+          archive.set("summaryString", request.object.get("summaryString"));
+          archive.set("contentString", request.object.get("contentURLString"));
+          archive.save(null, {
+            success: function(theObject) {
+              request.object.set("archiveURL", "http://www.wildcatconnect.org/a/article.php?ID=" + theObject.id);
+              response.success("");
+            },
+            error: function(error) {
+              response.error(error);
+            }
+          });
+        },
+        error: function(error) {
+          console.log(error);
+          response.error(error);
+        }
+    });
+  } else {
+    response.success("");
   };
 });
 

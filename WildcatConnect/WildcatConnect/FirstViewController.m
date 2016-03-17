@@ -21,6 +21,7 @@
 #import "EventStructure.h"
 #import <SystemConfiguration/CaptiveNetwork.h>
 #import "SpecialKeyStructure.h"
+#import "EventsTableViewController.h"
 
 @interface FirstViewController ()
 
@@ -317,21 +318,42 @@
                                              scheduleLabel.frame = CGRectMake(self.view.frame.size.width / 2 - scheduleLabel.frame.size.width / 2, scheduleLabel.frame.origin.y, scheduleLabel.frame.size.width, scheduleLabel.frame.size.height);
                                              [scrollView addSubview:scheduleLabel];
                                              
-                                             UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(10, scheduleLabel.frame.origin.y + scheduleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
-                                             separator.backgroundColor = [UIColor blackColor];
-                                             [scrollView addSubview:separator];
-                                             
-                                             messageLabelA = [[UILabel alloc] initWithFrame:CGRectMake(10, separator.frame.origin.y + separator.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
-                                             UIFont *font = [UIFont systemFontOfSize:14];
-                                             [messageLabelA setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
-                                             messageLabelA.text = @"Recent Alerts";
-                                             messageLabelA.lineBreakMode = NSLineBreakByWordWrapping;
-                                             messageLabelA.numberOfLines = 0;
-                                             [messageLabelA sizeToFit];
-                                             messageLabelA.frame = CGRectMake(self.view.frame.size.width / 2 - messageLabelA.frame.size.width / 2, messageLabelA.frame.origin.y, messageLabelA.frame.size.width, messageLabelA.frame.size.height);
-                                             [scrollView addSubview:messageLabelA];
-                                             
                                              [self getAlertStringMethodWithCompletion:^(NSError *error, NSString *eventString) {
+                                                  
+                                                  UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(10, scheduleLabel.frame.origin.y + scheduleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+                                                  separator.backgroundColor = [UIColor blackColor];
+                                                  [scrollView addSubview:separator];
+                                                  
+                                                  messageLabelA = [[UILabel alloc] initWithFrame:CGRectMake(10, separator.frame.origin.y + separator.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
+                                                  UIFont *font = [UIFont systemFontOfSize:14];
+                                                  [messageLabelA setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
+                                                  if (! [eventString isEqualToString:@"No recent alerts."]) {
+                                                       messageLabelA.text = @"Recent Alerts (VIEW ALL)";
+                                                  } else {
+                                                       messageLabelA.text = @"Recent Alerts";
+                                                  }
+                                                  messageLabelA.lineBreakMode = NSLineBreakByWordWrapping;
+                                                  messageLabelA.numberOfLines = 0;
+                                                  [messageLabelA sizeToFit];
+                                                  messageLabelA.frame = CGRectMake(self.view.frame.size.width / 2 - messageLabelA.frame.size.width / 2, messageLabelA.frame.origin.y, messageLabelA.frame.size.width, messageLabelA.frame.size.height);
+                                                  [scrollView addSubview:messageLabelA];
+                                                  
+                                                  if (! [eventString isEqualToString:@"No recent alerts."]) {
+                                                       NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:@"Recent Alerts (VIEW ALL)" attributes:nil];
+                                                       NSRange linkRange = NSMakeRange(14, 10); // for the word "link" in the string above
+                                                       
+                                                       NSDictionary *linkAttributes = @{ NSForegroundColorAttributeName : [UIColor colorWithRed:0.05 green:0.4 blue:0.65 alpha:1.0],
+                                                                                         NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle) };
+                                                       [attributedString setAttributes:linkAttributes range:linkRange];
+                                                       
+                                                            // Assign attributedText to UILabel
+                                                       messageLabelA.attributedText = attributedString;
+                                                       UITapGestureRecognizer* gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(alertOpen)];
+                                                            // if labelView is not set userInteractionEnabled, you must do so
+                                                       [messageLabelA setUserInteractionEnabled:YES];
+                                                       [messageLabelA addGestureRecognizer:gesture];
+                                                  }
+                                                  
                                                   messageLabelB = [[UITextView alloc] initWithFrame:CGRectMake(10, messageLabelA.frame.origin.y + messageLabelA.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
                                                   messageLabelB.text = [eventString copy];
                                                   messageLabelB.dataDetectorTypes = UIDataDetectorTypeLink;
@@ -363,12 +385,32 @@
                                                             messageLabelC = [[UILabel alloc] initWithFrame:CGRectMake(10, separatorX.frame.origin.y + separatorX.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
                                                             UIFont *font = [UIFont systemFontOfSize:14];
                                                             [messageLabelC setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
-                                                            messageLabelC.text = @"Upcoming Events";
+                                                            if (! [eventString isEqualToString:@"No upcoming events."]) {
+                                                                 messageLabelC.text = @"Upcoming Events (VIEW ALL)";
+                                                            } else {
+                                                                 messageLabelC.text = @"Upcoming Events";
+                                                            }
                                                             messageLabelC.lineBreakMode = NSLineBreakByWordWrapping;
                                                             messageLabelC.numberOfLines = 0;
                                                             [messageLabelC sizeToFit];
                                                             messageLabelC.frame = CGRectMake(self.view.frame.size.width / 2 - messageLabelC.frame.size.width / 2, messageLabelC.frame.origin.y, messageLabelC.frame.size.width, messageLabelC.frame.size.height);
                                                             [scrollView addSubview:messageLabelC];
+                                                            
+                                                            if (! [eventString isEqualToString:@"No upcoming events."]) {
+                                                                 NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:@"Upcoming Events (VIEW ALL)" attributes:nil];
+                                                                 NSRange linkRange = NSMakeRange(16, 10); // for the word "link" in the string above
+                                                                 
+                                                                 NSDictionary *linkAttributes = @{ NSForegroundColorAttributeName : [UIColor colorWithRed:0.05 green:0.4 blue:0.65 alpha:1.0],
+                                                                                                   NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle) };
+                                                                 [attributedString setAttributes:linkAttributes range:linkRange];
+                                                                 
+                                                                      // Assign attributedText to UILabel
+                                                                 messageLabelC.attributedText = attributedString;
+                                                                 UITapGestureRecognizer* gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(eventsOpen)];
+                                                                      // if labelView is not set userInteractionEnabled, you must do so
+                                                                 [messageLabelC setUserInteractionEnabled:YES];
+                                                                 [messageLabelC addGestureRecognizer:gesture];
+                                                            }
                                                             
                                                             messageLabelD = [[UITextView alloc] initWithFrame:CGRectMake(10, messageLabelC.frame.origin.y + messageLabelC.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
                                                             messageLabelD.text = [eventString copy];
@@ -602,21 +644,42 @@
                                                        scheduleLabel.frame = CGRectMake(self.view.frame.size.width / 2 - scheduleLabel.frame.size.width / 2, scheduleLabel.frame.origin.y, scheduleLabel.frame.size.width, scheduleLabel.frame.size.height);
                                                        [scrollView addSubview:scheduleLabel];
                                                        
-                                                       separator = [[UIView alloc] initWithFrame:CGRectMake(10, scheduleLabel.frame.origin.y + scheduleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
-                                                       separator.backgroundColor = [UIColor blackColor];
-                                                       [scrollView addSubview:separator];
-                                                       
-                                                       messageLabelA = [[UILabel alloc] initWithFrame:CGRectMake(10, separator.frame.origin.y + separator.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
-                                                       UIFont *font = [UIFont systemFontOfSize:14];
-                                                       [messageLabelA setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
-                                                       messageLabelA.text = @"Recent Alerts";
-                                                       messageLabelA.lineBreakMode = NSLineBreakByWordWrapping;
-                                                       messageLabelA.numberOfLines = 0;
-                                                       [messageLabelA sizeToFit];
-                                                       messageLabelA.frame = CGRectMake(self.view.frame.size.width / 2 - messageLabelA.frame.size.width / 2, messageLabelA.frame.origin.y, messageLabelA.frame.size.width, messageLabelA.frame.size.height);
-                                                       [scrollView addSubview:messageLabelA];
-                                                       
                                                        [self getAlertStringMethodWithCompletion:^(NSError *error, NSString *eventString) {
+                                                            
+                                                            UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(10, scheduleLabel.frame.origin.y + scheduleLabel.frame.size.height + 10, self.view.frame.size.width - 20, 1)];
+                                                            separator.backgroundColor = [UIColor blackColor];
+                                                            [scrollView addSubview:separator];
+                                                            
+                                                            messageLabelA = [[UILabel alloc] initWithFrame:CGRectMake(10, separator.frame.origin.y + separator.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
+                                                            UIFont *font = [UIFont systemFontOfSize:14];
+                                                            [messageLabelA setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
+                                                            if (! [eventString isEqualToString:@"No recent alerts."]) {
+                                                                 messageLabelA.text = @"Recent Alerts (VIEW ALL)";
+                                                            } else {
+                                                                 messageLabelA.text = @"Recent Alerts";
+                                                            }
+                                                            messageLabelA.lineBreakMode = NSLineBreakByWordWrapping;
+                                                            messageLabelA.numberOfLines = 0;
+                                                            [messageLabelA sizeToFit];
+                                                            messageLabelA.frame = CGRectMake(self.view.frame.size.width / 2 - messageLabelA.frame.size.width / 2, messageLabelA.frame.origin.y, messageLabelA.frame.size.width, messageLabelA.frame.size.height);
+                                                            [scrollView addSubview:messageLabelA];
+                                                            
+                                                            if (! [eventString isEqualToString:@"No recent alerts."]) {
+                                                                 NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:@"Recent Alerts (VIEW ALL)" attributes:nil];
+                                                                 NSRange linkRange = NSMakeRange(14, 10); // for the word "link" in the string above
+                                                                 
+                                                                 NSDictionary *linkAttributes = @{ NSForegroundColorAttributeName : [UIColor colorWithRed:0.05 green:0.4 blue:0.65 alpha:1.0],
+                                                                                                   NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle) };
+                                                                 [attributedString setAttributes:linkAttributes range:linkRange];
+                                                                 
+                                                                      // Assign attributedText to UILabel
+                                                                 messageLabelA.attributedText = attributedString;
+                                                                 UITapGestureRecognizer* gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(alertOpen)];
+                                                                      // if labelView is not set userInteractionEnabled, you must do so
+                                                                 [messageLabelA setUserInteractionEnabled:YES];
+                                                                 [messageLabelA addGestureRecognizer:gesture];
+                                                            }
+                                                            
                                                             messageLabelB = [[UITextView alloc] initWithFrame:CGRectMake(10, messageLabelA.frame.origin.y + messageLabelA.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
                                                             messageLabelB.text = [eventString copy];
                                                             messageLabelB.dataDetectorTypes = UIDataDetectorTypeLink;
@@ -648,12 +711,32 @@
                                                                       messageLabelC = [[UILabel alloc] initWithFrame:CGRectMake(10, separatorX.frame.origin.y + separatorX.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
                                                                       UIFont *font = [UIFont systemFontOfSize:14];
                                                                       [messageLabelC setFont:[UIFont fontWithDescriptor:[[font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitItalic] size:font.pointSize]];
-                                                                      messageLabelC.text = @"Upcoming Events";
+                                                                      if (! [eventString isEqualToString:@"No upcoming events."]) {
+                                                                           messageLabelC.text = @"Upcoming Events (VIEW ALL)";
+                                                                      } else {
+                                                                           messageLabelC.text = @"Upcoming Events";
+                                                                      }
                                                                       messageLabelC.lineBreakMode = NSLineBreakByWordWrapping;
                                                                       messageLabelC.numberOfLines = 0;
                                                                       [messageLabelC sizeToFit];
                                                                       messageLabelC.frame = CGRectMake(self.view.frame.size.width / 2 - messageLabelC.frame.size.width / 2, messageLabelC.frame.origin.y, messageLabelC.frame.size.width, messageLabelC.frame.size.height);
                                                                       [scrollView addSubview:messageLabelC];
+                                                                      
+                                                                      if (! [eventString isEqualToString:@"No upcoming events."]) {
+                                                                           NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:@"Upcoming Events (VIEW ALL)" attributes:nil];
+                                                                           NSRange linkRange = NSMakeRange(16, 10); // for the word "link" in the string above
+                                                                           
+                                                                           NSDictionary *linkAttributes = @{ NSForegroundColorAttributeName : [UIColor colorWithRed:0.05 green:0.4 blue:0.65 alpha:1.0],
+                                                                                                             NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle) };
+                                                                           [attributedString setAttributes:linkAttributes range:linkRange];
+                                                                           
+                                                                                // Assign attributedText to UILabel
+                                                                           messageLabelC.attributedText = attributedString;
+                                                                           UITapGestureRecognizer* gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(eventsOpen)];
+                                                                                // if labelView is not set userInteractionEnabled, you must do so
+                                                                           [messageLabelC setUserInteractionEnabled:YES];
+                                                                           [messageLabelC addGestureRecognizer:gesture];
+                                                                      }
                                                                       
                                                                       messageLabelD = [[UITextView alloc] initWithFrame:CGRectMake(10, messageLabelC.frame.origin.y + messageLabelC.frame.size.height + 10, self.view.frame.size.width - 20, 20)];
                                                                       messageLabelD.text = [eventString copy];
@@ -824,6 +907,15 @@
      }
      
      
+}
+
+- (void)alertOpen {
+     self.tabBarController.selectedIndex = 2;
+}
+
+- (void)eventsOpen {
+     EventsTableViewController *controller = [[EventsTableViewController alloc] initWithLoadNumber:[NSNumber numberWithInt:1]];
+     [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)showBadImage {
@@ -1092,7 +1184,16 @@
           } else {
                for (int i = 0; i < objects.count; i++) {
                     EventStructure *event = (EventStructure *)[objects objectAtIndex:i];
-                    if ([self daysBetweenDate:[NSDate date] andDate:event.eventDate] <= 3) {
+                    if ([self daysBetweenDate:[NSDate date] andDate:event.eventDate] == 0) {
+                         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+                         [formatter setDateFormat:@"h:mm a"];
+                         NSString *timeString = [NSString stringWithFormat:@"* [%@] ",
+                                                  [formatter stringFromDate:event.eventDate]];
+                         if ([eventString isEqualToString:@"No upcoming events."]) {
+                              eventString = [timeString stringByAppendingString:[event.titleString copy]];
+                         } else
+                              eventString = [[[eventString stringByAppendingString:@"\n\n"] stringByAppendingString:timeString] stringByAppendingString:event.titleString];
+                    } else if ([self daysBetweenDate:[NSDate date] andDate:event.eventDate] <= 3) {
                          if ([eventString isEqualToString:@"No upcoming events."]) {
                               eventString = [event.titleString copy];
                          } else

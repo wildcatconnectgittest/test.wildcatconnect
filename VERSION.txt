@@ -37,3 +37,10 @@ Please note the new format…
 - Fixes bug with channelString not properly registering for ID >= 10.
 - Adds new like features that enhance UI experience.
 - Accounts for new polling ‘isActive’ parameter.
+
+2.3
+
+- Fixes poll loading bug with new ‘isActive’ key.
+- Adds new event and alert “VIEW ALL” buttons on home page.
+- Fixes scholarship date text parsing.
+- Like spinner.

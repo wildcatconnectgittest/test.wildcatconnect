@@ -41,7 +41,7 @@
      
      dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, titleLabel.frame.origin.y + titleLabel.frame.size.height + 5, self.view.frame.size.width - 20, 100)];
      NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-     [dateFormatter setDateFormat:@"EEEE, MMMM d, YYYY @ h:mm a"];
+     [dateFormatter setDateFormat:@"EEEE, MMMM d, YYYY"];
      NSString *dateString = [dateFormatter stringFromDate:self.scholarship.dueDate];
      dateLabel.text = [@"DUE - " stringByAppendingString:dateString];
      [dateLabel setFont:[UIFont systemFontOfSize:18]];

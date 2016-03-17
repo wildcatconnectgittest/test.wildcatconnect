@@ -215,6 +215,7 @@
      dispatch_group_enter(serviceGroup);
      __block NSError *theError;
      PFQuery *query = [PollStructure query];
+     [query whereKey:@"isActive" equalTo:[NSNumber numberWithInteger:1]];
      __block int count;
      [query countObjectsInBackgroundWithBlock:^(int number, NSError * _Nullable error) {
           theError = error;
