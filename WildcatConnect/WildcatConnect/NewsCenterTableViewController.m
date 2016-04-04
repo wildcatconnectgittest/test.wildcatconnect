@@ -453,19 +453,20 @@
            cell.textLabel.text = @"Loading your data...";
            return  cell;
       } else {
-           NewsArticleStructure *newsArticleStructure = ((NewsArticleStructure *)[self.newsArticles objectAtIndex:indexPath.row]);
-           UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
-           cell.textLabel.text = newsArticleStructure.titleString;
-           cell.textLabel.numberOfLines = 0;
-           cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
-           cell.detailTextLabel.text = newsArticleStructure.summaryString;
-           cell.detailTextLabel.numberOfLines = 4;
-           cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-           if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administration"]) {
-                     //Show the views...
-                cell.detailTextLabel.text = [[[newsArticleStructure.summaryString stringByAppendingString:@" - "] stringByAppendingString:[newsArticleStructure.views stringValue]] stringByAppendingString:@" VIEWS"];
-           }
-           NSInteger integerNumber = [newsArticleStructure.hasImage integerValue];
+           if ([self.newsArticles objectAtIndex:indexPath.row] && [self.newsArticleImages objectAtIndex:indexPath.row]) {
+                NewsArticleStructure *newsArticleStructure = ((NewsArticleStructure *)[self.newsArticles objectAtIndex:indexPath.row]);
+                UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
+                cell.textLabel.text = newsArticleStructure.titleString;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
+                cell.detailTextLabel.text = newsArticleStructure.summaryString;
+                cell.detailTextLabel.numberOfLines = 4;
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                if ([[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Developer"] || [[[PFUser currentUser] objectForKey:@"userType"] isEqualToString:@"Administration"]) {
+                          //Show the views...
+                     cell.detailTextLabel.text = [[[newsArticleStructure.summaryString stringByAppendingString:@" - "] stringByAppendingString:[newsArticleStructure.views stringValue]] stringByAppendingString:@" VIEWS"];
+                }
+                NSInteger integerNumber = [newsArticleStructure.hasImage integerValue];
                 if (! [self.readNewsArticles containsObject:newsArticleStructure.articleID]) {
                      UIButton *unreadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
                      [unreadButton setImage:[UIImage imageNamed:@"unread@2x.png"] forState:UIControlStateNormal];
@@ -474,11 +475,12 @@
                      cell.accessoryView = unreadButton;
                      [cell setNeedsLayout];
                 }
-           if (integerNumber == 1 && self.newsArticleImages.count > 0)
-                if ([[self.newsArticleImages objectAtIndex:indexPath.row] class] == [UIImage class]) {
-                     cell.imageView.image = (UIImage *)[self.newsArticleImages objectAtIndex:indexPath.row];
-                }
-           return cell;
+                if (integerNumber == 1 && self.newsArticleImages.count > 0)
+                     if ([[self.newsArticleImages objectAtIndex:indexPath.row] class] == [UIImage class]) {
+                          cell.imageView.image = (UIImage *)[self.newsArticleImages objectAtIndex:indexPath.row];
+                     }
+                return cell;
+           } else return nil;
       }
  }
 

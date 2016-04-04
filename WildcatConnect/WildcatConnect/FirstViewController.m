@@ -263,7 +263,7 @@
                                              [dateFormatter setDateFormat:@"H"];
                                              dateString = [dateFormatter stringFromDate:[NSDate date]];
                                              NSInteger hour = [dateString integerValue];
-                                             if (hour >= 21) {
+                                             if (hour >= 17) {
                                                   index = 1;
                                              }
                                         }

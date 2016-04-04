@@ -17,10 +17,13 @@
 
 @implementation StudentCenterTableViewController {
      UIActivityIndicatorView *activity;
+     BOOL reload;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+     
+     reload = true;
      
      self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:248.0f/255.0f
                                                                             green:183.0f/255.0f
@@ -71,6 +74,7 @@
                [alertView show];
                dispatch_async(dispatch_get_main_queue(), ^ {
                     [activity stopAnimating];
+                    reload = false;
                     [self.tableView reloadData];
                     [self refreshControl];
                     [self.refreshControl endRefreshing];
@@ -86,6 +90,7 @@
                [self removeOldArrayObjectsWithCompletion:^(NSUInteger integer) {
                     dispatch_async(dispatch_get_main_queue(), ^ {
                          [activity stopAnimating];
+                         reload = false;
                          [self.tableView reloadData];
                          [self refreshControl];
                          [self.refreshControl endRefreshing];
@@ -219,8 +224,10 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
      UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
     
-     if (self.pollArray.count == 0) {
+     if (self.pollArray.count == 0 && reload == true) {
           cell.textLabel.text = @"Loading your data...";
+     } else if (self.pollArray.count == 0 && reload == false) {
+          cell.textLabel.text = @"No polls to display.";
      } else {
           PollStructure *pollStructure = (PollStructure *)[self.pollArray objectAtIndex:indexPath.row];
           cell.textLabel.text = pollStructure.pollTitle;

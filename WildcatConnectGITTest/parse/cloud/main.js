@@ -339,7 +339,7 @@ Parse.Cloud.job("extracurricularUpdateStructureDeletion", function(request, resp
           var date2_ms = now.getTime();
           var difference_ms = date2_ms - date1_ms;
           difference_ms = Math.round(difference_ms/one_day);
-          if (difference_ms >= 3) {
+          if (difference_ms >= 5) {
             currentStructure.destroy({
               success: function() {
                 console.log("Just deleted an object!!!");
@@ -448,10 +448,9 @@ Parse.Cloud.job("userDeletion", function(request, response) {
     success: function(structures) {
       for (var i = 0; i < structures.length; i++) {
         var object = structures[i];
-        var firstName = structures[i].get("firstName");
-        var email = structures[i].get("email");
-        var currentStructure = structures[i];
-        var thisDate = currentStructure.get("createdAt");
+        var firstName = object.get("firstName");
+        var email = object.get("email");
+        var thisDate = object.get("createdAt");
         var now = new Date();
         var one_day=1000*60*60*24;
         var date1_ms = thisDate.getTime();
@@ -1319,15 +1318,7 @@ Parse.Cloud.job("alertStatusUpdatingNight", function(request, response) {
                       success: function(structure) {
                         // Execute any logic that should take place after the object is saved.
                         //alert('New object created with objectId: ' + gameScore.id);
-                        Parse.Push.send({
-                          channels: [ "global" ],
-                          data: {
-                            alert: currentStructure.get("titleString"),
-                            a: currentStructure.get("alertID"),
-                            badge: "Increment",
-                          },
-                          push_time: currentStructure.get("alertTime")
-                        });
+                        //
                         if (i == structures.length - 1) {
                           if (pushSent === true) {
                             response.success("Push sent!!!");
@@ -1413,15 +1404,7 @@ Parse.Cloud.job("alertStatusUpdating", function(request, response) {
                       success: function(structure) {
                         // Execute any logic that should take place after the object is saved.
                         //alert('New object created with objectId: ' + gameScore.id);
-                        Parse.Push.send({
-                          channels: [ "global" ],
-                          data: {
-                            alert: currentStructure.get("titleString"),
-                            a: currentStructure.get("alertID"),
-                            badge: "Increment",
-                          },
-                          push_time: currentStructure.get("alertTime")
-                        });
+                        //
                         if (i == structures.length - 1) {
                           if (pushSent === true) {
                             response.success("Push sent!!!");

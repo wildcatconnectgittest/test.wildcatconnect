@@ -149,6 +149,7 @@
     NSMutableArray *returnArray = [[NSMutableArray alloc] init];
     PFQuery *query = [CommunityServiceStructure query];
     [query orderByAscending:@"startDate"];
+     [query whereKey:@"isApproved" equalTo:[NSNumber numberWithInteger:1]];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         [returnArray addObjectsFromArray:objects];
         firstError = error;

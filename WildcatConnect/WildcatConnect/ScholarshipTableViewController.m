@@ -16,10 +16,13 @@
 
 @implementation ScholarshipTableViewController {
      UIActivityIndicatorView *activity;
+     BOOL reload;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+     
+     reload = true;
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -43,6 +46,7 @@
           [self getPreviousCommunityServiceStructuresWithCompletion:^(NSMutableArray *returnArray) {
                self.scholarships = returnArray;
                dispatch_async(dispatch_get_main_queue(), ^ {
+                    reload = false;
                     [self.tableView reloadData];
                     [self refreshControl];
                });
@@ -70,6 +74,7 @@
                [alertView show];
                dispatch_async(dispatch_get_main_queue(), ^ {
                     [activity stopAnimating];
+                    reload = false;
                     [self.tableView reloadData];
                     [self refreshControl];
                     [self.refreshControl endRefreshing];
@@ -86,6 +91,7 @@
                [userDefaults synchronize];
                dispatch_async(dispatch_get_main_queue(), ^ {
                     [activity stopAnimating];
+                    reload = false;
                     [self.tableView reloadData];
                     [self.refreshControl endRefreshing];
                });
@@ -159,9 +165,13 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
           // Configure the cell...
-     if (self.scholarships.count == 0) {
+     if (self.scholarships.count == 0 && reload == true) {
           UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
           cell.textLabel.text = @"Loading your data...";
+          return  cell;
+     } else if (self.scholarships.count == 0 && reload == false) {
+          UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
+          cell.textLabel.text = @"No scholarships to display.";
           return  cell;
      } else {
           ScholarshipStructure *structure = ((ScholarshipStructure *)[self.scholarships objectAtIndex:indexPath.row]);
@@ -180,10 +190,12 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
      [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-     ScholarshipDetailViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"ScholDetail"];
-     ScholarshipStructure *S = ((ScholarshipStructure *)[self.scholarships objectAtIndex:indexPath.row]);
-     controller.scholarship = S;
-     [self.navigationController pushViewController:controller animated:YES];
+     if (self.scholarships.count > 0) {
+          ScholarshipDetailViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"ScholDetail"];
+          ScholarshipStructure *S = ((ScholarshipStructure *)[self.scholarships objectAtIndex:indexPath.row]);
+          controller.scholarship = S;
+          [self.navigationController pushViewController:controller animated:YES];
+     }
 }
 
 
